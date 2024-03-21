@@ -1,10 +1,11 @@
 name: Generate and Deploy Reference Documentation
 
 on:
-  push:
-    branches:
-      - mohnoor94/docs
-      - main
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - mohnoor94/docs
+#      - main
 
 jobs:
   build-and-deploy:
