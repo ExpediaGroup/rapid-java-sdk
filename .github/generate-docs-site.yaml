@@ -3,6 +3,7 @@ name: Generate and Deploy Reference Documentation
 on:
   push:
     branches:
+      - mohnoor94/docs
       - main
 
 jobs:
