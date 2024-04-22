@@ -71,7 +71,7 @@
         <maven-surefire-plugin.version>3.2.5</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.5.0</build-helper-maven-plugin.version>
         <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
-        <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
+        <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.3</maven.licence.plugin.version>
