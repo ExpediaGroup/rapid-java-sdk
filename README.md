@@ -29,4 +29,4 @@ You can find code examples for multiple use cases in the [examples](https://gith
 
 ## Support
 If you have any questions or need help with Rapid API, please refer to the [Rapid API Support](https://support.expediapartnersolutions.com/hc/en-us) page.
-If you witness any issues with the SDK, please raise an issue on the [GitHub repository](https://github.com/ExpediaGroup/rapid-java-sdk/issues).
+If you experience any issues with the SDK, please raise an issue on the [GitHub repository](https://github.com/ExpediaGroup/rapid-java-sdk/issues).
