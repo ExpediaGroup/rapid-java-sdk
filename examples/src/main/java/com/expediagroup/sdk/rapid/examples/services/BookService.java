@@ -10,38 +10,17 @@ import com.expediagroup.sdk.rapid.models.ItineraryCreation;
 import com.expediagroup.sdk.rapid.models.PaymentRequest;
 import com.expediagroup.sdk.rapid.models.PhoneRequest;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class BookService extends RapidService {
 
-    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
-
-    public ItineraryCreation createInstantBooking(RoomPriceCheck roomPriceCheck) {
-
-        if (roomPriceCheck == null) {
-            logger.error("Room price check is null");
-            return null;
-        }
-
-        if (roomPriceCheck.getLinks() == null) {
-            logger.error("Links in room price check is null");
-            return null;
-        }
-
-        if (roomPriceCheck.getLinks().getBook() == null) {
-            logger.error("Book in links is null");
-            return null;
-        }
+    public ItineraryCreation createBooking(RoomPriceCheck roomPriceCheck) {
 
         String bookHref = roomPriceCheck.getLinks().getBook().getHref();
-        if (bookHref == null || bookHref.isEmpty()) {
-            logger.error("Href in book is null");
-            return null;
-        }
 
         PhoneRequest phone =
                 PhoneRequest.builder()
@@ -50,7 +29,7 @@ public class BookService extends RapidService {
                         .number("5550077")
                         .build();
 
-        List<CreateItineraryRequestRoom> rooms = List.of(
+        List<CreateItineraryRequestRoom> rooms = Arrays.asList(
                 CreateItineraryRequestRoom.builder()
                         .givenName("John")
                         .familyName("Smith")
@@ -77,7 +56,7 @@ public class BookService extends RapidService {
                         .address(address)
                         .build();
 
-        List<PaymentRequest> payments = List.of(
+        List<PaymentRequest> payments = Arrays.asList(
                 PaymentRequest.builder()
                         .type(PaymentRequest.Type.CUSTOMER_CARD)
                         .number("4111111111111111")
@@ -90,8 +69,8 @@ public class BookService extends RapidService {
         );
 
         return rapidClient.postItinerary(
-                "5.5.5.5",
-                rapidClient.helpers.extractToken(bookHref),
+                Constants.CUSTOMER_IP,
+                Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)),
                 CreateItineraryRequest.builder()
                         .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
                         .hold(false)
@@ -106,26 +85,6 @@ public class BookService extends RapidService {
     }
 
     public Itinerary getReservationByItineraryId(ItineraryCreation itineraryCreation) {
-        if (itineraryCreation.getItineraryId() == null) {
-            logger.error("Itinerary id is null");
-            return null;
-        }
-
-        if (itineraryCreation.getLinks() == null) {
-            logger.error("Links in itinerary creation is null");
-            return null;
-        }
-
-        if (itineraryCreation.getLinks().getRetrieve() == null) {
-            logger.error("Retrieve in links is null");
-            return null;
-        }
-
-        if (itineraryCreation.getLinks().getRetrieve().getHref() == null) {
-            logger.error("Href in retrieve is null");
-            return null;
-        }
-
         return rapidClient.getReservationByItineraryId(
                 Constants.CUSTOMER_IP,
                 itineraryCreation.getItineraryId(),
