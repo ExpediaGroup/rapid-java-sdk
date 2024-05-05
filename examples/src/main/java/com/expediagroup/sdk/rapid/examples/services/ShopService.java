@@ -1,6 +1,7 @@
 package com.expediagroup.sdk.rapid.examples.services;
 
 import com.expediagroup.sdk.rapid.examples.Constants;
+import com.expediagroup.sdk.rapid.examples.salesprofiles.RapidPartnerSalesProfile;
 import com.expediagroup.sdk.rapid.models.Property;
 import com.expediagroup.sdk.rapid.models.PropertyAvailability;
 import com.expediagroup.sdk.rapid.models.RoomAvailability;
@@ -8,27 +9,34 @@ import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 public class ShopService extends RapidService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopService.class);
 
-    public List<Property> getPropertiesAvailability() {
+    public List<Property> getPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
         return rapidClient.getAvailability(
                 LocalDate.now().plusDays(14).toString(),
                 LocalDate.now().plusDays(15).toString(),
                 "USD",
                 "US",
                 "en-US",
-                List.of("2"),
-                List.of(Constants.TEST_PROPERTY_ID),
+                Arrays.asList("2"),
+                Arrays.asList(Constants.TEST_PROPERTY_ID),
                 BigDecimal.ONE,
                 "website",
                 "hotel_only",
-                Constants.CUSTOMER_IP);
+                Constants.CUSTOMER_IP,
+                null, null, null, null, null, null, null, null,
+                rapidPartnerSalesProfile.billingTerms,
+                rapidPartnerSalesProfile.paymentTerms,
+                rapidPartnerSalesProfile.partnerPointOfSale,
+                rapidPartnerSalesProfile.platformName
+        );
     }
 
     public RoomPriceCheck checkRoomPrices(PropertyAvailability propertyAvailability) {

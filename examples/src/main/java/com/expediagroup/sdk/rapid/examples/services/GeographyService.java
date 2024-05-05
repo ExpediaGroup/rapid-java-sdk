@@ -26,7 +26,7 @@ public class GeographyService extends RapidService {
 
         List<List<Region>> pages = new ArrayList<>();
 
-        logger.info(String.format("Paginator total results count: %s", paginator.getPaginationTotalResults()));
+        logger.info("Paginator total results count: {}", paginator.getPaginationTotalResults());
 
         logger.info("First page results:");
 
@@ -35,9 +35,9 @@ public class GeographyService extends RapidService {
 
             page.forEach(region -> {
                 logger.info("-------------------------------------");
-                logger.info(String.format("Region Full Name: %s", region.getNameFull()));
-                logger.info(String.format("Region Type: %s", region.getType()));
-                logger.info(String.format("Region Country Code: %s", region.getCountryCode()));
+                logger.info("Region Full Name: {}", region.getNameFull());
+                logger.info("Region Type: {}", region.getType());
+                logger.info("Region Country Code: {}", region.getCountryCode());
                 logger.info("-------------------------------------");
 
             });
@@ -60,9 +60,9 @@ public class GeographyService extends RapidService {
 
             page.forEach(region -> {
                 logger.info("-------------------------------------");
-                logger.info(String.format("Region Full Name: %s", region.getNameFull()));
-                logger.info(String.format("Region Type: %s", region.getType()));
-                logger.info(String.format("Region Country Code: %s", region.getCountryCode()));
+                logger.info("Region Full Name: {}", region.getNameFull());
+                logger.info("Region Type: {}", region.getType());
+                logger.info("Region Country Code: {}", region.getCountryCode());
                 logger.info("-------------------------------------");
 
             });
@@ -78,9 +78,9 @@ public class GeographyService extends RapidService {
         logger.info("------------- Calling GetRegion:");
         Region region = rapidClient.getRegion(regionId, language, Arrays.asList("property_ids"));
 
-        logger.info(String.format("Region Full Name: %s", region.getNameFull()));
-        logger.info(String.format("Region Type: %s", region.getType()));
-        logger.info(String.format("Region Country Code: %s", region.getCountryCode()));
+        logger.info("Region Full Name: {}", region.getNameFull());
+        logger.info("Region Type: {}", region.getType());
+        logger.info("Region Country Code: {}", region.getCountryCode());
 
         logger.info("Region Property IDs:");
         region.getPropertyIds().forEach(System.out::println);
