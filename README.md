@@ -19,8 +19,8 @@ Please refer to the [Rapid SDK Documentation](https://opensource.expediagroup.co
 The Rapid SDK is available on Maven Central. To include the SDK in your project, please follow the instructions [here](https://developers.expediagroup.com/docs/products/rapid/sdk/java/quick-start?language=java&buildTools=maven).
 
 ### Getting Started
-Please start by reading the [Getting started with Rapid API](https://developers.expediagroup.com/docs/products/rapid/setup/getting-started#getting-started-with-rapid) guide to understand how to use the Rapid API.
-Then follow the [Quick Start guide](https://developers.expediagroup.com/docs/products/rapid/sdk/java/quick-start) to integrate the Rapid SDK into your project.
+Please start by reading the [Getting started with Rapid API](https://developers.expediagroup.com/docs/products/rapid/setup/getting-started#getting-started-with-rapid) guide to understand how the Rapid API works.
+Then follow the [Quick Start](https://developers.expediagroup.com/docs/products/rapid/sdk/java/quick-start) guide to integrate the Rapid SDK into your project.
 
 ### Code Examples
 You can find code examples for multiple use cases in the [examples](https://github.com/ExpediaGroup/rapid-java-sdk/blob/main/examples/src/main/java/com/expediagroup/sdk/rapid/examples/RapidSdkDemoApplication.java) directory.
