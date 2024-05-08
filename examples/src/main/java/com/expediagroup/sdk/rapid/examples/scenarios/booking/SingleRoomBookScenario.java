@@ -13,6 +13,7 @@ import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SingleRoomBookScenario implements RapidScenario {
@@ -31,14 +32,14 @@ public class SingleRoomBookScenario implements RapidScenario {
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
         ShopService shopService = new ShopService();
-        List<Property> propertyAvailabilityList = shopService.getPropertiesAvailability(this.rapidPartnerSalesProfile);
+        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile);
 
-        if (propertyAvailabilityList != null && !propertyAvailabilityList.isEmpty()) {
-            logger.info("Property Availability: {}", propertyAvailabilityList.get(0).getStatus());
-        } else {
+        if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             logger.error("No property availability found for the test property.");
             return;
         }
+
+        logger.info("Property Availability: {}", propertyAvailabilityList.get(0).getStatus());
 
         // Checking room prices for the property
         logger.info("Checking room prices for the property: {}...", Constants.TEST_PROPERTY_ID);
@@ -51,11 +52,11 @@ public class SingleRoomBookScenario implements RapidScenario {
             logger.info("Room Price Check: {}", roomPriceCheck.getStatus());
         }
 
-        // Booking the property
+        // Booking a single room in the property
         logger.info("Booking a room in test property: {}...", Constants.TEST_PROPERTY_ID);
 
         BookService bookService = new BookService();
-        ItineraryCreation itineraryCreation = bookService.createBooking(roomPriceCheck);
+        ItineraryCreation itineraryCreation = bookService.createBooking(roomPriceCheck, Arrays.asList("2"));
 
         logger.info("Booking Success. Itinerary id: {}", itineraryCreation.getItineraryId());
 

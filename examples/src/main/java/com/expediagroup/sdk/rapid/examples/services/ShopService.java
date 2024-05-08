@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ShopService extends RapidService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopService.class);
 
-    public List<Property> getPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
+    public List<Property> getSingleRoomPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
         return rapidClient.getAvailability(
                 LocalDate.now().plusDays(14).toString(),
                 LocalDate.now().plusDays(15).toString(),
@@ -36,37 +37,34 @@ public class ShopService extends RapidService {
                 rapidPartnerSalesProfile.paymentTerms,
                 rapidPartnerSalesProfile.partnerPointOfSale,
                 rapidPartnerSalesProfile.platformName
+
+        );
+    }
+
+    public List<Property> getMultipleRoomsPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile, List<String> occupancy) {
+        return rapidClient.getAvailability(
+                LocalDate.now().plusDays(14).toString(),
+                LocalDate.now().plusDays(15).toString(),
+                "USD",
+                "US",
+                "en-US",
+                occupancy,
+                Arrays.asList(Constants.TEST_PROPERTY_ID),
+                BigDecimal.ONE,
+                "website",
+                "hotel_only",
+                Constants.CUSTOMER_IP,
+                null, null, null, null, null, null, null, null,
+                rapidPartnerSalesProfile.billingTerms,
+                rapidPartnerSalesProfile.paymentTerms,
+                rapidPartnerSalesProfile.partnerPointOfSale,
+                rapidPartnerSalesProfile.platformName
         );
     }
 
     public RoomPriceCheck checkRoomPrices(PropertyAvailability propertyAvailability) {
 
-        if (propertyAvailability.getPropertyId() == null) {
-            logger.error("Property ID is null");
-            return null;
-        }
-
-        if (propertyAvailability.getRooms() == null || propertyAvailability.getRooms().isEmpty()) {
-            logger.info("No rooms available for the property.");
-            return null;
-        }
-
         RoomAvailability roomAvailability = propertyAvailability.getRooms().get(0);
-
-        if (roomAvailability.getId() == null) {
-            logger.error("Room ID is null");
-            return null;
-        }
-
-        if (roomAvailability.getRates() == null || roomAvailability.getRates().isEmpty()) {
-            logger.error("No rates available for the room.");
-            return null;
-        }
-
-        if (roomAvailability.getRates().get(0).getId() == null) {
-            logger.error("Rate ID is null");
-            return null;
-        }
 
         return rapidClient.priceCheck(
                 propertyAvailability.getPropertyId(),
