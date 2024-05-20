@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ShopService extends RapidService {
     private static final Logger logger = LoggerFactory.getLogger(ShopService.class);
 
     public List<Property> getSingleRoomPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
-        return rapidClient.getAvailability(
+        return rapidClientInstance.getAvailability(
                 LocalDate.now().plusDays(14).toString(),
                 LocalDate.now().plusDays(15).toString(),
                 "USD",
@@ -42,7 +41,7 @@ public class ShopService extends RapidService {
     }
 
     public List<Property> getMultipleRoomsPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile, List<String> occupancy) {
-        return rapidClient.getAvailability(
+        return rapidClientInstance.getAvailability(
                 LocalDate.now().plusDays(14).toString(),
                 LocalDate.now().plusDays(15).toString(),
                 "USD",
@@ -66,11 +65,11 @@ public class ShopService extends RapidService {
 
         RoomAvailability roomAvailability = propertyAvailability.getRooms().get(0);
 
-        return rapidClient.priceCheck(
+        return rapidClientInstance.priceCheck(
                 propertyAvailability.getPropertyId(),
                 roomAvailability.getId(),
                 roomAvailability.getRates().get(0).getId(),
-                rapidClient.helpers.extractToken(roomAvailability.getRates().get(0).getBedGroups().entrySet()
+                rapidClientInstance.helpers.extractToken(roomAvailability.getRates().get(0).getBedGroups().entrySet()
                         .stream().findFirst().get().getValue().getLinks().getPriceCheck().getHref()));
     }
 }

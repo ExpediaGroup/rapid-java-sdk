@@ -22,7 +22,7 @@ public class GeographyService extends RapidService {
     public List<List<Region>> getAllRegions() {
         logger.info("------------- Calling getRegionsPaginator with no ancestor ID to get all regions:");
 
-        Paginator<List<Region>> paginator = rapidClient.getRegionsPaginator(Arrays.asList("details"), "en-US");
+        Paginator<List<Region>> paginator = rapidClientInstance.getRegionsPaginator(Arrays.asList("details"), "en-US");
 
         List<List<Region>> pages = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class GeographyService extends RapidService {
 
     public List<List<Region>> getRegionsByAncestor(String ancestorId) {
         logger.info("------------- Calling getRegionsPaginator by ancestor ID:");
-        Paginator<List<Region>> paginator = rapidClient.getRegionsPaginator(Arrays.asList("details"), "en-US", "", ancestorId);
+        Paginator<List<Region>> paginator = rapidClientInstance.getRegionsPaginator(Arrays.asList("details"), "en-US", "", ancestorId);
 
         List<List<Region>> pages = new ArrayList<>();
 
@@ -76,7 +76,7 @@ public class GeographyService extends RapidService {
 
     public Region getRegion(String regionId, String language) {
         logger.info("------------- Calling GetRegion:");
-        Region region = rapidClient.getRegion(regionId, language, Arrays.asList("property_ids"));
+        Region region = rapidClientInstance.getRegion(regionId, language, Arrays.asList("property_ids"));
 
         logger.info("Region Full Name: {}", region.getNameFull());
         logger.info("Region Type: {}", region.getType());
