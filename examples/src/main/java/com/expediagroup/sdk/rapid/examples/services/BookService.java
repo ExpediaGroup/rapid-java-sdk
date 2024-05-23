@@ -28,9 +28,9 @@ public class BookService extends RapidService {
         // In the Book request, include corresponding separate instances of room in the rooms array for each room you wish to book. */
         List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
 
-        return rapidClientInstance.postItinerary(
+        return rapidClient.postItinerary(
                 Constants.CUSTOMER_IP,
-                Objects.requireNonNull(rapidClientInstance.helpers.extractToken(bookHref)),
+                Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)),
                 CreateItineraryRequest.builder()
                         .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
                         .hold(false)
@@ -51,9 +51,9 @@ public class BookService extends RapidService {
         List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
 
         // Create a booking with hold, set hold to true
-        return rapidClientInstance.postItinerary(
+        return rapidClient.postItinerary(
                 Constants.CUSTOMER_IP,
-                Objects.requireNonNull(rapidClientInstance.helpers.extractToken(bookHref)),
+                Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)),
                 CreateItineraryRequest.builder()
                         .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
                         .hold(true)
@@ -68,22 +68,22 @@ public class BookService extends RapidService {
     }
 
     public Response<Nothing> resumeBooking(ItineraryCreation itineraryCreation) {
-         return rapidClientInstance.putResumeBookingWithResponse(
+         return rapidClient.putResumeBookingWithResponse(
                  Constants.CUSTOMER_IP,
                  itineraryCreation.getItineraryId(),
-                 rapidClientInstance.helpers.extractToken(itineraryCreation.getLinks().getResume().getHref()),
+                 rapidClient.helpers.extractToken(itineraryCreation.getLinks().getResume().getHref()),
                 "123455656565",
                 "standard"
          );
     }
 
     public Itinerary getReservationByItineraryId(ItineraryCreation itineraryCreation) {
-        return rapidClientInstance.getReservationByItineraryId(
+        return rapidClient.getReservationByItineraryId(
                 Constants.CUSTOMER_IP,
                 itineraryCreation.getItineraryId(),
                 "123455656565",
                 "standard",
-                rapidClientInstance.helpers.extractToken(itineraryCreation.getLinks().getRetrieve().getHref())
+                rapidClient.helpers.extractToken(itineraryCreation.getLinks().getRetrieve().getHref())
         );
     }
 

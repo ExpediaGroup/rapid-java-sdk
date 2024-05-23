@@ -19,7 +19,7 @@ public class ShopService extends RapidService {
     private static final Logger logger = LoggerFactory.getLogger(ShopService.class);
 
     public List<Property> getSingleRoomPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
-        return rapidClientInstance.getAvailability(
+        return rapidClient.getAvailability(
                 LocalDate.now().plusDays(14).toString(),
                 LocalDate.now().plusDays(15).toString(),
                 "USD",
@@ -41,7 +41,7 @@ public class ShopService extends RapidService {
     }
 
     public List<Property> getMultipleRoomsPropertiesAvailability(RapidPartnerSalesProfile rapidPartnerSalesProfile, List<String> occupancy) {
-        return rapidClientInstance.getAvailability(
+        return rapidClient.getAvailability(
                 LocalDate.now().plusDays(14).toString(),
                 LocalDate.now().plusDays(15).toString(),
                 "USD",
@@ -65,11 +65,11 @@ public class ShopService extends RapidService {
 
         RoomAvailability roomAvailability = propertyAvailability.getRooms().get(0);
 
-        return rapidClientInstance.priceCheck(
+        return rapidClient.priceCheck(
                 propertyAvailability.getPropertyId(),
                 roomAvailability.getId(),
                 roomAvailability.getRates().get(0).getId(),
-                rapidClientInstance.helpers.extractToken(roomAvailability.getRates().get(0).getBedGroups().entrySet()
+                rapidClient.helpers.extractToken(roomAvailability.getRates().get(0).getBedGroups().entrySet()
                         .stream().findFirst().get().getValue().getLinks().getPriceCheck().getHref()));
     }
 }
