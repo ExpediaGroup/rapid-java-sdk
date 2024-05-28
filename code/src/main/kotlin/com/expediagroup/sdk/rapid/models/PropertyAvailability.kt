@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -54,7 +55,7 @@ data class PropertyAvailability(
     val rooms: kotlin.collections.List<RoomAvailability>? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyAvailabilityLinks? = null,
+    val links: PropertyAvailabilityLinks? = null
 ) : Property {
     @JsonProperty("status")
     override val status: Property.Status = Property.Status.AVAILABLE
@@ -68,7 +69,7 @@ data class PropertyAvailability(
         private var propertyId: kotlin.String? = null,
         private var score: java.math.BigDecimal? = null,
         private var rooms: kotlin.collections.List<RoomAvailability>? = null,
-        private var links: PropertyAvailabilityLinks? = null,
+        private var links: PropertyAvailabilityLinks? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -83,7 +84,7 @@ data class PropertyAvailability(
                 propertyId = propertyId,
                 score = score,
                 rooms = rooms,
-                links = links,
+                links = links
             )
         }
     }

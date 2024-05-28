@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,27 +22,27 @@ internal object LoggingMessageProvider {
 
     fun getResponseUnsuccessfulMessage(
         httpStatusCode: HttpStatusCode,
-        transactionId: String?,
+        transactionId: String?
     ) = "Unsuccessful response [$httpStatusCode]${getTransactionIdMessage(transactionId)}"
 
     fun getChosenProviderMessage(
         property: String,
-        providerName: String,
+        providerName: String
     ) = "Successfully loaded [$property] from [$providerName]"
 
     fun <T> getRuntimeConfigurationProviderMessage(
         property: String,
-        value: T,
+        value: T
     ) = "Setting [$property] to [$value] from runtime configuration provider"
 
     fun getResponseBodyMessage(
         body: String,
-        transactionId: String?,
+        transactionId: String?
     ) = "Response Body${getTransactionIdMessage(transactionId)}: $body"
 
     fun getRequestBodyMessage(
         body: String,
-        transactionId: String?,
+        transactionId: String?
     ) = "Request Body${getTransactionIdMessage(transactionId)}: $body"
 
     fun getTransactionIdMessage(transactionId: String?) = if (transactionId != null) " for transaction-id [$transactionId]" else ""

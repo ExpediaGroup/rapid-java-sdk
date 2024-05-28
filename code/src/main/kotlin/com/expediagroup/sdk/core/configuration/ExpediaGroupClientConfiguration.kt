@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ data class ExpediaGroupClientConfiguration(
     override val socketTimeout: Long? = null,
     override val maskedLoggingHeaders: Set<String>? = null,
     override val maskedLoggingBodyFields: Set<String>? = null,
-    val authEndpoint: String? = null,
+    val authEndpoint: String? = null
 ) : ClientConfiguration {
     /** Build a [RuntimeConfigurationProvider] from an [ExpediaGroupClientConfiguration]. */
     override fun toProvider(): RuntimeConfigurationProvider = super.toProvider().copy(authEndpoint = authEndpoint)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -53,7 +54,7 @@ data class ItineraryCreationLinks(
     val completePaymentSession: Link? = null,
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: Link? = null,
+    val cancel: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -64,7 +65,7 @@ data class ItineraryCreationLinks(
         private var retrieve: Link? = null,
         private var resume: Link? = null,
         private var completePaymentSession: Link? = null,
-        private var cancel: Link? = null,
+        private var cancel: Link? = null
     ) {
         fun retrieve(retrieve: Link?) = apply { this.retrieve = retrieve }
 
@@ -79,7 +80,7 @@ data class ItineraryCreationLinks(
                 retrieve = retrieve,
                 resume = resume,
                 completePaymentSession = completePaymentSession,
-                cancel = cancel,
+                cancel = cancel
             )
         }
     }

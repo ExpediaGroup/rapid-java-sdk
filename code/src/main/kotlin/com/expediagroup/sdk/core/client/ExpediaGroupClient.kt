@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,15 +32,14 @@ import io.ktor.client.engine.HttpClientEngine
 abstract class ExpediaGroupClient(
     namespace: String,
     clientConfiguration: ExpediaGroupClientConfiguration,
-    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE,
+    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE
 ) : Client(namespace) {
     private val _configurationProvider: ConfigurationProvider =
         ConfigurationCollector.create(
             clientConfiguration.toProvider(),
-            ExpediaGroupConfigurationProvider,
+            ExpediaGroupConfigurationProvider
         )
-    private val _httpClient: HttpClient =
-        buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BEARER, httpClientEngine)
+    private val _httpClient: HttpClient = buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BEARER, httpClientEngine)
 
     init {
         finalize()

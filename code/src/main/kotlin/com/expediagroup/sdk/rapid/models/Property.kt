@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "status", visible = true)
 @JsonSubTypes(
     Type(value = PropertyAvailability::class, name = "available"),
-    Type(value = PropertyUnavailability::class, name = "partially_unavailable"),
+    Type(value = PropertyUnavailability::class, name = "partially_unavailable")
 )
 interface Property {
     // Expedia property ID.
@@ -68,6 +69,6 @@ interface Property {
         AVAILABLE("available"),
 
         @JsonProperty("partially_unavailable")
-        PARTIALLY_UNAVAILABLE("partially_unavailable"),
+        PARTIALLY_UNAVAILABLE("partially_unavailable")
     }
 }

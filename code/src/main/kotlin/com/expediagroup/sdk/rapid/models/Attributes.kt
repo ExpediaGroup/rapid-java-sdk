@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class Attributes(
     // Lists all of the pet attributes about the property.
     @JsonProperty("pets")
     @field:Valid
-    val pets: kotlin.collections.Map<kotlin.String, Attribute>? = null,
+    val pets: kotlin.collections.Map<kotlin.String, Attribute>? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class Attributes(
 
     class Builder(
         private var general: kotlin.collections.Map<kotlin.String, Attribute>? = null,
-        private var pets: kotlin.collections.Map<kotlin.String, Attribute>? = null,
+        private var pets: kotlin.collections.Map<kotlin.String, Attribute>? = null
     ) {
         fun general(general: kotlin.collections.Map<kotlin.String, Attribute>?) = apply { this.general = general }
 
@@ -65,7 +66,7 @@ data class Attributes(
         fun build(): Attributes {
             return Attributes(
                 general = general,
-                pets = pets,
+                pets = pets
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class BusinessModel(
     // Whether or not a payment for this property can be taken by the property upon arrival.
     @JsonProperty("property_collect")
     @field:Valid
-    val propertyCollect: kotlin.Boolean? = null,
+    val propertyCollect: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class BusinessModel(
 
     class Builder(
         private var expediaCollect: kotlin.Boolean? = null,
-        private var propertyCollect: kotlin.Boolean? = null,
+        private var propertyCollect: kotlin.Boolean? = null
     ) {
         fun expediaCollect(expediaCollect: kotlin.Boolean?) = apply { this.expediaCollect = expediaCollect }
 
@@ -65,7 +66,7 @@ data class BusinessModel(
         fun build(): BusinessModel {
             return BusinessModel(
                 expediaCollect = expediaCollect,
-                propertyCollect = propertyCollect,
+                propertyCollect = propertyCollect
             )
         }
     }

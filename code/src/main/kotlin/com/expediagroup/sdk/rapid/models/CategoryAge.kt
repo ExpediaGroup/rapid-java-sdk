@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class CategoryAge(
     // Age category minimum age.
     @JsonProperty("minimum_age")
     @field:Valid
-    val minimumAge: java.math.BigDecimal? = null,
+    val minimumAge: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class CategoryAge(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var minimumAge: java.math.BigDecimal? = null,
+        private var minimumAge: java.math.BigDecimal? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -65,7 +66,7 @@ data class CategoryAge(
         fun build(): CategoryAge {
             return CategoryAge(
                 name = name,
-                minimumAge = minimumAge,
+                minimumAge = minimumAge
             )
         }
     }

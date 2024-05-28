@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,8 +43,7 @@ data class MultiPolygon(
     // An array of multiple polygon(s) that combine to make a full [MultiPolygon](https://www.rfc-editor.org/rfc/rfc7946#section-3.1.7) in geojson format.
     @JsonProperty("coordinates")
     @field:Valid
-    val coordinates:
-        kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null,
+    val coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null
 ) : BoundingPolygon {
     @JsonProperty("type")
     override val type: kotlin.String = "MULTIPOLYGON"
@@ -54,17 +54,14 @@ data class MultiPolygon(
     }
 
     class Builder(
-        private var coordinates:
-            kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null,
+        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null
     ) {
-        fun coordinates(
-            coordinates:
-                kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>?,
-        ) = apply { this.coordinates = coordinates }
+        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>?) =
+            apply { this.coordinates = coordinates }
 
         fun build(): MultiPolygon {
             return MultiPolygon(
-                coordinates = coordinates,
+                coordinates = coordinates
             )
         }
     }

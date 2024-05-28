@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -55,7 +56,7 @@ data class BillingContactRequestWithPhone(
     val address: BillingContactRequestAddress,
     @JsonProperty("phone")
     @field:Valid
-    val phone: PhoneRequest? = null,
+    val phone: PhoneRequest? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +67,7 @@ data class BillingContactRequestWithPhone(
         private var givenName: kotlin.String? = null,
         private var familyName: kotlin.String? = null,
         private var address: BillingContactRequestAddress? = null,
-        private var phone: PhoneRequest? = null,
+        private var phone: PhoneRequest? = null
     ) {
         fun givenName(givenName: kotlin.String) = apply { this.givenName = givenName }
 
@@ -83,7 +84,7 @@ data class BillingContactRequestWithPhone(
                 givenName = givenName!!,
                 familyName = familyName!!,
                 address = address!!,
-                phone = phone,
+                phone = phone
             )
         }
 

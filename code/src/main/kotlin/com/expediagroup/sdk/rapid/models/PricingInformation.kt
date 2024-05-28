@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -55,7 +56,7 @@ data class PricingInformation(
     val totals: Totals? = null,
     @JsonProperty("fees")
     @field:Valid
-    val fees: FeesPricingInformation? = null,
+    val fees: FeesPricingInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +67,7 @@ data class PricingInformation(
         private var nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>? = null,
         private var stay: kotlin.collections.List<Stay>? = null,
         private var totals: Totals? = null,
-        private var fees: FeesPricingInformation? = null,
+        private var fees: FeesPricingInformation? = null
     ) {
         fun nightly(nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>?) = apply { this.nightly = nightly }
 
@@ -81,7 +82,7 @@ data class PricingInformation(
                 nightly = nightly,
                 stay = stay,
                 totals = totals,
-                fees = fees,
+                fees = fees
             )
         }
     }

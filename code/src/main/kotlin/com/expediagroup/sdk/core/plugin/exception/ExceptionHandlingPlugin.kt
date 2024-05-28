@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import io.ktor.client.plugins.HttpResponseValidator
 internal object ExceptionHandlingPlugin : Plugin<ExceptionHandlingConfiguration> {
     override fun install(
         client: Client,
-        configurations: ExceptionHandlingConfiguration,
+        configurations: ExceptionHandlingConfiguration
     ) {
         with(configurations.httpClientConfiguration) {
             HttpResponseValidator {

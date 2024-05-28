@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -46,7 +47,7 @@ data class Occupancy(
     // Map of the age categories used to determine the maximum children and adult occupancy.
     @JsonProperty("age_categories")
     @field:Valid
-    val ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null,
+    val ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,7 +56,7 @@ data class Occupancy(
 
     class Builder(
         private var maxAllowed: MaxAllowed? = null,
-        private var ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null,
+        private var ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null
     ) {
         fun maxAllowed(maxAllowed: MaxAllowed?) = apply { this.maxAllowed = maxAllowed }
 
@@ -64,7 +65,7 @@ data class Occupancy(
         fun build(): Occupancy {
             return Occupancy(
                 maxAllowed = maxAllowed,
-                ageCategories = ageCategories,
+                ageCategories = ageCategories
             )
         }
     }

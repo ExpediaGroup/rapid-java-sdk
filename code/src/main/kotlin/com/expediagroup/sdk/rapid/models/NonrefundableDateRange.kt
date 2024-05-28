@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class NonrefundableDateRange(
     // End date of nonrefundable date range in ISO 8601 format.
     @JsonProperty("end")
     @field:Valid
-    val end: kotlin.String? = null,
+    val end: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class NonrefundableDateRange(
 
     class Builder(
         private var start: kotlin.String? = null,
-        private var end: kotlin.String? = null,
+        private var end: kotlin.String? = null
     ) {
         fun start(start: kotlin.String?) = apply { this.start = start }
 
@@ -65,7 +66,7 @@ data class NonrefundableDateRange(
         fun build(): NonrefundableDateRange {
             return NonrefundableDateRange(
                 start = start,
-                end = end,
+                end = end
             )
         }
     }
