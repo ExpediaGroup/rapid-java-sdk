@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class PropertyRating(
     // Returns a value of either \"Star\" or \"Alternate\". Star indicates the rating is provided by the property’s local star rating authority. Alternate indicates that the rating is an Expedia-assigned value; an official rating was not available.
     @JsonProperty("type")
     @field:Valid
-    val type: kotlin.String? = null,
+    val type: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class PropertyRating(
 
     class Builder(
         private var rating: kotlin.String? = null,
-        private var type: kotlin.String? = null,
+        private var type: kotlin.String? = null
     ) {
         fun rating(rating: kotlin.String?) = apply { this.rating = rating }
 
@@ -65,7 +66,7 @@ data class PropertyRating(
         fun build(): PropertyRating {
             return PropertyRating(
                 rating = rating,
-                type = type,
+                type = type
             )
         }
     }

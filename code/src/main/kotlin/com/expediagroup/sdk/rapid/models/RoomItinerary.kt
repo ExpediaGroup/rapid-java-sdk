@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -48,7 +49,8 @@ import javax.validation.Valid
  * @param status
  * @param specialRequest Any special request info associated with the room.
  * @param smoking Indicates if the room is smoking or non-smoking.
- * @param loyaltyId A loyalty identifier for a hotel loyalty program associated with this room guest.
+ * @param loyaltyId Deprecated. Please use the loyalty id inside the loyalty object.
+ * @param loyalty
  * @param rate
  * @param links
  */
@@ -99,16 +101,19 @@ data class RoomItinerary(
     @JsonProperty("smoking")
     @field:Valid
     val smoking: kotlin.Boolean? = null,
-    // A loyalty identifier for a hotel loyalty program associated with this room guest.
+    // Deprecated. Please use the loyalty id inside the loyalty object.
     @JsonProperty("loyalty_id")
     @field:Valid
     val loyaltyId: kotlin.String? = null,
+    @JsonProperty("loyalty")
+    @field:Valid
+    val loyalty: Loyalty? = null,
     @JsonProperty("rate")
     @field:Valid
     val rate: RateItinerary? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: RoomItineraryLinks? = null,
+    val links: RoomItineraryLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -129,8 +134,9 @@ data class RoomItinerary(
         private var specialRequest: kotlin.String? = null,
         private var smoking: kotlin.Boolean? = null,
         private var loyaltyId: kotlin.String? = null,
+        private var loyalty: Loyalty? = null,
         private var rate: RateItinerary? = null,
-        private var links: RoomItineraryLinks? = null,
+        private var links: RoomItineraryLinks? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -158,6 +164,8 @@ data class RoomItinerary(
 
         fun loyaltyId(loyaltyId: kotlin.String?) = apply { this.loyaltyId = loyaltyId }
 
+        fun loyalty(loyalty: Loyalty?) = apply { this.loyalty = loyalty }
+
         fun rate(rate: RateItinerary?) = apply { this.rate = rate }
 
         fun links(links: RoomItineraryLinks?) = apply { this.links = links }
@@ -177,8 +185,9 @@ data class RoomItinerary(
                 specialRequest = specialRequest,
                 smoking = smoking,
                 loyaltyId = loyaltyId,
+                loyalty = loyalty,
                 rate = rate,
-                links = links,
+                links = links
             )
         }
     }

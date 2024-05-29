@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -57,7 +58,7 @@ data class Image(
     // Contains urls for all of the image sizes available. Sizes may include: 70 px, 200px, 350 px, and 1,000 px
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, Link>? = null,
+    val links: kotlin.collections.Map<kotlin.String, Link>? = null
 ) {
     companion object {
         @JvmStatic
@@ -68,7 +69,7 @@ data class Image(
         private var heroImage: kotlin.Boolean? = null,
         private var category: java.math.BigDecimal? = null,
         private var caption: kotlin.String? = null,
-        private var links: kotlin.collections.Map<kotlin.String, Link>? = null,
+        private var links: kotlin.collections.Map<kotlin.String, Link>? = null
     ) {
         fun heroImage(heroImage: kotlin.Boolean?) = apply { this.heroImage = heroImage }
 
@@ -83,7 +84,7 @@ data class Image(
                 heroImage = heroImage,
                 category = category,
                 caption = caption,
-                links = links,
+                links = links
             )
         }
     }

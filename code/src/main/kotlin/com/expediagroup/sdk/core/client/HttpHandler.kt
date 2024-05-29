@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,16 @@ import io.ktor.http.HttpMethod
 internal interface HttpHandler {
     suspend fun performGet(
         httpClient: HttpClient,
-        link: String,
+        link: String
     ): HttpResponse
 }
 
 internal class DefaultHttpHandler(
-    private val environmentProvider: EnvironmentProvider,
+    private val environmentProvider: EnvironmentProvider
 ) : HttpHandler, EnvironmentProvider by environmentProvider {
     override suspend fun performGet(
         httpClient: HttpClient,
-        link: String,
+        link: String
     ): HttpResponse {
         return httpClient.request {
             method = HttpMethod.Get

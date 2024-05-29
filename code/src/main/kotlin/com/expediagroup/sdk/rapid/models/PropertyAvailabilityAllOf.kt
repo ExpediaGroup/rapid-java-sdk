@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -46,7 +47,7 @@ data class PropertyAvailabilityAllOf(
     val rooms: kotlin.collections.List<RoomAvailability>? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyAvailabilityLinks? = null,
+    val links: PropertyAvailabilityLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,7 +56,7 @@ data class PropertyAvailabilityAllOf(
 
     class Builder(
         private var rooms: kotlin.collections.List<RoomAvailability>? = null,
-        private var links: PropertyAvailabilityLinks? = null,
+        private var links: PropertyAvailabilityLinks? = null
     ) {
         fun rooms(rooms: kotlin.collections.List<RoomAvailability>?) = apply { this.rooms = rooms }
 
@@ -64,7 +65,7 @@ data class PropertyAvailabilityAllOf(
         fun build(): PropertyAvailabilityAllOf {
             return PropertyAvailabilityAllOf(
                 rooms = rooms,
-                links = links,
+                links = links
             )
         }
     }

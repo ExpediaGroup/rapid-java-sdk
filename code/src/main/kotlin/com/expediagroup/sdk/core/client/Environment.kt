@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,16 +17,16 @@ package com.expediagroup.sdk.core.client
 
 import com.expediagroup.sdk.core.constant.HeaderKey
 import com.expediagroup.sdk.core.model.Properties
+import com.expediagroup.sdk.core.model.TransactionId
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpHeaders
-import java.util.UUID
 
 interface EnvironmentProvider {
-    fun HttpRequestBuilder.appendHeaders()
+    fun HttpRequestBuilder.appendHeaders(transactionId: TransactionId = TransactionId())
 }
 
 class DefaultEnvironmentProvider(
-    namespace: String,
+    namespace: String
 ) : EnvironmentProvider {
     private val properties = Properties.from(javaClass.classLoader.getResource("sdk.properties")!!)
     private val javaVersion = System.getProperty("java.version")
@@ -35,11 +35,11 @@ class DefaultEnvironmentProvider(
     private val userAgent = "expediagroup-sdk-java-$namespace/${properties["sdk-version"]!!} (Java $javaVersion; $operatingSystemName $operatingSystemVersion)"
 
     @Suppress("MemberVisibilityCanBePrivate")
-    override fun HttpRequestBuilder.appendHeaders() {
+    override fun HttpRequestBuilder.appendHeaders(transactionId: TransactionId) {
         with(headers) {
             append(HttpHeaders.UserAgent, userAgent)
             append(HeaderKey.X_SDK_TITLE, properties["sdk-title"]!!)
-            append(HeaderKey.TRANSACTION_ID, UUID.randomUUID().toString())
+            append(HeaderKey.TRANSACTION_ID, transactionId.dequeue().toString())
         }
     }
 }

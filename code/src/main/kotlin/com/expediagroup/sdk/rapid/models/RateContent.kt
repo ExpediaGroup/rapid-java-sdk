@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class RateContent(
     // A text description of any special offers for this rate.
     @JsonProperty("special_offer_description")
     @field:Valid
-    val specialOfferDescription: kotlin.String? = null,
+    val specialOfferDescription: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,20 +63,19 @@ data class RateContent(
     class Builder(
         private var id: kotlin.String? = null,
         private var amenities: kotlin.collections.Map<kotlin.String, Amenity>? = null,
-        private var specialOfferDescription: kotlin.String? = null,
+        private var specialOfferDescription: kotlin.String? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
         fun amenities(amenities: kotlin.collections.Map<kotlin.String, Amenity>?) = apply { this.amenities = amenities }
 
-        fun specialOfferDescription(specialOfferDescription: kotlin.String?) =
-            apply { this.specialOfferDescription = specialOfferDescription }
+        fun specialOfferDescription(specialOfferDescription: kotlin.String?) = apply { this.specialOfferDescription = specialOfferDescription }
 
         fun build(): RateContent {
             return RateContent(
                 id = id,
                 amenities = amenities,
-                specialOfferDescription = specialOfferDescription,
+                specialOfferDescription = specialOfferDescription
             )
         }
     }

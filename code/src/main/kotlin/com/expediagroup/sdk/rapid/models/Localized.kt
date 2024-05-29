@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class Localized(
     // Keyed by the language, a map of links to the property’s localized address(es) based on the primary language(s) spoken in the property’s country. Only languages supported by the Rapid API are provided.
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, Link>? = null,
+    val links: kotlin.collections.Map<kotlin.String, Link>? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class Localized(
     }
 
     class Builder(
-        private var links: kotlin.collections.Map<kotlin.String, Link>? = null,
+        private var links: kotlin.collections.Map<kotlin.String, Link>? = null
     ) {
         fun links(links: kotlin.collections.Map<kotlin.String, Link>?) = apply { this.links = links }
 
         fun build(): Localized {
             return Localized(
-                links = links,
+                links = links
             )
         }
     }

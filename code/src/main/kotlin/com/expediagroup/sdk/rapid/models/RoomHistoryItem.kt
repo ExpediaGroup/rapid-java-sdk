@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -144,7 +145,7 @@ data class RoomHistoryItem(
     val penalty: Charge? = null,
     @JsonProperty("rate")
     @field:Valid
-    val rate: RateHistory? = null,
+    val rate: RateHistory? = null
 ) {
     companion object {
         @JvmStatic
@@ -174,7 +175,7 @@ data class RoomHistoryItem(
         private var amountCharged: Charge? = null,
         private var amountRefunded: Charge? = null,
         private var penalty: Charge? = null,
-        private var rate: RateHistory? = null,
+        private var rate: RateHistory? = null
     ) {
         fun historyId(historyId: kotlin.String?) = apply { this.historyId = historyId }
 
@@ -246,7 +247,7 @@ data class RoomHistoryItem(
                 amountCharged = amountCharged,
                 amountRefunded = amountRefunded,
                 penalty = penalty,
-                rate = rate,
+                rate = rate
             )
         }
     }
@@ -263,7 +264,7 @@ data class RoomHistoryItem(
         MODIFIED("modified"),
 
         @JsonProperty("canceled")
-        CANCELED("canceled"),
+        CANCELED("canceled")
     }
 
     /**
@@ -278,6 +279,6 @@ data class RoomHistoryItem(
         VOYAGER_AGENT("voyager_agent"),
 
         @JsonProperty("other")
-        OTHER("other"),
+        OTHER("other")
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -44,7 +45,7 @@ data class StayConstraints(
     val minStay: kotlin.Int? = null,
     // The maximum number of days for a stay.
     @JsonProperty("max_stay")
-    val maxStay: kotlin.Int? = null,
+    val maxStay: kotlin.Int? = null
 ) {
     companion object {
         @JvmStatic
@@ -53,7 +54,7 @@ data class StayConstraints(
 
     class Builder(
         private var minStay: kotlin.Int? = null,
-        private var maxStay: kotlin.Int? = null,
+        private var maxStay: kotlin.Int? = null
     ) {
         fun minStay(minStay: kotlin.Int?) = apply { this.minStay = minStay }
 
@@ -62,7 +63,7 @@ data class StayConstraints(
         fun build(): StayConstraints {
             return StayConstraints(
                 minStay = minStay,
-                maxStay = maxStay,
+                maxStay = maxStay
             )
         }
     }

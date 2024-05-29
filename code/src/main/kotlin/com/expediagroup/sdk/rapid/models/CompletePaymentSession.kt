@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -50,7 +51,7 @@ data class CompletePaymentSession(
     val links: CompletePaymentSessionLinks? = null,
     @JsonProperty("trader_information")
     @field:Valid
-    val traderInformation: TraderInformation? = null,
+    val traderInformation: TraderInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +61,7 @@ data class CompletePaymentSession(
     class Builder(
         private var itineraryId: kotlin.String? = null,
         private var links: CompletePaymentSessionLinks? = null,
-        private var traderInformation: TraderInformation? = null,
+        private var traderInformation: TraderInformation? = null
     ) {
         fun itineraryId(itineraryId: kotlin.String?) = apply { this.itineraryId = itineraryId }
 
@@ -72,7 +73,7 @@ data class CompletePaymentSession(
             return CompletePaymentSession(
                 itineraryId = itineraryId,
                 links = links,
-                traderInformation = traderInformation,
+                traderInformation = traderInformation
             )
         }
     }

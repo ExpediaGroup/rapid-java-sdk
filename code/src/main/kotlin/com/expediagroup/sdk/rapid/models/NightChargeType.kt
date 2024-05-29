@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -44,5 +45,5 @@ enum class NightChargeType(val value: kotlin.String) {
     RECOVERY_CHARGES_AND_FEES("recovery_charges_and_fees"),
 
     @JsonProperty("traveler_service_fee")
-    TRAVELER_SERVICE_FEE("traveler_service_fee"),
+    TRAVELER_SERVICE_FEE("traveler_service_fee")
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,5 @@
 package com.expediagroup.sdk.core.constant.provider
 
 internal object LogMaskingRegexProvider {
-    fun getMaskedFieldsRegex(maskedBodyFields: Set<String>) =
-        "(?<=[\"']?(${maskedBodyFields.joinToString("|")})[\"']?:\\s?[\"'])(\\s*[^\"']+\\s*)(?=[\"'])".toRegex()
+    fun getMaskedFieldsRegex(maskedBodyFields: Set<String>) = "(?<=[\"']?(${maskedBodyFields.joinToString("|")})[\"']?:\\s?[\"'])(\\s*[^\"']+\\s*)(?=[\"'])".toRegex()
 }

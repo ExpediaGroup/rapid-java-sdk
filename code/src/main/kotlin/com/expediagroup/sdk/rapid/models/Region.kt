@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -121,7 +122,7 @@ data class Region(
     // A list of regional tags.
     @JsonProperty("tags")
     @field:Valid
-    val tags: kotlin.collections.List<kotlin.String>? = null,
+    val tags: kotlin.collections.List<kotlin.String>? = null
 ) {
     companion object {
         @JvmStatic
@@ -145,7 +146,7 @@ data class Region(
         private var propertyIds: kotlin.collections.List<kotlin.String>? = null,
         private var propertyIdsExpanded: kotlin.collections.List<kotlin.String>? = null,
         private var categories: kotlin.collections.List<kotlin.String>? = null,
-        private var tags: kotlin.collections.List<kotlin.String>? = null,
+        private var tags: kotlin.collections.List<kotlin.String>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -167,24 +168,15 @@ data class Region(
 
         fun coordinates(coordinates: CoordinatesRegion?) = apply { this.coordinates = coordinates }
 
-        fun associations(associations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) =
-            apply {
-                this.associations = associations
-            }
+        fun associations(associations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) = apply { this.associations = associations }
 
         fun ancestors(ancestors: kotlin.collections.List<Ancestors>?) = apply { this.ancestors = ancestors }
 
-        fun descendants(descendants: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) =
-            apply {
-                this.descendants = descendants
-            }
+        fun descendants(descendants: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) = apply { this.descendants = descendants }
 
         fun propertyIds(propertyIds: kotlin.collections.List<kotlin.String>?) = apply { this.propertyIds = propertyIds }
 
-        fun propertyIdsExpanded(propertyIdsExpanded: kotlin.collections.List<kotlin.String>?) =
-            apply {
-                this.propertyIdsExpanded = propertyIdsExpanded
-            }
+        fun propertyIdsExpanded(propertyIdsExpanded: kotlin.collections.List<kotlin.String>?) = apply { this.propertyIdsExpanded = propertyIdsExpanded }
 
         fun categories(categories: kotlin.collections.List<kotlin.String>?) = apply { this.categories = categories }
 
@@ -208,7 +200,7 @@ data class Region(
                 propertyIds = propertyIds,
                 propertyIdsExpanded = propertyIdsExpanded,
                 categories = categories,
-                tags = tags,
+                tags = tags
             )
         }
     }

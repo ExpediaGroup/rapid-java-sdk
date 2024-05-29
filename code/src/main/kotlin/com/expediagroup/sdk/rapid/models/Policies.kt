@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class Policies(
     // Description of information that may be helpful when planning a trip to this property.
     @JsonProperty("know_before_you_go")
     @field:Valid
-    val knowBeforeYouGo: kotlin.String? = null,
+    val knowBeforeYouGo: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class Policies(
     }
 
     class Builder(
-        private var knowBeforeYouGo: kotlin.String? = null,
+        private var knowBeforeYouGo: kotlin.String? = null
     ) {
         fun knowBeforeYouGo(knowBeforeYouGo: kotlin.String?) = apply { this.knowBeforeYouGo = knowBeforeYouGo }
 
         fun build(): Policies {
             return Policies(
-                knowBeforeYouGo = knowBeforeYouGo,
+                knowBeforeYouGo = knowBeforeYouGo
             )
         }
     }

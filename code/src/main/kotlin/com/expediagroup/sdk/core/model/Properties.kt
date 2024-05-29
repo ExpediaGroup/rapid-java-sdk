@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ class Properties(private val data: Map<String, String>) {
             Properties(
                 java.util.Properties().apply {
                     load(BufferedReader(InputStreamReader(path.openStream())))
-                }.map { it.key.toString() to it.value.toString() }.toMap(),
+                }.map { it.key.toString() to it.value.toString() }.toMap()
             )
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -72,7 +73,7 @@ data class BillingContactRequestAddress(
     // Customer's postal code. Mandatory for CA, GB, and US. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded. Only ISO-8859-1 compliant characters are allowed.
     @JsonProperty("postal_code")
     @field:Valid
-    val postalCode: kotlin.String? = null,
+    val postalCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -86,7 +87,7 @@ data class BillingContactRequestAddress(
         private var line3: kotlin.String? = null,
         private var city: kotlin.String? = null,
         private var stateProvinceCode: kotlin.String? = null,
-        private var postalCode: kotlin.String? = null,
+        private var postalCode: kotlin.String? = null
     ) {
         fun countryCode(countryCode: kotlin.String) = apply { this.countryCode = countryCode }
 
@@ -112,7 +113,7 @@ data class BillingContactRequestAddress(
                 line3 = line3,
                 city = city,
                 stateProvinceCode = stateProvinceCode,
-                postalCode = postalCode,
+                postalCode = postalCode
             )
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -57,7 +58,7 @@ data class Amenity(
     // This is an optional field and will be present only if the amenity falls into one or more of these amenity categories.<br> See the Amenity Categories section of the [Content Reference Lists](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for a list of values.
     @JsonProperty("categories")
     @field:Valid
-    val categories: kotlin.collections.List<kotlin.String>? = null,
+    val categories: kotlin.collections.List<kotlin.String>? = null
 ) {
     companion object {
         @JvmStatic
@@ -68,7 +69,7 @@ data class Amenity(
         private var id: kotlin.String? = null,
         private var name: kotlin.String? = null,
         private var `value`: kotlin.String? = null,
-        private var categories: kotlin.collections.List<kotlin.String>? = null,
+        private var categories: kotlin.collections.List<kotlin.String>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -83,7 +84,7 @@ data class Amenity(
                 id = id,
                 name = name,
                 `value` = `value`,
-                categories = categories,
+                categories = categories
             )
         }
     }

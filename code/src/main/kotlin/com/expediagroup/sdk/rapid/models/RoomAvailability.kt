@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class RoomAvailability(
     // Array of objects containing rate information.
     @JsonProperty("rates")
     @field:Valid
-    val rates: kotlin.collections.List<Rate>? = null,
+    val rates: kotlin.collections.List<Rate>? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class RoomAvailability(
     class Builder(
         private var id: kotlin.String? = null,
         private var roomName: kotlin.String? = null,
-        private var rates: kotlin.collections.List<Rate>? = null,
+        private var rates: kotlin.collections.List<Rate>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -74,7 +75,7 @@ data class RoomAvailability(
             return RoomAvailability(
                 id = id,
                 roomName = roomName,
-                rates = rates,
+                rates = rates
             )
         }
     }

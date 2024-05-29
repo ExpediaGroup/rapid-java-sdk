@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class MarketingFeeIncentive(
     // The last stay date with the incentive applied in ISO 8601 format.
     @JsonProperty("end")
     @field:Valid
-    val end: kotlin.String? = null,
+    val end: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class MarketingFeeIncentive(
     class Builder(
         private var source: kotlin.String? = null,
         private var start: kotlin.String? = null,
-        private var end: kotlin.String? = null,
+        private var end: kotlin.String? = null
     ) {
         fun source(source: kotlin.String?) = apply { this.source = source }
 
@@ -74,7 +75,7 @@ data class MarketingFeeIncentive(
             return MarketingFeeIncentive(
                 source = source,
                 start = start,
-                end = end,
+                end = end
             )
         }
     }

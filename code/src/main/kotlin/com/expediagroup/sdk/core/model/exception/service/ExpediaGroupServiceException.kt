@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,5 +26,5 @@ import com.expediagroup.sdk.core.model.exception.ExpediaGroupException
 open class ExpediaGroupServiceException(
     message: String? = null,
     cause: Throwable? = null,
-    val transactionId: String? = null,
+    val transactionId: String? = null
 ) : ExpediaGroupException(message, cause)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class BedGroup(
     // An array of bed configurations for this room.
     @JsonProperty("configuration")
     @field:Valid
-    val configuration: kotlin.collections.List<BedGroupConfiguration>? = null,
+    val configuration: kotlin.collections.List<BedGroupConfiguration>? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class BedGroup(
     class Builder(
         private var id: kotlin.String? = null,
         private var description: kotlin.String? = null,
-        private var configuration: kotlin.collections.List<BedGroupConfiguration>? = null,
+        private var configuration: kotlin.collections.List<BedGroupConfiguration>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -74,7 +75,7 @@ data class BedGroup(
             return BedGroup(
                 id = id,
                 description = description,
-                configuration = configuration,
+                configuration = configuration
             )
         }
     }

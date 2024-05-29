@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -49,7 +50,7 @@ data class FeesPricingInformation(
     val resortFee: ChargeCalculated? = null,
     @JsonProperty("mandatory_tax")
     @field:Valid
-    val mandatoryTax: ChargeCalculated? = null,
+    val mandatoryTax: ChargeCalculated? = null
 ) {
     companion object {
         @JvmStatic
@@ -59,7 +60,7 @@ data class FeesPricingInformation(
     class Builder(
         private var mandatoryFee: ChargeCalculated? = null,
         private var resortFee: ChargeCalculated? = null,
-        private var mandatoryTax: ChargeCalculated? = null,
+        private var mandatoryTax: ChargeCalculated? = null
     ) {
         fun mandatoryFee(mandatoryFee: ChargeCalculated?) = apply { this.mandatoryFee = mandatoryFee }
 
@@ -71,7 +72,7 @@ data class FeesPricingInformation(
             return FeesPricingInformation(
                 mandatoryFee = mandatoryFee,
                 resortFee = resortFee,
-                mandatoryTax = mandatoryTax,
+                mandatoryTax = mandatoryTax
             )
         }
     }

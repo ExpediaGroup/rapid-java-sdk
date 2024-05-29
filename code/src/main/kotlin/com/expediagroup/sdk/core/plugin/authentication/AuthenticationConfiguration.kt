@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,14 @@ internal data class AuthenticationConfiguration(
     override val httpClientConfiguration: HttpClientConfig<out HttpClientEngineConfig>,
     val credentials: Credentials,
     val authUrl: String,
-    val authType: AuthenticationType,
+    val authType: AuthenticationType
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {
         fun from(
             httpClientConfig: HttpClientConfig<out HttpClientEngineConfig>,
             credentials: Credentials,
             authUrl: String,
-            authType: AuthenticationType = AuthenticationType.BEARER,
+            authType: AuthenticationType = AuthenticationType.BEARER
         ) = AuthenticationConfiguration(httpClientConfig, credentials, authUrl, authType)
     }
 }
