@@ -19,6 +19,11 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
+/**
+ * Get Accepted Payment Types - EPS MOR Only
+ * @property params [GetPaymentOptionsOperationParams]
+
+ */
 class GetPaymentOptionsOperation(
     params: GetPaymentOptionsOperationParams
 ) : Operation<

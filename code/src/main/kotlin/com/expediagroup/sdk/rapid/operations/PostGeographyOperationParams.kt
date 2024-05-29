@@ -18,6 +18,16 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
 
+/**
+ * @property include Options for which content to return in the response. The value must be lower case.   * property_ids - Include the property IDs.
+ * @property propertiesGeoJsonRequest
+ * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
+ * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
+ * @property partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+ * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
+ * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+ * @property supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
+ */
 data class PostGeographyOperationParams(
     val customerSessionId: kotlin.String? = null,
     val include: kotlin.String,
@@ -41,18 +51,39 @@ data class PostGeographyOperationParams(
         private var platformName: kotlin.String? = null,
         private var supplySource: kotlin.String? = null
     ) {
+        /**
+         * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
+         */
         fun customerSessionId(customerSessionId: kotlin.String) = apply { this.customerSessionId = customerSessionId }
 
+        /**
+         * @param include Options for which content to return in the response. The value must be lower case.   * property_ids - Include the property IDs.
+         */
         fun include(include: kotlin.String) = apply { this.include = include }
 
+        /**
+         * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
+         */
         fun billingTerms(billingTerms: kotlin.String) = apply { this.billingTerms = billingTerms }
 
+        /**
+         * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+         */
         fun partnerPointOfSale(partnerPointOfSale: kotlin.String) = apply { this.partnerPointOfSale = partnerPointOfSale }
 
+        /**
+         * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
+         */
         fun paymentTerms(paymentTerms: kotlin.String) = apply { this.paymentTerms = paymentTerms }
 
+        /**
+         * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+         */
         fun platformName(platformName: kotlin.String) = apply { this.platformName = platformName }
 
+        /**
+         * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
+         */
         fun supplySource(supplySource: kotlin.String) = apply { this.supplySource = supplySource }
 
         fun build(): PostGeographyOperationParams {

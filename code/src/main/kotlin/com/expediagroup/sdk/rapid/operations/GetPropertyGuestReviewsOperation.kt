@@ -19,6 +19,11 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
+/**
+ * Property Guest Reviews
+ * @property params [GetPropertyGuestReviewsOperationParams]
+
+ */
 class GetPropertyGuestReviewsOperation(
     params: GetPropertyGuestReviewsOperationParams
 ) : Operation<

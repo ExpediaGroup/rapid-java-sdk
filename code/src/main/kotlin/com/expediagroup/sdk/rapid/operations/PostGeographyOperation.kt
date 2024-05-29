@@ -19,6 +19,13 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.PropertiesGeoJsonRequest
 
+/**
+ * Properties within Polygon
+ * @property requestBody [PropertiesGeoJsonRequest]
+
+ * @property params [PostGeographyOperationParams]
+
+ */
 class PostGeographyOperation(
     requestBody: PropertiesGeoJsonRequest?,
     params: PostGeographyOperationParams

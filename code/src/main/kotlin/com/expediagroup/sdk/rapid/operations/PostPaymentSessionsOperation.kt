@@ -19,6 +19,13 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest
 
+/**
+ * Register Payments
+ * @property requestBody [PaymentSessionsRequest]
+
+ * @property params [PostPaymentSessionsOperationParams]
+
+ */
 class PostPaymentSessionsOperation(
     requestBody: PaymentSessionsRequest?,
     params: PostPaymentSessionsOperationParams

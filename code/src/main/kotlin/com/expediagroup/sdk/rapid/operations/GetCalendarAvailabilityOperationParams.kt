@@ -18,6 +18,12 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
 
+/**
+ * @property propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
+ * @property startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
+ * @property endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
+ * @property test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
+ */
 data class GetCalendarAvailabilityOperationParams(
     val test: kotlin.String? = null,
     val propertyId: kotlin.collections.List<kotlin.String>,
@@ -35,12 +41,24 @@ data class GetCalendarAvailabilityOperationParams(
         private var startDate: java.time.LocalDate? = null,
         private var endDate: java.time.LocalDate? = null
     ) {
+        /**
+         * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
+         */
         fun test(test: kotlin.String) = apply { this.test = test }
 
+        /**
+         * @param propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
+         */
         fun propertyId(propertyId: kotlin.collections.List<kotlin.String>) = apply { this.propertyId = propertyId }
 
+        /**
+         * @param startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
+         */
         fun startDate(startDate: java.time.LocalDate) = apply { this.startDate = startDate }
 
+        /**
+         * @param endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
+         */
         fun endDate(endDate: java.time.LocalDate) = apply { this.endDate = endDate }
 
         fun build(): GetCalendarAvailabilityOperationParams {
