@@ -19,6 +19,11 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
+/**
+ * Get additional property room rates and availability
+ * @property params [GetAdditionalAvailabilityOperationParams]
+
+ */
 class GetAdditionalAvailabilityOperation(
     params: GetAdditionalAvailabilityOperationParams
 ) : Operation<

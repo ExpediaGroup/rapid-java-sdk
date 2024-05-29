@@ -19,6 +19,12 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
+/**
+ * Property Content File
+
+ * @property params [GetPropertyContentFileOperationParams]
+
+ */
 class GetPropertyContentFileOperation(
     params: GetPropertyContentFileOperationParams
 ) : Operation<

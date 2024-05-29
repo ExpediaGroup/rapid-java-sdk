@@ -19,6 +19,13 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.TestNotificationRequest
 
+/**
+ * Request Test Notification
+ * @property requestBody [TestNotificationRequest]
+
+ * @property params [RequestTestNotificationOperationParams]
+
+ */
 class RequestTestNotificationOperation(
     requestBody: TestNotificationRequest?,
     params: RequestTestNotificationOperationParams

@@ -19,6 +19,13 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequest
 
+/**
+ * Create Booking
+ * @property requestBody [CreateItineraryRequest]
+
+ * @property params [PostItineraryOperationParams]
+
+ */
 class PostItineraryOperation(
     requestBody: CreateItineraryRequest?,
     params: PostItineraryOperationParams

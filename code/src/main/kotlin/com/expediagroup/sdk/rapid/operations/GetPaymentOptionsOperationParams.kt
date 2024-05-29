@@ -18,6 +18,12 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
 
+/**
+ * @property propertyId Expedia Property ID.<br>
+ * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
+ * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+ * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
+ */
 data class GetPaymentOptionsOperationParams(
     val propertyId: kotlin.String,
     val customerIp: kotlin.String? = null,
@@ -35,12 +41,24 @@ data class GetPaymentOptionsOperationParams(
         private var customerSessionId: kotlin.String? = null,
         private var token: kotlin.String? = null
     ) {
+        /**
+         * @param propertyId Expedia Property ID.<br>
+         */
         fun propertyId(propertyId: kotlin.String) = apply { this.propertyId = propertyId }
 
+        /**
+         * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+         */
         fun customerIp(customerIp: kotlin.String) = apply { this.customerIp = customerIp }
 
+        /**
+         * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
+         */
         fun customerSessionId(customerSessionId: kotlin.String) = apply { this.customerSessionId = customerSessionId }
 
+        /**
+         * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
+         */
         fun token(token: kotlin.String) = apply { this.token = token }
 
         fun build(): GetPaymentOptionsOperationParams {

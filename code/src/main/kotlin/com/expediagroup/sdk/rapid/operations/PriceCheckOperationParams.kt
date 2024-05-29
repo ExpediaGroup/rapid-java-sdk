@@ -18,6 +18,15 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
 
+/**
+ * @property propertyId Expedia Property ID.<br>
+ * @property roomId Room ID of a property.<br>
+ * @property rateId Rate ID of a room.<br>
+ * @property token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
+ * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+ * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
+ * @property test Price check calls have a test header that can be used to return set responses with the following keywords:   * `available`   * `price_changed`   * `sold_out`   * `service_unavailable`   * `unknown_internal_error`
+ */
 data class PriceCheckOperationParams(
     val propertyId: kotlin.String,
     val roomId: kotlin.String,
@@ -41,18 +50,39 @@ data class PriceCheckOperationParams(
         private var test: kotlin.String? = null,
         private var token: kotlin.String? = null
     ) {
+        /**
+         * @param propertyId Expedia Property ID.<br>
+         */
         fun propertyId(propertyId: kotlin.String) = apply { this.propertyId = propertyId }
 
+        /**
+         * @param roomId Room ID of a property.<br>
+         */
         fun roomId(roomId: kotlin.String) = apply { this.roomId = roomId }
 
+        /**
+         * @param rateId Rate ID of a room.<br>
+         */
         fun rateId(rateId: kotlin.String) = apply { this.rateId = rateId }
 
+        /**
+         * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+         */
         fun customerIp(customerIp: kotlin.String) = apply { this.customerIp = customerIp }
 
+        /**
+         * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
+         */
         fun customerSessionId(customerSessionId: kotlin.String) = apply { this.customerSessionId = customerSessionId }
 
+        /**
+         * @param test Price check calls have a test header that can be used to return set responses with the following keywords:   * `available`   * `price_changed`   * `sold_out`   * `service_unavailable`   * `unknown_internal_error`
+         */
         fun test(test: kotlin.String) = apply { this.test = test }
 
+        /**
+         * @param token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
+         */
         fun token(token: kotlin.String) = apply { this.token = token }
 
         fun build(): PriceCheckOperationParams {

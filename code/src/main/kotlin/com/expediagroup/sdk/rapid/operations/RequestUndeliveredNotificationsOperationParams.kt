@@ -18,6 +18,13 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
 
+/**
+ * @property undeliverable Undeliverable notifications are returned when this parameter is set to `true`.
+ * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
+ * @property partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+ * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
+ * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+ */
 data class RequestUndeliveredNotificationsOperationParams(
     val undeliverable: kotlin.Boolean,
     val billingTerms: kotlin.String? = null,
@@ -37,14 +44,29 @@ data class RequestUndeliveredNotificationsOperationParams(
         private var paymentTerms: kotlin.String? = null,
         private var platformName: kotlin.String? = null
     ) {
+        /**
+         * @param undeliverable Undeliverable notifications are returned when this parameter is set to `true`.
+         */
         fun undeliverable(undeliverable: kotlin.Boolean) = apply { this.undeliverable = undeliverable }
 
+        /**
+         * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
+         */
         fun billingTerms(billingTerms: kotlin.String) = apply { this.billingTerms = billingTerms }
 
+        /**
+         * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+         */
         fun partnerPointOfSale(partnerPointOfSale: kotlin.String) = apply { this.partnerPointOfSale = partnerPointOfSale }
 
+        /**
+         * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
+         */
         fun paymentTerms(paymentTerms: kotlin.String) = apply { this.paymentTerms = paymentTerms }
 
+        /**
+         * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+         */
         fun platformName(platformName: kotlin.String) = apply { this.platformName = platformName }
 
         fun build(): RequestUndeliveredNotificationsOperationParams {
