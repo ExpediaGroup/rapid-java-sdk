@@ -32,10 +32,6 @@ public class ShopService extends RapidService {
                 .salesChannel("website")
                 .salesEnvironment("hotel_only")
                 .ratePlanCount(BigDecimal.ONE)
-                .billingTerms(rapidPartnerSalesProfile.billingTerms)
-                .paymentTerms(rapidPartnerSalesProfile.paymentTerms)
-                .partnerPointOfSale(rapidPartnerSalesProfile.partnerPointOfSale)
-                .platformName(rapidPartnerSalesProfile.platformName)
                 .build();
 
         GetAvailabilityOperation operation = new GetAvailabilityOperation(params);
@@ -57,10 +53,6 @@ public class ShopService extends RapidService {
                 .ratePlanCount(BigDecimal.ONE)
                 .salesChannel("website")
                 .salesEnvironment("hotel_only")
-                .billingTerms(rapidPartnerSalesProfile.billingTerms)
-                .paymentTerms(rapidPartnerSalesProfile.paymentTerms)
-                .partnerPointOfSale(rapidPartnerSalesProfile.partnerPointOfSale)
-                .platformName(rapidPartnerSalesProfile.platformName)
                 .build();
 
         GetAvailabilityOperation operation = new GetAvailabilityOperation(params);
