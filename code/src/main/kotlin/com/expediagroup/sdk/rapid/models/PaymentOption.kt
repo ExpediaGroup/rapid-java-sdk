@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -45,7 +46,7 @@ data class PaymentOption(
     val affiliateCollect: AffiliateCollect? = null,
     @JsonProperty("credit_card")
     @field:Valid
-    val creditCard: CreditCard? = null,
+    val creditCard: CreditCard? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,7 +55,7 @@ data class PaymentOption(
 
     class Builder(
         private var affiliateCollect: AffiliateCollect? = null,
-        private var creditCard: CreditCard? = null,
+        private var creditCard: CreditCard? = null
     ) {
         fun affiliateCollect(affiliateCollect: AffiliateCollect?) = apply { this.affiliateCollect = affiliateCollect }
 
@@ -63,7 +64,7 @@ data class PaymentOption(
         fun build(): PaymentOption {
             return PaymentOption(
                 affiliateCollect = affiliateCollect,
-                creditCard = creditCard,
+                creditCard = creditCard
             )
         }
     }

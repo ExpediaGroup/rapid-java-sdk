@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -87,7 +88,7 @@ data class Descriptions(
     // A general description of a vacation rental property.
     @JsonProperty("general")
     @field:Valid
-    val general: kotlin.String? = null,
+    val general: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -104,7 +105,7 @@ data class Descriptions(
         private var attractions: kotlin.String? = null,
         private var location: kotlin.String? = null,
         private var headline: kotlin.String? = null,
-        private var general: kotlin.String? = null,
+        private var general: kotlin.String? = null
     ) {
         fun amenities(amenities: kotlin.String?) = apply { this.amenities = amenities }
 
@@ -137,7 +138,7 @@ data class Descriptions(
                 attractions = attractions,
                 location = location,
                 headline = headline,
-                general = general,
+                general = general
             )
         }
     }

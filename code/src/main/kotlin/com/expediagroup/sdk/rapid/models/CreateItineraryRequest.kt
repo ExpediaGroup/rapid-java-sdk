@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -80,7 +81,7 @@ data class CreateItineraryRequest(
     // Custom traveler handling instructions for the hotel. Do not include PCI sensitive data, such as credit card numbers, in this field.
     @JsonProperty("traveler_handling_instructions")
     @field:Valid
-    val travelerHandlingInstructions: kotlin.String? = null,
+    val travelerHandlingInstructions: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -96,7 +97,7 @@ data class CreateItineraryRequest(
         private var payments: kotlin.collections.List<PaymentRequest>? = null,
         private var affiliateMetadata: kotlin.String? = null,
         private var taxRegistrationNumber: kotlin.String? = null,
-        private var travelerHandlingInstructions: kotlin.String? = null,
+        private var travelerHandlingInstructions: kotlin.String? = null
     ) {
         fun email(email: kotlin.String) = apply { this.email = email }
 
@@ -114,10 +115,7 @@ data class CreateItineraryRequest(
 
         fun taxRegistrationNumber(taxRegistrationNumber: kotlin.String?) = apply { this.taxRegistrationNumber = taxRegistrationNumber }
 
-        fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) =
-            apply {
-                this.travelerHandlingInstructions = travelerHandlingInstructions
-            }
+        fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) = apply { this.travelerHandlingInstructions = travelerHandlingInstructions }
 
         fun build(): CreateItineraryRequest {
             // Check required params
@@ -131,7 +129,7 @@ data class CreateItineraryRequest(
                 payments = payments,
                 affiliateMetadata = affiliateMetadata,
                 taxRegistrationNumber = taxRegistrationNumber,
-                travelerHandlingInstructions = travelerHandlingInstructions,
+                travelerHandlingInstructions = travelerHandlingInstructions
             )
         }
 

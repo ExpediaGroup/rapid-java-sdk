@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -50,7 +51,7 @@ data class EssentialInformation(
     // The date and time when new essential information is available for retrieval, in extended ISO 8601 format, with ±hh:mm timezone offset.
     @JsonProperty("update_available_date")
     @field:Valid
-    val updateAvailableDate: kotlin.String? = null,
+    val updateAvailableDate: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +61,7 @@ data class EssentialInformation(
     class Builder(
         private var contact: SupplyContact? = null,
         private var essentials: kotlin.collections.List<Essential>? = null,
-        private var updateAvailableDate: kotlin.String? = null,
+        private var updateAvailableDate: kotlin.String? = null
     ) {
         fun contact(contact: SupplyContact?) = apply { this.contact = contact }
 
@@ -72,7 +73,7 @@ data class EssentialInformation(
             return EssentialInformation(
                 contact = contact,
                 essentials = essentials,
-                updateAvailableDate = updateAvailableDate,
+                updateAvailableDate = updateAvailableDate
             )
         }
     }

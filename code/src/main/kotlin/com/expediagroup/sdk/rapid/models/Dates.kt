@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class Dates(
     // The UTC date the property’s content was updated by EPS, in ISO 8601 format.
     @JsonProperty("updated")
     @field:Valid
-    val updated: kotlin.String? = null,
+    val updated: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class Dates(
 
     class Builder(
         private var added: kotlin.String? = null,
-        private var updated: kotlin.String? = null,
+        private var updated: kotlin.String? = null
     ) {
         fun added(added: kotlin.String?) = apply { this.added = added }
 
@@ -65,7 +66,7 @@ data class Dates(
         fun build(): Dates {
             return Dates(
                 added = added,
-                updated = updated,
+                updated = updated
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.validation
 
 import com.expediagroup.sdk.rapid.models.exception.PropertyConstraintViolation
@@ -33,7 +34,7 @@ internal object PropertyConstraintsValidator {
                     if (violations.isNotEmpty()) {
                         throw PropertyConstraintViolationException(
                             "Some field constraints have been violated",
-                            violations.stream().map { toConstraintViolation(it) }.collect(Collectors.toList()),
+                            violations.stream().map { toConstraintViolation(it) }.collect(Collectors.toList())
                         )
                     }
                 }
@@ -44,7 +45,7 @@ internal object PropertyConstraintsValidator {
         return PropertyConstraintViolation(
             violation.propertyPath.iterator().next().name,
             violation.propertyPath.toString(),
-            violation.message,
+            violation.message
         )
     }
 }

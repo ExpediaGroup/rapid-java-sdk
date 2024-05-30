@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -64,7 +65,7 @@ data class ValueAdd(
     // Indicates how many guests the value add promotion applies to.
     @JsonProperty("person_count")
     @field:Valid
-    val personCount: java.math.BigDecimal? = null,
+    val personCount: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -77,7 +78,7 @@ data class ValueAdd(
         private var category: CategoryValueAdd? = null,
         private var offerType: OfferType? = null,
         private var frequency: Frequency? = null,
-        private var personCount: java.math.BigDecimal? = null,
+        private var personCount: java.math.BigDecimal? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -98,7 +99,7 @@ data class ValueAdd(
                 category = category,
                 offerType = offerType,
                 frequency = frequency,
-                personCount = personCount,
+                personCount = personCount
             )
         }
     }

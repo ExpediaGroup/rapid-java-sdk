@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class Preferred(
     // The airport's IATA code.
     @JsonProperty("iata_airport_code")
     @field:Valid
-    val iataAirportCode: kotlin.String? = null,
+    val iataAirportCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class Preferred(
     }
 
     class Builder(
-        private var iataAirportCode: kotlin.String? = null,
+        private var iataAirportCode: kotlin.String? = null
     ) {
         fun iataAirportCode(iataAirportCode: kotlin.String?) = apply { this.iataAirportCode = iataAirportCode }
 
         fun build(): Preferred {
             return Preferred(
-                iataAirportCode = iataAirportCode,
+                iataAirportCode = iataAirportCode
             )
         }
     }

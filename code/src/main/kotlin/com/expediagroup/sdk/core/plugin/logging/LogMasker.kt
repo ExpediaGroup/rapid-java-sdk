@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import com.expediagroup.sdk.core.constant.provider.LogMaskingRegexProvider.getMa
 
 internal fun mask(
     message: String,
-    maskedBodyFields: Set<String>,
+    maskedBodyFields: Set<String>
 ): String = masks.fold(message) { acc, mask -> mask.mask(acc, maskedBodyFields) }
 
 internal fun interface Mask {
@@ -29,7 +29,7 @@ internal fun interface Mask {
 
     fun mask(
         string: String,
-        maskedBodyFields: Set<String>,
+        maskedBodyFields: Set<String>
     ): String = string.replace(this.getRegex(maskedBodyFields)) { maskSubstring(it.value) }
 
     fun maskSubstring(string: String) = OMITTED
@@ -38,5 +38,5 @@ internal fun interface Mask {
 internal val masks: List<Mask> =
     listOf(
         Mask(::getMaskedFieldsRegex),
-        Mask { NUMBER_FIELD_REGEX },
+        Mask { NUMBER_FIELD_REGEX }
     )

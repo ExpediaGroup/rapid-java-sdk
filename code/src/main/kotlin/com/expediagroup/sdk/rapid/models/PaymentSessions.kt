@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -51,7 +52,7 @@ data class PaymentSessions(
     val encodedInitConfig: kotlin.String? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PaymentSessionsLinks? = null,
+    val links: PaymentSessionsLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -61,7 +62,7 @@ data class PaymentSessions(
     class Builder(
         private var paymentSessionId: kotlin.String? = null,
         private var encodedInitConfig: kotlin.String? = null,
-        private var links: PaymentSessionsLinks? = null,
+        private var links: PaymentSessionsLinks? = null
     ) {
         fun paymentSessionId(paymentSessionId: kotlin.String?) = apply { this.paymentSessionId = paymentSessionId }
 
@@ -73,7 +74,7 @@ data class PaymentSessions(
             return PaymentSessions(
                 paymentSessionId = paymentSessionId,
                 encodedInitConfig = encodedInitConfig,
-                links = links,
+                links = links
             )
         }
     }

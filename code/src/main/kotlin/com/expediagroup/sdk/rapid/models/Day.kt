@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -60,7 +61,7 @@ data class Day(
     val checkout: kotlin.String? = null,
     @JsonProperty("stay_constraints")
     @field:Valid
-    val stayConstraints: StayConstraints? = null,
+    val stayConstraints: StayConstraints? = null
 ) {
     companion object {
         @JvmStatic
@@ -72,7 +73,7 @@ data class Day(
         private var available: kotlin.Boolean? = null,
         private var checkin: kotlin.String? = null,
         private var checkout: kotlin.String? = null,
-        private var stayConstraints: StayConstraints? = null,
+        private var stayConstraints: StayConstraints? = null
     ) {
         fun date(date: java.time.LocalDate?) = apply { this.date = date }
 
@@ -90,7 +91,7 @@ data class Day(
                 available = available,
                 checkin = checkin,
                 checkout = checkout,
-                stayConstraints = stayConstraints,
+                stayConstraints = stayConstraints
             )
         }
     }

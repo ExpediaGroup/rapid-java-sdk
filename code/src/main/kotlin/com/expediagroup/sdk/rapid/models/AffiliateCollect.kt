@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class AffiliateCollect(
     // Display name of payment option.
     @JsonProperty("name")
     @field:Valid
-    val name: kotlin.String? = null,
+    val name: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class AffiliateCollect(
     }
 
     class Builder(
-        private var name: kotlin.String? = null,
+        private var name: kotlin.String? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun build(): AffiliateCollect {
             return AffiliateCollect(
-                name = name,
+                name = name
             )
         }
     }

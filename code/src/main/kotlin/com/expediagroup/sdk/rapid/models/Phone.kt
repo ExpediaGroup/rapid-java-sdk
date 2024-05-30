@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class Phone(
     // The remaining digits of the phone number.
     @JsonProperty("number")
     @field:Valid
-    val number: kotlin.String? = null,
+    val number: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class Phone(
     class Builder(
         private var countryCode: kotlin.String? = null,
         private var areaCode: kotlin.String? = null,
-        private var number: kotlin.String? = null,
+        private var number: kotlin.String? = null
     ) {
         fun countryCode(countryCode: kotlin.String?) = apply { this.countryCode = countryCode }
 
@@ -74,7 +75,7 @@ data class Phone(
             return Phone(
                 countryCode = countryCode,
                 areaCode = areaCode,
-                number = number,
+                number = number
             )
         }
     }

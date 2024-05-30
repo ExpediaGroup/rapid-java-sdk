@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class Checkout(
     // The time by which a guest must check out.
     @JsonProperty("time")
     @field:Valid
-    val time: kotlin.String? = null,
+    val time: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class Checkout(
     }
 
     class Builder(
-        private var time: kotlin.String? = null,
+        private var time: kotlin.String? = null
     ) {
         fun time(time: kotlin.String?) = apply { this.time = time }
 
         fun build(): Checkout {
             return Checkout(
-                time = time,
+                time = time
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class CardOption(
     // The country in which the payment will be processed.
     @JsonProperty("processing_country")
     @field:Valid
-    val processingCountry: kotlin.String? = null,
+    val processingCountry: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class CardOption(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var processingCountry: kotlin.String? = null,
+        private var processingCountry: kotlin.String? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -65,7 +66,7 @@ data class CardOption(
         fun build(): CardOption {
             return CardOption(
                 name = name,
-                processingCountry = processingCountry,
+                processingCountry = processingCountry
             )
         }
     }

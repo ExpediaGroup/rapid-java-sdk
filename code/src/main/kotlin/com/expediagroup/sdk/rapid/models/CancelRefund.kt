@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class CancelRefund(
     // The currency of the refund amount.
     @JsonProperty("currency")
     @field:Valid
-    val currency: kotlin.String? = null,
+    val currency: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class CancelRefund(
 
     class Builder(
         private var amount: kotlin.String? = null,
-        private var currency: kotlin.String? = null,
+        private var currency: kotlin.String? = null
     ) {
         fun amount(amount: kotlin.String?) = apply { this.amount = amount }
 
@@ -65,7 +66,7 @@ data class CancelRefund(
         fun build(): CancelRefund {
             return CancelRefund(
                 amount = amount,
-                currency = currency,
+                currency = currency
             )
         }
     }

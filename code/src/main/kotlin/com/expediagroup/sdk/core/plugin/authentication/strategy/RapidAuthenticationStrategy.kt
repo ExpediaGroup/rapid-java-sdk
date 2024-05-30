@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ internal class RapidAuthenticationStrategy(private val configs: AuthenticationCo
     private fun calculateSignature(
         apiKey: String,
         secret: String,
-        timestamp: Long,
+        timestamp: Long
     ): String {
         val toBeHashed = apiKey + secret + timestamp
         val messageDigest = MessageDigest.getInstance(MGF1ParameterSpec.SHA512.digestAlgorithm)
@@ -53,11 +53,7 @@ internal class RapidAuthenticationStrategy(private val configs: AuthenticationCo
         val signature =
             buildString {
                 bytes.forEach {
-                    append(
-                        ((it.toInt() and SignatureValues.ONE_BYTE_MASK) + SignatureValues.INCREMENT).toString(
-                            SignatureValues.RADIX,
-                        ).substring(BigInteger.ONE.toInt()),
-                    )
+                    append(((it.toInt() and SignatureValues.ONE_BYTE_MASK) + SignatureValues.INCREMENT).toString(SignatureValues.RADIX).substring(BigInteger.ONE.toInt()))
                 }
             }
         return "${SignatureValues.API_KEY}=$apiKey,${SignatureValues.SIGNATURE}=$signature,${SignatureValues.TIMESTAMP}=$timestamp"

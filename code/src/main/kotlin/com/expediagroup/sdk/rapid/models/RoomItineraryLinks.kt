@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -49,7 +50,7 @@ data class RoomItineraryLinks(
     val change: Link? = null,
     @JsonProperty("shop_for_change")
     @field:Valid
-    val shopForChange: Link? = null,
+    val shopForChange: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -59,7 +60,7 @@ data class RoomItineraryLinks(
     class Builder(
         private var cancel: Link? = null,
         private var change: Link? = null,
-        private var shopForChange: Link? = null,
+        private var shopForChange: Link? = null
     ) {
         fun cancel(cancel: Link?) = apply { this.cancel = cancel }
 
@@ -71,7 +72,7 @@ data class RoomItineraryLinks(
             return RoomItineraryLinks(
                 cancel = cancel,
                 change = change,
-                shopForChange = shopForChange,
+                shopForChange = shopForChange
             )
         }
     }

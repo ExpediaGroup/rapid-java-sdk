@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class UnitConfiguration(
     // The number of beds of this size.
     @JsonProperty("quantity")
     @field:Valid
-    val quantity: kotlin.Int? = null,
+    val quantity: kotlin.Int? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class UnitConfiguration(
     class Builder(
         private var type: kotlin.String? = null,
         private var description: kotlin.String? = null,
-        private var quantity: kotlin.Int? = null,
+        private var quantity: kotlin.Int? = null
     ) {
         fun type(type: kotlin.String?) = apply { this.type = type }
 
@@ -74,7 +75,7 @@ data class UnitConfiguration(
             return UnitConfiguration(
                 type = type,
                 description = description,
-                quantity = quantity,
+                quantity = quantity
             )
         }
     }

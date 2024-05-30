@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import io.ktor.client.plugins.DefaultRequest
 internal object DefaultRequestPlugin : Plugin<DefaultRequestConfiguration> {
     override fun install(
         client: Client,
-        configurations: DefaultRequestConfiguration,
+        configurations: DefaultRequestConfiguration
     ) {
         configurations.httpClientConfiguration.install(DefaultRequest) {
             url(configurations.endpoint)

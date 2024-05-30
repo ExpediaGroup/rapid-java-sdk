@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class PhoneRequest(
     // The area code of the phone number. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("area_code")
     @field:Valid
-    val areaCode: kotlin.String? = null,
+    val areaCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class PhoneRequest(
     class Builder(
         private var countryCode: kotlin.String? = null,
         private var number: kotlin.String? = null,
-        private var areaCode: kotlin.String? = null,
+        private var areaCode: kotlin.String? = null
     ) {
         fun countryCode(countryCode: kotlin.String) = apply { this.countryCode = countryCode }
 
@@ -76,7 +77,7 @@ data class PhoneRequest(
             return PhoneRequest(
                 countryCode = countryCode!!,
                 number = number!!,
-                areaCode = areaCode,
+                areaCode = areaCode
             )
         }
 

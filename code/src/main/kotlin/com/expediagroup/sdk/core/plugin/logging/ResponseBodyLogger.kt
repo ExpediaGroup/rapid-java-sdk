@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,19 +42,11 @@ class ResponseBodyLogger {
         @OptIn(InternalAPI::class)
         override fun install(
             plugin: ResponseBodyLogger,
-            scope: HttpClient,
+            scope: HttpClient
         ) {
             scope.responsePipeline.intercept(HttpResponsePipeline.Receive) {
                 val response: HttpResponse = context.response
-                val byteReadChannel: ByteReadChannel =
-                    if (response.contentEncoding().equals(
-                            HeaderValue.GZIP,
-                        )
-                    ) {
-                        scope.decode(response.content)
-                    } else {
-                        response.content
-                    }
+                val byteReadChannel: ByteReadChannel = if (response.contentEncoding().equals(HeaderValue.GZIP)) scope.decode(response.content) else response.content
                 val body: String = byteReadChannel.readRemaining().readText()
                 plugin.log.debug(LoggingMessageProvider.getResponseBodyMessage(body, response.request.headers.getTransactionId()))
                 proceed()

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -82,7 +83,7 @@ data class ThirdPartyAuthRequest(
     // Only received for Mastercard transactions, else can be null. 0 - Non-SecureCode transaction, bypassed by the Merchant 1 - Merchant-Only SecureCode transaction 2 - Fully authenticated SecureCode transaction
     @JsonProperty("ucaf_indicator")
     @field:Valid
-    val ucafIndicator: kotlin.String? = null,
+    val ucafIndicator: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -98,7 +99,7 @@ data class ThirdPartyAuthRequest(
         private var veResStatus: kotlin.String? = null,
         private var xid: kotlin.String? = null,
         private var cavvAlgorithm: kotlin.String? = null,
-        private var ucafIndicator: kotlin.String? = null,
+        private var ucafIndicator: kotlin.String? = null
     ) {
         fun cavv(cavv: kotlin.String) = apply { this.cavv = cavv }
 
@@ -130,7 +131,7 @@ data class ThirdPartyAuthRequest(
                 veResStatus = veResStatus,
                 xid = xid,
                 cavvAlgorithm = cavvAlgorithm,
-                ucafIndicator = ucafIndicator,
+                ucafIndicator = ucafIndicator
             )
         }
 

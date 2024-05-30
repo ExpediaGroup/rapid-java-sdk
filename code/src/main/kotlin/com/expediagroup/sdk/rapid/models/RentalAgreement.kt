@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -41,7 +42,7 @@ import javax.validation.Valid
 data class RentalAgreement(
     @JsonProperty("links")
     @field:Valid
-    val links: RentalAgreementLinks? = null,
+    val links: RentalAgreementLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -49,13 +50,13 @@ data class RentalAgreement(
     }
 
     class Builder(
-        private var links: RentalAgreementLinks? = null,
+        private var links: RentalAgreementLinks? = null
     ) {
         fun links(links: RentalAgreementLinks?) = apply { this.links = links }
 
         fun build(): RentalAgreement {
             return RentalAgreement(
-                links = links,
+                links = links
             )
         }
     }

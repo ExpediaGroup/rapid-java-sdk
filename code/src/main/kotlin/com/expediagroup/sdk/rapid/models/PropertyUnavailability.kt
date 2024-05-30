@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -49,7 +50,7 @@ data class PropertyUnavailability(
     override val score: java.math.BigDecimal? = null,
     @JsonProperty("unavailable_reason")
     @field:Valid
-    val unavailableReason: UnavailableReason? = null,
+    val unavailableReason: UnavailableReason? = null
 ) : Property {
     @JsonProperty("status")
     override val status: Property.Status = Property.Status.PARTIALLY_UNAVAILABLE
@@ -62,7 +63,7 @@ data class PropertyUnavailability(
     class Builder(
         private var propertyId: kotlin.String? = null,
         private var score: java.math.BigDecimal? = null,
-        private var unavailableReason: UnavailableReason? = null,
+        private var unavailableReason: UnavailableReason? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -74,7 +75,7 @@ data class PropertyUnavailability(
             return PropertyUnavailability(
                 propertyId = propertyId,
                 score = score,
-                unavailableReason = unavailableReason,
+                unavailableReason = unavailableReason
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class PropertyGeography(
     // Unique Expedia property ID.
     @JsonProperty("property_id")
     @field:Valid
-    val propertyId: kotlin.String? = null,
+    val propertyId: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class PropertyGeography(
     }
 
     class Builder(
-        private var propertyId: kotlin.String? = null,
+        private var propertyId: kotlin.String? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
         fun build(): PropertyGeography {
             return PropertyGeography(
-                propertyId = propertyId,
+                propertyId = propertyId
             )
         }
     }

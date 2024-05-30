@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -40,7 +41,8 @@ import javax.validation.Valid
  * @param familyName Last name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
  * @param smoking Specify if the guest would prefer a smoking room. This field is only a request and the property is not guaranteed to honor it, it will not override any non-smoking policies by the hotel.
  * @param specialRequest Special requests to send to hotel (not guaranteed). Do not use this field to communicate B2B customer service requests or pass any sensitive personal or financial information (PII). Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
- * @param loyaltyId A loyalty identifier for a hotel loyalty program associated with this room guest.
+ * @param loyaltyId Deprecated. Please use the loyalty id inside the loyalty object.
+ * @param loyalty
  */
 data class CreateItineraryRequestRoom(
     // First name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
@@ -59,10 +61,13 @@ data class CreateItineraryRequestRoom(
     @JsonProperty("special_request")
     @field:Valid
     val specialRequest: kotlin.String? = null,
-    // A loyalty identifier for a hotel loyalty program associated with this room guest.
+    // Deprecated. Please use the loyalty id inside the loyalty object.
     @JsonProperty("loyalty_id")
     @field:Valid
     val loyaltyId: kotlin.String? = null,
+    @JsonProperty("loyalty")
+    @field:Valid
+    val loyalty: Loyalty? = null
 ) {
     companion object {
         @JvmStatic
@@ -75,6 +80,7 @@ data class CreateItineraryRequestRoom(
         private var smoking: kotlin.Boolean? = null,
         private var specialRequest: kotlin.String? = null,
         private var loyaltyId: kotlin.String? = null,
+        private var loyalty: Loyalty? = null
     ) {
         fun givenName(givenName: kotlin.String) = apply { this.givenName = givenName }
 
@@ -86,6 +92,8 @@ data class CreateItineraryRequestRoom(
 
         fun loyaltyId(loyaltyId: kotlin.String?) = apply { this.loyaltyId = loyaltyId }
 
+        fun loyalty(loyalty: Loyalty?) = apply { this.loyalty = loyalty }
+
         fun build(): CreateItineraryRequestRoom {
             // Check required params
             validateNullity()
@@ -95,6 +103,7 @@ data class CreateItineraryRequestRoom(
                 smoking = smoking,
                 specialRequest = specialRequest,
                 loyaltyId = loyaltyId,
+                loyalty = loyalty
             )
         }
 

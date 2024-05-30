@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class Link(
     // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
     @JsonProperty("expires")
     @field:Valid
-    val expires: kotlin.String? = null,
+    val expires: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class Link(
     class Builder(
         private var method: kotlin.String? = null,
         private var href: kotlin.String? = null,
-        private var expires: kotlin.String? = null,
+        private var expires: kotlin.String? = null
     ) {
         fun method(method: kotlin.String?) = apply { this.method = method }
 
@@ -74,7 +75,7 @@ data class Link(
             return Link(
                 method = method,
                 href = href,
-                expires = expires,
+                expires = expires
             )
         }
     }

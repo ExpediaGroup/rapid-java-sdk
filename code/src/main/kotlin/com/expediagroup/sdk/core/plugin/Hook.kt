@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ internal interface HookBuilder<in C : PluginConfiguration> {
  */
 internal open class Hook<in C : PluginConfiguration>(
     private val configuration: C,
-    private val builder: HookBuilder<C>,
+    private val builder: HookBuilder<C>
 ) {
     fun execute() = builder.build(configuration)
 }
@@ -40,7 +40,7 @@ internal object Hooks {
 
     fun <C : PluginConfiguration> add(
         client: Client,
-        hook: Hook<C>,
+        hook: Hook<C>
     ) {
         clientsHooks.getOrPut(client) { mutableListOf() } += hook
     }
@@ -70,6 +70,6 @@ internal class HookContext(private val client: Client) {
 internal interface HookFactory<C : PluginConfiguration> {
     fun create(
         client: Client,
-        configuration: C,
+        configuration: C
     ): Hook<C>
 }

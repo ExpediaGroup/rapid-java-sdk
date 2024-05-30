@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ internal interface AuthenticationStrategy {
     companion object {
         fun from(
             configs: AuthenticationConfiguration,
-            client: Client,
+            client: Client
         ): AuthenticationStrategy =
             when (configs.authType) {
                 BEARER -> ExpediaGroupAuthenticationStrategy(client, configs)
@@ -46,6 +46,6 @@ internal interface AuthenticationStrategy {
 
     enum class AuthenticationType {
         BEARER,
-        SIGNATURE,
+        SIGNATURE
     }
 }

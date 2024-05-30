@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,6 @@ internal data object LogMaskingFields {
             "account_number",
             "card_avs_response",
             "card_cvv_response",
-            "card_cvv2_response",
+            "card_cvv2_response"
         )
 }
