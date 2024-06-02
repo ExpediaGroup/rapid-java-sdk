@@ -33,7 +33,7 @@ public class SingleRoomBookScenario implements RapidScenario {
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
 
-        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getBody();
+        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             logger.error("No property availability found for the test property.");
