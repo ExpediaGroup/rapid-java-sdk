@@ -19,6 +19,7 @@ import java.util.List;
 public class SingleRoomBookScenario implements RapidScenario {
 
     private static final Logger logger = LoggerFactory.getLogger(SingleRoomBookScenario.class);
+    private ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
     @Override
@@ -31,8 +32,8 @@ public class SingleRoomBookScenario implements RapidScenario {
 
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
-        ShopService shopService = new ShopService();
-        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
+
+        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getBody();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             logger.error("No property availability found for the test property.");
