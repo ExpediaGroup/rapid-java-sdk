@@ -22,6 +22,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
 
     private static final Logger logger = LoggerFactory.getLogger(MultiRoomHoldAndResumeBookScenario.class);
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
+    private ShopService shopService = new ShopService();
 
     @Override
     public void setProfile(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
@@ -38,8 +39,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
          */
         logger.info("Getting property availability for test property: [{}]", Constants.TEST_PROPERTY_ID);
         List<String> occupancy = Arrays.asList("2", "2");
-        ShopService shopService = new ShopService();
-        List<Property> propertyAvailabilityList = shopService.getMultipleRoomsPropertiesAvailability(this.rapidPartnerSalesProfile, occupancy).getData();
+        List<Property> propertyAvailabilityList = shopService.getMultipleRoomsPropertiesAvailability(this.rapidPartnerSalesProfile, occupancy).getBody();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             logger.error("No property availability found for the test property.");
