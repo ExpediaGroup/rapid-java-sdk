@@ -12,6 +12,12 @@ import com.expediagroup.sdk.rapid.models.ItineraryCreation;
 import com.expediagroup.sdk.rapid.models.PaymentRequest;
 import com.expediagroup.sdk.rapid.models.PhoneRequest;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
+import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperation;
+import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationParams;
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperation;
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperationParams;
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperation;
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationParams;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,70 +27,90 @@ import java.util.UUID;
 
 public class BookService extends RapidService {
 
-    public ItineraryCreation createBooking(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
+    public Response<ItineraryCreation> createBooking(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
 
         String bookHref = roomPriceCheck.getLinks().getBook().getHref();
 
         // In the Book request, include corresponding separate instances of room in the rooms array for each room you wish to book. */
         List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
 
-        return rapidClient.postItinerary(
-                Constants.CUSTOMER_IP,
-                Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)),
-                CreateItineraryRequest.builder()
-                        .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
-                        .hold(false)
-                        .email("john@example.com")
-                        .phone(phone())
-                        .rooms(rooms)
-                        .payments(payments())
-                        .affiliateMetadata("data_point_1:123|data_point2:This is data.")
-                        .taxRegistrationNumber("12345678910")
-                        .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
-                        .build());
+        PostItineraryOperationParams params = PostItineraryOperationParams.builder()
+                .customerIp(Constants.CUSTOMER_IP)
+                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)))
+                .build();
+
+        CreateItineraryRequest createItineraryRequest = CreateItineraryRequest.builder()
+                .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
+                .hold(false)
+                .email("john@example.com")
+                .phone(phone())
+                .rooms(rooms)
+                .payments(payments())
+                .affiliateMetadata("data_point_1:123|data_point2:This is data.")
+                .taxRegistrationNumber("12345678910")
+                .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
+                .build();
+
+        PostItineraryOperation operation = new PostItineraryOperation(createItineraryRequest, params);
+
+        return rapidClient.execute(operation);
     }
 
-    public ItineraryCreation createBookingWithHold(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
+    public Response<ItineraryCreation> createBookingWithHold(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
         String bookHref = roomPriceCheck.getLinks().getBook().getHref();
 
         // In the Book request, include corresponding separate instances of room in the rooms array for each room you wish to book. */
         List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
 
         // Create a booking with hold, set hold to true
-        return rapidClient.postItinerary(
-                Constants.CUSTOMER_IP,
-                Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)),
-                CreateItineraryRequest.builder()
-                        .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
-                        .hold(true)
-                        .email("john@example.com")
-                        .phone(phone())
-                        .rooms(rooms)
-                        .payments(payments())
-                        .affiliateMetadata("data_point_1:123|data_point2:This is data.")
-                        .taxRegistrationNumber("12345678910")
-                        .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
-                        .build());
+        PostItineraryOperationParams params = PostItineraryOperationParams.builder()
+                .customerIp(Constants.CUSTOMER_IP)
+                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)))
+                .build();
+
+        CreateItineraryRequest createItineraryRequest = CreateItineraryRequest.builder()
+                .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
+                .hold(true)
+                .email("john@example.com")
+                .phone(phone())
+                .rooms(rooms)
+                .payments(payments())
+                .affiliateMetadata("data_point_1:123|data_point2:This is data.")
+                .taxRegistrationNumber("12345678910")
+                .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
+                .build();
+
+        PostItineraryOperation operation = new PostItineraryOperation(createItineraryRequest, params);
+
+        return rapidClient.execute(operation);
     }
 
     public Response<Nothing> resumeBooking(ItineraryCreation itineraryCreation) {
-         return rapidClient.putResumeBookingWithResponse(
-                 Constants.CUSTOMER_IP,
-                 itineraryCreation.getItineraryId(),
-                 rapidClient.helpers.extractToken(itineraryCreation.getLinks().getResume().getHref()),
-                "123455656565",
-                "standard"
-         );
+
+        PutResumeBookingOperationParams params = PutResumeBookingOperationParams.builder()
+                .customerIp(Constants.CUSTOMER_IP)
+                .customerSessionId("123455656565")
+                .itineraryId(itineraryCreation.getItineraryId())
+                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(itineraryCreation.getLinks().getResume().getHref())))
+                .test("standard")
+                .build();
+
+        return rapidClient.execute(new PutResumeBookingOperation(params));
     }
 
-    public Itinerary getReservationByItineraryId(ItineraryCreation itineraryCreation) {
-        return rapidClient.getReservationByItineraryId(
-                Constants.CUSTOMER_IP,
-                itineraryCreation.getItineraryId(),
-                "123455656565",
-                "standard",
-                rapidClient.helpers.extractToken(itineraryCreation.getLinks().getRetrieve().getHref())
-        );
+    public Response<Itinerary> getReservationByItineraryId(ItineraryCreation itineraryCreation) {
+
+        GetReservationByItineraryIdOperationParams params = GetReservationByItineraryIdOperationParams.builder()
+                .customerIp(Constants.CUSTOMER_IP)
+                .itineraryId(itineraryCreation.getItineraryId())
+                .customerSessionId("123455656565")
+                .test("standard")
+                .token(rapidClient.helpers.extractToken(itineraryCreation.getLinks().getRetrieve().getHref()))
+                .build();
+
+        GetReservationByItineraryIdOperation operation = new GetReservationByItineraryIdOperation(params);
+
+        return rapidClient.execute(operation);
     }
 
     /* Helper methods */
