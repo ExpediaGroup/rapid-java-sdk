@@ -18,6 +18,7 @@ package com.expediagroup.sdk.rapid.client
 
 import com.expediagroup.sdk.core.client.BaseRapidClient
 import com.expediagroup.sdk.core.configuration.RapidClientConfiguration
+import com.expediagroup.sdk.core.model.EmptyResponse
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.core.model.Response
@@ -66,28 +67,42 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         throw ErrorObjectMapper.process(response, operationId)
     }
 
+    private suspend inline fun <reified RequestType> executeHttpRequest(operation: Operation<RequestType>): HttpResponse {
+        return httpClient.request {
+            method = HttpMethod.parse(operation.method)
+            url(operation.url)
+
+            operation.params.getHeaders()?.forEach { (key, value) ->
+                headers.append(key, value)
+            }
+
+            operation.params.getQueryParams()?.forEach { (key, value) ->
+                url.parameters.appendAll(key, value)
+            }
+
+            appendHeaders(operation.transactionId)
+            validateConstraints(operation.requestBody)
+            contentType(ContentType.Application.Json)
+            setBody(operation.requestBody)
+        }
+    }
+
+    private inline fun <reified RequestType> executeWithEmptyResponse(operation: Operation<RequestType>): EmptyResponse {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                val response = executeHttpRequest(operation)
+                throwIfError(response, operation.operationId)
+                EmptyResponse(response.status.value, response.headers.entries())
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
     private inline fun <reified RequestType, reified ResponseType> execute(operation: Operation<RequestType>): Response<ResponseType> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                val response =
-                    httpClient.request {
-                        method = HttpMethod.parse(operation.method)
-                        url(operation.url)
-
-                        operation.params.getHeaders()?.forEach { (key, value) ->
-                            headers.append(key, value)
-                        }
-
-                        operation.params.getQueryParams()?.forEach { (key, value) ->
-                            url.parameters.appendAll(key, value)
-                        }
-
-                        appendHeaders(operation.transactionId)
-                        validateConstraints(operation.requestBody)
-                        contentType(ContentType.Application.Json)
-                        setBody(operation.requestBody)
-                    }
-
+                val response = executeHttpRequest(operation)
                 throwIfError(response, operation.operationId)
                 Response(response.status.value, response.body<ResponseType>(), response.headers.entries())
             }.get()
@@ -103,11 +118,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Nothing
      */
-    fun execute(operation: ChangeRoomDetailsOperation): Response<Nothing> {
-        return execute<
-            ChangeRoomDetailsRequest,
-            Nothing
-        >(operation)
+    fun execute(operation: ChangeRoomDetailsOperation): EmptyResponse {
+        return executeWithEmptyResponse<ChangeRoomDetailsRequest>(operation)
     }
 
     private suspend inline fun kchangeRoomDetailsWithResponse(
@@ -207,11 +219,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Nothing
      */
-    fun execute(operation: CommitChangeOperation): Response<Nothing> {
-        return execute<
-            CommitChangeRoomRequestBody,
-            Nothing
-        >(operation)
+    fun execute(operation: CommitChangeOperation): EmptyResponse {
+        return executeWithEmptyResponse<CommitChangeRoomRequestBody>(operation)
     }
 
     private suspend inline fun kcommitChangeWithResponse(
@@ -311,11 +320,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Nothing
      */
-    fun execute(operation: DeleteHeldBookingOperation): Response<Nothing> {
-        return execute<
-            Nothing,
-            Nothing
-        >(operation)
+    fun execute(operation: DeleteHeldBookingOperation): EmptyResponse {
+        return executeWithEmptyResponse<Nothing>(operation)
     }
 
     private suspend inline fun kdeleteHeldBookingWithResponse(
@@ -403,11 +409,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Nothing
      */
-    fun execute(operation: DeleteRoomOperation): Response<Nothing> {
-        return execute<
-            Nothing,
-            Nothing
-        >(operation)
+    fun execute(operation: DeleteRoomOperation): EmptyResponse {
+        return executeWithEmptyResponse<Nothing>(operation)
     }
 
     private suspend inline fun kdeleteRoomWithResponse(
@@ -502,10 +505,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyAvailability>
      */
     fun execute(operation: GetAdditionalAvailabilityOperation): Response<kotlin.collections.List<PropertyAvailability>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<PropertyAvailability>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<PropertyAvailability>>(operation)
     }
 
     private suspend inline fun kgetAdditionalAvailabilityWithResponse(
@@ -678,10 +678,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Property>
      */
     fun execute(operation: GetAvailabilityOperation): Response<kotlin.collections.List<Property>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<Property>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<Property>>(operation)
     }
 
     private suspend inline fun kgetAvailabilityWithResponse(
@@ -926,10 +923,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyCalendarAvailability>
      */
     fun execute(operation: GetCalendarAvailabilityOperation): Response<kotlin.collections.List<PropertyCalendarAvailability>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<PropertyCalendarAvailability>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<PropertyCalendarAvailability>>(operation)
     }
 
     private suspend inline fun kgetCalendarAvailabilityWithResponse(
@@ -1012,10 +1006,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
      */
     fun execute(operation: GetChainReferenceOperation): Response<kotlin.collections.Map<kotlin.String, Chain>> {
-        return execute<
-            Nothing,
-            kotlin.collections.Map<kotlin.String, Chain>
-        >(operation)
+        return execute<Nothing, kotlin.collections.Map<kotlin.String, Chain>>(operation)
     }
 
     private suspend inline fun kgetChainReferenceWithResponse(
@@ -1104,10 +1095,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyInactive>
      */
     fun execute(operation: GetInactivePropertiesOperation): Response<kotlin.collections.List<PropertyInactive>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<PropertyInactive>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<PropertyInactive>>(operation)
     }
 
     private suspend inline fun kgetInactivePropertiesWithResponse(
@@ -1244,10 +1232,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type PaymentOption
      */
     fun execute(operation: GetPaymentOptionsOperation): Response<PaymentOption> {
-        return execute<
-            Nothing,
-            PaymentOption
-        >(operation)
+        return execute<Nothing, PaymentOption>(operation)
     }
 
     private suspend inline fun kgetPaymentOptionsWithResponse(
@@ -1330,10 +1315,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Link
      */
     fun execute(operation: GetPropertyCatalogFileOperation): Response<Link> {
-        return execute<
-            Nothing,
-            Link
-        >(operation)
+        return execute<Nothing, Link>(operation)
     }
 
     private suspend inline fun kgetPropertyCatalogFileWithResponse(
@@ -1434,10 +1416,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PropertyContent>
      */
     fun execute(operation: GetPropertyContentOperation): Response<kotlin.collections.Map<kotlin.String, PropertyContent>> {
-        return execute<
-            Nothing,
-            kotlin.collections.Map<kotlin.String, PropertyContent>
-        >(operation)
+        return execute<Nothing, kotlin.collections.Map<kotlin.String, PropertyContent>>(operation)
     }
 
     private suspend inline fun kgetPropertyContentWithResponse(
@@ -1836,10 +1815,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Link
      */
     fun execute(operation: GetPropertyContentFileOperation): Response<Link> {
-        return execute<
-            Nothing,
-            Link
-        >(operation)
+        return execute<Nothing, Link>(operation)
     }
 
     private suspend inline fun kgetPropertyContentFileWithResponse(
@@ -1940,10 +1916,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type GuestReviews
      */
     fun execute(operation: GetPropertyGuestReviewsOperation): Response<GuestReviews> {
-        return execute<
-            Nothing,
-            GuestReviews
-        >(operation)
+        return execute<Nothing, GuestReviews>(operation)
     }
 
     private suspend inline fun kgetPropertyGuestReviewsWithResponse(
@@ -2044,10 +2017,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Region
      */
     fun execute(operation: GetRegionOperation): Response<Region> {
-        return execute<
-            Nothing,
-            Region
-        >(operation)
+        return execute<Nothing, Region>(operation)
     }
 
     private suspend inline fun kgetRegionWithResponse(
@@ -2160,10 +2130,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Region>
      */
     fun execute(operation: GetRegionsOperation): Response<kotlin.collections.List<Region>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<Region>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<Region>>(operation)
     }
 
     private suspend inline fun kgetRegionsWithResponse(
@@ -2430,10 +2397,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Itinerary>
      */
     fun execute(operation: GetReservationOperation): Response<kotlin.collections.List<Itinerary>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<Itinerary>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<Itinerary>>(operation)
     }
 
     private suspend inline fun kgetReservationWithResponse(
@@ -2528,10 +2492,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Itinerary
      */
     fun execute(operation: GetReservationByItineraryIdOperation): Response<Itinerary> {
-        return execute<
-            Nothing,
-            Itinerary
-        >(operation)
+        return execute<Nothing, Itinerary>(operation)
     }
 
     private suspend inline fun kgetReservationByItineraryIdWithResponse(
@@ -2632,10 +2593,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
     fun execute(operation: PostGeographyOperation): Response<kotlin.collections.Map<kotlin.String, PropertyGeography>> {
-        return execute<
-            PropertiesGeoJsonRequest,
-            kotlin.collections.Map<kotlin.String, PropertyGeography>
-        >(operation)
+        return execute<PropertiesGeoJsonRequest, kotlin.collections.Map<kotlin.String, PropertyGeography>>(operation)
     }
 
     private suspend inline fun kpostGeographyWithResponse(
@@ -2742,10 +2700,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type ItineraryCreation
      */
     fun execute(operation: PostItineraryOperation): Response<ItineraryCreation> {
-        return execute<
-            CreateItineraryRequest,
-            ItineraryCreation
-        >(operation)
+        return execute<CreateItineraryRequest, ItineraryCreation>(operation)
     }
 
     private suspend inline fun kpostItineraryWithResponse(
@@ -2834,10 +2789,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type PaymentSessions
      */
     fun execute(operation: PostPaymentSessionsOperation): Response<PaymentSessions> {
-        return execute<
-            PaymentSessionsRequest,
-            PaymentSessions
-        >(operation)
+        return execute<PaymentSessionsRequest, PaymentSessions>(operation)
     }
 
     private suspend inline fun kpostPaymentSessionsWithResponse(
@@ -2926,10 +2878,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type RoomPriceCheck
      */
     fun execute(operation: PriceCheckOperation): Response<RoomPriceCheck> {
-        return execute<
-            Nothing,
-            RoomPriceCheck
-        >(operation)
+        return execute<Nothing, RoomPriceCheck>(operation)
     }
 
     private suspend inline fun kpriceCheckWithResponse(
@@ -3030,10 +2979,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type CompletePaymentSession
      */
     fun execute(operation: PutCompletePaymentSessionOperation): Response<CompletePaymentSession> {
-        return execute<
-            Nothing,
-            CompletePaymentSession
-        >(operation)
+        return execute<Nothing, CompletePaymentSession>(operation)
     }
 
     private suspend inline fun kputCompletePaymentSessionWithResponse(
@@ -3121,11 +3067,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Nothing
      */
-    fun execute(operation: PutResumeBookingOperation): Response<Nothing> {
-        return execute<
-            Nothing,
-            Nothing
-        >(operation)
+    fun execute(operation: PutResumeBookingOperation): EmptyResponse {
+        return executeWithEmptyResponse<Nothing>(operation)
     }
 
     private suspend inline fun kputResumeBookingWithResponse(
@@ -3213,11 +3156,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Nothing
      */
-    fun execute(operation: RequestTestNotificationOperation): Response<Nothing> {
-        return execute<
-            TestNotificationRequest,
-            Nothing
-        >(operation)
+    fun execute(operation: RequestTestNotificationOperation): EmptyResponse {
+        return executeWithEmptyResponse<TestNotificationRequest>(operation)
     }
 
     private suspend inline fun krequestTestNotificationWithResponse(
@@ -3306,10 +3246,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Notification>
      */
     fun execute(operation: RequestUndeliveredNotificationsOperation): Response<kotlin.collections.List<Notification>> {
-        return execute<
-            Nothing,
-            kotlin.collections.List<Notification>
-        >(operation)
+        return execute<Nothing, kotlin.collections.List<Notification>>(operation)
     }
 
     private suspend inline fun krequestUndeliveredNotificationsWithResponse(
