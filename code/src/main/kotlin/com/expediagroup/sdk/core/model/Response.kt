@@ -46,7 +46,10 @@ open class Response<T>(
             )
     }
 
-    override fun toString(): String = "Response(statusCode=$statusCode, data=$data, headers=$headers)"
+    override fun toString() = "Response(statusCode=$statusCode, data=$data, headers=$headers)"
+
+    @Deprecated("Use getData() instead", replaceWith = ReplaceWith("getData()"))
+    fun getBody() = data
 }
 
 class EmptyResponse(
