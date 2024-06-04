@@ -4,7 +4,7 @@ This repository contains examples of how to use the Expedia Group Rapid Java SDK
 
 ## Examples
 
-The example implementation provided in the examples package demonstrate different scenarios utilizing various RAPID APIs through the SDK:
+The example implementation provided in the examples package demonstrates different scenarios utilizing various RAPID APIs through the SDK:
 
 The scenarios below specifically demonstrate the usage of booking APIs:
 
@@ -27,7 +27,13 @@ More scenarios are included in the [examples package](src/main/java/com/expediag
 
 ## Running the Examples
 
-To run the examples, navigate to the `src/main/java/com/expediagroup/sdk/rapid/examples` directory and run the `RapidSdkDemoApplication.java` file. This application runs a series of scenarios demonstrating various functionalities of the RAPID SDK. Feel free to add or remove scenarios you want to run.
+To run the examples, run the application [`RapidSdkDemoApplication.java`](src/main/java/com/expediagroup/sdk/rapid/examples/RapidSdkDemoApplication.java). This application runs a series of scenarios demonstrating various functionalities of the RAPID SDK. To run a specific scenario, use the below code snippet:
+
+```java
+SomeScenario someScenario = new SomeScenario();
+someScenario.setProfile(new DefaultRapidPartnerProfile());
+someScenario.run();
+```
 
 ## License
 
