@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -89,7 +90,7 @@ data class RateItinerary(
     val refundableDamageDeposit: Amount? = null,
     @JsonProperty("pricing")
     @field:Valid
-    val pricing: PricingInformation? = null,
+    val pricing: PricingInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -108,7 +109,7 @@ data class RateItinerary(
         private var deposits: kotlin.collections.List<DepositItinerary>? = null,
         private var cardOnFileLimit: Amount? = null,
         private var refundableDamageDeposit: Amount? = null,
-        private var pricing: PricingInformation? = null,
+        private var pricing: PricingInformation? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -124,10 +125,7 @@ data class RateItinerary(
 
         fun cancelPenalties(cancelPenalties: kotlin.collections.List<CancelPenalty>?) = apply { this.cancelPenalties = cancelPenalties }
 
-        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) =
-            apply {
-                this.nonrefundableDateRanges = nonrefundableDateRanges
-            }
+        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) = apply { this.nonrefundableDateRanges = nonrefundableDateRanges }
 
         fun deposits(deposits: kotlin.collections.List<DepositItinerary>?) = apply { this.deposits = deposits }
 
@@ -150,7 +148,7 @@ data class RateItinerary(
                 deposits = deposits,
                 cardOnFileLimit = cardOnFileLimit,
                 refundableDamageDeposit = refundableDamageDeposit,
-                pricing = pricing,
+                pricing = pricing
             )
         }
     }

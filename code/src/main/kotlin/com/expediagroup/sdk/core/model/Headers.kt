@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ import com.expediagroup.sdk.core.constant.HeaderKey
 import io.ktor.http.Headers
 import io.ktor.http.HeadersBuilder
 
-internal fun Headers.getTransactionId(): String? = get(HeaderKey.TRANSACTION_ID)
+/** Get transaction id from headers. */
+fun Headers.getTransactionId(): String? = get(HeaderKey.TRANSACTION_ID)
 
-internal fun HeadersBuilder.getTransactionId(): String? = get(HeaderKey.TRANSACTION_ID)
+/** Get transaction id from headers builder. */
+fun HeadersBuilder.getTransactionId(): String? = get(HeaderKey.TRANSACTION_ID)

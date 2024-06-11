@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,13 +27,13 @@ internal data class LoggingConfiguration(
     val maskedLoggingHeaders: Set<String>,
     val maskedLoggingBodyFields: Set<String>,
     val level: LogLevel = LogLevel.ALL,
-    val getLogger: (client: Client) -> Logger = createCustomLogger,
+    val getLogger: (client: Client) -> Logger = createCustomLogger
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {
         fun from(
             httpClientConfig: HttpClientConfig<out HttpClientEngineConfig>,
             maskedLoggingHeaders: Set<String>,
-            maskedLoggingBodyFields: Set<String>,
+            maskedLoggingBodyFields: Set<String>
         ) = LoggingConfiguration(httpClientConfig, maskedLoggingHeaders, maskedLoggingBodyFields)
     }
 }

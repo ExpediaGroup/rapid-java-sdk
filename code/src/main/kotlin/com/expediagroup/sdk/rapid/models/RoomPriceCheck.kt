@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -79,7 +80,7 @@ data class RoomPriceCheck(
     val penalty: Charge? = null,
     @JsonProperty("trader_information")
     @field:Valid
-    val traderInformation: TraderInformation? = null,
+    val traderInformation: TraderInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -96,14 +97,11 @@ data class RoomPriceCheck(
         private var refund: Charge? = null,
         private var amountOwed: Charge? = null,
         private var penalty: Charge? = null,
-        private var traderInformation: TraderInformation? = null,
+        private var traderInformation: TraderInformation? = null
     ) {
         fun status(status: StatusPriceCheck?) = apply { this.status = status }
 
-        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) =
-            apply {
-                this.occupancyPricing = occupancyPricing
-            }
+        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) = apply { this.occupancyPricing = occupancyPricing }
 
         fun links(links: RoomPriceCheckLinks?) = apply { this.links = links }
 
@@ -132,7 +130,7 @@ data class RoomPriceCheck(
                 refund = refund,
                 amountOwed = amountOwed,
                 penalty = penalty,
-                traderInformation = traderInformation,
+                traderInformation = traderInformation
             )
         }
     }

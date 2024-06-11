@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -45,7 +46,7 @@ data class Charge(
     val billableCurrency: Amount? = null,
     @JsonProperty("request_currency")
     @field:Valid
-    val requestCurrency: Amount? = null,
+    val requestCurrency: Amount? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,7 +55,7 @@ data class Charge(
 
     class Builder(
         private var billableCurrency: Amount? = null,
-        private var requestCurrency: Amount? = null,
+        private var requestCurrency: Amount? = null
     ) {
         fun billableCurrency(billableCurrency: Amount?) = apply { this.billableCurrency = billableCurrency }
 
@@ -63,7 +64,7 @@ data class Charge(
         fun build(): Charge {
             return Charge(
                 billableCurrency = billableCurrency,
-                requestCurrency = requestCurrency,
+                requestCurrency = requestCurrency
             )
         }
     }

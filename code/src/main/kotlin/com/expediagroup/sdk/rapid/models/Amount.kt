@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class Amount(
     // Currency of the amount object.
     @JsonProperty("currency")
     @field:Valid
-    val currency: kotlin.String? = null,
+    val currency: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class Amount(
 
     class Builder(
         private var `value`: kotlin.String? = null,
-        private var currency: kotlin.String? = null,
+        private var currency: kotlin.String? = null
     ) {
         fun `value`(`value`: kotlin.String?) = apply { this.`value` = `value` }
 
@@ -65,7 +66,7 @@ data class Amount(
         fun build(): Amount {
             return Amount(
                 `value` = `value`,
-                currency = currency,
+                currency = currency
             )
         }
     }

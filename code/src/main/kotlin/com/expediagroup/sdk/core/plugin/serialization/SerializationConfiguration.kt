@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import io.ktor.http.ContentType
 
 internal data class SerializationConfiguration(
     override val httpClientConfiguration: HttpClientConfig<out HttpClientEngineConfig>,
-    val contentType: ContentType = ContentType.Application.Json,
+    val contentType: ContentType = ContentType.Application.Json
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {
         fun from(httpClientConfig: HttpClientConfig<out HttpClientEngineConfig>) = SerializationConfiguration(httpClientConfig)

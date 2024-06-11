@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -53,7 +54,7 @@ data class RoomPriceCheckLinks(
     val paymentSession: Link? = null,
     @JsonProperty("additional_rates")
     @field:Valid
-    val additionalRates: Link? = null,
+    val additionalRates: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -64,7 +65,7 @@ data class RoomPriceCheckLinks(
         private var book: Link? = null,
         private var commit: Link? = null,
         private var paymentSession: Link? = null,
-        private var additionalRates: Link? = null,
+        private var additionalRates: Link? = null
     ) {
         fun book(book: Link?) = apply { this.book = book }
 
@@ -79,7 +80,7 @@ data class RoomPriceCheckLinks(
                 book = book,
                 commit = commit,
                 paymentSession = paymentSession,
-                additionalRates = additionalRates,
+                additionalRates = additionalRates
             )
         }
     }

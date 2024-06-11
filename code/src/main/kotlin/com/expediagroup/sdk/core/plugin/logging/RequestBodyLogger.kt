@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@ import io.ktor.client.request.HttpSendPipeline
 import io.ktor.http.content.OutputStreamContent
 import io.ktor.util.AttributeKey
 import io.ktor.util.pipeline.PipelineContext
-import io.ktor.utils.io.ByteChannel
+import io.ktor.utils.io.writer
+import kotlinx.coroutines.coroutineScope
 
 internal class RequestBodyLogger {
     private val log = ExpediaGroupLoggerFactory.getLogger(javaClass)
@@ -35,7 +36,7 @@ internal class RequestBodyLogger {
 
         override fun install(
             plugin: RequestBodyLogger,
-            scope: HttpClient,
+            scope: HttpClient
         ) {
             scope.sendPipeline.intercept(HttpSendPipeline.Monitoring) {
                 val body: String = getBody()
@@ -47,9 +48,10 @@ internal class RequestBodyLogger {
         private suspend fun PipelineContext<Any, HttpRequestBuilder>.getBody(): String {
             val body = context.body
             if (body is OutputStreamContent) {
-                with(ByteChannel()) {
-                    body.writeTo(this)
-                    return readRemaining().readText()
+                return coroutineScope {
+                    writer {
+                        body.writeTo(channel)
+                    }.channel.readRemaining().readText()
                 }
             }
             return body.toString()

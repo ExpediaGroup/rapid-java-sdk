@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ sealed class BasePaginator<R, T>(
     private val client: Client,
     firstResponse: Response<T>,
     private val fallbackBody: T,
-    private val getBody: suspend (HttpResponse) -> T,
+    private val getBody: suspend (HttpResponse) -> T
 ) : Iterator<R> {
     private var state: ResponseState<T> = DefaultResponseState(firstResponse)
     val paginationTotalResults: Long = firstResponse.headers[PAGINATION_TOTAL_RESULTS]?.getOrNull(0)?.toLongOrNull() ?: 0
@@ -58,14 +58,14 @@ class Paginator<T>(
     client: Client,
     firstResponse: Response<T>,
     fallbackBody: T,
-    getBody: suspend (HttpResponse) -> T,
+    getBody: suspend (HttpResponse) -> T
 ) : BasePaginator<T, T>(client, firstResponse, fallbackBody, getBody) {
     /**
      * Returns the body of the next response.
      *
      * @throws NoSuchElementException if the iteration has no next element.
      */
-    override fun next(): T = nextResponse().body
+    override fun next(): T = nextResponse().data
 }
 
 /**
@@ -79,7 +79,7 @@ class ResponsePaginator<T>(
     client: Client,
     firstResponse: Response<T>,
     fallbackBody: T,
-    getBody: suspend (HttpResponse) -> T,
+    getBody: suspend (HttpResponse) -> T
 ) : BasePaginator<Response<T>, T>(client, firstResponse, fallbackBody, getBody) {
     /**
      * Returns the next response.

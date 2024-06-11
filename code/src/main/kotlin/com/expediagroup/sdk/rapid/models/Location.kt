@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -50,7 +51,7 @@ data class Location(
     // When this field is true, the `obfuscated_coordinates` must be used to display approximate location instead of the precise location of `coordinates`.
     @JsonProperty("obfuscation_required")
     @field:Valid
-    val obfuscationRequired: kotlin.Boolean? = null,
+    val obfuscationRequired: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +61,7 @@ data class Location(
     class Builder(
         private var coordinates: Coordinates? = null,
         private var obfuscatedCoordinates: Coordinates? = null,
-        private var obfuscationRequired: kotlin.Boolean? = null,
+        private var obfuscationRequired: kotlin.Boolean? = null
     ) {
         fun coordinates(coordinates: Coordinates?) = apply { this.coordinates = coordinates }
 
@@ -72,7 +73,7 @@ data class Location(
             return Location(
                 coordinates = coordinates,
                 obfuscatedCoordinates = obfuscatedCoordinates,
-                obfuscationRequired = obfuscationRequired,
+                obfuscationRequired = obfuscationRequired
             )
         }
     }

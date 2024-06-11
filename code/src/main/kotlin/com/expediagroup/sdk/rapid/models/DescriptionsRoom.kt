@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class DescriptionsRoom(
     // Provides an overview of a room.
     @JsonProperty("overview")
     @field:Valid
-    val overview: kotlin.String? = null,
+    val overview: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class DescriptionsRoom(
     }
 
     class Builder(
-        private var overview: kotlin.String? = null,
+        private var overview: kotlin.String? = null
     ) {
         fun overview(overview: kotlin.String?) = apply { this.overview = overview }
 
         fun build(): DescriptionsRoom {
             return DescriptionsRoom(
-                overview = overview,
+                overview = overview
             )
         }
     }

@@ -3,6 +3,14 @@ package com.expediagroup.sdk.rapid.examples;
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetListOfRegionNamesScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetRegionByAncestorIdScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetRegionDetailsAndPropertyIdsScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionAncestorsScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCategoriesScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCoordinatesScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionDescendantsScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionWithMultiPolygonCoordinatesScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +52,87 @@ public class RapidSdkDemoApplication {
         MultiRoomHoldAndResumeBookScenario multiRoomHoldAndResumeBookScenario = new MultiRoomHoldAndResumeBookScenario();
         multiRoomHoldAndResumeBookScenario.setProfile(new DefaultRapidPartnerProfile());
         multiRoomHoldAndResumeBookScenario.run();
+
+        /*  Run Get List of Region Names Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting all regions with details in a paginated manner
+            2. Filtering region names
+        */
+        logger.info("Running Get List of Region Names Scenario...");
+        GetListOfRegionNamesScenario getListOfRegionNamesScenario = new GetListOfRegionNamesScenario();
+        getListOfRegionNamesScenario.setProfile(new DefaultRapidPartnerProfile());
+        getListOfRegionNamesScenario.run();
+
+        /*  Run Get Region Name of Region Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting region details by region id
+            2. Accessing region details
+        */
+        logger.info("Running Get Region Name of Region Scenario...");
+        GetRegionDetailsAndPropertyIdsScenario getRegionNameOfRegionScenario = new GetRegionDetailsAndPropertyIdsScenario();
+        getRegionNameOfRegionScenario.setProfile(new DefaultRapidPartnerProfile());
+        getRegionNameOfRegionScenario.run();
+
+        /*  Run Get Region By Ancestor Id Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting paginated regions details by ancestor id
+            2. Accessing region details
+        */
+        logger.info("Running Get Region By Ancestor Id Scenario...");
+        GetRegionByAncestorIdScenario getRegionByAncestorIdScenario = new GetRegionByAncestorIdScenario();
+        getRegionByAncestorIdScenario.setProfile(new DefaultRapidPartnerProfile());
+        getRegionByAncestorIdScenario.run();
+
+        /*  Run Get Region With MultiPolygon Coordinates Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting region details with multipolygon coordinates by region id
+            2. Accessing region coordinates of type multipolygon
+            3. Accessing every polygon list of coordinates.
+        */
+        logger.info("Running Get Region With MultiPolygon Coordinates Scenario...");
+        ParseRegionWithMultiPolygonCoordinatesScenario parseRegionWithMultiPolygonCoordinatesScenario = new ParseRegionWithMultiPolygonCoordinatesScenario();
+        parseRegionWithMultiPolygonCoordinatesScenario.setProfile(new DefaultRapidPartnerProfile());
+        parseRegionWithMultiPolygonCoordinatesScenario.run();
+
+        /*  Run Parse Region Ancestors Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting region details with ancestors by region id
+            2. Parsing region ancestors
+        */
+        logger.info("Running Parse Region Ancestors Scenario...");
+        ParseRegionAncestorsScenario parseRegionAncestorsScenario = new ParseRegionAncestorsScenario();
+        parseRegionAncestorsScenario.setProfile(new DefaultRapidPartnerProfile());
+        parseRegionAncestorsScenario.run();
+
+        /*  Run Parse Region Descendants Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting region details with descendants by region id
+            2. Parsing region descendants
+        */
+        logger.info("Running Parse Region Descendants Scenario...");
+        ParseRegionDescendantsScenario parseRegionDescendantsScenario = new ParseRegionDescendantsScenario();
+        parseRegionDescendantsScenario.setProfile(new DefaultRapidPartnerProfile());
+        parseRegionDescendantsScenario.run();
+
+        /*  Run Parse Region Coordinates Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting region details with coordinates by region id
+            2. Parsing region coordinates
+        */
+        logger.info("Running Parse Region Coordinates Scenario...");
+        ParseRegionCoordinatesScenario parseRegionCoordinatesScenario = new ParseRegionCoordinatesScenario();
+        parseRegionCoordinatesScenario.setProfile(new DefaultRapidPartnerProfile());
+        parseRegionCoordinatesScenario.run();
+
+        /*  Run Parse Region Categories Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting region details with property ids by region id
+            2. Parsing region categories
+        */
+        logger.info("Running Parse Region Categories Scenario...");
+        ParseRegionCategoriesScenario parseRegionCategoriesScenario = new ParseRegionCategoriesScenario();
+        parseRegionCategoriesScenario.setProfile(new DefaultRapidPartnerProfile());
+        parseRegionCategoriesScenario.run();
 
     }
 }

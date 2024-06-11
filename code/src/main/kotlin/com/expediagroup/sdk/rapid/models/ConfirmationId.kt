@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -47,7 +48,7 @@ data class ConfirmationId(
     // The property confirmation id.
     @JsonProperty("property")
     @field:Valid
-    val `property`: kotlin.String? = null,
+    val `property`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,7 +57,7 @@ data class ConfirmationId(
 
     class Builder(
         private var expedia: kotlin.String? = null,
-        private var `property`: kotlin.String? = null,
+        private var `property`: kotlin.String? = null
     ) {
         fun expedia(expedia: kotlin.String?) = apply { this.expedia = expedia }
 
@@ -65,7 +66,7 @@ data class ConfirmationId(
         fun build(): ConfirmationId {
             return ConfirmationId(
                 expedia = expedia,
-                `property` = `property`,
+                `property` = `property`
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ internal typealias Operation = (String) -> String
  * @property operation The operation to perform on a string.
  */
 internal enum class Contract(val operation: Operation) {
-    TRAILING_SLASH({ if (it.endsWith("/")) it else "$it/" }),
+    TRAILING_SLASH({ if (it.endsWith("/")) it else "$it/" })
 }
 
 /**

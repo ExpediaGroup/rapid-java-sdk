@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models.exception
 
 import com.expediagroup.sdk.core.model.exception.client.ExpediaGroupClientException
@@ -25,5 +26,5 @@ import com.expediagroup.sdk.core.model.exception.client.ExpediaGroupClientExcept
  */
 class PropertyConstraintViolationException(
     message: String,
-    val constraintViolations: List<PropertyConstraintViolation>,
+    val constraintViolations: List<PropertyConstraintViolation>
 ) : ExpediaGroupClientException("$message ${constraintViolations.joinToString(separator = ",\n\t- ", prefix = "[\n\t- ", postfix = "\n]")}")

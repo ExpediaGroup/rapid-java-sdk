@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -46,7 +47,7 @@ data class CommitChangeRoomRequestBody(
     val changeReferenceId: kotlin.String? = null,
     @JsonProperty("payments")
     @field:Valid
-    val payments: kotlin.collections.List<PaymentRequestWithPhone>? = null,
+    val payments: kotlin.collections.List<PaymentRequestWithPhone>? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,7 +56,7 @@ data class CommitChangeRoomRequestBody(
 
     class Builder(
         private var changeReferenceId: kotlin.String? = null,
-        private var payments: kotlin.collections.List<PaymentRequestWithPhone>? = null,
+        private var payments: kotlin.collections.List<PaymentRequestWithPhone>? = null
     ) {
         fun changeReferenceId(changeReferenceId: kotlin.String?) = apply { this.changeReferenceId = changeReferenceId }
 
@@ -64,7 +65,7 @@ data class CommitChangeRoomRequestBody(
         fun build(): CommitChangeRoomRequestBody {
             return CommitChangeRoomRequestBody(
                 changeReferenceId = changeReferenceId,
-                payments = payments,
+                payments = payments
             )
         }
     }

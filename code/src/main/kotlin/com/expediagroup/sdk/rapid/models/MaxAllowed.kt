@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class MaxAllowed(
     // Maximum number of adults allowed.
     @JsonProperty("adults")
     @field:Valid
-    val adults: java.math.BigDecimal? = null,
+    val adults: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class MaxAllowed(
     class Builder(
         private var total: java.math.BigDecimal? = null,
         private var children: java.math.BigDecimal? = null,
-        private var adults: java.math.BigDecimal? = null,
+        private var adults: java.math.BigDecimal? = null
     ) {
         fun total(total: java.math.BigDecimal?) = apply { this.total = total }
 
@@ -74,7 +75,7 @@ data class MaxAllowed(
             return MaxAllowed(
                 total = total,
                 children = children,
-                adults = adults,
+                adults = adults
             )
         }
     }

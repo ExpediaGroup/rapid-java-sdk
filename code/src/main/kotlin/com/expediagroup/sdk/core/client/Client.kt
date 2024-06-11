@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ val DEFAULT_HTTP_CLIENT_ENGINE: HttpClientEngine =
  */
 abstract class Client(
     namespace: String,
-    environmentProvider: EnvironmentProvider = DefaultEnvironmentProvider(namespace),
+    environmentProvider: EnvironmentProvider = DefaultEnvironmentProvider(namespace)
 ) : EnvironmentProvider by environmentProvider {
     private val httpHandler = DefaultHttpHandler(environmentProvider)
 
@@ -80,7 +80,7 @@ abstract class Client(
     internal fun buildHttpClient(
         configurationProvider: ConfigurationProvider,
         authenticationType: AuthenticationStrategy.AuthenticationType,
-        httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE,
+        httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE
     ): HttpClient =
         HttpClient(httpClientEngine) {
             val httpClientConfig = this
@@ -89,18 +89,9 @@ abstract class Client(
             val secret: String = configurationProvider.secret ?: fireMissingConfigurationIssue(ConfigurationName.SECRET)
             val endpoint: String = configurationProvider.endpoint ?: fireMissingConfigurationIssue(ConfigurationName.ENDPOINT)
             val authEndpoint: String = configurationProvider.authEndpoint ?: fireMissingConfigurationIssue(ConfigurationName.AUTH_ENDPOINT)
-            val requestTimeout: Long =
-                configurationProvider.requestTimeout ?: fireMissingConfigurationIssue(
-                    ConfigurationName.REQUEST_TIMEOUT_MILLIS,
-                )
-            val connectionTimeout: Long =
-                configurationProvider.connectionTimeout ?: fireMissingConfigurationIssue(
-                    ConfigurationName.CONNECTION_TIMEOUT_MILLIS,
-                )
-            val socketTimeout: Long =
-                configurationProvider.socketTimeout ?: fireMissingConfigurationIssue(
-                    ConfigurationName.SOCKET_TIMEOUT_MILLIS,
-                )
+            val requestTimeout: Long = configurationProvider.requestTimeout ?: fireMissingConfigurationIssue(ConfigurationName.REQUEST_TIMEOUT_MILLIS)
+            val connectionTimeout: Long = configurationProvider.connectionTimeout ?: fireMissingConfigurationIssue(ConfigurationName.CONNECTION_TIMEOUT_MILLIS)
+            val socketTimeout: Long = configurationProvider.socketTimeout ?: fireMissingConfigurationIssue(ConfigurationName.SOCKET_TIMEOUT_MILLIS)
             val maskedLoggingHeaders: Set<String> = configurationProvider.maskedLoggingHeaders ?: setOf()
             val maskedLoggingBodyFields: Set<String> = configurationProvider.maskedLoggingBodyFields ?: setOf()
 
@@ -109,7 +100,7 @@ abstract class Client(
                     httpClientConfig,
                     Credentials.from(key, secret),
                     authEndpoint,
-                    authenticationType,
+                    authenticationType
                 )
 
             plugins {
@@ -118,9 +109,7 @@ abstract class Client(
                 use(AuthenticationPlugin).with(authenticationConfiguration)
                 use(DefaultRequestPlugin).with(DefaultRequestConfiguration.from(httpClientConfig, endpoint))
                 use(EncodingPlugin).with(EncodingConfiguration.from(httpClientConfig))
-                use(
-                    HttpTimeoutPlugin,
-                ).with(HttpTimeoutConfiguration.from(httpClientConfig, requestTimeout, connectionTimeout, socketTimeout))
+                use(HttpTimeoutPlugin).with(HttpTimeoutConfiguration.from(httpClientConfig, requestTimeout, connectionTimeout, socketTimeout))
                 use(ExceptionHandlingPlugin).with(ExceptionHandlingConfiguration.from(httpClientConfig))
             }
 
@@ -130,8 +119,7 @@ abstract class Client(
         }
 
     /** Throw an exception if the configuration is missing. */
-    private fun fireMissingConfigurationIssue(configurationKey: String): Nothing =
-        throw ExpediaGroupConfigurationException(getMissingRequiredConfigurationMessage(configurationKey))
+    private fun fireMissingConfigurationIssue(configurationKey: String): Nothing = throw ExpediaGroupConfigurationException(getMissingRequiredConfigurationMessage(configurationKey))
 
     private fun isNotSuccessfulResponse(response: HttpResponse) = response.status.value !in Constant.SUCCESSFUL_STATUS_CODES_RANGE
 
@@ -145,7 +133,7 @@ abstract class Client(
 
     abstract suspend fun throwServiceException(
         response: HttpResponse,
-        operationId: String,
+        operationId: String
     )
 
     suspend fun performGet(url: String): HttpResponse = httpHandler.performGet(httpClient, url)
@@ -237,12 +225,7 @@ abstract class Client(
          */
         fun requestTimeout(milliseconds: Long): SELF {
             this.requestTimeout = milliseconds
-            log.info(
-                LoggingMessageProvider.getRuntimeConfigurationProviderMessage(
-                    ConfigurationName.REQUEST_TIMEOUT_MILLIS,
-                    milliseconds.toString(),
-                ),
-            )
+            log.info(LoggingMessageProvider.getRuntimeConfigurationProviderMessage(ConfigurationName.REQUEST_TIMEOUT_MILLIS, milliseconds.toString()))
             return self()
         }
 
@@ -256,12 +239,7 @@ abstract class Client(
          */
         fun connectionTimeout(milliseconds: Long): SELF {
             this.connectionTimeout = milliseconds
-            log.info(
-                LoggingMessageProvider.getRuntimeConfigurationProviderMessage(
-                    ConfigurationName.CONNECTION_TIMEOUT_MILLIS,
-                    milliseconds.toString(),
-                ),
-            )
+            log.info(LoggingMessageProvider.getRuntimeConfigurationProviderMessage(ConfigurationName.CONNECTION_TIMEOUT_MILLIS, milliseconds.toString()))
             return self()
         }
 
@@ -275,12 +253,7 @@ abstract class Client(
          */
         fun socketTimeout(milliseconds: Long): SELF {
             this.socketTimeout = milliseconds
-            log.info(
-                LoggingMessageProvider.getRuntimeConfigurationProviderMessage(
-                    ConfigurationName.SOCKET_TIMEOUT_MILLIS,
-                    milliseconds.toString(),
-                ),
-            )
+            log.info(LoggingMessageProvider.getRuntimeConfigurationProviderMessage(ConfigurationName.SOCKET_TIMEOUT_MILLIS, milliseconds.toString()))
             return self()
         }
 
@@ -292,12 +265,7 @@ abstract class Client(
          */
         fun maskedLoggingHeaders(vararg headers: String): SELF {
             this.maskedLoggingHeaders = headers.toSet()
-            log.info(
-                LoggingMessageProvider.getRuntimeConfigurationProviderMessage(
-                    ConfigurationName.MASKED_LOGGING_HEADERS,
-                    headers.joinToString(),
-                ),
-            )
+            log.info(LoggingMessageProvider.getRuntimeConfigurationProviderMessage(ConfigurationName.MASKED_LOGGING_HEADERS, headers.joinToString()))
             return self()
         }
 
@@ -309,12 +277,7 @@ abstract class Client(
          */
         fun maskedLoggingBodyFields(vararg fields: String): SELF {
             this.maskedLoggingBodyFields = fields.toSet()
-            log.info(
-                LoggingMessageProvider.getRuntimeConfigurationProviderMessage(
-                    ConfigurationName.MASKED_LOGGING_BODY_FIELDS,
-                    fields.joinToString(),
-                ),
-            )
+            log.info(LoggingMessageProvider.getRuntimeConfigurationProviderMessage(ConfigurationName.MASKED_LOGGING_BODY_FIELDS, fields.joinToString()))
             return self()
         }
 

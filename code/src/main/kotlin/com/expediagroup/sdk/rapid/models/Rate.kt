@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -120,7 +121,7 @@ data class Rate(
     // Array of deposits for the rate.
     @JsonProperty("deposits")
     @field:Valid
-    val deposits: kotlin.collections.List<Deposit>? = null,
+    val deposits: kotlin.collections.List<Deposit>? = null
 ) {
     companion object {
         @JvmStatic
@@ -145,7 +146,7 @@ data class Rate(
         private var promotions: Promotions? = null,
         private var cardOnFileLimit: Amount? = null,
         private var refundableDamageDeposit: Amount? = null,
-        private var deposits: kotlin.collections.List<Deposit>? = null,
+        private var deposits: kotlin.collections.List<Deposit>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -169,20 +170,11 @@ data class Rate(
 
         fun cancelPenalties(cancelPenalties: kotlin.collections.List<CancelPenalty>?) = apply { this.cancelPenalties = cancelPenalties }
 
-        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) =
-            apply {
-                this.nonrefundableDateRanges = nonrefundableDateRanges
-            }
+        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) = apply { this.nonrefundableDateRanges = nonrefundableDateRanges }
 
-        fun marketingFeeIncentives(marketingFeeIncentives: kotlin.collections.List<MarketingFeeIncentive>?) =
-            apply {
-                this.marketingFeeIncentives = marketingFeeIncentives
-            }
+        fun marketingFeeIncentives(marketingFeeIncentives: kotlin.collections.List<MarketingFeeIncentive>?) = apply { this.marketingFeeIncentives = marketingFeeIncentives }
 
-        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) =
-            apply {
-                this.occupancyPricing = occupancyPricing
-            }
+        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) = apply { this.occupancyPricing = occupancyPricing }
 
         fun promotions(promotions: Promotions?) = apply { this.promotions = promotions }
 
@@ -211,7 +203,7 @@ data class Rate(
                 promotions = promotions,
                 cardOnFileLimit = cardOnFileLimit,
                 refundableDamageDeposit = refundableDamageDeposit,
-                deposits = deposits,
+                deposits = deposits
             )
         }
     }

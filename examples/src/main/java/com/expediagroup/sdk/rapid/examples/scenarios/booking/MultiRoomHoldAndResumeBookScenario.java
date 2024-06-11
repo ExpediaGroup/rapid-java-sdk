@@ -22,6 +22,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
 
     private static final Logger logger = LoggerFactory.getLogger(MultiRoomHoldAndResumeBookScenario.class);
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
+    private ShopService shopService = new ShopService();
 
     @Override
     public void setProfile(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
@@ -38,8 +39,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
          */
         logger.info("Getting property availability for test property: [{}]", Constants.TEST_PROPERTY_ID);
         List<String> occupancy = Arrays.asList("2", "2");
-        ShopService shopService = new ShopService();
-        List<Property> propertyAvailabilityList = shopService.getMultipleRoomsPropertiesAvailability(this.rapidPartnerSalesProfile, occupancy);
+        List<Property> propertyAvailabilityList = shopService.getMultipleRoomsPropertiesAvailability(this.rapidPartnerSalesProfile, occupancy).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             logger.error("No property availability found for the test property.");
@@ -55,7 +55,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
         PropertyAvailability propertyAvailability = (PropertyAvailability) propertyAvailabilityList.get(0);
         RoomPriceCheck roomPriceCheck = null;
 
-        roomPriceCheck = shopService.checkRoomPrices(propertyAvailability);
+        roomPriceCheck = shopService.checkRoomPrices(propertyAvailability, 0, 0).getData();
         logger.info("Room price check status: [{}]", roomPriceCheck.getStatus());
 
         /*
@@ -66,7 +66,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
          */
         logger.info("Booking 2 rooms with [hold=true] in test property: [{}]...", Constants.TEST_PROPERTY_ID);
         BookService bookService = new BookService();
-        ItineraryCreation itineraryCreation = bookService.createBookingWithHold(roomPriceCheck, occupancy);
+        ItineraryCreation itineraryCreation = bookService.createBookingWithHold(roomPriceCheck, occupancy).getData();
         logger.info("Booking with hold Success. Itinerary id: [{}]. Link to resume booking: [{}]",
                 itineraryCreation.getItineraryId(), itineraryCreation.getLinks().getResume().getHref());
 
@@ -78,7 +78,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
         // Make a retrieve call to verify the booking has been resumed properly.
         logger.info("Getting itinerary by itinerary id: [{}] to verify the booking has been resumed successfully...",
                 itineraryCreation.getItineraryId());
-        Itinerary itinerary = bookService.getReservationByItineraryId(itineraryCreation);
+        Itinerary itinerary = bookService.getReservationByItineraryId(itineraryCreation).getData();
 
         logger.info("Itinerary rooms status after resume booking:");
         itinerary.getRooms().forEach(room ->

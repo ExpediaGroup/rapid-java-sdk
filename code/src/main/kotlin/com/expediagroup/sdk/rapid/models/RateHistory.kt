@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -59,7 +60,7 @@ data class RateHistory(
     val deposits: kotlin.collections.List<DepositItinerary>? = null,
     @JsonProperty("pricing")
     @field:Valid
-    val pricing: PricingInformation? = null,
+    val pricing: PricingInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -71,7 +72,7 @@ data class RateHistory(
         private var promotions: PromotionsItinerary? = null,
         private var cancelPenalties: kotlin.collections.List<CancelPenalty>? = null,
         private var deposits: kotlin.collections.List<DepositItinerary>? = null,
-        private var pricing: PricingInformation? = null,
+        private var pricing: PricingInformation? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -89,7 +90,7 @@ data class RateHistory(
                 promotions = promotions,
                 cancelPenalties = cancelPenalties,
                 deposits = deposits,
-                pricing = pricing,
+                pricing = pricing
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,12 +27,12 @@ internal object LoggingPlugin : Plugin<LoggingConfiguration> {
 
     override fun install(
         client: Client,
-        configurations: LoggingConfiguration,
+        configurations: LoggingConfiguration
     ) {
         clientLoggingMaskedFieldsProviders[client] =
             LoggingMaskedFieldsProvider(
                 configurations.maskedLoggingHeaders,
-                configurations.maskedLoggingBodyFields,
+                configurations.maskedLoggingBodyFields
             )
         configurations.httpClientConfiguration.install(Logging) {
             logger = configurations.getLogger(client)
@@ -41,12 +41,10 @@ internal object LoggingPlugin : Plugin<LoggingConfiguration> {
                 client.getLoggingMaskedFieldsProvider().getMaskedHeaderFields().contains(header)
             }
         }
-        // configurations.httpClientConfiguration.install(RequestBodyLogger)
+        configurations.httpClientConfiguration.install(RequestBodyLogger)
         configurations.httpClientConfiguration.install(ResponseBodyLogger)
     }
 }
 
 internal fun Client.getLoggingMaskedFieldsProvider(): LoggingMaskedFieldsProvider =
-    LoggingPlugin.clientLoggingMaskedFieldsProviders[this] ?: throw ExpediaGroupClientException(
-        ExceptionMessage.LOGGING_MASKED_FIELDS_NOT_CONFIGURED_FOR_CLIENT,
-    )
+    LoggingPlugin.clientLoggingMaskedFieldsProviders[this] ?: throw ExpediaGroupClientException(ExceptionMessage.LOGGING_MASKED_FIELDS_NOT_CONFIGURED_FOR_CLIENT)

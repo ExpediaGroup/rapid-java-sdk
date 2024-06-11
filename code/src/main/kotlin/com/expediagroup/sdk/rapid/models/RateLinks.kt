@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -41,7 +42,7 @@ import javax.validation.Valid
 data class RateLinks(
     @JsonProperty("payment_options")
     @field:Valid
-    val paymentOptions: Link? = null,
+    val paymentOptions: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -49,13 +50,13 @@ data class RateLinks(
     }
 
     class Builder(
-        private var paymentOptions: Link? = null,
+        private var paymentOptions: Link? = null
     ) {
         fun paymentOptions(paymentOptions: Link?) = apply { this.paymentOptions = paymentOptions }
 
         fun build(): RateLinks {
             return RateLinks(
-                paymentOptions = paymentOptions,
+                paymentOptions = paymentOptions
             )
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,6 @@ package com.expediagroup.sdk.core.model.exception.service
 import com.expediagroup.sdk.core.constant.provider.LoggingMessageProvider.getTransactionIdMessage
 
 abstract class ExpediaGroupApiException(val statusCode: Int, open val errorObject: Any, transactionId: String?) :
-    ExpediaGroupServiceException(
-        "Unsuccessful response code [$statusCode]${getTransactionIdMessage(transactionId)}${stringifyErrorObject(errorObject.toString())}",
-        transactionId = transactionId,
-    )
+    ExpediaGroupServiceException("Unsuccessful response code [$statusCode]${getTransactionIdMessage(transactionId)}${stringifyErrorObject(errorObject.toString())}", transactionId = transactionId)
 
-private fun stringifyErrorObject(stringValue: String): String =
-    if (stringValue.isBlank()) " with an empty response body" else ": $stringValue"
+private fun stringifyErrorObject(stringValue: String): String = if (stringValue.isBlank()) " with an empty response body" else ": $stringValue"

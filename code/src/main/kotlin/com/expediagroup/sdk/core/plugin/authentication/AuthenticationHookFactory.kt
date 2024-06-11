@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 internal object AuthenticationHookFactory : HookFactory<AuthenticationConfiguration> {
     override fun create(
         client: Client,
-        configuration: AuthenticationConfiguration,
+        configuration: AuthenticationConfiguration
     ): Hook<AuthenticationConfiguration> {
         return Hook(configuration, AuthenticationHookBuilder(client))
     }

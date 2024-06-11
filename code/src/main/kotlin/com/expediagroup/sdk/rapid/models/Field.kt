@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -52,7 +53,7 @@ data class Field(
     // The value of the field that had an error.
     @JsonProperty("value")
     @field:Valid
-    val `value`: kotlin.String? = null,
+    val `value`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +63,7 @@ data class Field(
     class Builder(
         private var name: kotlin.String? = null,
         private var type: kotlin.String? = null,
-        private var `value`: kotlin.String? = null,
+        private var `value`: kotlin.String? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -74,7 +75,7 @@ data class Field(
             return Field(
                 name = name,
                 type = type,
-                `value` = `value`,
+                `value` = `value`
             )
         }
     }

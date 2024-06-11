@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -42,7 +43,7 @@ data class PromotionsItinerary(
     // Promotions provided by the property that add value to the stay, but don’t affect the booking price (i.e., ski lift tickets or premium wifi).
     @JsonProperty("value_adds")
     @field:Valid
-    val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
+    val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null
 ) {
     companion object {
         @JvmStatic
@@ -50,13 +51,13 @@ data class PromotionsItinerary(
     }
 
     class Builder(
-        private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
+        private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null
     ) {
         fun valueAdds(valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>?) = apply { this.valueAdds = valueAdds }
 
         fun build(): PromotionsItinerary {
             return PromotionsItinerary(
-                valueAdds = valueAdds,
+                valueAdds = valueAdds
             )
         }
     }

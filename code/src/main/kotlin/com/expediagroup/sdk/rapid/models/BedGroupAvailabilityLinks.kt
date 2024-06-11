@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -41,7 +42,7 @@ import javax.validation.Valid
 data class BedGroupAvailabilityLinks(
     @JsonProperty("price_check")
     @field:Valid
-    val priceCheck: Link? = null,
+    val priceCheck: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -49,13 +50,13 @@ data class BedGroupAvailabilityLinks(
     }
 
     class Builder(
-        private var priceCheck: Link? = null,
+        private var priceCheck: Link? = null
     ) {
         fun priceCheck(priceCheck: Link?) = apply { this.priceCheck = priceCheck }
 
         fun build(): BedGroupAvailabilityLinks {
             return BedGroupAvailabilityLinks(
-                priceCheck = priceCheck,
+                priceCheck = priceCheck
             )
         }
     }

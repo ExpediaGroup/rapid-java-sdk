@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -69,7 +70,7 @@ data class PaymentSessionsRequest(
     val customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails,
     @JsonProperty("payments")
     @field:Valid
-    val payments: kotlin.collections.List<PaymentRequest>,
+    val payments: kotlin.collections.List<PaymentRequest>
 ) {
     companion object {
         @JvmStatic
@@ -83,7 +84,7 @@ data class PaymentSessionsRequest(
         private var preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize? = null,
         private var merchantUrl: kotlin.String? = null,
         private var customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails? = null,
-        private var payments: kotlin.collections.List<PaymentRequest>? = null,
+        private var payments: kotlin.collections.List<PaymentRequest>? = null
     ) {
         fun version(version: kotlin.String) = apply { this.version = version }
 
@@ -91,17 +92,11 @@ data class PaymentSessionsRequest(
 
         fun encodedBrowserMetadata(encodedBrowserMetadata: kotlin.String) = apply { this.encodedBrowserMetadata = encodedBrowserMetadata }
 
-        fun preferredChallengeWindowSize(preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize) =
-            apply {
-                this.preferredChallengeWindowSize = preferredChallengeWindowSize
-            }
+        fun preferredChallengeWindowSize(preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize) = apply { this.preferredChallengeWindowSize = preferredChallengeWindowSize }
 
         fun merchantUrl(merchantUrl: kotlin.String) = apply { this.merchantUrl = merchantUrl }
 
-        fun customerAccountDetails(customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails) =
-            apply {
-                this.customerAccountDetails = customerAccountDetails
-            }
+        fun customerAccountDetails(customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails) = apply { this.customerAccountDetails = customerAccountDetails }
 
         fun payments(payments: kotlin.collections.List<PaymentRequest>) = apply { this.payments = payments }
 
@@ -115,7 +110,7 @@ data class PaymentSessionsRequest(
                 preferredChallengeWindowSize = preferredChallengeWindowSize!!,
                 merchantUrl = merchantUrl!!,
                 customerAccountDetails = customerAccountDetails!!,
-                payments = payments!!,
+                payments = payments!!
             )
         }
 
@@ -162,6 +157,6 @@ data class PaymentSessionsRequest(
         LARGE("large"),
 
         @JsonProperty("full_screen")
-        FULL_SCREEN("full_screen"),
+        FULL_SCREEN("full_screen")
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import io.ktor.http.HttpStatusCode
 class ExpediaGroupAuthException(
     message: String? = null,
     cause: Throwable? = null,
-    transactionId: String? = null,
+    transactionId: String? = null
 ) : ExpediaGroupServiceException(message, cause, transactionId) {
     /**
      * An exception that is thrown when an authentication error occurs.
@@ -38,6 +38,6 @@ class ExpediaGroupAuthException(
     constructor(
         errorCode: HttpStatusCode,
         message: String,
-        transactionId: String?,
+        transactionId: String?
     ) : this(message = "[${errorCode.value}] $message", transactionId = transactionId)
 }

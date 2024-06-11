@@ -19,6 +19,7 @@ import java.util.List;
 public class SingleRoomBookScenario implements RapidScenario {
 
     private static final Logger logger = LoggerFactory.getLogger(SingleRoomBookScenario.class);
+    private ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
     @Override
@@ -31,8 +32,8 @@ public class SingleRoomBookScenario implements RapidScenario {
 
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
-        ShopService shopService = new ShopService();
-        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile);
+
+        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             logger.error("No property availability found for the test property.");
@@ -48,7 +49,7 @@ public class SingleRoomBookScenario implements RapidScenario {
 
         if (property instanceof PropertyAvailability) {
             PropertyAvailability propertyAvailability = (PropertyAvailability) property;
-            roomPriceCheck = shopService.checkRoomPrices(propertyAvailability);
+            roomPriceCheck = shopService.checkRoomPrices(propertyAvailability, 0, 0).getData();
             logger.info("Room Price Check: {}", roomPriceCheck.getStatus());
         }
 
@@ -56,13 +57,13 @@ public class SingleRoomBookScenario implements RapidScenario {
         logger.info("Booking a room in test property: {}...", Constants.TEST_PROPERTY_ID);
 
         BookService bookService = new BookService();
-        ItineraryCreation itineraryCreation = bookService.createBooking(roomPriceCheck, Arrays.asList("2"));
+        ItineraryCreation itineraryCreation = bookService.createBooking(roomPriceCheck, Arrays.asList("2")).getData();
 
         logger.info("Booking Success. Itinerary id: {}", itineraryCreation.getItineraryId());
 
         // Manage booking
         logger.info("Getting itinerary by itinerary id...");
-        Itinerary itinerary = bookService.getReservationByItineraryId(itineraryCreation);
+        Itinerary itinerary = bookService.getReservationByItineraryId(itineraryCreation).getData();
         logger.info("Itinerary: {}", itinerary.getItineraryId());
     }
 }

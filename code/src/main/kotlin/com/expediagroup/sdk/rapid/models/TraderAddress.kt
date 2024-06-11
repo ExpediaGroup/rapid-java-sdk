@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -72,7 +73,7 @@ data class TraderAddress(
     // Customer's country code, in two-letter ISO 3166-1 alpha-2 format.
     @JsonProperty("country_code")
     @field:Valid
-    val countryCode: kotlin.String? = null,
+    val countryCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -86,7 +87,7 @@ data class TraderAddress(
         private var city: kotlin.String? = null,
         private var stateProvinceCode: kotlin.String? = null,
         private var postalCode: kotlin.String? = null,
-        private var countryCode: kotlin.String? = null,
+        private var countryCode: kotlin.String? = null
     ) {
         fun line1(line1: kotlin.String?) = apply { this.line1 = line1 }
 
@@ -110,7 +111,7 @@ data class TraderAddress(
                 city = city,
                 stateProvinceCode = stateProvinceCode,
                 postalCode = postalCode,
-                countryCode = countryCode,
+                countryCode = countryCode
             )
         }
     }

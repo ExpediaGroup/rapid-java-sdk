@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 Expedia, Inc.
+ * Copyright (C) 2022 Expedia, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.models
 
 /*
@@ -189,7 +190,7 @@ data class PropertyContent(
     // The supply source of the property.
     @JsonProperty("supply_source")
     @field:Valid
-    val supplySource: kotlin.String? = null,
+    val supplySource: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -230,7 +231,7 @@ data class PropertyContent(
         private var multiUnit: kotlin.Boolean? = null,
         private var paymentRegistrationRecommended: kotlin.Boolean? = null,
         private var vacationRentalDetails: VacationRentalDetails? = null,
-        private var supplySource: kotlin.String? = null,
+        private var supplySource: kotlin.String? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -290,20 +291,13 @@ data class PropertyContent(
 
         fun brand(brand: Brand?) = apply { this.brand = brand }
 
-        fun spokenLanguages(spokenLanguages: kotlin.collections.Map<kotlin.String, SpokenLanguage>?) =
-            apply {
-                this.spokenLanguages = spokenLanguages
-            }
+        fun spokenLanguages(spokenLanguages: kotlin.collections.Map<kotlin.String, SpokenLanguage>?) = apply { this.spokenLanguages = spokenLanguages }
 
         fun multiUnit(multiUnit: kotlin.Boolean?) = apply { this.multiUnit = multiUnit }
 
-        fun paymentRegistrationRecommended(paymentRegistrationRecommended: kotlin.Boolean?) =
-            apply {
-                this.paymentRegistrationRecommended = paymentRegistrationRecommended
-            }
+        fun paymentRegistrationRecommended(paymentRegistrationRecommended: kotlin.Boolean?) = apply { this.paymentRegistrationRecommended = paymentRegistrationRecommended }
 
-        fun vacationRentalDetails(vacationRentalDetails: VacationRentalDetails?) =
-            apply { this.vacationRentalDetails = vacationRentalDetails }
+        fun vacationRentalDetails(vacationRentalDetails: VacationRentalDetails?) = apply { this.vacationRentalDetails = vacationRentalDetails }
 
         fun supplySource(supplySource: kotlin.String?) = apply { this.supplySource = supplySource }
 
@@ -342,7 +336,7 @@ data class PropertyContent(
                 multiUnit = multiUnit,
                 paymentRegistrationRecommended = paymentRegistrationRecommended,
                 vacationRentalDetails = vacationRentalDetails,
-                supplySource = supplySource,
+                supplySource = supplySource
             )
         }
     }
