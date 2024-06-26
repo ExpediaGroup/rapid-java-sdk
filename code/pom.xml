@@ -64,7 +64,7 @@
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-dependency-plugin.version>3.6.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
-        <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
@@ -78,7 +78,7 @@
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
         <kotlin.version>2.0.0</kotlin.version>
         <kotlinx.coroutines.version>1.8.1</kotlinx.coroutines.version>
-        <ktor.version>2.3.11</ktor.version>
+        <ktor.version>2.3.12</ktor.version>
         <kotlin-atomic.version>0.24.0</kotlin-atomic.version>
         <slf4j.version>2.0.13</slf4j.version>
     </properties>
