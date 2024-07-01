@@ -42,7 +42,7 @@ jobs:
           fi
           
           mkdir previous-versions
-          find . -maxdepth -type d 1 ! -path ./previous-versions ! -path . -exec mv {} ./previous-versions \;
+          find . -type d -maxdepth 1 ! -path ./previous-versions ! -path . -exec mv {} ./previous-versions \;
           
           git checkout $CURRENT_BRANCH -- previous-versions
 
