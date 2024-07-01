@@ -23,15 +23,7 @@ jobs:
           distribution: 'corretto'
           java-version: '21'
 
-      - run: mvn -f code dokka:dokka
-
-      - name: Download resources
-        run: |
-          git fetch origin main
-          mkdir -p ${{ runner.temp }}/resources
-          cp .github/workflows/resources/docs-home-template.html ${{ runner.temp }}/resources/docs-home-template.html
-
-      - name: Prepare for deployment
+      - name: Pull Previous Versions Docs
         run: |
           git config --global user.email "oss@expediagroup.com"
           git config --global user.name "eg-oss-ci"
@@ -39,12 +31,9 @@ jobs:
           CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           
           git fetch --all
-          mkdir -p docs/${{ github.event.inputs.version }}
-          mv code/target/dokka/* docs/${{ github.event.inputs.version }}
-          git add .
-          git commit -m "chore: publishing docs for version ${{ github.event.inputs.version }}"
           
           BRANCH_EXISTS=$(git ls-remote --heads origin gh-pages | wc -l)
+          
           if [ "$BRANCH_EXISTS" -eq 0 ]; then
             git checkout --orphan gh-pages
           else
@@ -52,34 +41,30 @@ jobs:
             git pull origin gh-pages
           fi
           
-          git checkout $CURRENT_BRANCH -- docs
-          mv docs/* .
+          mkdir previous-versions
+          find . -maxdepth -type d 1 ! -path ./previous-versions ! -path . -exec mv {} ./previous-versions \;
+          
+          git checkout $CURRENT_BRANCH -- previous-versions
 
-      - name: Build Index Page
+      - name: Generate new docs
         run: |
-          rm -rf docs code
-          touch index.html
-          LIST_ITEMS=""
-          for dir in $(ls -d */ | sort -rV); do
-            if [ "$dir" != "${{ github.event.inputs.version }}/" ] && [ "$dir" != "latest/" ]; then
-              LIST_ITEMS="${LIST_ITEMS}<li><a href=\"${dir}\">${dir}</a></li>"
-            fi
-          done
-          sed -e "s#{{list_items}}#${LIST_ITEMS}#g" \
-             -e "s#{{latest_version}}#${{ github.event.inputs.version }}#g" \
-             ${{ runner.temp }}/resources/docs-home-template.html > index.html
-          ln -sfn ./${{ github.event.inputs.version }} ./latest 
+          mvn -f code dokka:dokka -Ddokka-previous-versions.location=previous-versions
 
-      - name: Commit
+      - name: Test
         run: |
-          git add .
-          git commit -m "chore: publishing docs for version ${{ github.event.inputs.version }}"
+          cd ./code/target/dokka
+          ls
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          commit-message: "chore: publishing docs for version ${{ github.event.inputs.version }}"
-          body: "This PR adds the reference documentation for version ${{ github.event.inputs.version }}."
-          title: "chore: reference docs update for version ${{ github.event.inputs.version }}"
-          branch: "docs-update-${{ github.event.inputs.version }}"
+#      - name: Commit
+#        run: |
+#          git add .
+#          git commit -m "chore: publishing docs for version ${{ github.event.inputs.version }}"
+#
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v6
+#        with:
+#          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+#          commit-message: "chore: publishing docs for version ${{ github.event.inputs.version }}"
+#          body: "This PR adds the reference documentation for version ${{ github.event.inputs.version }}."
+#          title: "chore: reference docs update for version ${{ github.event.inputs.version }}"
+#          branch: "docs-update-${{ github.event.inputs.version }}"
