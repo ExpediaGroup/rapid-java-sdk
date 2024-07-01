@@ -79,7 +79,7 @@
         <kotlin.version>2.0.0</kotlin.version>
         <kotlinx.coroutines.version>1.8.1</kotlinx.coroutines.version>
         <ktor.version>2.3.12</ktor.version>
-        <kotlin-atomic.version>0.24.0</kotlin-atomic.version>
+        <kotlin-atomic.version>0.25.0</kotlin-atomic.version>
         <slf4j.version>2.0.13</slf4j.version>
     </properties>
 
