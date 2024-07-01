@@ -31,6 +31,11 @@ jobs:
           git fetch origin mdwairi/add-version-json-files
           git checkout mdwairi/add-version-json-files
 
+      - name: List directories in gh-pages (debug step)
+        run: |
+          echo "Directories in gh-pages branch:"
+          ls -d */
+
       - name: Copy directories
         run: |
           find . -maxdepth 1 -mindepth 1 -type d -exec cp -r {} $GITHUB_WORKSPACE \;
