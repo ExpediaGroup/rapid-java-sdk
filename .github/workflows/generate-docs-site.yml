@@ -16,37 +16,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
+      - name: Checkout main branch
+        uses: actions/checkout@v4
         with:
-          distribution: 'corretto'
-          java-version: '21'
+          ref: main
 
-      - name: Pull Previous Versions Docs
+      - name: Configure Git
         run: |
           git config --global user.email "oss@expediagroup.com"
           git config --global user.name "eg-oss-ci"
-          
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          
-          git fetch --all
-          
-          BRANCH_EXISTS=$(git ls-remote --heads origin mdwairi/add-version-json-files | wc -l)
-          
-          if [ "$BRANCH_EXISTS" -eq 0 ]; then
-            git checkout --orphan mdwairi/add-version-json-files
-          else
-            git checkout mdwairi/add-version-json-files
-            git pull origin mdwairi/add-version-json-files
-          fi
-          
-          mkdir previous-versions
-          find . -type d -maxdepth 1 ! -path ./previous-versions ! -path . -exec mv {} ./previous-versions \;
-          
-          git checkout $CURRENT_BRANCH -- previous-versions
 
-      - name: Generate new docs
+      - name: Checkout gh-pages branch
+        run: |
+          git fetch origin mdwairi/add-version-json-files
+          git checkout mdwairi/add-version-json-files
+
+      - name: Copy directories
+        run: |
+          find . -maxdepth 1 -mindepth 1 -type d -exec cp -r {} $GITHUB_WORKSPACE \;
+
+      - name: Switch back to main branch
+        run: |
+          git checkout main
+          mkdir -p previous-versions
+          find $GITHUB_WORKSPACE -maxdepth 1 -mindepth 1 -type d -exec mv {} previous-versions/ \;
+
+      - name: List contents of previous-versions (debug step)
+        run: |
+          echo "Contents of previous-versions directory:"
+          ls -la previous-versions
+
+      - name: Run Dokka to generate new docs
         run: |
           mvn -f code dokka:dokka -Ddokka-previous-versions.location=previous-versions
 
@@ -54,17 +54,3 @@ jobs:
         run: |
           cd ./code/target/dokka
           ls
-
-#      - name: Commit
-#        run: |
-#          git add .
-#          git commit -m "chore: publishing docs for version ${{ github.event.inputs.version }}"
-#
-#      - name: Create Pull Request
-#        uses: peter-evans/create-pull-request@v6
-#        with:
-#          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-#          commit-message: "chore: publishing docs for version ${{ github.event.inputs.version }}"
-#          body: "This PR adds the reference documentation for version ${{ github.event.inputs.version }}."
-#          title: "chore: reference docs update for version ${{ github.event.inputs.version }}"
-#          branch: "docs-update-${{ github.event.inputs.version }}"
