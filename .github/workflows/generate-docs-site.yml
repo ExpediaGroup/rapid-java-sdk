@@ -38,22 +38,21 @@ jobs:
 
       - name: Copy directories
         run: |
-          find . -maxdepth 1 -mindepth 1 -type d -exec cp -r {} $GITHUB_WORKSPACE \;
+          mkdir -p $GITHUB_WORKSPACE/previous-versions
+          find . ! -path $GITHUB_WORKSPACE/previous-versions -maxdepth 1 -mindepth 1 -type d -exec cp -r {} $GITHUB_WORKSPACE/previous-versions \;
 
       - name: Switch back to main branch
         run: |
           git checkout main
-          mkdir -p previous-versions
-          find $GITHUB_WORKSPACE -path ./previous-versions -maxdepth 1 -mindepth 1 -type d -exec mv {} previous-versions/ \;
 
       - name: List contents of previous-versions (debug step)
         run: |
           echo "Contents of previous-versions directory:"
-          ls -la previous-versions
+          ls -la $GITHUB_WORKSPACE/previous-versions
 
       - name: Run Dokka to generate new docs
         run: |
-          mvn -f code dokka:dokka -Ddokka-previous-versions.location=previous-versions
+          mvn -f code dokka:dokka -Ddokka-previous-versions.location=$GITHUB_WORKSPACE/previous-versions
 
       - name: Test
         run: |
