@@ -32,13 +32,13 @@ jobs:
           
           git fetch --all
           
-          BRANCH_EXISTS=$(git ls-remote --heads origin gh-pages | wc -l)
+          BRANCH_EXISTS=$(git ls-remote --heads origin mdwairi/add-version-json-files | wc -l)
           
           if [ "$BRANCH_EXISTS" -eq 0 ]; then
-            git checkout --orphan gh-pages
+            git checkout --orphan mdwairi/add-version-json-files
           else
-            git checkout gh-pages
-            git pull origin gh-pages
+            git checkout mdwairi/add-version-json-files
+            git pull origin mdwairi/add-version-json-files
           fi
           
           mkdir previous-versions
