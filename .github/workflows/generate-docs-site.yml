@@ -39,7 +39,7 @@ jobs:
         run: |
           git checkout main
           mkdir -p previous-versions
-          find $GITHUB_WORKSPACE -maxdepth 1 -mindepth 1 -type d -exec mv {} previous-versions/ \;
+          find $GITHUB_WORKSPACE -path ./previous-versions -maxdepth 1 -mindepth 1 -type d -exec mv {} previous-versions/ \;
 
       - name: List contents of previous-versions (debug step)
         run: |
