@@ -39,12 +39,13 @@ jobs:
       - name: Move latest release to the older directory
         run: |
           VERSION=$(jq -r '.version' version.json)
-          mkdir older/${{ VERSION }}
-          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' ./ older/${{ VERSION }}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          mkdir older/${{ env.VERSION }}
+          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' ./ older/${{ env.VERSION }}
 
       - name: List older directory content (debug)
         run: |
-          cd older/${{ VERSION }}
+          cd older/${{ env.VERSION }}
           ls
           
           
