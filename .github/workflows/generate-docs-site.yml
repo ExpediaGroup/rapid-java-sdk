@@ -43,6 +43,9 @@ jobs:
           rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/$VERSION/
           find . -type d -empty -delete
 
+      - name: list older content before checkout
+        run: ls older
+
       - name: Checkout to main
         run: git checkout main -- older
 
