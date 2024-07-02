@@ -587,7 +587,7 @@
                     <pluginsConfiguration>
                         <org.jetbrains.dokka.versioning.VersioningPlugin>
                             <version>${project.version}</version>
-                            <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
+                            <olderVersionsDir>${project.basedir}</olderVersionsDir>
                         </org.jetbrains.dokka.versioning.VersioningPlugin>
                     </pluginsConfiguration>
                     <suppressInheritedMembers>true</suppressInheritedMembers>
@@ -810,7 +810,7 @@
                             <pluginsConfiguration>
                                 <org.jetbrains.dokka.versioning.VersioningPlugin>
                                     <version>${project.version}</version>
-                                    <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
+                                    <olderVersionsDir>${project.basedir}</olderVersionsDir>
                                 </org.jetbrains.dokka.versioning.VersioningPlugin>
                             </pluginsConfiguration>
                         </configuration>
