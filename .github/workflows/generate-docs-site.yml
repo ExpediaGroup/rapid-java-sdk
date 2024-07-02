@@ -44,7 +44,6 @@ jobs:
 
       - name: List older directory content (debug)
         run: |
-          cd older/${{ env.VERSION }}
-          ls
+          pwd
           
           
