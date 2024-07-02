@@ -40,7 +40,7 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' version.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/${{ env.VERSION }}/
+          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/$VERSION/
           find . -type d -empty -delete
 
       - name: List older directory content (debug)
