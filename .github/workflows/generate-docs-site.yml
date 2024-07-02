@@ -47,7 +47,7 @@ jobs:
         run: ls older
 
       - name: Checkout to main
-        run: git checkout main -- older
+        run: git checkout main
 
       - name: list workspace content
         run: ls older
