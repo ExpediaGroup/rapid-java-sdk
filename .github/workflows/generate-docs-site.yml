@@ -44,7 +44,7 @@ jobs:
           find . -type d -empty -delete
 
       - name: Checkout to main
-        run: git checkout main
+        run: git checkout main -- older
 
       - name: list workspace content
         run: ls older
