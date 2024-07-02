@@ -65,5 +65,6 @@ public class SingleRoomBookScenario implements RapidScenario {
         logger.info("Getting itinerary by itinerary id...");
         Itinerary itinerary = bookService.getReservationByItineraryId(itineraryCreation).getData();
         logger.info("Itinerary: {}", itinerary.getItineraryId());
+        logger.info("Count of rooms booked: {}", itinerary.getRooms().size());
     }
 }

@@ -3,14 +3,14 @@ package com.expediagroup.sdk.rapid.examples.services;
 import com.expediagroup.sdk.core.model.Response;
 import com.expediagroup.sdk.rapid.examples.Constants;
 import com.expediagroup.sdk.rapid.examples.salesprofiles.RapidPartnerSalesProfile;
+import com.expediagroup.sdk.rapid.models.Link;
 import com.expediagroup.sdk.rapid.models.Property;
 import com.expediagroup.sdk.rapid.models.PropertyAvailability;
-import com.expediagroup.sdk.rapid.models.RoomAvailability;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
+import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperation;
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperation;
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationParams;
 import com.expediagroup.sdk.rapid.operations.PriceCheckOperation;
-import com.expediagroup.sdk.rapid.operations.PriceCheckOperationParams;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -62,18 +62,15 @@ public class ShopService extends RapidService {
 
     public Response<RoomPriceCheck> checkRoomPrices(PropertyAvailability propertyAvailability, int selectedRoomIndex, int selectedRateIndex) {
 
-        RoomAvailability roomAvailability = propertyAvailability.getRooms().get(selectedRoomIndex);
+        Link priceCheckLink = propertyAvailability.getRooms().get(selectedRoomIndex).getRates()
+                .get(selectedRateIndex).getBedGroups().entrySet().stream().findFirst()
+                .get().getValue().getLinks().getPriceCheck();
 
-        PriceCheckOperationParams params = PriceCheckOperationParams.builder()
-                .propertyId(propertyAvailability.getPropertyId())
-                .roomId(roomAvailability.getId())
-                .rateId(roomAvailability.getRates().get(selectedRateIndex).getId())
-                .token(rapidClient.helpers.extractToken(roomAvailability.getRates().get(selectedRateIndex).getBedGroups().entrySet()
-                        .stream().findFirst().get().getValue().getLinks().getPriceCheck().getHref()))
-                .build();
-
-        PriceCheckOperation operation = new PriceCheckOperation(params);
-
+        PriceCheckOperation operation = new PriceCheckOperation(priceCheckLink);
         return rapidClient.execute(operation);
+    }
+
+    public Response<List<PropertyAvailability>> getAdditionalAvailability(PropertyAvailability propertyAvailability) {
+        return rapidClient.execute(new GetAdditionalAvailabilityOperation(propertyAvailability.getLinks().getAdditionalRates()));
     }
 }

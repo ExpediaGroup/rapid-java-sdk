@@ -11,6 +11,7 @@ import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCatego
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCoordinatesScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionDescendantsScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionWithMultiPolygonCoordinatesScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetAdditionalAvailabilityOfPropertyScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -133,6 +134,24 @@ public class RapidSdkDemoApplication {
         ParseRegionCategoriesScenario parseRegionCategoriesScenario = new ParseRegionCategoriesScenario();
         parseRegionCategoriesScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionCategoriesScenario.run();
+
+        /*  Run Get Additional Availability Of Property Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting property availability for a test property
+            2. Getting additional availability of the first property returned
+        */
+        logger.info("Running Get Additional Availability Of Property Scenario...");
+        GetAdditionalAvailabilityOfPropertyScenario getAdditionalAvailabilityOfPropertyScenario = new GetAdditionalAvailabilityOfPropertyScenario();
+        getAdditionalAvailabilityOfPropertyScenario.setProfile(new DefaultRapidPartnerProfile());
+        getAdditionalAvailabilityOfPropertyScenario.run();
+
+        logger.info("=======================================================================================");
+        logger.info("=======================================================================================");
+        logger.info("==                                                                                   ==");
+        logger.info("==         That's all folks! Thanks for watching the demonstration of RAPID SDK.     ==");
+        logger.info("==                                                                                   ==");
+        logger.info("=======================================================================================");
+        logger.info("=======================================================================================");
 
     }
 }
