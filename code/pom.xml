@@ -73,6 +73,7 @@
         <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
+        <dokka-old-versions.location>1.9.20</dokka-old-versions.location>
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
@@ -577,7 +578,18 @@
                             <artifactId>kotlin-as-java-plugin</artifactId>
                             <version>${dokka-plugin.version}</version>
                         </plugin>
+                        <plugin>
+                            <groupId>org.jetbrains.dokka</groupId>
+                            <artifactId>versioning-plugin</artifactId>
+                            <version>${dokka-plugin.version}</version>
+                        </plugin>
                     </dokkaPlugins>
+                    <pluginsConfiguration>
+                        <org.jetbrains.dokka.versioning.VersioningPlugin>
+                            <version>${project.version}</version>
+                            <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
+                        </org.jetbrains.dokka.versioning.VersioningPlugin>
+                    </pluginsConfiguration>
                     <suppressInheritedMembers>true</suppressInheritedMembers>
                 </configuration>
                 <executions>
@@ -789,7 +801,18 @@
                                     <artifactId>kotlin-as-java-plugin</artifactId>
                                     <version>${dokka-plugin.version}</version>
                                 </plugin>
+                                <plugin>
+                                    <groupId>org.jetbrains.dokka</groupId>
+                                    <artifactId>versioning-plugin</artifactId>
+                                    <version>${dokka-plugin.version}</version>
+                                </plugin>
                             </dokkaPlugins>
+                            <pluginsConfiguration>
+                                <org.jetbrains.dokka.versioning.VersioningPlugin>
+                                    <version>${project.version}</version>
+                                    <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
+                                </org.jetbrains.dokka.versioning.VersioningPlugin>
+                            </pluginsConfiguration>
                         </configuration>
                         <executions>
                             <execution>
