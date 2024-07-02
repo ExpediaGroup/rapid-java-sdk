@@ -16,10 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
         with:
-          ref: main
+          distribution: 'corretto'
+          java-version: '21'
 
       - name: Configure Git
         run: |
