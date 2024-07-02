@@ -40,18 +40,18 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' version.json)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-          mkdir -p $GITHUB_WORKSPACE/older/$VERSION
-          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ $GITHUB_WORKSPACE/older/$VERSION/
+          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/$VERSION/
           find . -type d -empty -delete
+          git rm -r --cached "older"
 
-      - name: List older content before checkout
-        run: ls $GITHUB_WORKSPACE/older
+      - name: list older content before checkout
+        run: ls older
 
       - name: Checkout to main
         run: git checkout main
 
-      - name: List workspace content
-        run: ls $GITHUB_WORKSPACE/older
+      - name: list workspace content
+        run: ls older
 
 
 
