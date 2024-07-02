@@ -56,6 +56,9 @@ jobs:
       - name: Checkout to main
         run: git checkout main
 
+      - name: mvn install
+        run: mvn clean install
+
       - name: move old versions to code
         run: |
           mv ${{ runner.temp }}/older code/older
