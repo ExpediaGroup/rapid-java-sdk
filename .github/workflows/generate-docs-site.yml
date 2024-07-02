@@ -43,14 +43,11 @@ jobs:
           rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/$VERSION/
           find . -type d -empty -delete
 
-      - name: Move the older directory to temporary workspace
-        run: mv older/* $GITHUB_WORKSPACE/older/
-
       - name: Checkout to main
         run: git checkout main
 
       - name: list workspace content
-        run: ls $GITHUB_WORKSPACE
+        run: ls older
 
 
 
