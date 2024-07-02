@@ -41,9 +41,10 @@ jobs:
           sudo apt-get install -y jq rsync
           VERSION=$(jq -r '.version' version.json)
           mkdir older/$VERSION
-          rsync -av --exclude='older' --exclude='README.md' ./ older/$VERSION
+          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' ./ older/$VERSION
           cd older 
           ls
+          echo "MOVING INTO THE LATEST VERSION DIRECTORY"
           cd $VERSION
           ls
           
