@@ -54,7 +54,11 @@ jobs:
       - name: list workspace content
         run: ls ${{ runner.temp }}/older
 
-      - name:
+      - name: Generate new docs
+        run: mvn -f dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older
+
+      - name: list new content
+        run: ls code/target/dokka
 
 
 
