@@ -51,15 +51,13 @@ jobs:
       - name: Checkout to main
         run: git checkout main
 
-      - name: list workspace content
-        run: |
-          ls ${{ runner.temp }}/older
-          ls ${{ runner.temp }}/older/3.2.2
-
       - name: move old versions to code
         run: |
           mv ${{ runner.temp }}/older code/older
           ls code/older
+
+      - name: Whats in code dir
+        run: ls code
 
       - name: Generate new docs
         run: mvn -f code dokka:dokka
