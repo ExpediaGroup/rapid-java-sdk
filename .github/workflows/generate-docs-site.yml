@@ -46,6 +46,9 @@ jobs:
       - name: List older directory content (debug)
         run: |
           pwd
+          cd older
           ls
+      
+      
           
           
