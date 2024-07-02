@@ -16,70 +16,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
+      - name: Checkout main branch
+        uses: actions/checkout@v4
         with:
-          distribution: 'corretto'
-          java-version: '21'
+          ref: main
 
-      - run: mvn -f code dokka:dokka
-
-      - name: Download resources
-        run: |
-          git fetch origin main
-          mkdir -p ${{ runner.temp }}/resources
-          cp .github/workflows/resources/docs-home-template.html ${{ runner.temp }}/resources/docs-home-template.html
-
-      - name: Prepare for deployment
+      - name: Configure Git
         run: |
           git config --global user.email "oss@expediagroup.com"
           git config --global user.name "eg-oss-ci"
-          
-          CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          
-          git fetch --all
-          mkdir -p docs/${{ github.event.inputs.version }}
-          mv code/target/dokka/* docs/${{ github.event.inputs.version }}
-          git add .
-          git commit -m "chore: publishing docs for version ${{ github.event.inputs.version }}"
-          
-          BRANCH_EXISTS=$(git ls-remote --heads origin gh-pages | wc -l)
-          if [ "$BRANCH_EXISTS" -eq 0 ]; then
-            git checkout --orphan gh-pages
-          else
-            git checkout gh-pages
-            git pull origin gh-pages
-          fi
-          
-          git checkout $CURRENT_BRANCH -- docs
-          mv docs/* .
 
-      - name: Build Index Page
+      - name: Checkout gh-pages branch
         run: |
-          rm -rf docs code
-          touch index.html
-          LIST_ITEMS=""
-          for dir in $(ls -d */ | sort -rV); do
-            if [ "$dir" != "${{ github.event.inputs.version }}/" ] && [ "$dir" != "latest/" ]; then
-              LIST_ITEMS="${LIST_ITEMS}<li><a href=\"${dir}\">${dir}</a></li>"
-            fi
-          done
-          sed -e "s#{{list_items}}#${LIST_ITEMS}#g" \
-             -e "s#{{latest_version}}#${{ github.event.inputs.version }}#g" \
-             ${{ runner.temp }}/resources/docs-home-template.html > index.html
-          ln -sfn ./${{ github.event.inputs.version }} ./latest 
+          git fetch origin mdwairi/refactor-docs-versioning
+          git checkout mdwairi/refactor-docs-versioning
 
-      - name: Commit
+      - name: List directories in gh-pages (debug step)
         run: |
-          git add .
-          git commit -m "chore: publishing docs for version ${{ github.event.inputs.version }}"
+          echo "Directories in gh-pages branch:"
+          ls -d */
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          commit-message: "chore: publishing docs for version ${{ github.event.inputs.version }}"
-          body: "This PR adds the reference documentation for version ${{ github.event.inputs.version }}."
-          title: "chore: reference docs update for version ${{ github.event.inputs.version }}"
-          branch: "docs-update-${{ github.event.inputs.version }}"
+      - name: Move latest release to the older directory
+        run: |
+          sudo apt-get install -y jq rsync
+          VERSION=$(jq -r '.version' config.json)
+          mkdir older/$VERSION
+          rsync -av --exclude='older' --exclude='README.md' ./ older/$VERSION
+          cd older 
+          ls
+          cd $VERSION
+          ls
+          
