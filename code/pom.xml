@@ -639,6 +639,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.jetbrains.dokka</groupId>
+            <artifactId>versioning-plugin</artifactId>
+            <version>${dokka-plugin.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
