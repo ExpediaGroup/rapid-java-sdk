@@ -38,12 +38,12 @@ jobs:
 
       - name: Move latest release to the older directory
         run: |
-          sudo apt-get install -y jq rsync
           VERSION=$(jq -r '.version' version.json)
           mkdir older/$VERSION
           rsync -av --exclude='older' --exclude='.git' --exclude='README.md' ./ older/$VERSION
-          echo "MOVING INTO THE LATEST VERSION DIRECTORY"
+
+      - name: List older directory content (debug)
+        run: |
           cd older/$VERSION
-          pwd
           ls
           
