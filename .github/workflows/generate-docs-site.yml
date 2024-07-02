@@ -42,16 +42,16 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/$VERSION/
           find . -type d -empty -delete
-          git rm -r --cached "older"
+          mv older/* ${{ runner.temp }}/older
 
       - name: list older content before checkout
-        run: ls older
+        run: ls ${{ runner.temp }}/older
 
       - name: Checkout to main
         run: git checkout main
 
       - name: list workspace content
-        run: ls older
+        run: ls ${{ runner.temp }}/older
 
 
 
