@@ -68,7 +68,7 @@ jobs:
         run: mvn -f code dokka:dokka
 
       - name: list new content
-        run: cat code/target/dokka/version.json
+        run: ls -a code/target/dokka
 
 
 
