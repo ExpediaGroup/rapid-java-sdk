@@ -56,12 +56,6 @@ jobs:
       - name: Checkout to main
         run: git checkout main
 
-      - name: mvn install
-        run: |
-          cd code
-          mvn clean install
-          cd ..
-
       - name: move old versions to code
         run: |
           mv ${{ runner.temp }}/older code/older
@@ -73,7 +67,7 @@ jobs:
       - name: Generate new docs
         run: |
           cd code
-          mvn -f dokka:dokka
+          mvn dokka:dokka
 
       - name: list new content
         run: ls -a code/target/dokka
