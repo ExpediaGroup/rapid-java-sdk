@@ -52,7 +52,7 @@ jobs:
         run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older
 
       - name: Store and Extract Newly Generated Docs Version Number
-        run: echo "NEW_DOCS_VERSION=$(jq -r '.version' version.json)" >> $GITHUB_ENV
+        run: echo "NEW_DOCS_VERSION=$(jq -r '.version' code/target/dokka/version.json)" >> $GITHUB_ENV
 
       - name: Move Newly Generated Docs to Temporary Workspace
         run: mv code/target/dokka ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}
