@@ -61,6 +61,9 @@ jobs:
           mv ${{ runner.temp }}/older code/older
           ls code/older
 
+      - name: whats in 4.1.1
+        run: ls code/older/4.1.1
+
       - name: Whats in code dir
         run: ls code
 
