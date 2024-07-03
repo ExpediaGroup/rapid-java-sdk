@@ -54,7 +54,9 @@ jobs:
         run: ls ${{ runner.temp }}/older
 
       - name: Checkout to main
-        run: git checkout main
+        run: |
+          git fetch --all
+          git checkout mdwairi/support-multimodule-versioning
 
       - name: move old versions to code
         run: |
