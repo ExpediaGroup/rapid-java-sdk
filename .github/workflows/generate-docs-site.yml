@@ -66,6 +66,35 @@ jobs:
       - name: list new content
         run: ls -a code/target/dokka
 
+      - name: move from target to temp
+        run: |
+          mv code/target/dokka ${{ runner.temp }}/new-docs
+
+      - name: checkout to gh-pages
+        run: git checkout mdwairi/refactor-docs-versioning
+
+      - name: remove old docs
+        run: rm -rf images older rapid-sdk script styles index.html navigation.html not-found-version.html version.json
+
+      - name: commit new docs
+        run: |
+          NEW_DOCS_VERSION=$(jq -r '.version' version.json)
+          echo "NEW_DOCS_VERSION=NEW_DOCS_VERSION" >> $GITHUB_ENV
+          mv ${{ runner.temp }}/new-docs .
+          git add .
+          git commit -m "chore: publishing docs for version $NEW_DOCS_VERSION"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
+          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
+          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
+          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
+
+
+
 
 
 
