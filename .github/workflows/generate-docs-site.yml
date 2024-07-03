@@ -51,18 +51,18 @@ jobs:
       - name: Store and Extract Newly Generated Docs Version Number
         run: echo "NEW_DOCS_VERSION=$(jq -r '.version' code/target/dokka/version.json)" >> $GITHUB_ENV
 
-      - name: Check New Release Version
-        run: |
-          for dir in ${{ runner.temp }}/older/*; do
-            if [ -d "$dir" ]; then
-              DIR_NAME=$(basename "$dir")
-              if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
-                echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
-                echo "Hint: Make sure to update the project version in the pom.xml file"
-                exit 1
-              fi
-            fi
-          done
+#      - name: Check New Release Version
+#        run: |
+#          for dir in ${{ runner.temp }}/older/*; do
+#            if [ -d "$dir" ]; then
+#              DIR_NAME=$(basename "$dir")
+#              if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
+#                echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
+#                echo "Hint: Make sure to update the project version in the pom.xml file"
+#                exit 1
+#              fi
+#            fi
+#          done
 
       - name: Move Newly Generated Docs to Temporary Workspace
         run: mv code/target/dokka ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}
@@ -72,9 +72,6 @@ jobs:
 
       - name: Cleanup Old Docs from Repository Root
         run: rm -rf code images older rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json
-
-      - name: list content after removal
-        run: ls
 
       - name: Move Newly Generated Docs to the Repository Root
         run: mv ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}/* .
@@ -87,19 +84,19 @@ jobs:
           echo "#####"
           ls older/3.2.2
 
-      - name: Commit New Release
-        run: |
-          git add .
-          git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
+#      - name: Commit New Release
+#        run: |
+#          git add .
+#          git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
-          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
-          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
-          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v6
+#        with:
+#          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+#          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
+#          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
+#          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
+#          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
 
 
 
