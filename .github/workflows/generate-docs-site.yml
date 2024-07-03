@@ -37,15 +37,10 @@ jobs:
       - name: Store and Extract Latest Docs Version Number
         run: echo "LATEST_DOCS_VERSION=$(jq -r '.version' version.json)" >> $GITHUB_ENV
 
-      - name: Store Dokka's Files and Directories Names
+      - name: Move Latest Docs to "older/${LATEST_DOCS_VERSION}" Directory
         run: |
-          MULTI_VERSIONS_DOKKA_FILES="images|older|rapid-sdk|scripts|styles|index.html|navigation.html|not-found-version.html|version.json"
-          SINGLE_VERSION_DOKKA_FILES="images|rapid-sdk|scripts|styles|index.html|navigation.html|not-found-version.html|version.json"
-          echo "MULTI_VERSIONS_DOKKA_FILES=$MULTI_VERSIONS_DOKKA_FILES" >> $GITHUB_ENV
-          echo "SINGLE_VERSION_DOKKA_FILES=$SINGLE_VERSION_DOKKA_FILES" >> $GITHUB_ENV
-
-      - name: Move Latest Docs to "older" Directory
-        run: mkdir older/${{ env.LATEST_DOCS_VERSION }} && mv (${{ env.SINGLE_VERSION_DOKKA_FILES }}) older/${{ env.LATEST_DOCS_VERSION }}
+          mkdir older/${{ env.LATEST_DOCS_VERSION }} 
+          mv images rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json older/${{ env.LATEST_DOCS_VERSION }}
 
       - name: Move "older" Directory to Temporary Workspace
         run: mv older ${{ runner.temp }}
@@ -66,7 +61,7 @@ jobs:
         run: git checkout mdwairi/refactor-docs-versioning
 
       - name: Cleanup Old Docs from Repository Root
-        run: rm -rf (${{ env.MULTI_VERSIONS_DOKKA_FILES }})
+        run: rm -rf images older rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json
 
       - name: list content after removal
         run: ls
