@@ -71,7 +71,9 @@ jobs:
         run: ls code
 
       - name: Generate new docs
-        run: mvn -f code dokka:dokka
+        run: |
+          cd code
+          mvn -f dokka:dokka
 
       - name: list new content
         run: ls -a code/target/dokka
