@@ -79,14 +79,20 @@ jobs:
           git add .
           git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+      - name: Upload modified repository content as artifact
+        uses: actions/upload-artifact@v3
         with:
-          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
-          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
-          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
-          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
+          name: modified-repo-content
+          path: ./
+
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v6
+#        with:
+#          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+#          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
+#          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
+#          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
+#          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
 
 
 
