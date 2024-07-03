@@ -41,8 +41,8 @@ jobs:
         run: |
           MULTI_VERSIONS_DOKKA_FILES="images|older|rapid-sdk|scripts|styles|index.html|navigation.html|not-found-version.html|version.json"
           SINGLE_VERSION_DOKKA_FILES="images|rapid-sdk|scripts|styles|index.html|navigation.html|not-found-version.html|version.json"
-          echo "DOKKA_FILES=$DOKKA_FILES" >> $GITHUB_ENV
-          echo "DOKKA_FILES_WITHOUT_OLDER_DIR=$DOKKA_FILES_WITHOUT_OLDER_DIR" >> $GITHUB_ENV
+          echo "MULTI_VERSIONS_DOKKA_FILES=$MULTI_VERSIONS_DOKKA_FILES" >> $GITHUB_ENV
+          echo "SINGLE_VERSION_DOKKA_FILES=$SINGLE_VERSION_DOKKA_FILES" >> $GITHUB_ENV
 
       - name: Move Latest Docs to "older" Directory
         run: mkdir older/${{ env.LATEST_DOCS_VERSION }} && mv (${{ env.SINGLE_VERSION_DOKKA_FILES }}) older/${{ env.LATEST_DOCS_VERSION }}
