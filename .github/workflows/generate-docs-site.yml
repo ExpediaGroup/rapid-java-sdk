@@ -2,11 +2,6 @@ name: Deploy Reference Documentation
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'SDK Version'
-        required: true
-        type: string
 
 permissions:
   id-token: write
@@ -16,12 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout "main" Branch
         uses: actions/checkout@v4
         with:
           ref: main
 
-      - uses: actions/setup-java@v4
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '21'
@@ -30,61 +26,64 @@ jobs:
         run: |
           git config --global user.email "oss@expediagroup.com"
           git config --global user.name "eg-oss-ci"
-
-      - name: Checkout gh-pages branch
-        run: |
-          git fetch origin mdwairi/refactor-docs-versioning
-          git checkout mdwairi/refactor-docs-versioning
-
-      - name: List directories in gh-pages (debug step)
-        run: |
-          echo "Directories in gh-pages branch:"
-          ls -d */
-
-      - name: Move latest release to the older directory
-        run: |
-          VERSION=$(jq -r '.version' version.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          rsync -av --exclude='older' --exclude='.git' --exclude='README.md' --remove-source-files ./ older/$VERSION/
-          find . -type d -empty -delete
-          mkdir -p ${{ runner.temp }}/older
-          mv older/* ${{ runner.temp }}/older
-
-      - name: list older content before checkout
-        run: ls ${{ runner.temp }}/older
-
-      - name: Checkout to main
-        run: |
           git fetch --all
-          git checkout mdwairi/support-multimodule-versioning
 
-      - name: Generate new docs
-        run: |
-          cd code
-          mvn dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older
+      - name: Configure "shopt" to Enable Extended Patterns Matching
+        run: shopt -s extglob
 
-      - name: list new content
-        run: ls -a code/target/dokka
-
-      - name: move from target to temp
-        run: |
-          mv code/target/dokka ${{ runner.temp }}/new-docs
-
-      - name: checkout to gh-pages
+      - name: Checkout "gh-pages" Branch
         run: git checkout mdwairi/refactor-docs-versioning
 
-      - name: remove old docs
-        run: rm -rf images older rapid-sdk scripts code styles index.html navigation.html not-found-version.html version.json
+      - name: Store and Extract Latest Docs Version Number
+        run: echo "LATEST_DOCS_VERSION=$(jq -r '.version' version.json)" >> $GITHUB_ENV
+
+      - name: Store Dokka's Files and Directories Names
+        run: |
+          MULTI_VERSIONS_DOKKA_FILES="images|older|rapid-sdk|scripts|styles|index.html|navigation.html|not-found-version.html|version.json"
+          SINGLE_VERSION_DOKKA_FILES="images|rapid-sdk|scripts|styles|index.html|navigation.html|not-found-version.html|version.json"
+          echo "DOKKA_FILES=$DOKKA_FILES" >> $GITHUB_ENV
+          echo "DOKKA_FILES_WITHOUT_OLDER_DIR=$DOKKA_FILES_WITHOUT_OLDER_DIR" >> $GITHUB_ENV
+
+      - name: Move Latest Docs to "older" Directory
+        run: mkdir older/${{ env.LATEST_DOCS_VERSION }} && mv (${{ env.SINGLE_VERSION_DOKKA_FILES }}) older/${{ env.LATEST_DOCS_VERSION }}
+
+      - name: Move "older" Directory to Temporary Workspace
+        run: mv older ${{ runner.temp }}
+
+      - name: Checkout "main" Branch
+        run: git checkout mdwairi/support-multimodule-versioning
+
+      - name: Generate New Release Reference Docs
+        run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older
+
+      - name: Store and Extract Newly Generated Docs Version Number
+        run: echo "NEW_DOCS_VERSION=$(jq -r '.version' version.json)" >> $GITHUB_ENV
+
+      - name: Move Newly Generated Docs to Temporary Workspace
+        run: mv code/target/dokka ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}
+
+      - name: Checkout "gh-pages" Branch
+        run: git checkout mdwairi/refactor-docs-versioning
+
+      - name: Cleanup Old Docs from Repository Root
+        run: rm -rf (${{ env.MULTI_VERSIONS_DOKKA_FILES }})
 
       - name: list content after removal
         run: ls
 
-      - name: commit new docs
+      - name: Move Newly Generated Docs to the Repository Root
+        run: mv ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}/* .
+
+      - name: inspect final repo shape
         run: |
-          mv ${{ runner.temp }}/new-docs/* .
           ls
-          NEW_DOCS_VERSION=$(jq -r '.version' version.json)
-          echo "NEW_DOCS_VERSION=$NEW_DOCS_VERSION" >> $GITHUB_ENV
+          echo "#####"
+          ls older
+          echo "#####"
+          ls older/3.2.2
+
+      - name: Commit New Release
+        run: |
           git add .
           git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
 
