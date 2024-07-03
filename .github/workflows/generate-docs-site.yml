@@ -58,12 +58,6 @@ jobs:
           git fetch --all
           git checkout mdwairi/support-multimodule-versioning
 
-      - name: whats in 4.1.1
-        run: ls code/older/4.1.1
-
-      - name: Whats in code dir
-        run: ls code
-
       - name: Generate new docs
         run: |
           cd code
