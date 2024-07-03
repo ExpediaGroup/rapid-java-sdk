@@ -58,11 +58,6 @@ jobs:
           git fetch --all
           git checkout mdwairi/support-multimodule-versioning
 
-      - name: move old versions to code
-        run: |
-          mv ${{ runner.temp }}/older code/older
-          ls code/older
-
       - name: whats in 4.1.1
         run: ls code/older/4.1.1
 
@@ -72,7 +67,7 @@ jobs:
       - name: Generate new docs
         run: |
           cd code
-          mvn dokka:dokka
+          mvn dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older
 
       - name: list new content
         run: ls -a code/target/dokka
