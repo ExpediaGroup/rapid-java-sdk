@@ -29,74 +29,66 @@ jobs:
           git fetch --all
 
       - name: Checkout "gh-pages" Branch
-        run: git checkout mdwairi/refactor-docs-versioning
+        run: git checkout gh-pages
 
-      - name: Store and Extract Latest Docs Version Number
+      - name: Extract and Store Latest Live Docs Version Number
         run: echo "LATEST_DOCS_VERSION=$(jq -r '.version' version.json)" >> $GITHUB_ENV
 
-      - name: Move Latest Docs to "older/${LATEST_DOCS_VERSION}" Directory
+      - name: Move Latest Docs to the "older" Directory (Archiving latest live release)
         run: |
           mkdir older/${{ env.LATEST_DOCS_VERSION }} 
           mv images rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json older/${{ env.LATEST_DOCS_VERSION }}
 
-      - name: Move "older" Directory to Temporary Workspace
+      - name: Move the "older" Directory to a Temporary Workspace
         run: mv older ${{ runner.temp }}
 
       - name: Checkout "main" Branch
-        run: git checkout mdwairi/support-multimodule-versioning
+        run: git checkout main
 
       - name: Generate New Release Reference Docs
         run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older
 
-      - name: Store and Extract Newly Generated Docs Version Number
+      - name: Extract and Store Newly Generated Docs Version Number
         run: echo "NEW_DOCS_VERSION=$(jq -r '.version' code/target/dokka/version.json)" >> $GITHUB_ENV
 
-#      - name: Check New Release Version
-#        run: |
-#          for dir in ${{ runner.temp }}/older/*; do
-#            if [ -d "$dir" ]; then
-#              DIR_NAME=$(basename "$dir")
-#              if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
-#                echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
-#                echo "Hint: Make sure to update the project version in the pom.xml file"
-#                exit 1
-#              fi
-#            fi
-#          done
+      - name: Check the New Release Version
+        run: |
+          for dir in ${{ runner.temp }}/older/*; do
+            if [ -d "$dir" ]; then
+              DIR_NAME=$(basename "$dir")
+              if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
+                echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
+                echo "Hint: Make sure to update the project version in the pom.xml file"
+                exit 1
+              fi
+            fi
+          done
 
-      - name: Move Newly Generated Docs to Temporary Workspace
+      - name: Move the Newly Generated Docs to a Temporary Workspace
         run: mv code/target/dokka ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}
 
       - name: Checkout "gh-pages" Branch
-        run: git checkout mdwairi/refactor-docs-versioning
+        run: git checkout gh-pages
 
-      - name: Cleanup Old Docs from Repository Root
+      - name: Cleanup Old Docs from the Repository's Root
         run: rm -rf code images older rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json
 
       - name: Move Newly Generated Docs to the Repository Root
         run: mv ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}/* .
 
-      - name: inspect final repo shape
+      - name: Commit the New Release
         run: |
-          ls
-          echo "#####"
-          ls older
-          echo "#####"
-          ls older/3.2.2
+          git add .
+          git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
 
-#      - name: Commit New Release
-#        run: |
-#          git add .
-#          git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
-
-#      - name: Create Pull Request
-#        uses: peter-evans/create-pull-request@v6
-#        with:
-#          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-#          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
-#          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
-#          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
-#          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
+          body: "This PR adds the reference documentation for version ${{ env.NEW_DOCS_VERSION }}."
+          title: "chore: reference docs update for version ${{ env.NEW_DOCS_VERSION }}"
+          branch: "docs-update-${{ env.NEW_DOCS_VERSION }}"
 
 
 
