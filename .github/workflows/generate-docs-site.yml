@@ -76,11 +76,14 @@ jobs:
       - name: remove old docs
         run: rm -rf images older rapid-sdk script styles index.html navigation.html not-found-version.html version.json
 
+      - name: list content after removal
+        run: ls
+
       - name: commit new docs
         run: |
+          mv ${{ runner.temp }}/new-docs .
           NEW_DOCS_VERSION=$(jq -r '.version' version.json)
           echo "NEW_DOCS_VERSION=NEW_DOCS_VERSION" >> $GITHUB_ENV
-          mv ${{ runner.temp }}/new-docs .
           git add .
           git commit -m "chore: publishing docs for version $NEW_DOCS_VERSION"
 
