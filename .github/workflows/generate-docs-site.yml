@@ -84,7 +84,7 @@ jobs:
           mv ${{ runner.temp }}/new-docs/* .
           ls
           NEW_DOCS_VERSION=$(jq -r '.version' version.json)
-          echo "NEW_DOCS_VERSION=NEW_DOCS_VERSION" >> $GITHUB_ENV
+          echo "NEW_DOCS_VERSION=$NEW_DOCS_VERSION" >> $GITHUB_ENV
           git add .
           git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
 
