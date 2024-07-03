@@ -28,9 +28,6 @@ jobs:
           git config --global user.name "eg-oss-ci"
           git fetch --all
 
-      - name: Configure "shopt" to Enable Extended Patterns Matching
-        run: shopt -s extglob
-
       - name: Checkout "gh-pages" Branch
         run: git checkout mdwairi/refactor-docs-versioning
 
@@ -61,7 +58,7 @@ jobs:
         run: git checkout mdwairi/refactor-docs-versioning
 
       - name: Cleanup Old Docs from Repository Root
-        run: rm -rf images older rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json
+        run: rm -rf code images older rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json
 
       - name: list content after removal
         run: ls
