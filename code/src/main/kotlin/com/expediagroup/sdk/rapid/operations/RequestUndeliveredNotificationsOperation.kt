@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Request Undelivered Notifications
-
  * @property params [RequestUndeliveredNotificationsOperationParams]
-
  */
 class RequestUndeliveredNotificationsOperation(
     params: RequestUndeliveredNotificationsOperationParams

@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Inactive Properties
-
  * @property params [GetInactivePropertiesOperationParams]
-
  */
 class GetInactivePropertiesOperation(
     params: GetInactivePropertiesOperationParams

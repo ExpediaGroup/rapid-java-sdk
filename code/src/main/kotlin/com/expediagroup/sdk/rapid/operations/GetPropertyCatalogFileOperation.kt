@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Property Catalog File
-
  * @property params [GetPropertyCatalogFileOperationParams]
-
  */
 class GetPropertyCatalogFileOperation(
     params: GetPropertyCatalogFileOperationParams

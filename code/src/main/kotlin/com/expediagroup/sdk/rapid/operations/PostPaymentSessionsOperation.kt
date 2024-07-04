@@ -22,9 +22,7 @@ import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest
 /**
  * Register Payments
  * @property requestBody [PaymentSessionsRequest]
-
  * @property params [PostPaymentSessionsOperationParams]
-
  */
 class PostPaymentSessionsOperation(
     requestBody: PaymentSessionsRequest?,

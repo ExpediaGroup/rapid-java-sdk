@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Price-Check
  * @property params [PriceCheckOperationParams]
-
  */
 class PriceCheckOperation(
     params: PriceCheckOperationParams

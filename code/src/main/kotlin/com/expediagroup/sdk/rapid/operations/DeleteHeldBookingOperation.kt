@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Cancel Held Booking
  * @property params [DeleteHeldBookingOperationParams]
-
  */
 class DeleteHeldBookingOperation(
     params: DeleteHeldBookingOperationParams

@@ -72,11 +72,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             method = HttpMethod.parse(operation.method)
             url(operation.url)
 
-            operation.params.getHeaders()?.forEach { (key, value) ->
+            operation.params?.getHeaders()?.forEach { (key, value) ->
                 headers.append(key, value)
             }
 
-            operation.params.getQueryParams()?.forEach { (key, value) ->
+            operation.params?.getQueryParams()?.forEach { (key, value) ->
                 url.parameters.appendAll(key, value)
             }
 

@@ -26,7 +26,7 @@ internal data class LoggingConfiguration(
     override val httpClientConfiguration: HttpClientConfig<out HttpClientEngineConfig>,
     val maskedLoggingHeaders: Set<String>,
     val maskedLoggingBodyFields: Set<String>,
-    val level: LogLevel = LogLevel.ALL,
+    val level: LogLevel = LogLevel.HEADERS,
     val getLogger: (client: Client) -> Logger = createCustomLogger
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {

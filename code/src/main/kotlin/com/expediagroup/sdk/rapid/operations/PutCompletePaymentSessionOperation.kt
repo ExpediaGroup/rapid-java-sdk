@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Complete Payment Session
  * @property params [PutCompletePaymentSessionOperationParams]
-
  */
 class PutCompletePaymentSessionOperation(
     params: PutCompletePaymentSessionOperationParams

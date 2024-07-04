@@ -22,9 +22,7 @@ import com.expediagroup.sdk.rapid.models.TestNotificationRequest
 /**
  * Request Test Notification
  * @property requestBody [TestNotificationRequest]
-
  * @property params [RequestTestNotificationOperationParams]
-
  */
 class RequestTestNotificationOperation(
     requestBody: TestNotificationRequest?,

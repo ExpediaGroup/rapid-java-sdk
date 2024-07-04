@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Regions
-
  * @property params [GetRegionsOperationParams]
-
  */
 class GetRegionsOperation(
     params: GetRegionsOperationParams

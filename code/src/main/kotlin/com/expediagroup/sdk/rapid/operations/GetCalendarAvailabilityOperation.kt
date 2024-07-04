@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Get a calendar of availability dates for properties. This is currently a Vrbo property only feature.
-
  * @property params [GetCalendarAvailabilityOperationParams]
-
  */
 class GetCalendarAvailabilityOperation(
     params: GetCalendarAvailabilityOperationParams

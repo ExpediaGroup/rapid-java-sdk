@@ -22,9 +22,7 @@ import com.expediagroup.sdk.rapid.models.CreateItineraryRequest
 /**
  * Create Booking
  * @property requestBody [CreateItineraryRequest]
-
  * @property params [PostItineraryOperationParams]
-
  */
 class PostItineraryOperation(
     requestBody: CreateItineraryRequest?,

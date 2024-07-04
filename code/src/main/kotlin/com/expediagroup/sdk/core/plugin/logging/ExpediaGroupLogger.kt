@@ -21,11 +21,23 @@ import com.expediagroup.sdk.core.constant.LoggingMessage.LOGGING_PREFIX
 import org.slf4j.Logger
 
 internal class ExpediaGroupLogger(private val logger: Logger, private val client: Client? = null) : Logger by logger {
-    override fun info(msg: String) = logger.info(decorate(msg))
+    override fun info(msg: String) {
+        if (logger.isInfoEnabled) {
+            logger.info(decorate(msg))
+        }
+    }
 
-    override fun warn(msg: String) = logger.warn(decorate(msg))
+    override fun warn(msg: String) {
+        if (logger.isWarnEnabled) {
+            logger.warn(decorate(msg))
+        }
+    }
 
-    override fun debug(msg: String) = logger.debug(decorate(msg))
+    override fun debug(msg: String) {
+        if (logger.isDebugEnabled) {
+            logger.debug(decorate(msg))
+        }
+    }
 
     private fun decorate(msg: String): String = "$LOGGING_PREFIX ${mask(msg, getMaskedBodyFields())}"
 
