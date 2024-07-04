@@ -42,9 +42,11 @@ import javax.validation.Valid
  * @param dateSubmitted When this review was made, in ISO 8601 format.
  * @param rating The rating for this property given by the reviewer. Returns a value between 1.0 and 5.0.
  * @param reviewerName The name of the person who wrote this review.
+ * @param stayDate The year and month of the traveler's stay at the property, in ISO 8601 format (YYYY-MM).
  * @param tripReason
  * @param travelCompanion
  * @param text The text of the review itself.
+ * @param managementResponses A collection of the management responses to this review.
  */
 data class Review(
     // Where this review has been verified from.
@@ -67,6 +69,10 @@ data class Review(
     @JsonProperty("reviewer_name")
     @field:Valid
     val reviewerName: kotlin.String? = null,
+    // The year and month of the traveler's stay at the property, in ISO 8601 format (YYYY-MM).
+    @JsonProperty("stay_date")
+    @field:Valid
+    val stayDate: kotlin.String? = null,
     @JsonProperty("trip_reason")
     @field:Valid
     val tripReason: TripReason? = null,
@@ -76,7 +82,11 @@ data class Review(
     // The text of the review itself.
     @JsonProperty("text")
     @field:Valid
-    val text: kotlin.String? = null
+    val text: kotlin.String? = null,
+    // A collection of the management responses to this review.
+    @JsonProperty("management_responses")
+    @field:Valid
+    val managementResponses: kotlin.collections.List<ManagementResponse>? = null
 ) {
     companion object {
         @JvmStatic
@@ -89,9 +99,11 @@ data class Review(
         private var dateSubmitted: kotlin.String? = null,
         private var rating: kotlin.String? = null,
         private var reviewerName: kotlin.String? = null,
+        private var stayDate: kotlin.String? = null,
         private var tripReason: TripReason? = null,
         private var travelCompanion: TravelCompanion? = null,
-        private var text: kotlin.String? = null
+        private var text: kotlin.String? = null,
+        private var managementResponses: kotlin.collections.List<ManagementResponse>? = null
     ) {
         fun verificationSource(verificationSource: kotlin.String?) = apply { this.verificationSource = verificationSource }
 
@@ -103,11 +115,15 @@ data class Review(
 
         fun reviewerName(reviewerName: kotlin.String?) = apply { this.reviewerName = reviewerName }
 
+        fun stayDate(stayDate: kotlin.String?) = apply { this.stayDate = stayDate }
+
         fun tripReason(tripReason: TripReason?) = apply { this.tripReason = tripReason }
 
         fun travelCompanion(travelCompanion: TravelCompanion?) = apply { this.travelCompanion = travelCompanion }
 
         fun text(text: kotlin.String?) = apply { this.text = text }
+
+        fun managementResponses(managementResponses: kotlin.collections.List<ManagementResponse>?) = apply { this.managementResponses = managementResponses }
 
         fun build(): Review {
             return Review(
@@ -116,9 +132,11 @@ data class Review(
                 dateSubmitted = dateSubmitted,
                 rating = rating,
                 reviewerName = reviewerName,
+                stayDate = stayDate,
                 tripReason = tripReason,
                 travelCompanion = travelCompanion,
-                text = text
+                text = text,
+                managementResponses = managementResponses
             )
         }
     }
