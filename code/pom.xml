@@ -5,9 +5,9 @@
 
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>4.1.3</version>
+    <version>4.2.0</version>
     <name>EG Rapid SDK for Java</name>
-    <description>EG Rapid SDK v4.1.3</description>
+    <description>EG Rapid SDK v4.2.0</description>
     <url>https://github.com/ExpediaGroup/rapid-java-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
