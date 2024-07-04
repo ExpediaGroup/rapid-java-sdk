@@ -2,7 +2,6 @@ package com.expediagroup.sdk.rapid.examples.services;
 
 import com.expediagroup.sdk.core.model.Nothing;
 import com.expediagroup.sdk.core.model.Response;
-import com.expediagroup.sdk.rapid.examples.Constants;
 import com.expediagroup.sdk.rapid.models.BillingContactRequest;
 import com.expediagroup.sdk.rapid.models.BillingContactRequestAddress;
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequest;
@@ -12,15 +11,14 @@ import com.expediagroup.sdk.rapid.models.ItineraryCreation;
 import com.expediagroup.sdk.rapid.models.PaymentRequest;
 import com.expediagroup.sdk.rapid.models.PhoneRequest;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperation;
 import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperation;
 import com.expediagroup.sdk.rapid.operations.PostItineraryOperation;
 import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperation;
-import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationParams;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class BookService extends RapidService {
@@ -42,7 +40,7 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        PostItineraryOperation operation = new PostItineraryOperation(roomPriceCheck.getLinks().getBook());
+        PostItineraryOperation operation = new PostItineraryOperation(roomPriceCheck.getLinks().getBook(), createItineraryRequest);
         return rapidClient.execute(operation);
     }
 
@@ -64,23 +62,12 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        PostItineraryOperation operation = new PostItineraryOperation(roomPriceCheck.getLinks().getBook());
+        PostItineraryOperation operation = new PostItineraryOperation(roomPriceCheck.getLinks().getBook(), createItineraryRequest);
         return rapidClient.execute(operation);
     }
 
     public Response<Nothing> resumeBooking(ItineraryCreation itineraryCreation) {
-
-        PutResumeBookingOperationParams params = PutResumeBookingOperationParams.builder()
-                .customerIp(Constants.CUSTOMER_IP)
-                .customerSessionId("123455656565")
-                .itineraryId(itineraryCreation.getItineraryId())
-                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(itineraryCreation.getLinks().getResume().getHref())))
-                .test("standard")
-                .build();
-
-        return rapidClient.execute(new PutResumeBookingOperation(params));
-
-//        return rapidClient.execute(new PutResumeBookingOperation(itineraryCreation.getLinks().getResume()));
+        return rapidClient.execute(new PutResumeBookingOperation(itineraryCreation.getLinks().getResume()));
     }
 
     public Response<Itinerary> getReservationByItineraryId(ItineraryCreation itineraryCreation) {
@@ -88,8 +75,7 @@ public class BookService extends RapidService {
     }
 
     public Response<Nothing> cancelHeldReservationByItiniaryId(ItineraryCreation itineraryCreation) {
-//        return rapidClient.execute(new DeleteHeldBookingOperation(itineraryCreation.getLinks().getCancel()));
-        return null;
+        return rapidClient.execute(new DeleteHeldBookingOperation(itineraryCreation.getLinks().getCancel()));
     }
 
     /* Helper methods */

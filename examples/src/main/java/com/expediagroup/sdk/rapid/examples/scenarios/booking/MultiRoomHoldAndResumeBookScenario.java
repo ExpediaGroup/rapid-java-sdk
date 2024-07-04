@@ -67,7 +67,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
         logger.info("Booking 2 rooms with [hold=true] in test property: [{}]...", Constants.TEST_PROPERTY_ID);
         BookService bookService = new BookService();
         ItineraryCreation itineraryCreation = bookService.createBookingWithHold(roomPriceCheck, occupancy).getData();
-        logger.info("Booking with hold Success. Itinerary id: [{}]. Link to resume booking: [{}]",
+        logger.info("Booking with hold success. Itinerary id: [{}]. Link to resume booking: [{}]",
                 itineraryCreation.getItineraryId(), itineraryCreation.getLinks().getResume().getHref());
 
         // Resume the booking process
