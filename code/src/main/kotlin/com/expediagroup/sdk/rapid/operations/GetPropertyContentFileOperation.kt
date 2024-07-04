@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Property Content File
-
  * @property params [GetPropertyContentFileOperationParams]
-
  */
 class GetPropertyContentFileOperation(
     params: GetPropertyContentFileOperationParams

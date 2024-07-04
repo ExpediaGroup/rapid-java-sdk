@@ -22,9 +22,7 @@ import com.expediagroup.sdk.rapid.models.PropertiesGeoJsonRequest
 /**
  * Properties within Polygon
  * @property requestBody [PropertiesGeoJsonRequest]
-
  * @property params [PostGeographyOperationParams]
-
  */
 class PostGeographyOperation(
     requestBody: PropertiesGeoJsonRequest?,

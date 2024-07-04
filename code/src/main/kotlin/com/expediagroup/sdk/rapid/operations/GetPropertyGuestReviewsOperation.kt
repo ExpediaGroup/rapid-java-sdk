@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Property Guest Reviews
  * @property params [GetPropertyGuestReviewsOperationParams]
-
  */
 class GetPropertyGuestReviewsOperation(
     params: GetPropertyGuestReviewsOperationParams
