@@ -13,24 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
+import com.expediagroup.sdk.rapid.models.Link
+import org.apache.commons.text.StringSubstitutor
 
 /**
  * Get Accepted Payment Types - EPS MOR Only
  * @property params [GetPaymentOptionsOperationParams]
  */
-class GetPaymentOptionsOperation(
-    params: GetPaymentOptionsOperationParams
+class GetPaymentOptionsOperation private constructor(
+    params: GetPaymentOptionsOperationParams?,
+    link: Link?
 ) : Operation<
         Nothing
     >(
-        "/v3/properties/{property_id}/payment-options".replace("{" + "property_id" + "}", "${params.propertyId}"),
+        url(params, link, "/v3/properties/{property_id}/payment-options"),
         "GET",
         "getPaymentOptions",
         null,
         params
+    ) {
+    constructor(
+        params: GetPaymentOptionsOperationParams
+    ) : this(
+        params,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: GetPaymentOptionsOperationContext?
+    ) : this(
+        GetPaymentOptionsOperationParams(context),
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            val paramsMap =
+                buildMap {
+                    put("property_id", "[a-z0-9]+")
+                }
+            val substitutor = StringSubstitutor(paramsMap, "{", "}")
+            return substitutor.replace("/v3/properties/{property_id}/payment-options")
+        }
+    }
+}

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
@@ -25,8 +24,8 @@ import com.expediagroup.sdk.rapid.models.TestNotificationRequest
  * @property params [RequestTestNotificationOperationParams]
  */
 class RequestTestNotificationOperation(
-    requestBody: TestNotificationRequest?,
-    params: RequestTestNotificationOperationParams
+    params: RequestTestNotificationOperationParams,
+    requestBody: TestNotificationRequest?
 ) : Operation<
         TestNotificationRequest
     >(
@@ -35,4 +34,10 @@ class RequestTestNotificationOperation(
         "requestTestNotification",
         requestBody,
         params
-    )
+    ) {
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: RequestTestNotificationOperationParams, requestBody: TestNotificationRequest?)"))
+    constructor(
+        requestBody: TestNotificationRequest?,
+        params: RequestTestNotificationOperationParams
+    ) : this(params, requestBody)
+}

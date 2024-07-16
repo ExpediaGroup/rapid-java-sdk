@@ -13,24 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
+import com.expediagroup.sdk.rapid.models.Link
 
 /**
  * Property Content
  * @property params [GetPropertyContentOperationParams]
  */
-class GetPropertyContentOperation(
-    params: GetPropertyContentOperationParams
+class GetPropertyContentOperation private constructor(
+    params: GetPropertyContentOperationParams?,
+    link: Link?
 ) : Operation<
         Nothing
     >(
-        "/v3/properties/content",
+        url(null, link, "/v3/properties/content"),
         "GET",
         "getPropertyContent",
         null,
         params
+    ) {
+    constructor(
+        params: GetPropertyContentOperationParams
+    ) : this(
+        params,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: GetPropertyContentOperationContext?
+    ) : this(
+        GetPropertyContentOperationParams(context),
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            return "/v3/properties/content"
+        }
+    }
+}

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
@@ -33,7 +32,8 @@ data class GetReservationOperationParams(
     val affiliateReferenceId: kotlin.String,
     val email: kotlin.String,
     val include: kotlin.collections.List<kotlin.String>? = null
-) : OperationParams {
+) :
+    OperationParams {
     companion object {
         @JvmStatic
         fun builder() = Builder()
@@ -116,6 +116,11 @@ data class GetReservationOperationParams(
             affiliateReferenceId?.also { put("affiliate_reference_id", listOf(affiliateReferenceId.toString())) }
             email?.also { put("email", listOf(email.toString())) }
             include?.also { put("include", include) }
+        }
+    }
+
+    override fun getPathParams(): Map<String, String> {
+        return buildMap {
         }
     }
 }

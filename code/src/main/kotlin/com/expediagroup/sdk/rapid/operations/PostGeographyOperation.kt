@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
@@ -25,8 +24,8 @@ import com.expediagroup.sdk.rapid.models.PropertiesGeoJsonRequest
  * @property params [PostGeographyOperationParams]
  */
 class PostGeographyOperation(
-    requestBody: PropertiesGeoJsonRequest?,
-    params: PostGeographyOperationParams
+    params: PostGeographyOperationParams,
+    requestBody: PropertiesGeoJsonRequest?
 ) : Operation<
         PropertiesGeoJsonRequest
     >(
@@ -35,4 +34,10 @@ class PostGeographyOperation(
         "postGeography",
         requestBody,
         params
-    )
+    ) {
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: PostGeographyOperationParams, requestBody: PropertiesGeoJsonRequest?)"))
+    constructor(
+        requestBody: PropertiesGeoJsonRequest?,
+        params: PostGeographyOperationParams
+    ) : this(params, requestBody)
+}

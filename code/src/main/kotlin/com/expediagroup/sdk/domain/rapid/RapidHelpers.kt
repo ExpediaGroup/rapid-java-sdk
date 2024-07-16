@@ -20,13 +20,17 @@ import com.expediagroup.sdk.core.client.ClientHelpers
 import com.expediagroup.sdk.core.constant.HeaderKey
 import com.expediagroup.sdk.core.model.Response
 
+@Deprecated("Use operations and responses instead")
 class RapidHelpers(client: BaseRapidClient) : ClientHelpers(client) {
     /** Extracts the token parameter from a URL string if it exists; otherwise, returns null. */
+    @Deprecated("Construct operation using Link", ReplaceWith("Operation(link: Link)"))
     fun extractToken(url: String): String? = Regex("token=([^&]*)").find(url)?.groupValues?.getOrNull(1)
 
     /** Extracts the room booking ID from a URL string if it exists; otherwise, returns null. */
+    @Deprecated("Construct operation using Link", ReplaceWith("Operation(link: Link)"))
     fun extractRoomBookingId(url: String): String? = Regex("rooms\\/([a-z0-9-]+)").find(url)?.groupValues?.getOrNull(1)
 
     /** Extracts the transaction ID from a response object if it exists; otherwise, returns null. */
+    @Deprecated("Get transactionId from response headers", ReplaceWith("response.headers[transaction-id]"))
     fun <T> extractTransactionId(response: Response<T>): String? = response.headers[HeaderKey.TRANSACTION_ID]?.first()
 }

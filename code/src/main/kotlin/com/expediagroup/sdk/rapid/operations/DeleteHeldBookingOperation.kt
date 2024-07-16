@@ -13,24 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
+import com.expediagroup.sdk.rapid.models.Link
+import org.apache.commons.text.StringSubstitutor
 
 /**
  * Cancel Held Booking
  * @property params [DeleteHeldBookingOperationParams]
  */
-class DeleteHeldBookingOperation(
-    params: DeleteHeldBookingOperationParams
+class DeleteHeldBookingOperation private constructor(
+    params: DeleteHeldBookingOperationParams?,
+    link: Link?
 ) : Operation<
         Nothing
     >(
-        "/v3/itineraries/{itinerary_id}".replace("{" + "itinerary_id" + "}", "${params.itineraryId}"),
+        url(params, link, "/v3/itineraries/{itinerary_id}"),
         "DELETE",
         "deleteHeldBooking",
         null,
         params
+    ) {
+    constructor(
+        params: DeleteHeldBookingOperationParams
+    ) : this(
+        params,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: DeleteHeldBookingOperationContext
+    ) : this(
+        DeleteHeldBookingOperationParams(context),
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            val paramsMap =
+                buildMap {
+                    put("itinerary_id", "[a-z0-9]+")
+                }
+            val substitutor = StringSubstitutor(paramsMap, "{", "}")
+            return substitutor.replace("/v3/itineraries/{itinerary_id}")
+        }
+    }
+}
