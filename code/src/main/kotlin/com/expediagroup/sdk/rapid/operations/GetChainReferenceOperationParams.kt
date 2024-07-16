@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
@@ -31,7 +30,8 @@ data class GetChainReferenceOperationParams(
     val partnerPointOfSale: kotlin.String? = null,
     val paymentTerms: kotlin.String? = null,
     val platformName: kotlin.String? = null
-) : OperationParams {
+) :
+    OperationParams {
     companion object {
         @JvmStatic
         fun builder() = Builder()
@@ -92,6 +92,11 @@ data class GetChainReferenceOperationParams(
             partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
             paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
             platformName?.also { put("platform_name", listOf(platformName.toString())) }
+        }
+    }
+
+    override fun getPathParams(): Map<String, String> {
+        return buildMap {
         }
     }
 }

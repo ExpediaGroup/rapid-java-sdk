@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
@@ -29,7 +28,8 @@ data class GetCalendarAvailabilityOperationParams(
     val propertyId: kotlin.collections.List<kotlin.String>,
     val startDate: java.time.LocalDate,
     val endDate: java.time.LocalDate
-) : OperationParams {
+) :
+    OperationParams {
     companion object {
         @JvmStatic
         fun builder() = Builder()
@@ -96,6 +96,11 @@ data class GetCalendarAvailabilityOperationParams(
             propertyId?.also { put("property_id", propertyId) }
             startDate?.also { put("start_date", listOf(startDate.toString())) }
             endDate?.also { put("end_date", listOf(endDate.toString())) }
+        }
+    }
+
+    override fun getPathParams(): Map<String, String> {
+        return buildMap {
         }
     }
 }

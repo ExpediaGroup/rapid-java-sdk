@@ -13,27 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
+import com.expediagroup.sdk.rapid.models.Link
+import org.apache.commons.text.StringSubstitutor
 
 /**
  * Price-Check
  * @property params [PriceCheckOperationParams]
  */
-class PriceCheckOperation(
-    params: PriceCheckOperationParams
+class PriceCheckOperation private constructor(
+    params: PriceCheckOperationParams?,
+    link: Link?
 ) : Operation<
         Nothing
     >(
-        "/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}".replace(
-            "{" + "property_id" + "}",
-            "${params.propertyId}"
-        ).replace("{" + "room_id" + "}", "${params.roomId}").replace("{" + "rate_id" + "}", "${params.rateId}"),
+        url(params, link, "/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}"),
         "GET",
         "priceCheck",
         null,
         params
+    ) {
+    constructor(
+        params: PriceCheckOperationParams
+    ) : this(
+        params,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: PriceCheckOperationContext?
+    ) : this(
+        PriceCheckOperationParams(context),
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            val paramsMap =
+                buildMap {
+                    put("property_id", "[a-z0-9]+")
+                    put("room_id", "[a-z0-9]+")
+                    put("rate_id", "[a-z0-9]+")
+                }
+            val substitutor = StringSubstitutor(paramsMap, "{", "}")
+            return substitutor.replace("/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}")
+        }
+    }
+}

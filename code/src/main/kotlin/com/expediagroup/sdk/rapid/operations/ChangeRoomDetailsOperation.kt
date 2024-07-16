@@ -13,26 +13,65 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.ChangeRoomDetailsRequest
+import com.expediagroup.sdk.rapid.models.Link
+import org.apache.commons.text.StringSubstitutor
 
 /**
  * Change details of a room.
  * @property requestBody [ChangeRoomDetailsRequest]
  * @property params [ChangeRoomDetailsOperationParams]
  */
-class ChangeRoomDetailsOperation(
+class ChangeRoomDetailsOperation private constructor(
+    params: ChangeRoomDetailsOperationParams?,
     requestBody: ChangeRoomDetailsRequest?,
-    params: ChangeRoomDetailsOperationParams
+    link: Link?
 ) : Operation<
         ChangeRoomDetailsRequest
     >(
-        "/v3/itineraries/{itinerary_id}/rooms/{room_id}".replace("{" + "itinerary_id" + "}", "${params.itineraryId}").replace("{" + "room_id" + "}", "${params.roomId}"),
+        url(params, link, "/v3/itineraries/{itinerary_id}/rooms/{room_id}"),
         "PUT",
         "changeRoomDetails",
         requestBody,
         params
+    ) {
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: ChangeRoomDetailsOperationParams, requestBody: ChangeRoomDetailsRequest?)"))
+    constructor(
+        requestBody: ChangeRoomDetailsRequest?,
+        params: ChangeRoomDetailsOperationParams
+    ) : this(params, requestBody)
+
+    constructor(
+        params: ChangeRoomDetailsOperationParams,
+        requestBody: ChangeRoomDetailsRequest?
+    ) : this(
+        params,
+        requestBody,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: ChangeRoomDetailsOperationContext,
+        requestBody: ChangeRoomDetailsRequest?
+    ) : this(
+        ChangeRoomDetailsOperationParams(context),
+        requestBody,
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            val paramsMap =
+                buildMap {
+                    put("itinerary_id", "[a-z0-9]+")
+                    put("room_id", "[a-z0-9]+")
+                }
+            val substitutor = StringSubstitutor(paramsMap, "{", "}")
+            return substitutor.replace("/v3/itineraries/{itinerary_id}/rooms/{room_id}")
+        }
+    }
+}

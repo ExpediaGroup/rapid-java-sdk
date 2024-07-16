@@ -13,24 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
+import com.expediagroup.sdk.rapid.models.Link
+import org.apache.commons.text.StringSubstitutor
 
 /**
  * Resume Booking
  * @property params [PutResumeBookingOperationParams]
  */
-class PutResumeBookingOperation(
-    params: PutResumeBookingOperationParams
+class PutResumeBookingOperation private constructor(
+    params: PutResumeBookingOperationParams?,
+    link: Link?
 ) : Operation<
         Nothing
     >(
-        "/v3/itineraries/{itinerary_id}".replace("{" + "itinerary_id" + "}", "${params.itineraryId}"),
+        url(params, link, "/v3/itineraries/{itinerary_id}"),
         "PUT",
         "putResumeBooking",
         null,
         params
+    ) {
+    constructor(
+        params: PutResumeBookingOperationParams
+    ) : this(
+        params,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: PutResumeBookingOperationContext
+    ) : this(
+        PutResumeBookingOperationParams(context),
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            val paramsMap =
+                buildMap {
+                    put("itinerary_id", "[a-z0-9]+")
+                }
+            val substitutor = StringSubstitutor(paramsMap, "{", "}")
+            return substitutor.replace("/v3/itineraries/{itinerary_id}")
+        }
+    }
+}

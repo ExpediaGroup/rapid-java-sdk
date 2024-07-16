@@ -13,26 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequest
+import com.expediagroup.sdk.rapid.models.Link
 
 /**
  * Create Booking
  * @property requestBody [CreateItineraryRequest]
  * @property params [PostItineraryOperationParams]
  */
-class PostItineraryOperation(
+class PostItineraryOperation private constructor(
+    params: PostItineraryOperationParams?,
     requestBody: CreateItineraryRequest?,
-    params: PostItineraryOperationParams
+    link: Link?
 ) : Operation<
         CreateItineraryRequest
     >(
-        "/v3/itineraries",
+        url(null, link, "/v3/itineraries"),
         "POST",
         "postItinerary",
         requestBody,
         params
+    ) {
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: PostItineraryOperationParams, requestBody: CreateItineraryRequest?)"))
+    constructor(
+        requestBody: CreateItineraryRequest?,
+        params: PostItineraryOperationParams
+    ) : this(params, requestBody)
+
+    constructor(
+        params: PostItineraryOperationParams,
+        requestBody: CreateItineraryRequest?
+    ) : this(
+        params,
+        requestBody,
+        null
     )
+
+    constructor(
+        link: Link,
+        context: PostItineraryOperationContext,
+        requestBody: CreateItineraryRequest?
+    ) : this(
+        PostItineraryOperationParams(context),
+        requestBody,
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            return "/v3/itineraries"
+        }
+    }
+}

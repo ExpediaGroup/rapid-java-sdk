@@ -19,4 +19,6 @@ interface OperationParams {
     fun getHeaders(): Map<String, String>?
 
     fun getQueryParams(): Map<String, Iterable<String>>?
+
+    fun getPathParams(): Map<String, String>
 }
