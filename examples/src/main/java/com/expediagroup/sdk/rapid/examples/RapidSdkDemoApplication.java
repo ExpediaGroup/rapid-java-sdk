@@ -1,6 +1,7 @@
 package com.expediagroup.sdk.rapid.examples;
 
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
+import com.expediagroup.sdk.rapid.examples.scenarios.booking.CancelHeldBookingScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetListOfRegionNamesScenario;
@@ -11,6 +12,7 @@ import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCatego
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCoordinatesScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionDescendantsScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionWithMultiPolygonCoordinatesScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetAdditionalAvailabilityOfPropertyScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +30,23 @@ public class RapidSdkDemoApplication {
         logger.info("==                                                                                   ==");
         logger.info("=======================================================================================");
         logger.info("=======================================================================================");
+
+        logger.info("=============================== Running Shopping Scenarios ============================");
+
+        /*  Run Get Additional Availability Of Property Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting property availability for a test property
+            2. Getting additional availability of the first property returned
+        */
+
+        logger.info("Running Get Additional Availability Of Property Scenario...");
+        GetAdditionalAvailabilityOfPropertyScenario getAdditionalAvailabilityOfPropertyScenario = new GetAdditionalAvailabilityOfPropertyScenario();
+        getAdditionalAvailabilityOfPropertyScenario.setProfile(new DefaultRapidPartnerProfile());
+        getAdditionalAvailabilityOfPropertyScenario.run();
+
+        logger.info("=============================== End of Shopping Scenarios =============================");
+
+        logger.info("=============================== Running Booking Scenarios =============================");
 
         /*  Run Single Room Book Scenario using the default profile
             This scenario demonstrates the following:
@@ -52,6 +71,22 @@ public class RapidSdkDemoApplication {
         MultiRoomHoldAndResumeBookScenario multiRoomHoldAndResumeBookScenario = new MultiRoomHoldAndResumeBookScenario();
         multiRoomHoldAndResumeBookScenario.setProfile(new DefaultRapidPartnerProfile());
         multiRoomHoldAndResumeBookScenario.run();
+
+        /*  Run Cancel Held Booking Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Checking room prices for the property
+            3. Booking a room with hold in the property
+            4. Cancelling the held booking
+        */
+        logger.info("Running Cancel Held Booking Scenario using the default profile...");
+        CancelHeldBookingScenario cancelHeldBookingScenario = new CancelHeldBookingScenario();
+        cancelHeldBookingScenario.setProfile(new DefaultRapidPartnerProfile());
+        cancelHeldBookingScenario.run();
+
+        logger.info("=============================== End of Booking Scenarios ==============================");
+
+        logger.info("=============================== Running Geography Scenarios ===========================");
 
         /*  Run Get List of Region Names Scenario using the default profile
             This scenario demonstrates the following:
@@ -133,6 +168,17 @@ public class RapidSdkDemoApplication {
         ParseRegionCategoriesScenario parseRegionCategoriesScenario = new ParseRegionCategoriesScenario();
         parseRegionCategoriesScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionCategoriesScenario.run();
+
+        logger.info("=============================== End of Geography Scenarios ===========================");
+
+
+        logger.info("=======================================================================================");
+        logger.info("=======================================================================================");
+        logger.info("==                                                                                   ==");
+        logger.info("==         That's all folks! Thanks for watching the demonstration of RAPID SDK.     ==");
+        logger.info("==                                                                                   ==");
+        logger.info("=======================================================================================");
+        logger.info("=======================================================================================");
 
     }
 }

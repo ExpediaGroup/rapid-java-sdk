@@ -2,42 +2,38 @@ package com.expediagroup.sdk.rapid.examples.services;
 
 import com.expediagroup.sdk.core.model.Nothing;
 import com.expediagroup.sdk.core.model.Response;
-import com.expediagroup.sdk.rapid.examples.Constants;
 import com.expediagroup.sdk.rapid.models.BillingContactRequest;
 import com.expediagroup.sdk.rapid.models.BillingContactRequestAddress;
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequest;
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequestRoom;
 import com.expediagroup.sdk.rapid.models.Itinerary;
 import com.expediagroup.sdk.rapid.models.ItineraryCreation;
+import com.expediagroup.sdk.rapid.models.ItineraryCreationLinks;
+import com.expediagroup.sdk.rapid.models.Link;
 import com.expediagroup.sdk.rapid.models.PaymentRequest;
 import com.expediagroup.sdk.rapid.models.PhoneRequest;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
+import com.expediagroup.sdk.rapid.models.RoomPriceCheckLinks;
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperation;
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationContext;
 import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperation;
-import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationParams;
+import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationContext;
 import com.expediagroup.sdk.rapid.operations.PostItineraryOperation;
-import com.expediagroup.sdk.rapid.operations.PostItineraryOperationParams;
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperationContext;
 import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperation;
-import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationParams;
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationContext;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class BookService extends RapidService {
 
     public Response<ItineraryCreation> createBooking(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
 
-        String bookHref = roomPriceCheck.getLinks().getBook().getHref();
-
         // In the Book request, include corresponding separate instances of room in the rooms array for each room you wish to book. */
         List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
-
-        PostItineraryOperationParams params = PostItineraryOperationParams.builder()
-                .customerIp(Constants.CUSTOMER_IP)
-                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)))
-                .build();
 
         CreateItineraryRequest createItineraryRequest = CreateItineraryRequest.builder()
                 .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
@@ -51,23 +47,24 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        PostItineraryOperation operation = new PostItineraryOperation(createItineraryRequest, params);
+        RoomPriceCheckLinks roomPriceCheckLinks = roomPriceCheck.getLinks();
+        if (roomPriceCheckLinks == null) throw new RuntimeException();
+        Link bookLink = roomPriceCheckLinks.getBook();
+        if (bookLink == null) throw new RuntimeException();
 
+        PostItineraryOperationContext postItineraryOperationContext =
+                PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
+
+        PostItineraryOperation operation = new PostItineraryOperation(bookLink, postItineraryOperationContext, createItineraryRequest);
         return rapidClient.execute(operation);
     }
 
     public Response<ItineraryCreation> createBookingWithHold(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
-        String bookHref = roomPriceCheck.getLinks().getBook().getHref();
 
         // In the Book request, include corresponding separate instances of room in the rooms array for each room you wish to book. */
         List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
 
-        // Create a booking with hold, set hold to true
-        PostItineraryOperationParams params = PostItineraryOperationParams.builder()
-                .customerIp(Constants.CUSTOMER_IP)
-                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(bookHref)))
-                .build();
-
+        // Create a booking with hold, set hold to true in the request
         CreateItineraryRequest createItineraryRequest = CreateItineraryRequest.builder()
                 .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
                 .hold(true)
@@ -80,37 +77,52 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        PostItineraryOperation operation = new PostItineraryOperation(createItineraryRequest, params);
+        RoomPriceCheckLinks roomPriceCheckLinks = roomPriceCheck.getLinks();
+        if (roomPriceCheckLinks == null) throw new RuntimeException();
+        Link bookLink = roomPriceCheckLinks.getBook();
+        if (bookLink == null) throw new RuntimeException();
 
+        PostItineraryOperationContext postItineraryOperationContext =
+                PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
+
+        PostItineraryOperation operation = new PostItineraryOperation(bookLink, postItineraryOperationContext, createItineraryRequest);
         return rapidClient.execute(operation);
     }
 
     public Response<Nothing> resumeBooking(ItineraryCreation itineraryCreation) {
+        ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
+        if (itineraryCreationLinks == null) throw new RuntimeException();
+        Link resumeLink = itineraryCreationLinks.getResume();
+        if (resumeLink == null) throw new RuntimeException();
 
-        PutResumeBookingOperationParams params = PutResumeBookingOperationParams.builder()
-                .customerIp(Constants.CUSTOMER_IP)
-                .customerSessionId("123455656565")
-                .itineraryId(itineraryCreation.getItineraryId())
-                .token(Objects.requireNonNull(rapidClient.helpers.extractToken(itineraryCreation.getLinks().getResume().getHref())))
-                .test("standard")
-                .build();
+        PutResumeBookingOperationContext putResumeBookingOperationContext =
+                PutResumeBookingOperationContext.builder().customerIp("127.0.0.1").build();
 
-        return rapidClient.execute(new PutResumeBookingOperation(params));
+        return rapidClient.execute(new PutResumeBookingOperation(resumeLink, putResumeBookingOperationContext));
     }
 
     public Response<Itinerary> getReservationByItineraryId(ItineraryCreation itineraryCreation) {
+        ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
+        if (itineraryCreationLinks == null) throw new RuntimeException();
+        Link retrieveLink = itineraryCreationLinks.getRetrieve();
+        if (retrieveLink == null) throw new RuntimeException();
 
-        GetReservationByItineraryIdOperationParams params = GetReservationByItineraryIdOperationParams.builder()
-                .customerIp(Constants.CUSTOMER_IP)
-                .itineraryId(itineraryCreation.getItineraryId())
-                .customerSessionId("123455656565")
-                .test("standard")
-                .token(rapidClient.helpers.extractToken(itineraryCreation.getLinks().getRetrieve().getHref()))
-                .build();
+        GetReservationByItineraryIdOperationContext getReservationByItineraryIdOperationContext =
+                GetReservationByItineraryIdOperationContext.builder().customerIp("127.0.0.1").build();
 
-        GetReservationByItineraryIdOperation operation = new GetReservationByItineraryIdOperation(params);
+        return rapidClient.execute(new GetReservationByItineraryIdOperation(retrieveLink, getReservationByItineraryIdOperationContext  ));
+    }
 
-        return rapidClient.execute(operation);
+    public Response<Nothing> cancelHeldReservationByItineraryId(ItineraryCreation itineraryCreation) {
+        ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
+        if (itineraryCreationLinks == null) throw new RuntimeException();
+        Link cancelLink = itineraryCreationLinks.getCancel();
+        if (cancelLink == null) throw new RuntimeException();
+
+        DeleteHeldBookingOperationContext deleteHeldBookingOperationContext =
+                DeleteHeldBookingOperationContext.builder().customerIp("127.0.0.1").build();
+
+        return rapidClient.execute(new DeleteHeldBookingOperation(cancelLink, deleteHeldBookingOperationContext));
     }
 
     /* Helper methods */
