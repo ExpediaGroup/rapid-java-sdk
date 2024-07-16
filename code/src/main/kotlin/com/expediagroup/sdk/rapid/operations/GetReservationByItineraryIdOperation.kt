@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Retrieve Booking
  * @property params [GetReservationByItineraryIdOperationParams]
-
  */
 class GetReservationByItineraryIdOperation(
     params: GetReservationByItineraryIdOperationParams

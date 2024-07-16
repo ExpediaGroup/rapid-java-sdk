@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Get additional property room rates and availability
  * @property params [GetAdditionalAvailabilityOperationParams]
-
  */
 class GetAdditionalAvailabilityOperation(
     params: GetAdditionalAvailabilityOperationParams

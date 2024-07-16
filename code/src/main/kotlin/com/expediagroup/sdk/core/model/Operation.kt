@@ -20,7 +20,7 @@ abstract class Operation<T>(
     val method: String,
     val operationId: String,
     val requestBody: T?,
-    val params: OperationParams
+    val params: OperationParams?
 ) {
     var transactionId: TransactionId = TransactionId()
         private set

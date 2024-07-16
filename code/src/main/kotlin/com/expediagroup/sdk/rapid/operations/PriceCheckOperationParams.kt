@@ -22,10 +22,10 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property propertyId Expedia Property ID.<br>
  * @property roomId Room ID of a property.<br>
  * @property rateId Rate ID of a room.<br>
- * @property token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  * @property test Price check calls have a test header that can be used to return set responses with the following keywords:   * `available`   * `price_changed`   * `sold_out`   * `service_unavailable`   * `unknown_internal_error`
+ * @property token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
  */
 data class PriceCheckOperationParams(
     val propertyId: kotlin.String,

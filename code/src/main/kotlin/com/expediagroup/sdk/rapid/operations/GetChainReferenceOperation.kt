@@ -21,9 +21,7 @@ import com.expediagroup.sdk.core.model.Operation
 
 /**
  * Chain Reference
-
  * @property params [GetChainReferenceOperationParams]
-
  */
 class GetChainReferenceOperation(
     params: GetChainReferenceOperationParams

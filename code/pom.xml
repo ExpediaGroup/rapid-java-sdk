@@ -5,9 +5,9 @@
 
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>4.1.2</version>
+    <version>4.2.0</version>
     <name>EG Rapid SDK for Java</name>
-    <description>EG Rapid SDK v4.1.2</description>
+    <description>EG Rapid SDK v4.2.0</description>
     <url>https://github.com/ExpediaGroup/rapid-java-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
@@ -68,11 +68,12 @@
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
         <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
+        <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
@@ -126,7 +127,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.17.1</version>
+                <version>2.17.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -148,7 +149,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.17.1</version>
+                <version>2.17.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -577,7 +578,18 @@
                             <artifactId>kotlin-as-java-plugin</artifactId>
                             <version>${dokka-plugin.version}</version>
                         </plugin>
+                        <plugin>
+                            <groupId>org.jetbrains.dokka</groupId>
+                            <artifactId>versioning-plugin</artifactId>
+                            <version>${dokka-plugin.version}</version>
+                        </plugin>
                     </dokkaPlugins>
+                    <pluginsConfiguration>
+                        <org.jetbrains.dokka.versioning.VersioningPlugin>
+                            <version>${project.version}</version>
+                            <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
+                        </org.jetbrains.dokka.versioning.VersioningPlugin>
+                    </pluginsConfiguration>
                     <suppressInheritedMembers>true</suppressInheritedMembers>
                 </configuration>
                 <executions>
@@ -789,7 +801,18 @@
                                     <artifactId>kotlin-as-java-plugin</artifactId>
                                     <version>${dokka-plugin.version}</version>
                                 </plugin>
+                                <plugin>
+                                    <groupId>org.jetbrains.dokka</groupId>
+                                    <artifactId>versioning-plugin</artifactId>
+                                    <version>${dokka-plugin.version}</version>
+                                </plugin>
                             </dokkaPlugins>
+                            <pluginsConfiguration>
+                                <org.jetbrains.dokka.versioning.VersioningPlugin>
+                                    <version>${project.version}</version>
+                                    <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
+                                </org.jetbrains.dokka.versioning.VersioningPlugin>
+                            </pluginsConfiguration>
                         </configuration>
                         <executions>
                             <execution>

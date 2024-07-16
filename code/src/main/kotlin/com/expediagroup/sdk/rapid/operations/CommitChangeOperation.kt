@@ -23,7 +23,6 @@ import com.expediagroup.sdk.rapid.models.CommitChangeRoomRequestBody
  * Commit a change of itinerary that may require additional payment or refund.
  * @property requestBody [CommitChangeRoomRequestBody]
  * @property params [CommitChangeOperationParams]
-
  */
 class CommitChangeOperation(
     requestBody: CommitChangeRoomRequestBody?,

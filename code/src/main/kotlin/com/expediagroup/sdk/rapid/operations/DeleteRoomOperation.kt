@@ -22,7 +22,6 @@ import com.expediagroup.sdk.core.model.Operation
 /**
  * Cancel a room.
  * @property params [DeleteRoomOperationParams]
-
  */
 class DeleteRoomOperation(
     params: DeleteRoomOperationParams
