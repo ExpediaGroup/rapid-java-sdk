@@ -33,6 +33,12 @@ public class RapidSdkDemoApplication {
 
         logger.info("=============================== Running Shopping Scenarios ============================");
 
+        /*  Run Get Additional Availability Of Property Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting property availability for a test property
+            2. Getting additional availability of the first property returned
+        */
+
         logger.info("Running Get Additional Availability Of Property Scenario...");
         GetAdditionalAvailabilityOfPropertyScenario getAdditionalAvailabilityOfPropertyScenario = new GetAdditionalAvailabilityOfPropertyScenario();
         getAdditionalAvailabilityOfPropertyScenario.setProfile(new DefaultRapidPartnerProfile());
@@ -162,12 +168,6 @@ public class RapidSdkDemoApplication {
         ParseRegionCategoriesScenario parseRegionCategoriesScenario = new ParseRegionCategoriesScenario();
         parseRegionCategoriesScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionCategoriesScenario.run();
-
-        /*  Run Get Additional Availability Of Property Scenario using the default profile
-            This scenario demonstrates the following:
-            1. Getting property availability for a test property
-            2. Getting additional availability of the first property returned
-        */
 
         logger.info("=============================== End of Geography Scenarios ===========================");
 

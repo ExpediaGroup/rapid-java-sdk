@@ -18,7 +18,7 @@ import java.util.List;
 public class CancelHeldBookingScenario implements RapidScenario {
 
     private static final Logger logger = LoggerFactory.getLogger(CancelHeldBookingScenario.class);
-    private ShopService shopService = new ShopService();
+    private final ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
     @Override
@@ -44,13 +44,13 @@ public class CancelHeldBookingScenario implements RapidScenario {
         // Checking room prices for the property
         logger.info("Checking room prices for the property: [{}]...", Constants.TEST_PROPERTY_ID);
         Property property = propertyAvailabilityList.get(0);
-        RoomPriceCheck roomPriceCheck = null;
 
-        if (property instanceof PropertyAvailability) {
-            PropertyAvailability propertyAvailability = (PropertyAvailability) property;
-            roomPriceCheck = shopService.checkRoomPrices(propertyAvailability, 0, 0).getData();
-            logger.info("Room Price Check: [{}]", roomPriceCheck.getStatus());
-        }
+        if (!(property instanceof PropertyAvailability)) throw new RuntimeException();
+
+        PropertyAvailability propertyAvailability = (PropertyAvailability) property;
+        RoomPriceCheck roomPriceCheck = shopService.checkRoomPrices(propertyAvailability, 0, 0).getData();
+        logger.info("Room Price Check: [{}]", roomPriceCheck.getStatus());
+
 
         // Booking a room with hold in the property
         logger.info("Booking a room with hold=true in test property: [{}]...", Constants.TEST_PROPERTY_ID);
@@ -62,6 +62,6 @@ public class CancelHeldBookingScenario implements RapidScenario {
 
         // Cancel the held booking
         logger.info("Cancelling the held booking with itinerary id: [{}]...", itineraryCreation.getItineraryId());
-        bookService.cancelHeldReservationByItiniaryId(itineraryCreation);
+        bookService.cancelHeldReservationByItineraryId(itineraryCreation);
     }
 }

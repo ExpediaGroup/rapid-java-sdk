@@ -15,7 +15,7 @@ import java.util.List;
 public class GetAdditionalAvailabilityOfPropertyScenario implements RapidScenario {
 
     private static final Logger logger = LoggerFactory.getLogger(GetAdditionalAvailabilityOfPropertyScenario.class);
-    private ShopService shopService = new ShopService();
+    private final ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
     @Override
@@ -50,8 +50,8 @@ public class GetAdditionalAvailabilityOfPropertyScenario implements RapidScenari
         additionalPropertyAvailability.getData().forEach(additionalProperty -> {
             logger.info("---------------------------------");
             logger.info("Property Id: {}", additionalProperty.getPropertyId());
-            logger.info("Property Rooms Count: {}", additionalProperty.getRooms().size());
             logger.info("Property Status: {}", additionalProperty.getStatus());
+            logger.info("Property Rooms Count: {}", additionalProperty.getRooms() == null ? 0 : additionalProperty.getRooms().size());
         });
 
     }
