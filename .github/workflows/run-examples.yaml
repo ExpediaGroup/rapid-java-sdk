@@ -1,0 +1,29 @@
+name: Run Examples
+on:
+  workflow_call:
+    inputs:
+      sdk_version:
+        description: 'SDK version to run examples for'
+        required: false
+        type: string
+        default: 'LATEST'
+    secrets:
+      KEY:
+        description: 'API Key'
+        required: true
+      SECRET:
+        description: 'API Key'
+        required: true
+
+jobs:
+  run-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${github.event.inputs.sdk_version}
+      - name: Run Examples
+        working-directory: examples
+        run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${inputs.sdk_version}" -Dcom.expediagroup.rapidsdkjava.apikey="${secrets.KEY}" -Dcom.expediagroup.rapidsdkjava.apisecret="${secrets.SECRET}"
