@@ -7,6 +7,11 @@ on:
         required: false
         type: string
         default: 'LATEST'
+      jdk:
+        description: 'JDK version to use'
+        required: true
+        type: string
+        default: '17'
     secrets:
       KEY:
         description: 'API Key'
@@ -20,10 +25,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          repository: 'ExpediaGroup/rapid-java-sdk'
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: ${github.event.inputs.sdk_version}
+          java-version: ${github.event.inputs.jdk}
       - name: Run Examples
         working-directory: examples
         run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${inputs.sdk_version}" -Dcom.expediagroup.rapidsdkjava.apikey="${secrets.KEY}" -Dcom.expediagroup.rapidsdkjava.apisecret="${secrets.SECRET}"
