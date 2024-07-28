@@ -1,7 +1,7 @@
 package com.expediagroup.sdk.rapid.examples.services;
 
-import com.expediagroup.sdk.rapid.examples.Constants;
 import com.expediagroup.sdk.rapid.client.RapidClient;
+import com.expediagroup.sdk.rapid.examples.Constants;
 
 public abstract class RapidService {
 
