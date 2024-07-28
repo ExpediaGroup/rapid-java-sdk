@@ -30,8 +30,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: ${github.event.inputs.jdk}
+          java-version: ${{github.event.inputs.jdk}}
           distribution: 'temurin'
       - name: Run Examples
         working-directory: examples
-        run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${inputs.sdk_version}" -Dcom.expediagroup.rapidsdkjava.apikey="${secrets.KEY}" -Dcom.expediagroup.rapidsdkjava.apisecret="${secrets.SECRET}"
+        run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${{inputs.sdk_version}}" -Dcom.expediagroup.rapidsdkjava.apikey="${{secrets.KEY}}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{secrets.SECRET}}"
