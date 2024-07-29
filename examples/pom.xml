@@ -14,6 +14,10 @@
         <rapid-java-sdk.sdk.version>4.3.0</rapid-java-sdk.sdk.version>
     </properties>
 
+<!--    <repositories>-->
+<!--        TODO: enable snapshots-->
+<!--    </repositories>-->
+
     <dependencies>
         <dependency>
             <groupId>com.expediagroup</groupId>
