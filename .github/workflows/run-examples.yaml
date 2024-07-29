@@ -12,7 +12,7 @@ on:
         required: true
         type: string
         default: '17'
-      sdk_generation_worfklow_run_id:
+      sdk_generation_workflow_run_id:
         description: 'ID of the SDK generation workflow run'
         required: false
         type: string
@@ -39,14 +39,14 @@ jobs:
           java-version: ${{github.event.inputs.jdk}}
           distribution: 'temurin'
       - name: Download SDK
-        if: ${{ inputs.sdk_generation_worfklow_run_id != '' }}
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         uses: dawidd6/action-download-artifact@v6
         with:
-          run_id: ${{ inputs.sdk_generation_worfklow_run_id }}
+          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: sdk
           path: sdk
       - name: Install SDK
-        if: ${{ inputs.sdk_generation_worfklow_run_id != '' }}
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: sdk
         run: ls -la && mvn clean install
       - name: Run Examples
