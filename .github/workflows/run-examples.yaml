@@ -57,7 +57,7 @@ jobs:
           distribution: 'corretto'
       - name: Install SDK Jar
         working-directory: examples
-        run: mvn install
+        run: mvn install && mvn install:install-file -Dfile=jar/original-rapid-sdk-${{ inputs.sdk_version }}.jar -DartifactId=rapid-sdk -DgroupId=com.expediagroup -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
       - name: Run Examples
         working-directory: examples
-        run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
+        run: mvn exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
