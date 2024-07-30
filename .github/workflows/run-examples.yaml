@@ -38,6 +38,17 @@ jobs:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: jar
           path: examples/jar
+      - uses: dawidd6/action-download-artifact@v6
+        with:
+          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
+          name: sdk
+          path: examples/sdk
+      - name: Resolve POM from JAR
+        working-directory: examples
+        run: |
+          unzip -o examples/jar/rapid-sdk-${{ inputs.sdk_version }}.jar -d examples/jar/extracted
+          mv examples/jar/META-INF/maven/com.expediagroup/rapid-sdk/pom.xml examples/sdk/pom.xml
+          cd sdk && mvn install
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
@@ -45,7 +56,7 @@ jobs:
           distribution: 'corretto'
       - name: Install SDK Jar
         working-directory: examples
-        run: mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DgroupId=com.expediagroup -DartifactId=rapid-sdk -Dversion=${{ inputs.sdk_version }} -DgeneratePom=true -Dpackaging=jar
+        run: mvn install
       - name: Run Examples
         working-directory: examples
         run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
