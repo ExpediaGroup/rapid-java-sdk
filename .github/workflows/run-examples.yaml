@@ -33,11 +33,17 @@ jobs:
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
           ref: 'OmarAlJarrah/add-cli-execution-plugin'
+      - uses: actions/download-artifact@v4
+        with:
+          name: jar
+          path: jar
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: ${{ inputs.jdk }}
           distribution: 'temurin'
+      - name: Install SDK Jar
+        run: ls -R jar && mvn install:install-file -Dfile=jar/*.jar -DgroupId=com.expediagroup -DartifactId=rapid-sdk -Dversion=${{inputs.sdk_version}} -Dpackaging=jar
       - name: Run Examples
         working-directory: examples
         run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${{inputs.sdk_version}}-SNAPSHOT" -Dcom.expediagroup.rapidsdkjava.apikey="${{secrets.KEY}}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{secrets.SECRET}}"
