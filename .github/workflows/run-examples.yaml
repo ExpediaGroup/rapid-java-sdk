@@ -32,7 +32,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
-          ref: 'OmarAlJarrah/add-cli-execution-plugin'
       - uses: dawidd6/action-download-artifact@v6
         with:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
@@ -43,19 +42,20 @@ jobs:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: sdk
           path: examples/sdk
-      - name: Resolve POM from JAR
-        working-directory: examples
-        run: unzip -o jar/original-rapid-sdk-${{ inputs.sdk_version }}.jar -d jar/extracted
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: ${{ inputs.jdk }}
           distribution: 'corretto'
-      - working-directory: examples
+      - name: Extract POM from JAR
+        working-directory: examples
+        run: unzip -o jar/original-rapid-sdk-${{ inputs.sdk_version }}.jar -d jar/extracted
+      - name: Overwrite SDK POM file
+        working-directory: examples
         run: mv jar/extracted/META-INF/maven/com.expediagroup/rapid-sdk/pom.xml sdk/pom.xml
-      - working-directory: examples/sdk
+      - name: Install SDK into local repository
+        working-directory: examples/sdk
         run: mvn install
-
       - name: Install SDK Jar
         working-directory: examples
         run: mvn install && mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DartifactId=rapid-sdk -DgroupId=com.expediagroup -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
