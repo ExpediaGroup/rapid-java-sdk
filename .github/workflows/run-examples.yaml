@@ -42,7 +42,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ inputs.jdk }}
-          distribution: 'temurin'
+          distribution: 'corretto'
       - name: Install SDK Jar
         working-directory: examples
         run: mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DgroupId=com.expediagroup -DartifactId=rapid-sdk -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
