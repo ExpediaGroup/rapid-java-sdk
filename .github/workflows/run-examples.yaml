@@ -45,7 +45,7 @@ jobs:
           distribution: 'temurin'
       - name: Install SDK Jar
         working-directory: examples
-        run: ls -R jar && mvn install:install-file -Dfile=jar/*.jar -DgroupId=com.expediagroup -DartifactId=rapid-sdk -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
+        run: mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DgroupId=com.expediagroup -DartifactId=rapid-sdk -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
       - name: Run Examples
         working-directory: examples
         run: mvn clean install exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
