@@ -33,8 +33,9 @@ jobs:
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
           ref: 'OmarAlJarrah/add-cli-execution-plugin'
-      - uses: actions/download-artifact@v4
+      - uses: dawidd6/action-download-artifact@v6
         with:
+          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: jar
           path: jar
       - name: Set up JDK
