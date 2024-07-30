@@ -46,8 +46,8 @@ jobs:
       - name: Resolve POM from JAR
         working-directory: examples
         run: |
-          unzip -o examples/jar/rapid-sdk-${{ inputs.sdk_version }}.jar -d examples/jar/extracted
-          mv examples/jar/META-INF/maven/com.expediagroup/rapid-sdk/pom.xml examples/sdk/pom.xml
+          unzip -o jar/original-rapid-sdk-${{ inputs.sdk_version }}.jar -d jar/extracted
+          mv jar/META-INF/maven/com.expediagroup/rapid-sdk/pom.xml sdk/pom.xml
           cd sdk && mvn install
       - name: Set up JDK
         uses: actions/setup-java@v4
