@@ -30,14 +30,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
       - uses: dawidd6/action-download-artifact@v6
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         with:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: jar
           path: examples/jar
       - uses: dawidd6/action-download-artifact@v6
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         with:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: sdk
@@ -48,15 +51,19 @@ jobs:
           java-version: ${{ inputs.jdk }}
           distribution: 'corretto'
       - name: Extract POM from JAR
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: examples
         run: unzip -o jar/original-rapid-sdk-${{ inputs.sdk_version }}.jar -d jar/extracted
       - name: Overwrite SDK POM file
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: examples
         run: mv jar/extracted/META-INF/maven/com.expediagroup/rapid-sdk/pom.xml sdk/pom.xml
       - name: Install SDK into local repository
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: examples/sdk
         run: mvn install
       - name: Install SDK Jar
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: examples
         run: mvn install && mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DartifactId=rapid-sdk -DgroupId=com.expediagroup -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
       - name: Run Examples
