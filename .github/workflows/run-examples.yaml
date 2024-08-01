@@ -12,6 +12,11 @@ on:
         required: true
         type: string
         default: '21'
+      distribution:
+        description: 'JDK distribution to use'
+        required: false
+        type: string
+        default: 'corretto'
       sdk_generation_workflow_run_id:
         description: 'ID of the SDK generation workflow run'
         required: false
@@ -49,7 +54,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ inputs.jdk }}
-          distribution: 'corretto'
+          distribution: ${{ inputs.distribution }}
       - name: Extract POM from JAR
         if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: examples
