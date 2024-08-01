@@ -13,7 +13,6 @@ import com.expediagroup.sdk.rapid.models.Link;
 import com.expediagroup.sdk.rapid.models.PaymentRequest;
 import com.expediagroup.sdk.rapid.models.PhoneRequest;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
-import com.expediagroup.sdk.rapid.models.RoomPriceCheckLinks;
 import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperation;
 import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationContext;
 import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperation;
@@ -27,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class BookService extends RapidService {
 
@@ -47,16 +47,40 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        RoomPriceCheckLinks roomPriceCheckLinks = roomPriceCheck.getLinks();
-        if (roomPriceCheckLinks == null) throw new RuntimeException();
-        Link bookLink = roomPriceCheckLinks.getBook();
-        if (bookLink == null) throw new RuntimeException();
+        Link bookLink = roomPriceCheck.getLinks().getBook();
 
         PostItineraryOperationContext postItineraryOperationContext =
                 PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
 
         PostItineraryOperation operation = new PostItineraryOperation(bookLink, postItineraryOperationContext, createItineraryRequest);
         return rapidClient.execute(operation);
+    }
+
+    public CompletableFuture<Response<ItineraryCreation>> asyncCreateBooking(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
+
+        // In the Book request, include corresponding separate instances of room in the rooms array for each room you wish to book. */
+        List<CreateItineraryRequestRoom> rooms = Collections.nCopies(occupancy.size(), createRoom());
+
+        CreateItineraryRequest createItineraryRequest = CreateItineraryRequest.builder()
+                .affiliateReferenceId(UUID.randomUUID().toString().substring(0, 28))
+                .hold(false)
+                .email("john@example.com")
+                .phone(phone())
+                .rooms(rooms)
+                .payments(payments())
+                .affiliateMetadata("data_point_1:123|data_point2:This is data.")
+                .taxRegistrationNumber("12345678910")
+                .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
+                .build();
+
+        Link bookLink = roomPriceCheck.getLinks().getBook();
+
+        PostItineraryOperationContext postItineraryOperationContext =
+                PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
+
+        PostItineraryOperation operation = new PostItineraryOperation(bookLink, postItineraryOperationContext, createItineraryRequest);
+
+        return rapidClient.executeAsync(operation);
     }
 
     public Response<ItineraryCreation> createBookingWithHold(RoomPriceCheck roomPriceCheck, List<String> occupancy) {
@@ -77,10 +101,7 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        RoomPriceCheckLinks roomPriceCheckLinks = roomPriceCheck.getLinks();
-        if (roomPriceCheckLinks == null) throw new RuntimeException();
-        Link bookLink = roomPriceCheckLinks.getBook();
-        if (bookLink == null) throw new RuntimeException();
+        Link bookLink = roomPriceCheck.getLinks().getBook();
 
         PostItineraryOperationContext postItineraryOperationContext =
                 PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
@@ -102,10 +123,7 @@ public class BookService extends RapidService {
     }
 
     public Response<Itinerary> getReservationByItineraryId(ItineraryCreation itineraryCreation) {
-        ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
-        if (itineraryCreationLinks == null) throw new RuntimeException();
-        Link retrieveLink = itineraryCreationLinks.getRetrieve();
-        if (retrieveLink == null) throw new RuntimeException();
+        Link retrieveLink = itineraryCreation.getLinks().getRetrieve();
 
         GetReservationByItineraryIdOperationContext getReservationByItineraryIdOperationContext =
                 GetReservationByItineraryIdOperationContext.builder().customerIp("127.0.0.1").build();
@@ -123,6 +141,16 @@ public class BookService extends RapidService {
                 DeleteHeldBookingOperationContext.builder().customerIp("127.0.0.1").build();
 
         return rapidClient.execute(new DeleteHeldBookingOperation(cancelLink, deleteHeldBookingOperationContext));
+    }
+
+    public CompletableFuture<Response<Itinerary>> asyncGetReservationByItineraryId(ItineraryCreation itineraryCreation) {
+
+        Link retrieveLink = itineraryCreation.getLinks().getRetrieve();
+
+        GetReservationByItineraryIdOperationContext getReservationByItineraryIdOperationContext =
+                GetReservationByItineraryIdOperationContext.builder().customerIp("127.0.0.1").build();
+
+        return rapidClient.executeAsync(new GetReservationByItineraryIdOperation(retrieveLink, getReservationByItineraryIdOperationContext  ));
     }
 
     /* Helper methods */
