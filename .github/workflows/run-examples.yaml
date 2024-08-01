@@ -11,7 +11,7 @@ on:
         description: 'JDK version to use'
         required: true
         type: string
-        default: '17'
+        default: '21'
       sdk_generation_workflow_run_id:
         description: 'ID of the SDK generation workflow run'
         required: false
