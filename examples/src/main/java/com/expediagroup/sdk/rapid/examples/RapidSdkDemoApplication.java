@@ -2,6 +2,7 @@ package com.expediagroup.sdk.rapid.examples;
 
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.CancelHeldBookingScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.booking.AsyncSingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetListOfRegionNamesScenario;
@@ -54,11 +55,21 @@ public class RapidSdkDemoApplication {
             2. Checking room prices for the property
             3. Booking the property
         */
-
-        logger.info("Running Book Single Room Scenario using the default profile...");
+        logger.info("Running Book Single Room Scenario using the default profile in synchronous manner...");
         SingleRoomBookScenario singleRoomBookScenario = new SingleRoomBookScenario();
         singleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
         singleRoomBookScenario.run();
+
+        /*  Run Async Single Room Book Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Checking room prices for the property
+            3. Booking the property in asynchronous manner
+        */
+        logger.info("Running Book Single Room Scenario using the default profile in asynchronous manner...");
+        AsyncSingleRoomBookScenario asyncSingleRoomBookScenario = new AsyncSingleRoomBookScenario();
+        asyncSingleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
+        asyncSingleRoomBookScenario.run();
 
         /*  Run Multiple Room Hold and Resume Book Scenario using the default profile
             This scenario demonstrates the following:
@@ -175,7 +186,7 @@ public class RapidSdkDemoApplication {
         logger.info("=======================================================================================");
         logger.info("=======================================================================================");
         logger.info("==                                                                                   ==");
-        logger.info("==         That's all folks! Thanks for watching the demonstration of RAPID SDK.     ==");
+        logger.info("==              That's all folks! That was the demonstration of RAPID SDK.           ==");
         logger.info("==                                                                                   ==");
         logger.info("=======================================================================================");
         logger.info("=======================================================================================");
