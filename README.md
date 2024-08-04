@@ -8,10 +8,10 @@ properties
 across 250,000 destinations and over 25 different property types — from chains to boutique hotels and apartments to
 houseboats.
 
-But all the choice in the world doesn't help if your travelers can’t find what they’re looking for.
+But all the choices in the world don't help if your travellers can’t find what they’re looking for.
 Rapid API makes it easy to search smarter with our intelligent geography mappings.
 
-Read more about the RAPID API on [Developer Hub](https://developers.expediagroup.com/docs/products/rapid).
+You can read more about the RAPID API on [Developer Hub](https://developers.expediagroup.com/docs/products/rapid).
 
 ---
 
@@ -27,7 +27,7 @@ and less on the technical details of the API.
 
 ### Documentation
 
-Please refer to the [Rapid SDK Documentation](https://opensource.expediagroup.com/rapid-java-sdk/latest/) for detailed
+Please refer to the [Rapid SDK Documentation](https://opensource.expediagroup.com/rapid-java-sdk/) for detailed
 information on the SDK classes and methods.
 
 ### Installation
