@@ -589,6 +589,14 @@
                             <version>${project.version}</version>
                             <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
                         </org.jetbrains.dokka.versioning.VersioningPlugin>
+                        <org.jetbrains.dokka.base.DokkaBase>
+                            <customAssets>
+                                <asset>assets/logo-icon.svg</asset>
+                            </customAssets>
+                            <customStyleSheets>
+                                <stylesheet>assets/custom-styles.css</stylesheet>
+                            </customStyleSheets>
+                        </org.jetbrains.dokka.base.DokkaBase>
                     </pluginsConfiguration>
                     <suppressInheritedMembers>true</suppressInheritedMembers>
                 </configuration>
@@ -812,6 +820,14 @@
                                     <version>${project.version}</version>
                                     <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
                                 </org.jetbrains.dokka.versioning.VersioningPlugin>
+                                <org.jetbrains.dokka.base.DokkaBase>
+                                    <customAssets>
+                                        <asset>assets/logo-icon.svg</asset>
+                                    </customAssets>
+                                    <customStyleSheets>
+                                        <stylesheet>assets/custom-styles.css</stylesheet>
+                                    </customStyleSheets>
+                                </org.jetbrains.dokka.base.DokkaBase>
                             </pluginsConfiguration>
                         </configuration>
                         <executions>
