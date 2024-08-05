@@ -74,6 +74,7 @@
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
+        <dokka-assets.location/> <!-- passed as a property when running dokka:dokka-->
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
@@ -591,10 +592,10 @@
                         </org.jetbrains.dokka.versioning.VersioningPlugin>
                         <org.jetbrains.dokka.base.DokkaBase>
                             <customAssets>
-                                <asset>../assets/logo-icon.svg</asset>
+                                <asset>${dokka-assets.location}/logo-icon.svg</asset>
                             </customAssets>
                             <customStyleSheets>
-                                <stylesheet>../assets/custom-styles.css</stylesheet>
+                                <stylesheet>${dokka-assets.location}/custom-styles.css</stylesheet>
                             </customStyleSheets>
                         </org.jetbrains.dokka.base.DokkaBase>
                     </pluginsConfiguration>
@@ -822,10 +823,10 @@
                                 </org.jetbrains.dokka.versioning.VersioningPlugin>
                                 <org.jetbrains.dokka.base.DokkaBase>
                                     <customAssets>
-                                        <asset>assets/logo-icon.svg</asset>
+                                        <asset>${dokka-assets.location}/logo-icon.svg</asset>
                                     </customAssets>
                                     <customStyleSheets>
-                                        <stylesheet>assets/custom-styles.css</stylesheet>
+                                        <stylesheet>${dokka-assets.location}/custom-styles.css</stylesheet>
                                     </customStyleSheets>
                                 </org.jetbrains.dokka.base.DokkaBase>
                             </pluginsConfiguration>
