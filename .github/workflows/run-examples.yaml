@@ -1,0 +1,76 @@
+name: Run Examples
+on:
+  workflow_call:
+    inputs:
+      sdk_version:
+        description: 'SDK version to run examples for'
+        required: false
+        type: string
+        default: 'LATEST'
+      jdk:
+        description: 'JDK version to use'
+        required: true
+        type: string
+        default: '21'
+      distribution:
+        description: 'JDK distribution to use'
+        required: false
+        type: string
+        default: 'corretto'
+      sdk_generation_workflow_run_id:
+        description: 'ID of the SDK generation workflow run'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      KEY:
+        description: 'API Key'
+        required: true
+      SECRET:
+        description: 'API Key'
+        required: true
+
+jobs:
+  run-examples:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        with:
+          repository: 'ExpediaGroup/rapid-java-sdk'
+      - uses: dawidd6/action-download-artifact@v6
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        with:
+          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
+          name: jar
+          path: examples/jar
+      - uses: dawidd6/action-download-artifact@v6
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        with:
+          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
+          name: sdk
+          path: examples/sdk
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ inputs.jdk }}
+          distribution: ${{ inputs.distribution }}
+      - name: Extract POM from JAR
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        working-directory: examples
+        run: unzip -o jar/original-rapid-sdk-${{ inputs.sdk_version }}.jar -d jar/extracted
+      - name: Overwrite SDK POM file
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        working-directory: examples
+        run: mv jar/extracted/META-INF/maven/com.expediagroup/rapid-sdk/pom.xml sdk/pom.xml
+      - name: Install SDK into local repository
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        working-directory: examples/sdk
+        run: mvn install
+      - name: Install SDK Jar
+        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        working-directory: examples
+        run: mvn install && mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DartifactId=rapid-sdk -DgroupId=com.expediagroup -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
+      - name: Run Examples
+        working-directory: examples
+        run: mvn install exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"

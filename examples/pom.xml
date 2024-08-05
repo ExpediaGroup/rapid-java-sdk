@@ -11,13 +11,27 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <rapid-java-sdk.sdk.version>LATEST</rapid-java-sdk.sdk.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>oss.sonatype.org-snapshot</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
             <groupId>com.expediagroup</groupId>
             <artifactId>rapid-sdk</artifactId>
-            <version>4.3.0</version>
+            <version>${rapid-java-sdk.sdk.version}</version>
         </dependency>
 
         <dependency>
@@ -31,6 +45,18 @@
             <artifactId>log4j-slf4j2-impl</artifactId>
             <version>2.23.1</version>
         </dependency>
-
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <mainClass>com.expediagroup.sdk.rapid.examples.RapidSdkDemoApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
