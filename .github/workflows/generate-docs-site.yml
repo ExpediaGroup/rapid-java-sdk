@@ -43,7 +43,7 @@ jobs:
         run: mv older ${{ runner.temp }}
 
       - name: Checkout "main" Branch
-        run: git checkout main
+        run: git checkout mdwairi/customize-reference-docs-style
 
       - name: Generate New Release Reference Docs
         run: |
