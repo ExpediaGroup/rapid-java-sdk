@@ -37,10 +37,10 @@ jobs:
       - name: Move Latest Docs to the "older" Directory (Archiving latest live release)
         run: |
           mkdir older/${{ env.LATEST_DOCS_VERSION }} 
-          mv images assets rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json older/${{ env.LATEST_DOCS_VERSION }}
+          mv images rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json older/${{ env.LATEST_DOCS_VERSION }}
 
-      - name: Move the "older" Directory to a Temporary Workspace
-        run: mv older ${{ runner.temp }}
+      - name: Move the "older" and "assets" Directories to a Temporary Workspace
+        run: mv older assets ${{ runner.temp }}
 
       - name: Checkout "main" Branch
         run: git checkout mdwairi/customize-reference-docs-style
