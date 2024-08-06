@@ -42,8 +42,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
         List<Property> propertyAvailabilityList = shopService.getMultipleRoomsPropertiesAvailability(this.rapidPartnerSalesProfile, occupancy).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
-            logger.error("No property availability found for the test property.");
-            return;
+            throw new IllegalStateException("No property availability found for the test property.");
         }
 
         logger.info("Property Availability found for property id: [{}] with status: [{}]",

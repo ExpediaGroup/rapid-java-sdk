@@ -28,8 +28,7 @@ public class GetRegionByAncestorIdScenario implements RapidScenario {
             List<List<Region>> regionsPages = geographyService.getRegionsByAncestor(Constants.TEST_ANCESTOR_ID, this.rapidPartnerSalesProfile);
 
             if (regionsPages == null || regionsPages.isEmpty()) {
-                logger.error("No regions found for the ancestor id: [{}].", Constants.TEST_ANCESTOR_ID);
-                return;
+                throw new IllegalStateException(String.format("No regions found for the ancestor id: [%s].", Constants.TEST_ANCESTOR_ID));
             }
 
             logger.info("Regions found for the ancestor id: [{}]:", Constants.TEST_ANCESTOR_ID);
