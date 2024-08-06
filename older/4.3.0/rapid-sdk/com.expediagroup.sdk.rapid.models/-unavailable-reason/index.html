@@ -1,0 +1,225 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>UnavailableReason</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            rapid-sdk
+                    </a>
+            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;rapid-sdk/com.expediagroup.sdk.rapid.models/-unavailable-reason/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">3.2.2</div>
+  <div class="versions-dropdown-data"><a href="../../../../../not-found-version.html?v=4.3.0">4.3.0</a><a href="index.html">4.2.0</a><a href="index.html">4.1.3</a><a href="index.html">4.1.2</a><a href="index.html">4.1.1</a><a href="index.html">4.1.0</a><a href="index.html">3.2.2</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="rapid-sdk/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="rapid-sdk::com.expediagroup.sdk.rapid.models/UnavailableReason///PointingToDeclaration//700308213">
+  <div class="breadcrumbs"><a href="../../../index.html">rapid-sdk</a><span class="delimiter">/</span><a href="../index.html">com.expediagroup.sdk.rapid.models</a><span class="delimiter">/</span><span class="current">UnavailableReason</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Unavailable</span><wbr><span><span>Reason</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><span class="token keyword">class </span><a href="index.html">UnavailableReason</a></div><p class="paragraph">An unavailable reason that suggests ways that the request could be modified to locate available rooms and rates.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>code</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The code representing the reason. * <code class="lang-kotlin">adults_exceed_threshold</code> - Number of adults requested exceeds room threshold. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">children_exceed_threshold</code> - Number of children requested exceeds room threshold. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">infants_exceed_threshold</code> - Number of infants requested exceeds room threshold. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">minimum_child_age</code> - Child age requested is less than the minimum age specified for the room. <code class="lang-kotlin">data</code> will contain the minimum value. * <code class="lang-kotlin">maximum_occupancy</code> - Number of occupants exceed the specified room limit. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">checkin_not_allowed</code> - Check-in not allowed for this stay date. * <code class="lang-kotlin">checkout_not_allowed</code> - Check-out not allowed for this stay date. * <code class="lang-kotlin">minimum_stay</code> - Length of stay is less than minimum. <code class="lang-kotlin">data</code> will contain the minimum value. * <code class="lang-kotlin">maximum_stay</code> - Length of stay is greater than maximum. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">restricted_stay_lengths</code> - Some stay lengths are not available for this check-in date. <code class="lang-kotlin">data</code> will contain the allowed lengths separated by pipe <code class="lang-kotlin">|</code>. eg. <code class="lang-kotlin">3|5|6</code> * <code class="lang-kotlin">same_day_restrictions</code> - Room is not available due to same day booking restrictions. * <code class="lang-kotlin">maximum_rooms</code> - Room count exceeds provider limit. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">children_not_supported</code> - The property is restricted to adults only. * <code class="lang-kotlin">minimum_advance_purchase</code> - Minimum Advance Purchase requirement not met. <code class="lang-kotlin">data</code> will contain the minimum value. * <code class="lang-kotlin">maximum_advance_purchase</code> - Maximum Advance Purchase requirement not met. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">partial_inventory_available</code> - Some of the dates have no inventory available for the specified duration. <code class="lang-kotlin">data</code> will contain the unavailable dates separated by pipe <code class="lang-kotlin">|</code>. eg. <code class="lang-kotlin">2023-10-21|2023-10-23</code> * <code class="lang-kotlin">no_inventory_available</code> - No inventory is available for the specified duration.</p></div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u></u></div></span></div><div><div class="title"><p class="paragraph"><code class="lang-kotlin">data</code> An associated value that provides helpful information for some codes. Not present for all codes.</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="1092297689%2FConstructors%2F700308213" anchor-label="UnavailableReason" id="1092297689%2FConstructors%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-unavailable-reason.html"><span>Unavailable</span><wbr><span><span>Reason</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1092297689%2FConstructors%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="index.html">UnavailableReason</a>&nbsp;<a href="-unavailable-reason.html"><span class="token function">UnavailableReason</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="-code/index.html">UnavailableReason.Code</a>&nbsp;code<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;data</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="232443033%2FClasslikes%2F700308213" anchor-label="Builder" id="232443033%2FClasslikes%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-builder/index.html"><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="232443033%2FClasslikes%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="779953697%2FClasslikes%2F700308213" anchor-label="Code" id="779953697%2FClasslikes%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-code/index.html"><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="779953697%2FClasslikes%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">enum </span><a href="-code/index.html">Code</a><span class="token keyword"> extends </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-code/index.html">UnavailableReason.Code</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The code representing the reason. * <code class="lang-kotlin">adults_exceed_threshold</code> - Number of adults requested exceeds room threshold. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">children_exceed_threshold</code> - Number of children requested exceeds room threshold. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">infants_exceed_threshold</code> - Number of infants requested exceeds room threshold. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">minimum_child_age</code> - Child age requested is less than the minimum age specified for the room. <code class="lang-kotlin">data</code> will contain the minimum value. * <code class="lang-kotlin">maximum_occupancy</code> - Number of occupants exceed the specified room limit. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">checkin_not_allowed</code> - Check-in not allowed for this stay date. * <code class="lang-kotlin">checkout_not_allowed</code> - Check-out not allowed for this stay date. * <code class="lang-kotlin">minimum_stay</code> - Length of stay is less than minimum. <code class="lang-kotlin">data</code> will contain the minimum value. * <code class="lang-kotlin">maximum_stay</code> - Length of stay is greater than maximum. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">restricted_stay_lengths</code> - Some stay lengths are not available for this check-in date. <code class="lang-kotlin">data</code> will contain the allowed lengths separated by pipe <code class="lang-kotlin">|</code>. eg. <code class="lang-kotlin">3|5|6</code> * <code class="lang-kotlin">same_day_restrictions</code> - Room is not available due to same day booking restrictions. * <code class="lang-kotlin">maximum_rooms</code> - Room count exceeds provider limit. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">children_not_supported</code> - The property is restricted to adults only. * <code class="lang-kotlin">minimum_advance_purchase</code> - Minimum Advance Purchase requirement not met. <code class="lang-kotlin">data</code> will contain the minimum value. * <code class="lang-kotlin">maximum_advance_purchase</code> - Maximum Advance Purchase requirement not met. <code class="lang-kotlin">data</code> will contain the maximum value. * <code class="lang-kotlin">partial_inventory_available</code> - Some of the dates have no inventory available for the specified duration. <code class="lang-kotlin">data</code> will contain the unavailable dates separated by pipe <code class="lang-kotlin">|</code>. eg. <code class="lang-kotlin">2023-10-21|2023-10-23</code> * <code class="lang-kotlin">no_inventory_available</code> - No inventory is available for the specified duration. Values: ADULTS_EXCEED_THRESHOLD,CHILDREN_EXCEED_THRESHOLD,INFANTS_EXCEED_THRESHOLD,MINIMUM_CHILD_AGE,MAXIMUM_OCCUPANCY,CHECKIN_NOT_ALLOWED,CHECKOUT_NOT_ALLOWED,MINIMUM_STAY,MAXIMUM_STAY,RESTRICTED_DATES,SAME_DAY_RESTRICTIONS,MAXIMUM_ROOMS,CHILDREN_NOT_SUPPORTED,MINIMUM_ADVANCE_PURCHASE,MAXIMUM_ADVANCE_PURCHASE,PARTIAL_INVENTORY_AVAILABLE,NO_INVENTORY_AVAILABLE</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1995198612%2FProperties%2F700308213" anchor-label="code" id="-1995198612%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1995198612%2FProperties%2F700308213"><span><span>code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1995198612%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="-code/index.html">UnavailableReason.Code</a>&nbsp;<a href="index.html#-1995198612%2FProperties%2F700308213">code</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="346090575%2FProperties%2F700308213" anchor-label="data" id="346090575%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#346090575%2FProperties%2F700308213"><span><span>data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="346090575%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;<a href="index.html#346090575%2FProperties%2F700308213">data</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1997284088%2FFunctions%2F700308213" anchor-label="builder" id="-1997284088%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="builder.html"><span><span>builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1997284088%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword">static </span><a href="-builder/index.html">UnavailableReason.Builder</a>&nbsp;<a href="builder.html"><span class="token function">builder</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1924309954%2FFunctions%2F700308213" anchor-label="getCode" id="-1924309954%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-code.html"><span>get</span><wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1924309954%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="-code/index.html">UnavailableReason.Code</a>&nbsp;<a href="get-code.html"><span class="token function">getCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="416979233%2FFunctions%2F700308213" anchor-label="getData" id="416979233%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-data.html"><span>get</span><wbr><span><span>Data</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="416979233%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;<a href="get-data.html"><span class="token function">getData</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

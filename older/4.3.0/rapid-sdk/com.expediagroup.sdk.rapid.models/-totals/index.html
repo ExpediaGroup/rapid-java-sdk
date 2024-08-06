@@ -1,0 +1,450 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Totals</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/multimodule.css" rel="Stylesheet">
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            rapid-sdk
+                    </a>
+            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;rapid-sdk/com.expediagroup.sdk.rapid.models/-totals/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">3.2.2</div>
+  <div class="versions-dropdown-data"><a href="../../../../../not-found-version.html?v=4.3.0">4.3.0</a><a href="index.html">4.2.0</a><a href="index.html">4.1.3</a><a href="index.html">4.1.2</a><a href="index.html">4.1.1</a><a href="index.html">4.1.0</a><a href="index.html">3.2.2</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="rapid-sdk/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="rapid-sdk::com.expediagroup.sdk.rapid.models/Totals///PointingToDeclaration//700308213">
+  <div class="breadcrumbs"><a href="../../../index.html">rapid-sdk</a><span class="delimiter">/</span><a href="../index.html">com.expediagroup.sdk.rapid.models</a><span class="delimiter">/</span><span class="current">Totals</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Totals</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><span class="token keyword">class </span><a href="index.html">Totals</a></div><p class="paragraph">The total price of charges, given various criteria. * <code class="lang-kotlin">inclusive</code> - provides the total price including taxes and fees. This does not include property collected fees such as resort, mandatory taxes, and mandatory fees. * <code class="lang-kotlin">exclusive</code> - provides the total price excluding taxes and fees. * <code class="lang-kotlin">property_inclusive</code> - provides the total price including taxes, fees, and property collected fees such as resort, mandatory taxes, and mandatory fees. * <code class="lang-kotlin">inclusive_strikethrough</code> - provides the tax <code class="lang-kotlin">inclusive</code> total price with any property funded discounts added back. Can be used to merchandise the savings due to a discount. * <code class="lang-kotlin">strikethrough</code> - provides the tax <code class="lang-kotlin">exclusive</code> total price with any property funded discounts added back. Can be used to merchandise the savings due to a discount. * <code class="lang-kotlin">property_inclusive_strikethrough</code> - provides the tax, fees, and property collected fees <code class="lang-kotlin">inclusive</code> total price with any property funded discounts added back. Can be used to merchandise the savings due to a discount. * <code class="lang-kotlin">marketing_fee</code> - provides the potential owed earnings per transaction. * <code class="lang-kotlin">gross_profit</code> - provides the estimated gross profit per transaction. * <code class="lang-kotlin">minimum_selling_price</code> - provides the minimum selling price. * <code class="lang-kotlin">property_fees</code> - provides the total of the fees collected by the property.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>inclusive</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>exclusive</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>property</span><wbr><span><span>Inclusive</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>inclusive</span><wbr><span><span>Strikethrough</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>strikethrough</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>property</span><wbr><span>Inclusive</span><wbr><span><span>Strikethrough</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>marketing</span><wbr><span><span>Fee</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>gross</span><wbr><span><span>Profit</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>minimum</span><wbr><span>Selling</span><wbr><span><span>Price</span></span></u></div></span></div><div></div></div></div><div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>property</span><wbr><span><span>Fees</span></span></u></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="-1749485688%2FConstructors%2F700308213" anchor-label="Totals" id="-1749485688%2FConstructors%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-totals.html"><span><span>Totals</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1749485688%2FConstructors%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="index.html">Totals</a>&nbsp;<a href="-totals.html"><span class="token function">Totals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;inclusive<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;exclusive<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;propertyInclusive<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;inclusiveStrikethrough<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;strikethrough<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;propertyInclusiveStrikethrough<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;marketingFee<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;grossProfit<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;minimumSellingPrice<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;propertyFees</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-1961161332%2FClasslikes%2F700308213" anchor-label="Builder" id="-1961161332%2FClasslikes%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-builder/index.html"><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1961161332%2FClasslikes%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><span class="token keyword">class </span><a href="-builder/index.html">Builder</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="954620822%2FProperties%2F700308213" anchor-label="exclusive" id="954620822%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#954620822%2FProperties%2F700308213"><span><span>exclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="954620822%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#954620822%2FProperties%2F700308213">exclusive</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1071740404%2FProperties%2F700308213" anchor-label="grossProfit" id="-1071740404%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1071740404%2FProperties%2F700308213"><span>gross</span><wbr><span><span>Profit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1071740404%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#-1071740404%2FProperties%2F700308213">grossProfit</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1123554312%2FProperties%2F700308213" anchor-label="inclusive" id="1123554312%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1123554312%2FProperties%2F700308213"><span><span>inclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1123554312%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#1123554312%2FProperties%2F700308213">inclusive</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1855223295%2FProperties%2F700308213" anchor-label="inclusiveStrikethrough" id="1855223295%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#1855223295%2FProperties%2F700308213"><span>inclusive</span><wbr><span><span>Strikethrough</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1855223295%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#1855223295%2FProperties%2F700308213">inclusiveStrikethrough</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-107967450%2FProperties%2F700308213" anchor-label="marketingFee" id="-107967450%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-107967450%2FProperties%2F700308213"><span>marketing</span><wbr><span><span>Fee</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-107967450%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#-107967450%2FProperties%2F700308213">marketingFee</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-225503603%2FProperties%2F700308213" anchor-label="minimumSellingPrice" id="-225503603%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-225503603%2FProperties%2F700308213"><span>minimum</span><wbr><span>Selling</span><wbr><span><span>Price</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-225503603%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#-225503603%2FProperties%2F700308213">minimumSellingPrice</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1228877628%2FProperties%2F700308213" anchor-label="propertyFees" id="-1228877628%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1228877628%2FProperties%2F700308213"><span>property</span><wbr><span><span>Fees</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1228877628%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#-1228877628%2FProperties%2F700308213">propertyFees</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-680455747%2FProperties%2F700308213" anchor-label="propertyInclusive" id="-680455747%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-680455747%2FProperties%2F700308213"><span>property</span><wbr><span><span>Inclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-680455747%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#-680455747%2FProperties%2F700308213">propertyInclusive</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1087494550%2FProperties%2F700308213" anchor-label="propertyInclusiveStrikethrough" id="-1087494550%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1087494550%2FProperties%2F700308213"><span>property</span><wbr><span>Inclusive</span><wbr><span><span>Strikethrough</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1087494550%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#-1087494550%2FProperties%2F700308213">propertyInclusiveStrikethrough</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="31104385%2FProperties%2F700308213" anchor-label="strikethrough" id="31104385%2FProperties%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#31104385%2FProperties%2F700308213"><span><span>strikethrough</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="31104385%2FProperties%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><div class="block"><div class="block"><span class="token annotation builtin">@</span><span data-unresolved-link="javax.validation/Valid///PointingToDeclaration/"><span class="token annotation builtin">Valid</span></span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div><span class="token keyword">private </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="index.html#31104385%2FProperties%2F700308213">strikethrough</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-134624709%2FFunctions%2F700308213" anchor-label="builder" id="-134624709%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="builder.html"><span><span>builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-134624709%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword">static </span><a href="-builder/index.html">Totals.Builder</a>&nbsp;<a href="builder.html"><span class="token function">builder</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1234137278%2FFunctions%2F700308213" anchor-label="getExclusive" id="1234137278%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-exclusive.html"><span>get</span><wbr><span><span>Exclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1234137278%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-exclusive.html"><span class="token function">getExclusive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1255601460%2FFunctions%2F700308213" anchor-label="getGrossProfit" id="1255601460%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-gross-profit.html"><span>get</span><wbr><span>Gross</span><wbr><span><span>Profit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1255601460%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-gross-profit.html"><span class="token function">getGrossProfit</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1403070768%2FFunctions%2F700308213" anchor-label="getInclusive" id="1403070768%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-inclusive.html"><span>get</span><wbr><span><span>Inclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1403070768%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-inclusive.html"><span class="token function">getInclusive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-188939817%2FFunctions%2F700308213" anchor-label="getInclusiveStrikethrough" id="-188939817%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-inclusive-strikethrough.html"><span>get</span><wbr><span>Inclusive</span><wbr><span><span>Strikethrough</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-188939817%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-inclusive-strikethrough.html"><span class="token function">getInclusiveStrikethrough</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-974813698%2FFunctions%2F700308213" anchor-label="getMarketingFee" id="-974813698%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-marketing-fee.html"><span>get</span><wbr><span>Marketing</span><wbr><span><span>Fee</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-974813698%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-marketing-fee.html"><span class="token function">getMarketingFee</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="173922741%2FFunctions%2F700308213" anchor-label="getMinimumSellingPrice" id="173922741%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-minimum-selling-price.html"><span>get</span><wbr><span>Minimum</span><wbr><span>Selling</span><wbr><span><span>Price</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="173922741%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-minimum-selling-price.html"><span class="token function">getMinimumSellingPrice</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2095723876%2FFunctions%2F700308213" anchor-label="getPropertyFees" id="-2095723876%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-property-fees.html"><span>get</span><wbr><span>Property</span><wbr><span><span>Fees</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2095723876%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-property-fees.html"><span class="token function">getPropertyFees</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-152666395%2FFunctions%2F700308213" anchor-label="getPropertyInclusive" id="-152666395%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-property-inclusive.html"><span>get</span><wbr><span>Property</span><wbr><span><span>Inclusive</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-152666395%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-property-inclusive.html"><span class="token function">getPropertyInclusive</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-547792318%2FFunctions%2F700308213" anchor-label="getPropertyInclusiveStrikethrough" id="-547792318%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-property-inclusive-strikethrough.html"><span>get</span><wbr><span>Property</span><wbr><span>Inclusive</span><wbr><span><span>Strikethrough</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-547792318%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-property-inclusive-strikethrough.html"><span class="token function">getPropertyInclusiveStrikethrough</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1071325527%2FFunctions%2F700308213" anchor-label="getStrikethrough" id="-1071325527%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-strikethrough.html"><span>get</span><wbr><span><span>Strikethrough</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1071325527%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../-charge/index.html">Charge</a>&nbsp;<a href="get-strikethrough.html"><span class="token function">getStrikethrough</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
