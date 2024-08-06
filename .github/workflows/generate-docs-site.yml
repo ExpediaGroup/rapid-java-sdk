@@ -37,7 +37,7 @@ jobs:
       - name: Move Latest Docs to the "older" Directory (Archiving latest live release)
         run: |
           mkdir older/${{ env.LATEST_DOCS_VERSION }} 
-          mv images rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json older/${{ env.LATEST_DOCS_VERSION }}
+          mv images assets rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json older/${{ env.LATEST_DOCS_VERSION }}
 
       - name: Move the "older" Directory to a Temporary Workspace
         run: mv older ${{ runner.temp }}
@@ -46,9 +46,7 @@ jobs:
         run: git checkout mdwairi/customize-reference-docs-style
 
       - name: Generate New Release Reference Docs
-        run: |
-          assets_absolute_path=$(realpath assets)
-          mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older -Ddokka-assets.location=$assets_absolute_path
+        run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older -Ddokka-assets.location=${{ runner.temp }}/assets
 
       - name: Extract and Store Newly Generated Docs Version Number
         run: echo "NEW_DOCS_VERSION=$(jq -r '.version' code/target/dokka/version.json)" >> $GITHUB_ENV
