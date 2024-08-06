@@ -35,8 +35,7 @@ public class CancelHeldBookingScenario implements RapidScenario {
         List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
-            logger.error("No property availability found for the test property.");
-            return;
+            throw new IllegalStateException("No property availability found for the test property.");
         }
 
         logger.info("Property Availability: {}", propertyAvailabilityList.get(0).getStatus());
@@ -45,7 +44,7 @@ public class CancelHeldBookingScenario implements RapidScenario {
         logger.info("Checking room prices for the property: [{}]...", Constants.TEST_PROPERTY_ID);
         Property property = propertyAvailabilityList.get(0);
 
-        if (!(property instanceof PropertyAvailability)) throw new RuntimeException();
+        if (!(property instanceof PropertyAvailability)) throw new IllegalStateException("Property is not of type PropertyAvailability");
 
         PropertyAvailability propertyAvailability = (PropertyAvailability) property;
         RoomPriceCheck roomPriceCheck = shopService.checkRoomPrices(propertyAvailability, 0, 0).getData();
