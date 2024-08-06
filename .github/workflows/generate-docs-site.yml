@@ -46,7 +46,7 @@ jobs:
         run: git checkout main
 
       - name: Generate New Release Reference Docs
-        run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older -Ddokka-assets.location=${{ runner.temp }}/assets
+        run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older -Ddokka-assets.location=realpath assets
 
       - name: Extract and Store Newly Generated Docs Version Number
         run: echo "NEW_DOCS_VERSION=$(jq -r '.version' code/target/dokka/version.json)" >> $GITHUB_ENV
