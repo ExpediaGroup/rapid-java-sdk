@@ -135,7 +135,7 @@ public class BookService extends RapidService {
         ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
         if (itineraryCreationLinks == null) throw new RuntimeException();
         Link cancelLink = itineraryCreationLinks.getCancel();
-        if (cancelLink == null) throw new RuntimeException();
+        if (cancelLink == null) throw new IllegalStateException("Cancel link not found");
 
         DeleteHeldBookingOperationContext deleteHeldBookingOperationContext =
                 DeleteHeldBookingOperationContext.builder().customerIp("127.0.0.1").build();
@@ -150,7 +150,7 @@ public class BookService extends RapidService {
         GetReservationByItineraryIdOperationContext getReservationByItineraryIdOperationContext =
                 GetReservationByItineraryIdOperationContext.builder().customerIp("127.0.0.1").build();
 
-        return rapidClient.executeAsync(new GetReservationByItineraryIdOperation(retrieveLink, getReservationByItineraryIdOperationContext  ));
+        return rapidClient.executeAsync(new GetReservationByItineraryIdOperation(retrieveLink, getReservationByItineraryIdOperationContext));
     }
 
     /* Helper methods */

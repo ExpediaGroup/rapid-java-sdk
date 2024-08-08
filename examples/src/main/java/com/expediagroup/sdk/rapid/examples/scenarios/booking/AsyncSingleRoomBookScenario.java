@@ -1,5 +1,6 @@
 package com.expediagroup.sdk.rapid.examples.scenarios.booking;
 
+import com.expediagroup.sdk.core.model.Response;
 import com.expediagroup.sdk.rapid.examples.Constants;
 import com.expediagroup.sdk.rapid.examples.salesprofiles.RapidPartnerSalesProfile;
 import com.expediagroup.sdk.rapid.examples.scenarios.RapidScenario;
@@ -35,21 +36,22 @@ public class AsyncSingleRoomBookScenario implements RapidScenario {
         logger.info("Async call - Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
 
         shopService.asyncGetSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile)
-                .thenApply(response -> response.getData())
+                .thenApply(Response::getData)
                 .thenCompose(this::checkRoomPrices)
                 .thenCompose(this::bookRoom)
                 .thenCompose(this::getItinerary)
                 .thenAccept(itinerary -> {
-                    if (itinerary != null) {
-                        logger.info("Itinerary: {}", itinerary.getItineraryId());
+                    if (itinerary == null) {
+                        throw new IllegalStateException("Itinerary is null");
                     }
+                    logger.info("Itinerary: {}", itinerary.getItineraryId());
                 });
 
     }
 
     private CompletableFuture<Itinerary> getItinerary(ItineraryCreation itineraryCreation) {
         if (itineraryCreation == null) {
-            return CompletableFuture.completedFuture(null);
+            throw new IllegalStateException("ItineraryCreation is null");
         }
 
         logger.info("Booking Success. Itinerary id: {}", itineraryCreation.getItineraryId());
@@ -63,7 +65,7 @@ public class AsyncSingleRoomBookScenario implements RapidScenario {
 
     private CompletableFuture<ItineraryCreation> bookRoom(RoomPriceCheck roomPriceCheck) {
         if (roomPriceCheck == null) {
-            return CompletableFuture.completedFuture(null);
+            throw new IllegalStateException("Room Price Check is null");
         }
 
         logger.info("Room Price Check: {}", roomPriceCheck.getStatus());
@@ -78,8 +80,7 @@ public class AsyncSingleRoomBookScenario implements RapidScenario {
 
     private CompletableFuture<RoomPriceCheck> checkRoomPrices(List<Property> propertyAvailabilityList) {
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
-            logger.error("No property availability found for the test property.");
-            return CompletableFuture.completedFuture(null);
+            throw new IllegalStateException("No property availability found for the test property.");
         }
 
         logger.info("Property Availability: {}", propertyAvailabilityList.get(0).getStatus());
@@ -87,12 +88,14 @@ public class AsyncSingleRoomBookScenario implements RapidScenario {
         // Checking room prices for the property
         logger.info("Checking room prices for the property: {}...", Constants.TEST_PROPERTY_ID);
         Property property = propertyAvailabilityList.get(0);
-        if (property instanceof PropertyAvailability) {
-            PropertyAvailability propertyAvailability = (PropertyAvailability) property;
-            return shopService.asyncCheckRoomPrices(propertyAvailability, 0, 0)
-                    .thenApply(response -> response.getData());
-        } else {
-            return CompletableFuture.completedFuture(null);
+
+        if (!(property instanceof PropertyAvailability)) {
+            throw new IllegalStateException("Property is not an instance of PropertyAvailability");
         }
+        
+        PropertyAvailability propertyAvailability = (PropertyAvailability) property;
+        return shopService.asyncCheckRoomPrices(propertyAvailability, 0, 0)
+                .thenApply(response -> response.getData());
+
     }
 }

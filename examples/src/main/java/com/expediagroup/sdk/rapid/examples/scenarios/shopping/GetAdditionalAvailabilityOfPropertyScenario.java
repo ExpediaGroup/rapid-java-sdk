@@ -32,8 +32,7 @@ public class GetAdditionalAvailabilityOfPropertyScenario implements RapidScenari
         List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
-            logger.error("No property availability found for the test property.");
-            return;
+            throw new IllegalStateException("No property availability found for the test property.");
         }
 
         logger.info("Property Availability: {}", propertyAvailabilityList.get(0).getStatus());
