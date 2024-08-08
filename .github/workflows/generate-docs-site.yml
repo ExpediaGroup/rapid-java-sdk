@@ -53,16 +53,16 @@ jobs:
 
       - name: Check the New Release Version
         run: |
-           for dir in ${{ runner.temp }}/older/*; do
-             if [ -d "$dir" ]; then
-               DIR_NAME=$(basename "$dir")
-               if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
-                 echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
-                 echo "Hint: Make sure to update the project version in the pom.xml file"
-                 exit 1
-               fi
-             fi
-           done
+          for dir in ${{ runner.temp }}/older/*; do
+            if [ -d "$dir" ]; then
+              DIR_NAME=$(basename "$dir")
+              if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
+                echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
+                echo "Hint: Make sure to update the project version in the pom.xml file"
+                exit 1
+              fi
+            fi
+          done
 
       - name: Move the Newly Generated Docs to a Temporary Workspace
         run: mv code/target/dokka ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}
