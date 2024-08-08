@@ -569,6 +569,7 @@
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <configuration>
+                    <moduleName>Rapid Java SDK</moduleName>
                     <sourceDirectories>
                         <dir>${project.basedir}/src/main/kotlin/com/expediagroup/sdk/rapid</dir>
                         <dir>${project.basedir}/src/main/kotlin/com/expediagroup/sdk/domain/rapid</dir>
@@ -801,6 +802,7 @@
                         <groupId>org.jetbrains.dokka</groupId>
                         <artifactId>dokka-maven-plugin</artifactId>
                         <configuration>
+                            <moduleName>Rapid Java SDK</moduleName>
                             <sourceDirectories>
                                 <dir>${project.basedir}/src/main/kotlin/com/expediagroup/sdk/rapid</dir>
                             </sourceDirectories>
