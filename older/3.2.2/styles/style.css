@@ -51,6 +51,14 @@
 
     --sidebar-width: 280px;
     --sidemenu-section-active-color: #7F52FF;
+
+    /* Overwrite default styles */
+    --sidemenu-section-active-color: #1668e3;
+    --active-section-color: #1668e3;
+    --active-tab-border-color: #1668e3;
+    --hover-link-color: #1668e3;
+    --dokka-logo-height: 35px;
+    --dokka-logo-width: 35px;
 }
 
 html {
