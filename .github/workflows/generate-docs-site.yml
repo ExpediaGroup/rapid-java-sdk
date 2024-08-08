@@ -43,7 +43,7 @@ jobs:
         run: mv older assets ${{ runner.temp }}
 
       - name: Checkout "main" Branch
-        run: git checkout mdwairi/customize-reference-docs-style
+        run: git checkout main
 
       - name: Generate New Release Reference Docs
         run: mvn -f code dokka:dokka -Ddokka-old-versions.location=${{ runner.temp }}/older -Ddokka-assets.location=${{ runner.temp }}/assets
@@ -51,18 +51,18 @@ jobs:
       - name: Extract and Store Newly Generated Docs Version Number
         run: echo "NEW_DOCS_VERSION=$(jq -r '.version' code/target/dokka/version.json)" >> $GITHUB_ENV
 
-#      - name: Check the New Release Version
-#        run: |
-#          for dir in ${{ runner.temp }}/older/*; do
-#            if [ -d "$dir" ]; then
-#              DIR_NAME=$(basename "$dir")
-#              if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
-#                echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
-#                echo "Hint: Make sure to update the project version in the pom.xml file"
-#                exit 1
-#              fi
-#            fi
-#          done
+      - name: Check the New Release Version
+        run: |
+           for dir in ${{ runner.temp }}/older/*; do
+             if [ -d "$dir" ]; then
+               DIR_NAME=$(basename "$dir")
+               if [ "$DIR_NAME" == "${{ env.NEW_DOCS_VERSION }}" ]; then
+                 echo "Error: Reference Docs with version ${{env.NEW_DOCS_VERSION }} already exists."
+                 echo "Hint: Make sure to update the project version in the pom.xml file"
+                 exit 1
+               fi
+             fi
+           done
 
       - name: Move the Newly Generated Docs to a Temporary Workspace
         run: mv code/target/dokka ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}
