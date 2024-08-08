@@ -6,3 +6,11 @@
     --dokka-logo-height: 35px;
     --dokka-logo-width: 35px;
 }
+
+.library-name--link::before {
+    margin-right: 10px;
+}
+
+.filter-section .platform-tag {
+    display: none;
+}
