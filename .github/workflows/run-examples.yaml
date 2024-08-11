@@ -42,12 +42,6 @@ jobs:
         if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         with:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
-          name: jar
-          path: examples/jar
-      - uses: dawidd6/action-download-artifact@v6
-        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
-        with:
-          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: sdk
           path: examples/sdk
       - name: Set up JDK
