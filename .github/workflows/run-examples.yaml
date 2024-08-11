@@ -42,12 +42,6 @@ jobs:
         if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         with:
           run_id: ${{ inputs.sdk_generation_workflow_run_id }}
-          name: jar
-          path: examples/jar
-      - uses: dawidd6/action-download-artifact@v6
-        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
-        with:
-          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
           name: sdk
           path: examples/sdk
       - name: Set up JDK
@@ -59,10 +53,6 @@ jobs:
         if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
         working-directory: examples/sdk
         run: mvn install
-      - name: Install SDK Jar
-        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
-        working-directory: examples
-        run: mvn install && mvn install:install-file -Dfile=jar/rapid-sdk-${{ inputs.sdk_version }}.jar -DartifactId=rapid-sdk -DgroupId=com.expediagroup -Dversion=${{ inputs.sdk_version }} -Dpackaging=jar
       - name: Run Examples
         working-directory: examples
         run: mvn install exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
