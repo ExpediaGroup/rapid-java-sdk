@@ -17,8 +17,8 @@ on:
         required: false
         type: string
         default: 'corretto'
-      sdk_generation_workflow_run_id:
-        description: 'ID of the SDK generation workflow run'
+      sdk_key:
+        description: 'Generated SDK artifact key'
         required: false
         type: string
         default: ''
@@ -35,14 +35,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        if: ${{ inputs.sdk_key != '' }}
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
-      - uses: dawidd6/action-download-artifact@v6
-        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.sdk_key != '' }}
         with:
-          run_id: ${{ inputs.sdk_generation_workflow_run_id }}
-          name: sdk
+          name: ${{ inputs.sdk_key }}
           path: examples/sdk
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -50,7 +49,7 @@ jobs:
           java-version: ${{ inputs.jdk }}
           distribution: ${{ inputs.distribution }}
       - name: Install SDK into local repository
-        if: ${{ inputs.sdk_generation_workflow_run_id != '' }}
+        if: ${{ inputs.sdk_key != '' }}
         working-directory: examples/sdk
         run: mvn install
       - name: Run Examples
