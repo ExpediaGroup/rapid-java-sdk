@@ -21,7 +21,7 @@ on:
         description: 'Generated SDK artifact key'
         required: false
         type: string
-        default: ''
+        default: 'sdk'
     secrets:
       KEY:
         description: 'API Key'
