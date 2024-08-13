@@ -2,6 +2,11 @@ name: Run Examples
 on:
   workflow_call:
     inputs:
+      source:
+        description: 'Source of SDK to Test'
+        required: true
+        type: string
+        default: 'specs'
       sdk_version:
         description: 'SDK version to run examples for'
         required: false
@@ -39,7 +44,7 @@ jobs:
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
       - uses: actions/download-artifact@v4
-        if: ${{ inputs.sdk_key != '' }}
+        if: ${{ inputs.source != 'specs' }}
         with:
           name: ${{ inputs.sdk_key }}
           path: examples/sdk
@@ -49,7 +54,7 @@ jobs:
           java-version: ${{ inputs.jdk }}
           distribution: ${{ inputs.distribution }}
       - name: Install SDK into local repository
-        if: ${{ inputs.sdk_key != '' }}
+        if: ${{ inputs.source != 'specs' }}
         working-directory: examples/sdk
         run: mvn install
       - name: Run Examples
