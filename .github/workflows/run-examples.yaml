@@ -54,7 +54,7 @@ jobs:
           java-version: ${{ inputs.jdk }}
           distribution: ${{ inputs.distribution }}
       - name: Install SDK into local repository
-        if: ${{ inputs.source != 'specs' }}
+        if: ${{ inputs.source == 'specs' }}
         working-directory: examples/sdk
         run: mvn install
       - name: Run Examples
