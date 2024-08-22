@@ -13,23 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.expediagroup.sdk.rapid.operations
+package com.expediagroup.sdk.core.plugin.logging
 
-import com.expediagroup.sdk.core.model.Nothing
-import com.expediagroup.sdk.core.model.Operation
+import com.ebay.ejmask.core.BaseFilter
 
-/**
- * Property Content File
- * @property params [GetPropertyContentFileOperationParams]
- */
-class GetPropertyContentFileOperation(
-    params: GetPropertyContentFileOperationParams
-) : Operation<
-        Nothing
-    >(
-        "/files/properties/content",
-        "GET",
-        "getPropertyContentFile",
-        null,
-        params
-    )
+internal class ExpediaGroupJsonFieldFilter(maskedFields: Array<String>) : BaseFilter(
+    ExpediaGroupJsonFieldPatternBuilder::class.java,
+    *maskedFields
+)

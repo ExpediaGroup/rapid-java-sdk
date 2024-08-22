@@ -31,7 +31,7 @@ class PostPaymentSessionsOperation private constructor(
 ) : Operation<
         PaymentSessionsRequest
     >(
-        url(null, link, "/v3/payment-sessions"),
+        url(null, link, "/payment-sessions"),
         "POST",
         "postPaymentSessions",
         requestBody,
@@ -64,7 +64,7 @@ class PostPaymentSessionsOperation private constructor(
 
     companion object : LinkableOperation {
         override fun pathPattern(): String {
-            return "/v3/payment-sessions"
+            return "/payment-sessions"
         }
     }
 }

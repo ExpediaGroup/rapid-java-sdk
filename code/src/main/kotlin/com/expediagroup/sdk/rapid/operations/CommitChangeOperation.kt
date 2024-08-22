@@ -32,7 +32,7 @@ class CommitChangeOperation private constructor(
 ) : Operation<
         CommitChangeRoomRequestBody
     >(
-        url(params, link, "/v3/itineraries/{itinerary_id}/rooms/{room_id}/pricing"),
+        url(params, link, "/itineraries/{itinerary_id}/rooms/{room_id}/pricing"),
         "PUT",
         "commitChange",
         requestBody,
@@ -71,7 +71,7 @@ class CommitChangeOperation private constructor(
                     put("room_id", "[a-z0-9]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
-            return substitutor.replace("/v3/itineraries/{itinerary_id}/rooms/{room_id}/pricing")
+            return substitutor.replace("/itineraries/{itinerary_id}/rooms/{room_id}/pricing")
         }
     }
 }

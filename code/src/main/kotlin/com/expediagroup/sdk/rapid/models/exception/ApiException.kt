@@ -147,6 +147,20 @@ internal object ErrorObjectMapper {
                 )
             ),
             Pair(
+                "getBookingReceipt",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("404") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
                 "getCalendarAvailability",
                 listOf(
                     HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },

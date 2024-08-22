@@ -30,7 +30,7 @@ class PriceCheckOperation private constructor(
 ) : Operation<
         Nothing
     >(
-        url(params, link, "/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}"),
+        url(params, link, "/properties/{property_id}/rooms/{room_id}/rates/{rate_id}"),
         "GET",
         "priceCheck",
         null,
@@ -60,7 +60,7 @@ class PriceCheckOperation private constructor(
                     put("rate_id", "[a-z0-9]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
-            return substitutor.replace("/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}")
+            return substitutor.replace("/properties/{property_id}/rooms/{room_id}/rates/{rate_id}")
         }
     }
 }

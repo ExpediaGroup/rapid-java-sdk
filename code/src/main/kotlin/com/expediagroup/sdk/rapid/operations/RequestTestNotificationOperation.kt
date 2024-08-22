@@ -29,7 +29,7 @@ class RequestTestNotificationOperation(
 ) : Operation<
         TestNotificationRequest
     >(
-        "/v3/notifications",
+        "/notifications",
         "POST",
         "requestTestNotification",
         requestBody,

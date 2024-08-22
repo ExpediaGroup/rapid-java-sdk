@@ -27,7 +27,7 @@ class GetCalendarAvailabilityOperation(
 ) : Operation<
         Nothing
     >(
-        "/v3/calendars/availability",
+        "/calendars/availability",
         "GET",
         "getCalendarAvailability",
         null,

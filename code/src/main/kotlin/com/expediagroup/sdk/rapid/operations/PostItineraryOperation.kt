@@ -31,7 +31,7 @@ class PostItineraryOperation private constructor(
 ) : Operation<
         CreateItineraryRequest
     >(
-        url(null, link, "/v3/itineraries"),
+        url(null, link, "/itineraries"),
         "POST",
         "postItinerary",
         requestBody,
@@ -64,7 +64,7 @@ class PostItineraryOperation private constructor(
 
     companion object : LinkableOperation {
         override fun pathPattern(): String {
-            return "/v3/itineraries"
+            return "/itineraries"
         }
     }
 }

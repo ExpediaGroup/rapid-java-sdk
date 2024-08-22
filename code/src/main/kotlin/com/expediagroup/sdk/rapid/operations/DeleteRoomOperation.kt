@@ -30,7 +30,7 @@ class DeleteRoomOperation private constructor(
 ) : Operation<
         Nothing
     >(
-        url(params, link, "/v3/itineraries/{itinerary_id}/rooms/{room_id}"),
+        url(params, link, "/itineraries/{itinerary_id}/rooms/{room_id}"),
         "DELETE",
         "deleteRoom",
         null,
@@ -59,7 +59,7 @@ class DeleteRoomOperation private constructor(
                     put("room_id", "[a-z0-9]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
-            return substitutor.replace("/v3/itineraries/{itinerary_id}/rooms/{room_id}")
+            return substitutor.replace("/itineraries/{itinerary_id}/rooms/{room_id}")
         }
     }
 }
