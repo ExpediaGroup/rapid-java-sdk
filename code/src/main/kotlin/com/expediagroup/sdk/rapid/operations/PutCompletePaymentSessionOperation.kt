@@ -30,7 +30,7 @@ class PutCompletePaymentSessionOperation private constructor(
 ) : Operation<
         Nothing
     >(
-        url(params, link, "/v3/itineraries/{itinerary_id}/payment-sessions"),
+        url(params, link, "/itineraries/{itinerary_id}/payment-sessions"),
         "PUT",
         "putCompletePaymentSession",
         null,
@@ -58,7 +58,7 @@ class PutCompletePaymentSessionOperation private constructor(
                     put("itinerary_id", "[a-z0-9]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
-            return substitutor.replace("/v3/itineraries/{itinerary_id}/payment-sessions")
+            return substitutor.replace("/itineraries/{itinerary_id}/payment-sessions")
         }
     }
 }

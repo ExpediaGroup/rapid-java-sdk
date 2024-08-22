@@ -30,7 +30,7 @@ class DeleteHeldBookingOperation private constructor(
 ) : Operation<
         Nothing
     >(
-        url(params, link, "/v3/itineraries/{itinerary_id}"),
+        url(params, link, "/itineraries/{itinerary_id}"),
         "DELETE",
         "deleteHeldBooking",
         null,
@@ -58,7 +58,7 @@ class DeleteHeldBookingOperation private constructor(
                     put("itinerary_id", "[a-z0-9]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
-            return substitutor.replace("/v3/itineraries/{itinerary_id}")
+            return substitutor.replace("/itineraries/{itinerary_id}")
         }
     }
 }

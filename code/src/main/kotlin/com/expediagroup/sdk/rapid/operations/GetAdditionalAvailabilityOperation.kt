@@ -30,7 +30,7 @@ class GetAdditionalAvailabilityOperation private constructor(
 ) : Operation<
         Nothing
     >(
-        url(params, link, "/v3/properties/{property_id}/availability"),
+        url(params, link, "/properties/{property_id}/availability"),
         "GET",
         "getAdditionalAvailability",
         null,
@@ -58,7 +58,7 @@ class GetAdditionalAvailabilityOperation private constructor(
                     put("property_id", "[a-z0-9]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
-            return substitutor.replace("/v3/properties/{property_id}/availability")
+            return substitutor.replace("/properties/{property_id}/availability")
         }
     }
 }

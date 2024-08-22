@@ -36,7 +36,7 @@ class GetRegionOperation(
     ) {
     companion object {
         fun url(params: GetRegionOperationParams): String {
-            val url = "/v3/regions/{region_id}"
+            val url = "/regions/{region_id}"
             val substitutor = StringSubstitutor(params.getPathParams(), "{", "}")
             return substitutor.replace(url)
         }

@@ -5,10 +5,10 @@
 
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>4.3.0</version>
-    <name>EG Rapid SDK for Java</name>
-    <description>EG Rapid SDK v4.3.0</description>
-    <url>https://github.com/ExpediaGroup/rapid-java-sdk</url>
+    <version>4.4.2-SNAPSHOT</version>
+    <name>EG rapid-sdk for Java</name>
+    <description>EG rapid-sdk v4.4.2-SNAPSHOT</description>
+    <url>https://github.com/ExpediaGroup/test-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
 
@@ -29,9 +29,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:ExpediaGroup/rapid-java-sdk.git</connection>
-        <developerConnection>scm:git:git@github.com:ExpediaGroup/rapid-java-sdk.git</developerConnection>
-        <url>https://github.com/ExpediaGroup/rapid-java-sdk/</url>
+        <connection>scm:git:git@github.com:ExpediaGroup/test-sdk.git</connection>
+        <developerConnection>scm:git:git@github.com:ExpediaGroup/test-sdk.git</developerConnection>
+        <url>https://github.com/ExpediaGroup/test-sdk/</url>
     </scm>
 
     <distributionManagement>
@@ -60,29 +60,33 @@
         <minimum.code.coverage>0.90</minimum.code.coverage>
         <shadePrefix>com.expediagroup.sdk</shadePrefix>
 
+        <sdk-version>${project.version}</sdk-version>
+        <sdk-title>${project.artifactId}</sdk-title>
+
         <!-- Plugin Versions -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.8.0</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.4.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
         <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
-        <dokka-assets.location/> <!-- passed as a property when running dokka:dokka-->
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
-        <kotlin.version>2.0.20</kotlin.version>
+        <kotlin.version>2.0.0</kotlin.version>
         <kotlinx.coroutines.version>1.8.1</kotlinx.coroutines.version>
         <ktor.version>2.3.12</ktor.version>
         <kotlin-atomic.version>0.25.0</kotlin-atomic.version>
-        <slf4j.version>2.0.16</slf4j.version>
+        <slf4j.version>2.0.13</slf4j.version>
+        <maven.nexus-staging.plugin.version>1.7.0</maven.nexus-staging.plugin.version>
+        <maven.gpg.plugin.version>3.2.5</maven.gpg.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -272,7 +276,7 @@
                         </properties>
                         <licenseSets>
                             <licenseSet>
-                                <header>../LICENSE-HEADER.txt</header>
+                                <header>./LICENSE-HEADER.txt</header>
                                 <includes>
                                     <include>**/*.kt</include>
                                 </includes>
@@ -292,6 +296,36 @@
             </plugins>
         </pluginManagement>
         <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                    <delimiters>
+                        <delimiter>@@</delimiter>
+                    </delimiters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>include-domain-helpers</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/src/main/kotlin/com/expediagroup/sdk/domain/rapid</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory></directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -363,12 +397,6 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
@@ -416,7 +444,7 @@
                             <goal>write-project-properties</goal>
                         </goals>
                         <configuration>
-                            <outputFile>sdk/target/classes/sdk.properties</outputFile>
+                            <outputFile>${project.build.outputDirectory}/sdk.properties</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -435,7 +463,7 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>src/main/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
                             </sourceDirs>
                             <jvmTarget>${java.release}</jvmTarget>
                         </configuration>
@@ -447,7 +475,7 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>src/test/kotlin</sourceDir>
+                                <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
                             </sourceDirs>
                             <jvmTarget>${java.release}</jvmTarget>
                         </configuration>
@@ -482,7 +510,7 @@
                         <configuration>
                             <sources>
                                 <source>
-                                    ${project.basedir}/src/main/kotlin
+                                ${project.basedir}/src/main/kotlin
                                 </source>
                             </sources>
                         </configuration>
@@ -496,7 +524,7 @@
                         <configuration>
                             <sources>
                                 <source>
-                                    ${project.basedir}/src/test/kotlin
+                                ${project.basedir}/src/test/kotlin
                                 </source>
                             </sources>
                         </configuration>
@@ -543,8 +571,7 @@
                             <useDependencyReducedPomInJar>true</useDependencyReducedPomInJar>
                             <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
                             <transformers>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
                             <relocations>
                                 <relocation>
@@ -569,7 +596,6 @@
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
                 <configuration>
-                    <moduleName>Rapid Java SDK</moduleName>
                     <sourceDirectories>
                         <dir>${project.basedir}/src/main/kotlin/com/expediagroup/sdk/rapid</dir>
                         <dir>${project.basedir}/src/main/kotlin/com/expediagroup/sdk/domain/rapid</dir>
@@ -591,14 +617,6 @@
                             <version>${project.version}</version>
                             <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
                         </org.jetbrains.dokka.versioning.VersioningPlugin>
-                        <org.jetbrains.dokka.base.DokkaBase>
-                            <customAssets>
-                                <asset>${dokka-assets.location}/logo-icon.svg</asset>
-                            </customAssets>
-                            <customStyleSheets>
-                                <stylesheet>${dokka-assets.location}/custom-styles.css</stylesheet>
-                            </customStyleSheets>
-                        </org.jetbrains.dokka.base.DokkaBase>
                     </pluginsConfiguration>
                     <suppressInheritedMembers>true</suppressInheritedMembers>
                 </configuration>
@@ -655,6 +673,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -722,6 +745,30 @@
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>atomicfu-jvm</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.12.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ebay.ejmask</groupId>
+            <artifactId>ejmask-api</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ebay.ejmask</groupId>
+            <artifactId>ejmask-extensions</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -785,7 +832,7 @@
                             <execution>
                                 <configuration>
                                     <classifier>javadoc</classifier>
-                                    <classesDirectory>${project.parent.basedir}/target/site/apidocs</classesDirectory>
+                                    <classesDirectory>${project.basedir}/target/site/apidocs</classesDirectory>
                                     <includes>**/*</includes>
                                     <finalName>${project.build.finalName}</finalName>
                                 </configuration>
@@ -802,7 +849,6 @@
                         <groupId>org.jetbrains.dokka</groupId>
                         <artifactId>dokka-maven-plugin</artifactId>
                         <configuration>
-                            <moduleName>Rapid Java SDK</moduleName>
                             <sourceDirectories>
                                 <dir>${project.basedir}/src/main/kotlin/com/expediagroup/sdk/rapid</dir>
                             </sourceDirectories>
@@ -823,14 +869,6 @@
                                     <version>${project.version}</version>
                                     <olderVersionsDir>${dokka-old-versions.location}</olderVersionsDir>
                                 </org.jetbrains.dokka.versioning.VersioningPlugin>
-                                <org.jetbrains.dokka.base.DokkaBase>
-                                    <customAssets>
-                                        <asset>${dokka-assets.location}/logo-icon.svg</asset>
-                                    </customAssets>
-                                    <customStyleSheets>
-                                        <stylesheet>${dokka-assets.location}/custom-styles.css</stylesheet>
-                                    </customStyleSheets>
-                                </org.jetbrains.dokka.base.DokkaBase>
                             </pluginsConfiguration>
                         </configuration>
                         <executions>
