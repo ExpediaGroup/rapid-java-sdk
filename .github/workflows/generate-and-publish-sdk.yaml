@@ -12,7 +12,7 @@ on:
 
 jobs:
   generate-and-publish:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@nanssari/rapid_links
     with:
       name: rapid
       version: ${{ inputs.version }}
