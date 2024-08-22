@@ -27,7 +27,7 @@ class GetRegionsOperation(
 ) : Operation<
         Nothing
     >(
-        "/v3/regions",
+        "/regions",
         "GET",
         "getRegions",
         null,

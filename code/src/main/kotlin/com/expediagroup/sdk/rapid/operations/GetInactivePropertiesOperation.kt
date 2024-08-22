@@ -27,7 +27,7 @@ class GetInactivePropertiesOperation(
 ) : Operation<
         Nothing
     >(
-        "/v3/properties/inactive",
+        "/properties/inactive",
         "GET",
         "getInactiveProperties",
         null,

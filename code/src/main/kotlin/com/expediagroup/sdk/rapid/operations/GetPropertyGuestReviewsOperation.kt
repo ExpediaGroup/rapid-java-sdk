@@ -36,7 +36,7 @@ class GetPropertyGuestReviewsOperation(
     ) {
     companion object {
         fun url(params: GetPropertyGuestReviewsOperationParams): String {
-            val url = "/v3/properties/{property_id}/guest-reviews"
+            val url = "/properties/{property_id}/guest-reviews"
             val substitutor = StringSubstitutor(params.getPathParams(), "{", "}")
             return substitutor.replace(url)
         }

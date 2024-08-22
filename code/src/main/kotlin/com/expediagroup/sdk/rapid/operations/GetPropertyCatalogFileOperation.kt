@@ -27,7 +27,7 @@ class GetPropertyCatalogFileOperation(
 ) : Operation<
         Nothing
     >(
-        "/v3/files/properties/catalog",
+        "/files/properties/catalog",
         "GET",
         "getPropertyCatalogFile",
         null,
