@@ -13,7 +13,7 @@ on:
 jobs:
   generate-and-publish:
     uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
+    secrets: inherit
     with:
       name: rapid
       version: ${{ inputs.version }}
-      secrets: inherit
