@@ -17,19 +17,28 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
+import org.apache.commons.text.StringSubstitutor
 
 /**
- * Property Content File
- * @property params [GetPropertyContentFileOperationParams]
+ * Booking Receipt
+ * @property params [GetBookingReceiptOperationParams]
  */
-class GetPropertyContentFileOperation(
-    params: GetPropertyContentFileOperationParams
+class GetBookingReceiptOperation(
+    params: GetBookingReceiptOperationParams
 ) : Operation<
         Nothing
     >(
-        "/files/properties/content",
+        url(params),
         "GET",
-        "getPropertyContentFile",
+        "getBookingReceipt",
         null,
         params
-    )
+    ) {
+    companion object {
+        fun url(params: GetBookingReceiptOperationParams): String {
+            val url = "/itineraries/{itinerary_id}/invoice"
+            val substitutor = StringSubstitutor(params.getPathParams(), "{", "}")
+            return substitutor.replace(url)
+        }
+    }
+}

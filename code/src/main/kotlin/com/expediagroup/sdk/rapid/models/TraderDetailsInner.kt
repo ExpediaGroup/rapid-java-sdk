@@ -32,6 +32,8 @@ package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.TraderAddress
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.annotation.Nulls
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
 import javax.validation.constraints.Max
@@ -54,8 +56,9 @@ import javax.validation.constraints.Size
 data class TraderDetailsInner(
     // The trader contact message.
     @JsonProperty("contact_message")
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
     @field:Valid
-    val contactMessage: kotlin.String,
+    val contactMessage: kotlin.String? = "",
     // The trader name.
     @JsonProperty("name")
     @field:Valid

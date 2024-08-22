@@ -29,7 +29,7 @@ class PostGeographyOperation(
 ) : Operation<
         PropertiesGeoJsonRequest
     >(
-        "/v3/properties/geography",
+        "/properties/geography",
         "POST",
         "postGeography",
         requestBody,

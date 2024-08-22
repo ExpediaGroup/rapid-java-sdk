@@ -18,20 +18,20 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 
 /**
+ * @property itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
- * @property test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
- * @property affiliateReferenceId The affilliate reference id value. This field supports a maximum of 28 characters.
- * @property email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
- * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary
+ * @property test The booking receipt call has a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `internal_server_error`
+ * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
+ * @property branding This parameter specifies which branding should be present on the generated PDF. Default behavior will be to provide the booking receipt with `expedia_group` branding. Some partner configurations may change the default to unbranded.
  */
-data class GetReservationOperationParams(
+data class GetBookingReceiptOperationParams(
+    val itineraryId: kotlin.String,
     val customerIp: kotlin.String,
     val customerSessionId: kotlin.String? = null,
     val test: kotlin.String? = null,
-    val affiliateReferenceId: kotlin.String,
-    val email: kotlin.String,
-    val include: kotlin.collections.List<kotlin.String>? = null
+    val token: kotlin.String,
+    val branding: kotlin.String? = null
 ) :
     OperationParams {
     companion object {
@@ -40,13 +40,18 @@ data class GetReservationOperationParams(
     }
 
     class Builder(
+        private var itineraryId: kotlin.String? = null,
         private var customerIp: kotlin.String? = null,
         private var customerSessionId: kotlin.String? = null,
         private var test: kotlin.String? = null,
-        private var affiliateReferenceId: kotlin.String? = null,
-        private var email: kotlin.String? = null,
-        private var include: kotlin.collections.List<kotlin.String>? = null
+        private var token: kotlin.String? = null,
+        private var branding: kotlin.String? = null
     ) {
+        /**
+         * @param itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
+         */
+        fun itineraryId(itineraryId: kotlin.String) = apply { this.itineraryId = itineraryId }
+
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
          */
@@ -58,47 +63,42 @@ data class GetReservationOperationParams(
         fun customerSessionId(customerSessionId: kotlin.String) = apply { this.customerSessionId = customerSessionId }
 
         /**
-         * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
+         * @param test The booking receipt call has a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `internal_server_error`
          */
         fun test(test: kotlin.String) = apply { this.test = test }
 
         /**
-         * @param affiliateReferenceId The affilliate reference id value. This field supports a maximum of 28 characters.
+         * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
          */
-        fun affiliateReferenceId(affiliateReferenceId: kotlin.String) = apply { this.affiliateReferenceId = affiliateReferenceId }
+        fun token(token: kotlin.String) = apply { this.token = token }
 
         /**
-         * @param email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
+         * @param branding This parameter specifies which branding should be present on the generated PDF. Default behavior will be to provide the booking receipt with `expedia_group` branding. Some partner configurations may change the default to unbranded.
          */
-        fun email(email: kotlin.String) = apply { this.email = email }
+        fun branding(branding: kotlin.String) = apply { this.branding = branding }
 
-        /**
-         * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary
-         */
-        fun include(include: kotlin.collections.List<kotlin.String>) = apply { this.include = include }
-
-        fun build(): GetReservationOperationParams {
+        fun build(): GetBookingReceiptOperationParams {
             validateNullity()
 
-            return GetReservationOperationParams(
+            return GetBookingReceiptOperationParams(
+                itineraryId = itineraryId!!,
                 customerIp = customerIp!!,
                 customerSessionId = customerSessionId,
                 test = test,
-                affiliateReferenceId = affiliateReferenceId!!,
-                email = email!!,
-                include = include
+                token = token!!,
+                branding = branding
             )
         }
 
         private fun validateNullity() {
+            if (itineraryId == null) {
+                throw NullPointerException("Required parameter itineraryId is missing")
+            }
             if (customerIp == null) {
                 throw NullPointerException("Required parameter customerIp is missing")
             }
-            if (affiliateReferenceId == null) {
-                throw NullPointerException("Required parameter affiliateReferenceId is missing")
-            }
-            if (email == null) {
-                throw NullPointerException("Required parameter email is missing")
+            if (token == null) {
+                throw NullPointerException("Required parameter token is missing")
             }
         }
     }
@@ -113,14 +113,14 @@ data class GetReservationOperationParams(
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            affiliateReferenceId?.also { put("affiliate_reference_id", listOf(affiliateReferenceId.toString())) }
-            email?.also { put("email", listOf(email.toString())) }
-            include?.also { put("include", include) }
+            token?.also { put("token", listOf(token.toString())) }
+            branding?.also { put("branding", listOf(branding.toString())) }
         }
     }
 
     override fun getPathParams(): Map<String, String> {
         return buildMap {
+            itineraryId?.also { put("itinerary_id", itineraryId) }
         }
     }
 }
