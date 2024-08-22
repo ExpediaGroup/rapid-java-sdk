@@ -15,7 +15,7 @@ updates:
       - Dependabot
 
   - package-ecosystem: maven
-    directory: "/*"
+    directory: "/code"
     schedule:
       interval: daily
       time: "11:30"
