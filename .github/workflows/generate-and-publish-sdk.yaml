@@ -16,3 +16,4 @@ jobs:
     with:
       name: rapid
       version: ${{ inputs.version }}
+      secrets: inherit
