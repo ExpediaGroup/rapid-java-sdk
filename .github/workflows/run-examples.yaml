@@ -38,6 +38,7 @@ jobs:
         if: ${{ inputs.sdk_key != '' }}
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
+          ref: 'nanssari/fix_examples'
       - uses: actions/download-artifact@v4
         if: ${{ inputs.sdk_key != '' }}
         with:
