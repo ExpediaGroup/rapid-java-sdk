@@ -30,14 +30,22 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class GetRegionOperationParams(
     val regionId: kotlin.String,
-    val customerSessionId: kotlin.String? = null,
+    val customerSessionId: kotlin.String? =
+        null,
     val language: kotlin.String,
-    val include: kotlin.collections.List<kotlin.String>,
-    val billingTerms: kotlin.String? = null,
-    val partnerPointOfSale: kotlin.String? = null,
-    val paymentTerms: kotlin.String? = null,
-    val platformName: kotlin.String? = null,
-    val supplySource: kotlin.String? = null
+    val include: kotlin.collections.List<
+        GetRegionOperationParams.Include
+    >,
+    val billingTerms: kotlin.String? =
+        null,
+    val partnerPointOfSale: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
+        null,
+    val platformName: kotlin.String? =
+        null,
+    val supplySource: kotlin.String? =
+        null
 ) :
     OperationParams {
     companion object {
@@ -45,11 +53,21 @@ data class GetRegionOperationParams(
         fun builder() = Builder()
     }
 
+    enum class Include(
+        val value: kotlin.String
+    ) {
+        DETAILS("details"),
+        PROPERTY_IDS("property_ids"),
+        PROPERTY_IDS_EXPANDED("property_ids_expanded")
+    }
+
     class Builder(
         private var regionId: kotlin.String? = null,
         private var customerSessionId: kotlin.String? = null,
         private var language: kotlin.String? = null,
-        private var include: kotlin.collections.List<kotlin.String>? = null,
+        private var include: kotlin.collections.List<
+            GetRegionOperationParams.Include
+        >? = null,
         private var billingTerms: kotlin.String? = null,
         private var partnerPointOfSale: kotlin.String? = null,
         private var paymentTerms: kotlin.String? = null,
@@ -74,7 +92,11 @@ data class GetRegionOperationParams(
         /**
          * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The value must be lower case.   * details - Include the metadata, coordinates and full hierarchy of the region.   * property_ids - Include the list of property IDs within the bounding polygon of the region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of the region and property IDs from the surrounding area if minimal properties are within the region.
          */
-        fun include(include: kotlin.collections.List<kotlin.String>) = apply { this.include = include }
+        fun include(
+            include: kotlin.collections.List<
+                GetRegionOperationParams.Include
+            >
+        ) = apply { this.include = include }
 
         /**
          * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -132,25 +154,65 @@ data class GetRegionOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            language?.also { put("language", listOf(language.toString())) }
-            include?.also { put("include", include) }
-            billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-            partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-            paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-            platformName?.also { put("platform_name", listOf(platformName.toString())) }
-            supplySource?.also { put("supply_source", listOf(supplySource.toString())) }
+            language?.also {
+                put(
+                    "language",
+                    listOf(language)
+                )
+            }
+            include?.also {
+                put(
+                    "include",
+                    include.map { it.value }
+                )
+            }
+            billingTerms?.also {
+                put(
+                    "billing_terms",
+                    listOf(billingTerms)
+                )
+            }
+            partnerPointOfSale?.also {
+                put(
+                    "partner_point_of_sale",
+                    listOf(partnerPointOfSale)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
+                )
+            }
+            platformName?.also {
+                put(
+                    "platform_name",
+                    listOf(platformName)
+                )
+            }
+            supplySource?.also {
+                put(
+                    "supply_source",
+                    listOf(supplySource)
+                )
+            }
         }
     }
 
     override fun getPathParams(): Map<String, String> {
         return buildMap {
-            regionId?.also { put("region_id", regionId) }
+            regionId?.also {
+                put("region_id", regionId)
+            }
         }
     }
 }

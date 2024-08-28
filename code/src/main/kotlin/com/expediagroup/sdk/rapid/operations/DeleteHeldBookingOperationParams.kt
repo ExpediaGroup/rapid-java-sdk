@@ -26,16 +26,11 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class DeleteHeldBookingOperationParams
     internal constructor(
-        val itineraryId: kotlin.String? =
-            null,
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val test: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
+        val itineraryId: kotlin.String? = null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val test: DeleteHeldBookingOperationParams.Test? = null,
+        val token: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -47,8 +42,10 @@ data class DeleteHeldBookingOperationParams
         constructor(
             itineraryId: kotlin.String,
             customerIp: kotlin.String,
-            customerSessionId: kotlin.String? = null,
-            test: kotlin.String? = null,
+            customerSessionId: kotlin.String? =
+                null,
+            test: DeleteHeldBookingOperationParams.Test? =
+                null,
             token: kotlin.String
         ) : this(
             itineraryId = itineraryId,
@@ -66,11 +63,20 @@ data class DeleteHeldBookingOperationParams
             dummy = Unit
         )
 
+        enum class Test(
+            val value: kotlin.String
+        ) {
+            STANDARD("standard"),
+            SERVICE_UNAVAILABLE("service_unavailable"),
+            INTERNAL_SERVER_ERROR("internal_server_error"),
+            POST_STAY_CANCEL("post_stay_cancel")
+        }
+
         class Builder(
             private var itineraryId: kotlin.String? = null,
             private var customerIp: kotlin.String? = null,
             private var customerSessionId: kotlin.String? = null,
-            private var test: kotlin.String? = null,
+            private var test: DeleteHeldBookingOperationParams.Test? = null,
             private var token: kotlin.String? = null
         ) {
             /**
@@ -91,7 +97,7 @@ data class DeleteHeldBookingOperationParams
             /**
              * @param test The cancel call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test held booking. * `service_unavailable` * `internal_server_error` * `post_stay_cancel`
              */
-            fun test(test: kotlin.String) = apply { this.test = test }
+            fun test(test: DeleteHeldBookingOperationParams.Test) = apply { this.test = test }
 
             /**
              * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -125,21 +131,34 @@ data class DeleteHeldBookingOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-                test?.also { put("Test", test) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                test?.also {
+                    put("Test", test.value)
+                }
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
             }
         }
 
         override fun getPathParams(): Map<String, String> {
             return buildMap {
-                itineraryId?.also { put("itinerary_id", itineraryId) }
+                itineraryId?.also {
+                    put("itinerary_id", itineraryId)
+                }
             }
         }
     }

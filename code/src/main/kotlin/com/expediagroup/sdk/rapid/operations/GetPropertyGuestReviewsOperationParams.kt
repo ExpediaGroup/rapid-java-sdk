@@ -30,14 +30,25 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class GetPropertyGuestReviewsOperationParams(
     val propertyId: kotlin.String,
-    val customerSessionId: kotlin.String? = null,
+    val customerSessionId: kotlin.String? =
+        null,
     val language: kotlin.String,
-    val filter: kotlin.collections.List<kotlin.String>? = null,
-    val tripReason: kotlin.collections.List<kotlin.String>? = null,
-    val billingTerms: kotlin.String? = null,
-    val paymentTerms: kotlin.String? = null,
-    val partnerPointOfSale: kotlin.String? = null,
-    val platformName: kotlin.String? = null
+    val filter: kotlin.collections.List<
+        GetPropertyGuestReviewsOperationParams.Filter
+    >? =
+        null,
+    val tripReason: kotlin.collections.List<
+        GetPropertyGuestReviewsOperationParams.TripReason
+    >? =
+        null,
+    val billingTerms: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
+        null,
+    val partnerPointOfSale: kotlin.String? =
+        null,
+    val platformName: kotlin.String? =
+        null
 ) :
     OperationParams {
     companion object {
@@ -45,12 +56,31 @@ data class GetPropertyGuestReviewsOperationParams(
         fun builder() = Builder()
     }
 
+    enum class Filter(
+        val value: kotlin.String
+    ) {
+        LANGUAGE("language")
+    }
+
+    enum class TripReason(
+        val value: kotlin.String
+    ) {
+        BUSINESS("business"),
+        LEISURE("leisure"),
+        FRIENDS_AND_FAMILY("friends_and_family"),
+        BUSINESS_AND_LEISURE("business_and_leisure")
+    }
+
     class Builder(
         private var propertyId: kotlin.String? = null,
         private var customerSessionId: kotlin.String? = null,
         private var language: kotlin.String? = null,
-        private var filter: kotlin.collections.List<kotlin.String>? = null,
-        private var tripReason: kotlin.collections.List<kotlin.String>? = null,
+        private var filter: kotlin.collections.List<
+            GetPropertyGuestReviewsOperationParams.Filter
+        >? = null,
+        private var tripReason: kotlin.collections.List<
+            GetPropertyGuestReviewsOperationParams.TripReason
+        >? = null,
         private var billingTerms: kotlin.String? = null,
         private var paymentTerms: kotlin.String? = null,
         private var partnerPointOfSale: kotlin.String? = null,
@@ -74,12 +104,20 @@ data class GetPropertyGuestReviewsOperationParams(
         /**
          * @param filter Single filter value. Send multiple instances of this parameter to request multiple filters. * `language` - Filters reviews to only those that match the specified `language` parameter value. Without   this filter, the matching language will be preferred, but other language results can be returned.   Specifying this filter could produce an error when there are no matching results.
          */
-        fun filter(filter: kotlin.collections.List<kotlin.String>) = apply { this.filter = filter }
+        fun filter(
+            filter: kotlin.collections.List<
+                GetPropertyGuestReviewsOperationParams.Filter
+            >
+        ) = apply { this.filter = filter }
 
         /**
          * @param tripReason Desired reason provided for the reviewer's trip that you wish to display. This parameter can be supplied multiple times with different values, which will include reviews that match any of the requested trip reasons.
          */
-        fun tripReason(tripReason: kotlin.collections.List<kotlin.String>) = apply { this.tripReason = tripReason }
+        fun tripReason(
+            tripReason: kotlin.collections.List<
+                GetPropertyGuestReviewsOperationParams.TripReason
+            >
+        ) = apply { this.tripReason = tripReason }
 
         /**
          * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -129,25 +167,65 @@ data class GetPropertyGuestReviewsOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            language?.also { put("language", listOf(language.toString())) }
-            filter?.also { put("filter", filter) }
-            tripReason?.also { put("trip_reason", tripReason) }
-            billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-            paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-            partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-            platformName?.also { put("platform_name", listOf(platformName.toString())) }
+            language?.also {
+                put(
+                    "language",
+                    listOf(language)
+                )
+            }
+            filter?.also {
+                put(
+                    "filter",
+                    filter.map { it.value }
+                )
+            }
+            tripReason?.also {
+                put(
+                    "trip_reason",
+                    tripReason.map { it.value }
+                )
+            }
+            billingTerms?.also {
+                put(
+                    "billing_terms",
+                    listOf(billingTerms)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
+                )
+            }
+            partnerPointOfSale?.also {
+                put(
+                    "partner_point_of_sale",
+                    listOf(partnerPointOfSale)
+                )
+            }
+            platformName?.also {
+                put(
+                    "platform_name",
+                    listOf(platformName)
+                )
+            }
         }
     }
 
     override fun getPathParams(): Map<String, String> {
         return buildMap {
-            propertyId?.also { put("property_id", propertyId) }
+            propertyId?.also {
+                put("property_id", propertyId)
+            }
         }
     }
 }

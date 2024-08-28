@@ -22,8 +22,10 @@ package com.expediagroup.sdk.rapid.operations
  */
 data class GetReservationByItineraryIdOperationContext(
     val customerIp: kotlin.String,
-    val customerSessionId: kotlin.String? = null,
-    val test: kotlin.String? = null
+    val customerSessionId: kotlin.String? =
+        null,
+    val test: GetReservationByItineraryIdOperationParams.Test? =
+        null
 ) {
     companion object {
         @JvmStatic
@@ -33,7 +35,7 @@ data class GetReservationByItineraryIdOperationContext(
     class Builder(
         private var customerIp: kotlin.String? = null,
         private var customerSessionId: kotlin.String? = null,
-        private var test: kotlin.String? = null
+        private var test: GetReservationByItineraryIdOperationParams.Test? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -48,7 +50,7 @@ data class GetReservationByItineraryIdOperationContext(
         /**
          * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
          */
-        fun test(test: kotlin.String) = apply { this.test = test }
+        fun test(test: GetReservationByItineraryIdOperationParams.Test) = apply { this.test = test }
 
         fun build(): GetReservationByItineraryIdOperationContext {
             validateNullity()
@@ -69,9 +71,15 @@ data class GetReservationByItineraryIdOperationContext(
 
     fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerIp.also { put("Customer-Ip", customerIp) }
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-            test?.also { put("Test", test) }
+            customerIp.also {
+                put("Customer-Ip", customerIp)
+            }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            test?.also {
+                put("Test", test.value)
+            }
         }
     }
 }

@@ -25,14 +25,10 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class GetPaymentOptionsOperationParams
     internal constructor(
-        val propertyId: kotlin.String? =
-            null,
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
+        val propertyId: kotlin.String? = null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val token: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -43,8 +39,10 @@ data class GetPaymentOptionsOperationParams
 
         constructor(
             propertyId: kotlin.String,
-            customerIp: kotlin.String? = null,
-            customerSessionId: kotlin.String? = null,
+            customerIp: kotlin.String? =
+                null,
+            customerSessionId: kotlin.String? =
+                null,
             token: kotlin.String
         ) : this(
             propertyId = propertyId,
@@ -109,20 +107,32 @@ data class GetPaymentOptionsOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                put("Accept", "application/json")
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
             }
         }
 
         override fun getPathParams(): Map<String, String> {
             return buildMap {
-                propertyId?.also { put("property_id", propertyId) }
+                propertyId?.also {
+                    put("property_id", propertyId)
+                }
             }
         }
     }

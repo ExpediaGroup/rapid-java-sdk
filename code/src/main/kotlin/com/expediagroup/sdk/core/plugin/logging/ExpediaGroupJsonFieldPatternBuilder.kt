@@ -15,18 +15,12 @@
  */
 package com.expediagroup.sdk.core.plugin.logging
 
-import com.ebay.ejmask.core.BaseFilter
-import com.ebay.ejmask.core.EJMask
-import com.ebay.ejmask.core.EJMaskInitializer
-import com.ebay.ejmask.core.util.LoggerUtil
+import com.ebay.ejmask.extenstion.builder.json.JsonFieldPatternBuilder
+import com.expediagroup.sdk.core.constant.LoggingMessage.OMITTED
 
-internal class LogMasker(
-    filters: Iterable<BaseFilter>
-) : (String) -> String {
-    init {
-        LoggerUtil.register { _, _, _ -> /* disable logging */ }
-        filters.forEach { EJMaskInitializer.addFilter(it) }
-    }
-
-    override fun invoke(message: String): String = EJMask.mask(message)
+internal class ExpediaGroupJsonFieldPatternBuilder : JsonFieldPatternBuilder() {
+    override fun buildReplacement(
+        visibleCharacters: Int,
+        vararg fieldNames: String?
+    ): String = "\"$1$2$OMITTED\""
 }

@@ -27,13 +27,18 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
  */
 data class GetPropertyContentFileOperationParams(
-    val customerSessionId: kotlin.String? = null,
+    val customerSessionId: kotlin.String? =
+        null,
     val language: kotlin.String,
     val supplySource: kotlin.String,
-    val billingTerms: kotlin.String? = null,
-    val paymentTerms: kotlin.String? = null,
-    val partnerPointOfSale: kotlin.String? = null,
-    val platformName: kotlin.String? = null
+    val billingTerms: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
+        null,
+    val partnerPointOfSale: kotlin.String? =
+        null,
+    val platformName: kotlin.String? =
+        null
 ) :
     OperationParams {
     companion object {
@@ -111,18 +116,51 @@ data class GetPropertyContentFileOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            language?.also { put("language", listOf(language.toString())) }
-            supplySource?.also { put("supply_source", listOf(supplySource.toString())) }
-            billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-            paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-            partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-            platformName?.also { put("platform_name", listOf(platformName.toString())) }
+            language?.also {
+                put(
+                    "language",
+                    listOf(language)
+                )
+            }
+            supplySource?.also {
+                put(
+                    "supply_source",
+                    listOf(supplySource)
+                )
+            }
+            billingTerms?.also {
+                put(
+                    "billing_terms",
+                    listOf(billingTerms)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
+                )
+            }
+            partnerPointOfSale?.also {
+                put(
+                    "partner_point_of_sale",
+                    listOf(partnerPointOfSale)
+                )
+            }
+            platformName?.also {
+                put(
+                    "platform_name",
+                    listOf(platformName)
+                )
+            }
         }
     }
 

@@ -28,20 +28,15 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class GetReservationByItineraryIdOperationParams
     internal constructor(
-        val itineraryId: kotlin.String? =
-            null,
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val test: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
-        val email: kotlin.String? =
-            null,
-        val include: kotlin.collections.List<kotlin.String>? =
-            null,
+        val itineraryId: kotlin.String? = null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val test: GetReservationByItineraryIdOperationParams.Test? = null,
+        val token: kotlin.String? = null,
+        val email: kotlin.String? = null,
+        val include: kotlin.collections.List<
+            GetReservationByItineraryIdOperationParams.Include
+        >? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -53,11 +48,18 @@ data class GetReservationByItineraryIdOperationParams
         constructor(
             itineraryId: kotlin.String,
             customerIp: kotlin.String,
-            customerSessionId: kotlin.String? = null,
-            test: kotlin.String? = null,
-            token: kotlin.String? = null,
-            email: kotlin.String? = null,
-            include: kotlin.collections.List<kotlin.String>? = null
+            customerSessionId: kotlin.String? =
+                null,
+            test: GetReservationByItineraryIdOperationParams.Test? =
+                null,
+            token: kotlin.String? =
+                null,
+            email: kotlin.String? =
+                null,
+            include: kotlin.collections.List<
+                GetReservationByItineraryIdOperationParams.Include
+            >? =
+                null
         ) : this(
             itineraryId = itineraryId,
             customerIp = customerIp,
@@ -76,14 +78,30 @@ data class GetReservationByItineraryIdOperationParams
             dummy = Unit
         )
 
+        enum class Test(
+            val value: kotlin.String
+        ) {
+            STANDARD("standard"),
+            SERVICE_UNAVAILABLE("service_unavailable"),
+            INTERNAL_SERVER_ERROR("internal_server_error")
+        }
+
+        enum class Include(
+            val value: kotlin.String
+        ) {
+            HISTORY("history")
+        }
+
         class Builder(
             private var itineraryId: kotlin.String? = null,
             private var customerIp: kotlin.String? = null,
             private var customerSessionId: kotlin.String? = null,
-            private var test: kotlin.String? = null,
+            private var test: GetReservationByItineraryIdOperationParams.Test? = null,
             private var token: kotlin.String? = null,
             private var email: kotlin.String? = null,
-            private var include: kotlin.collections.List<kotlin.String>? = null
+            private var include: kotlin.collections.List<
+                GetReservationByItineraryIdOperationParams.Include
+            >? = null
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -103,7 +121,7 @@ data class GetReservationByItineraryIdOperationParams
             /**
              * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
              */
-            fun test(test: kotlin.String) = apply { this.test = test }
+            fun test(test: GetReservationByItineraryIdOperationParams.Test) = apply { this.test = test }
 
             /**
              * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -118,7 +136,11 @@ data class GetReservationByItineraryIdOperationParams
             /**
              * @param include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary
              */
-            fun include(include: kotlin.collections.List<kotlin.String>) = apply { this.include = include }
+            fun include(
+                include: kotlin.collections.List<
+                    GetReservationByItineraryIdOperationParams.Include
+                >
+            ) = apply { this.include = include }
 
             fun build(): GetReservationByItineraryIdOperationParams {
                 validateNullity()
@@ -146,23 +168,47 @@ data class GetReservationByItineraryIdOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-                test?.also { put("Test", test) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                test?.also {
+                    put("Test", test.value)
+                }
+                put("Accept", "application/json")
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
-                email?.also { put("email", listOf(email.toString())) }
-                include?.also { put("include", include) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
+                email?.also {
+                    put(
+                        "email",
+                        listOf(email)
+                    )
+                }
+                include?.also {
+                    put(
+                        "include",
+                        include.map { it.value }
+                    )
+                }
             }
         }
 
         override fun getPathParams(): Map<String, String> {
             return buildMap {
-                itineraryId?.also { put("itinerary_id", itineraryId) }
+                itineraryId?.also {
+                    put("itinerary_id", itineraryId)
+                }
             }
         }
     }
