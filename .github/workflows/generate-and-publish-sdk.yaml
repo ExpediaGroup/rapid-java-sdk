@@ -17,3 +17,4 @@ jobs:
     with:
       name: rapid
       version: ${{ inputs.version }}
+      transformations: "-th -te /v3 --operationIdsToTags"
