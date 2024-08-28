@@ -28,20 +28,13 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class PriceCheckOperationParams
     internal constructor(
-        val propertyId: kotlin.String? =
-            null,
-        val roomId: kotlin.String? =
-            null,
-        val rateId: kotlin.String? =
-            null,
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val test: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
+        val propertyId: kotlin.String? = null,
+        val roomId: kotlin.String? = null,
+        val rateId: kotlin.String? = null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val test: PriceCheckOperationParams.Test? = null,
+        val token: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -54,9 +47,12 @@ data class PriceCheckOperationParams
             propertyId: kotlin.String,
             roomId: kotlin.String,
             rateId: kotlin.String,
-            customerIp: kotlin.String? = null,
-            customerSessionId: kotlin.String? = null,
-            test: kotlin.String? = null,
+            customerIp: kotlin.String? =
+                null,
+            customerSessionId: kotlin.String? =
+                null,
+            test: PriceCheckOperationParams.Test? =
+                null,
             token: kotlin.String
         ) : this(
             propertyId = propertyId,
@@ -76,13 +72,23 @@ data class PriceCheckOperationParams
             dummy = Unit
         )
 
+        enum class Test(
+            val value: kotlin.String
+        ) {
+            AVAILABLE("available"),
+            PRICE_CHANGED("price_changed"),
+            SOLD_OUT("sold_out"),
+            SERVICE_UNAVAILABLE("service_unavailable"),
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+        }
+
         class Builder(
             private var propertyId: kotlin.String? = null,
             private var roomId: kotlin.String? = null,
             private var rateId: kotlin.String? = null,
             private var customerIp: kotlin.String? = null,
             private var customerSessionId: kotlin.String? = null,
-            private var test: kotlin.String? = null,
+            private var test: PriceCheckOperationParams.Test? = null,
             private var token: kotlin.String? = null
         ) {
             /**
@@ -113,7 +119,7 @@ data class PriceCheckOperationParams
             /**
              * @param test Price check calls have a test header that can be used to return set responses with the following keywords:   * `available`   * `price_changed`   * `sold_out`   * `service_unavailable`   * `unknown_internal_error`
              */
-            fun test(test: kotlin.String) = apply { this.test = test }
+            fun test(test: PriceCheckOperationParams.Test) = apply { this.test = test }
 
             /**
              * @param token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
@@ -152,23 +158,41 @@ data class PriceCheckOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-                test?.also { put("Test", test) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                test?.also {
+                    put("Test", test.value)
+                }
+                put("Accept", "application/json")
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
             }
         }
 
         override fun getPathParams(): Map<String, String> {
             return buildMap {
-                propertyId?.also { put("property_id", propertyId) }
-                roomId?.also { put("room_id", roomId) }
-                rateId?.also { put("rate_id", rateId) }
+                propertyId?.also {
+                    put("property_id", propertyId)
+                }
+                roomId?.also {
+                    put("room_id", roomId)
+                }
+                rateId?.also {
+                    put("rate_id", rateId)
+                }
             }
         }
     }

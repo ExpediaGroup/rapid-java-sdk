@@ -19,7 +19,8 @@ package com.expediagroup.sdk.rapid.operations
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  */
 data class GetPropertyGuestReviewsOperationContext(
-    val customerSessionId: kotlin.String? = null
+    val customerSessionId: kotlin.String? =
+        null
 ) {
     companion object {
         @JvmStatic
@@ -48,7 +49,9 @@ data class GetPropertyGuestReviewsOperationContext(
 
     fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
         }
     }
 }

@@ -27,13 +27,19 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
  */
 data class PostGeographyOperationParams(
-    val customerSessionId: kotlin.String? = null,
+    val customerSessionId: kotlin.String? =
+        null,
     val include: kotlin.String,
-    val billingTerms: kotlin.String? = null,
-    val partnerPointOfSale: kotlin.String? = null,
-    val paymentTerms: kotlin.String? = null,
-    val platformName: kotlin.String? = null,
-    val supplySource: kotlin.String? = null
+    val billingTerms: kotlin.String? =
+        null,
+    val partnerPointOfSale: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
+        null,
+    val platformName: kotlin.String? =
+        null,
+    val supplySource: kotlin.String? =
+        null
 ) :
     OperationParams {
     companion object {
@@ -108,18 +114,51 @@ data class PostGeographyOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            include?.also { put("include", listOf(include.toString())) }
-            billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-            partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-            paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-            platformName?.also { put("platform_name", listOf(platformName.toString())) }
-            supplySource?.also { put("supply_source", listOf(supplySource.toString())) }
+            include?.also {
+                put(
+                    "include",
+                    listOf(include)
+                )
+            }
+            billingTerms?.also {
+                put(
+                    "billing_terms",
+                    listOf(billingTerms)
+                )
+            }
+            partnerPointOfSale?.also {
+                put(
+                    "partner_point_of_sale",
+                    listOf(partnerPointOfSale)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
+                )
+            }
+            platformName?.also {
+                put(
+                    "platform_name",
+                    listOf(platformName)
+                )
+            }
+            supplySource?.also {
+                put(
+                    "supply_source",
+                    listOf(supplySource)
+                )
+            }
         }
     }
 

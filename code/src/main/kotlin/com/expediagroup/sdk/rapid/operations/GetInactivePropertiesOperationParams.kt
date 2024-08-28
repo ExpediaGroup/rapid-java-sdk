@@ -27,13 +27,20 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
  */
 data class GetInactivePropertiesOperationParams(
-    val customerSessionId: kotlin.String? = null,
-    val since: kotlin.String? = null,
-    val token: kotlin.String? = null,
-    val billingTerms: kotlin.String? = null,
-    val paymentTerms: kotlin.String? = null,
-    val partnerPointOfSale: kotlin.String? = null,
-    val platformName: kotlin.String? = null
+    val customerSessionId: kotlin.String? =
+        null,
+    val since: kotlin.String? =
+        null,
+    val token: kotlin.String? =
+        null,
+    val billingTerms: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
+        null,
+    val partnerPointOfSale: kotlin.String? =
+        null,
+    val platformName: kotlin.String? =
+        null
 ) :
     OperationParams {
     companion object {
@@ -100,18 +107,51 @@ data class GetInactivePropertiesOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            since?.also { put("since", listOf(since.toString())) }
-            token?.also { put("token", listOf(token.toString())) }
-            billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-            paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-            partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-            platformName?.also { put("platform_name", listOf(platformName.toString())) }
+            since?.also {
+                put(
+                    "since",
+                    listOf(since)
+                )
+            }
+            token?.also {
+                put(
+                    "token",
+                    listOf(token)
+                )
+            }
+            billingTerms?.also {
+                put(
+                    "billing_terms",
+                    listOf(billingTerms)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
+                )
+            }
+            partnerPointOfSale?.also {
+                put(
+                    "partner_point_of_sale",
+                    listOf(partnerPointOfSale)
+                )
+            }
+            platformName?.also {
+                put(
+                    "platform_name",
+                    listOf(platformName)
+                )
+            }
         }
     }
 

@@ -25,14 +25,10 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class PostItineraryOperationParams
     internal constructor(
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val test: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val test: PostItineraryOperationParams.Test? = null,
+        val token: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -43,8 +39,10 @@ data class PostItineraryOperationParams
 
         constructor(
             customerIp: kotlin.String,
-            customerSessionId: kotlin.String? = null,
-            test: kotlin.String? = null,
+            customerSessionId: kotlin.String? =
+                null,
+            test: PostItineraryOperationParams.Test? =
+                null,
             token: kotlin.String
         ) : this(
             customerIp = customerIp,
@@ -61,10 +59,21 @@ data class PostItineraryOperationParams
             dummy = Unit
         )
 
+        enum class Test(
+            val value: kotlin.String
+        ) {
+            STANDARD("standard"),
+            SERVICE_UNAVAILABLE("service_unavailable"),
+            INTERNAL_SERVER_ERROR("internal_server_error"),
+            PRICE_MISMATCH("price_mismatch"),
+            CC_DECLINED("cc_declined"),
+            ROOMS_UNAVAILABLE("rooms_unavailable")
+        }
+
         class Builder(
             private var customerIp: kotlin.String? = null,
             private var customerSessionId: kotlin.String? = null,
-            private var test: kotlin.String? = null,
+            private var test: PostItineraryOperationParams.Test? = null,
             private var token: kotlin.String? = null
         ) {
             /**
@@ -80,7 +89,7 @@ data class PostItineraryOperationParams
             /**
              * @param test The book call has a test header that can be used to return set responses with the following keywords:<br> * `standard` * `complete_payment_session` * `service_unavailable` * `internal_server_error` * `price_mismatch` * `cc_declined` * `rooms_unavailable`
              */
-            fun test(test: kotlin.String) = apply { this.test = test }
+            fun test(test: PostItineraryOperationParams.Test) = apply { this.test = test }
 
             /**
              * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -110,15 +119,26 @@ data class PostItineraryOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-                test?.also { put("Test", test) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                test?.also {
+                    put("Test", test.value)
+                }
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
             }
         }
 

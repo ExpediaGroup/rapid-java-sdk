@@ -26,10 +26,14 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class RequestUndeliveredNotificationsOperationParams(
     val undeliverable: kotlin.Boolean,
-    val billingTerms: kotlin.String? = null,
-    val partnerPointOfSale: kotlin.String? = null,
-    val paymentTerms: kotlin.String? = null,
-    val platformName: kotlin.String? = null
+    val billingTerms: kotlin.String? =
+        null,
+    val partnerPointOfSale: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
+        null,
+    val platformName: kotlin.String? =
+        null
 ) :
     OperationParams {
     companion object {
@@ -90,16 +94,42 @@ data class RequestUndeliveredNotificationsOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            undeliverable?.also { put("undeliverable", listOf(undeliverable.toString())) }
-            billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-            partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-            paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-            platformName?.also { put("platform_name", listOf(platformName.toString())) }
+            undeliverable?.also {
+                put(
+                    "undeliverable",
+                    listOf(undeliverable.toString())
+                )
+            }
+            billingTerms?.also {
+                put(
+                    "billing_terms",
+                    listOf(billingTerms)
+                )
+            }
+            partnerPointOfSale?.also {
+                put(
+                    "partner_point_of_sale",
+                    listOf(partnerPointOfSale)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
+                )
+            }
+            platformName?.also {
+                put(
+                    "platform_name",
+                    listOf(platformName)
+                )
+            }
         }
     }
 
