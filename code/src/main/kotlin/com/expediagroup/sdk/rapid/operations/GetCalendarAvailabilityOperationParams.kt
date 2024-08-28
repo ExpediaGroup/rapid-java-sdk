@@ -24,8 +24,11 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
  */
 data class GetCalendarAvailabilityOperationParams(
-    val test: kotlin.String? = null,
-    val propertyId: kotlin.collections.List<kotlin.String>,
+    val test: GetCalendarAvailabilityOperationParams.Test? =
+        null,
+    val propertyId: kotlin.collections.List<
+        kotlin.String
+    >,
     val startDate: java.time.LocalDate,
     val endDate: java.time.LocalDate
 ) :
@@ -35,21 +38,35 @@ data class GetCalendarAvailabilityOperationParams(
         fun builder() = Builder()
     }
 
+    enum class Test(
+        val value: kotlin.String
+    ) {
+        STANDARD("standard"),
+        SERVICE_UNAVAILABLE("service_unavailable"),
+        UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+    }
+
     class Builder(
-        private var test: kotlin.String? = null,
-        private var propertyId: kotlin.collections.List<kotlin.String>? = null,
+        private var test: GetCalendarAvailabilityOperationParams.Test? = null,
+        private var propertyId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
         private var startDate: java.time.LocalDate? = null,
         private var endDate: java.time.LocalDate? = null
     ) {
         /**
          * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
          */
-        fun test(test: kotlin.String) = apply { this.test = test }
+        fun test(test: GetCalendarAvailabilityOperationParams.Test) = apply { this.test = test }
 
         /**
          * @param propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
          */
-        fun propertyId(propertyId: kotlin.collections.List<kotlin.String>) = apply { this.propertyId = propertyId }
+        fun propertyId(
+            propertyId: kotlin.collections.List<
+                kotlin.String
+            >
+        ) = apply { this.propertyId = propertyId }
 
         /**
          * @param startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
@@ -87,15 +104,33 @@ data class GetCalendarAvailabilityOperationParams(
 
     override fun getHeaders(): Map<String, String> {
         return buildMap {
-            test?.also { put("Test", test) }
+            test?.also {
+                put("Test", test.value)
+            }
+            put("Accept", "application/json")
         }
     }
 
     override fun getQueryParams(): Map<String, Iterable<String>> {
         return buildMap {
-            propertyId?.also { put("property_id", propertyId) }
-            startDate?.also { put("start_date", listOf(startDate.toString())) }
-            endDate?.also { put("end_date", listOf(endDate.toString())) }
+            propertyId?.also {
+                put(
+                    "property_id",
+                    propertyId
+                )
+            }
+            startDate?.also {
+                put(
+                    "start_date",
+                    listOf(startDate.toString())
+                )
+            }
+            endDate?.also {
+                put(
+                    "end_date",
+                    listOf(endDate.toString())
+                )
+            }
         }
     }
 

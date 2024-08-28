@@ -47,58 +47,56 @@ import com.expediagroup.sdk.core.model.OperationParams
  */
 data class GetPropertyContentOperationParams
     internal constructor(
-        val customerSessionId: kotlin.String? =
-            null,
-        val language: kotlin.String? =
-            null,
-        val supplySource: kotlin.String? =
-            null,
-        val allInclusive: kotlin.collections.List<kotlin.String>? =
-            null,
-        val amenityId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val attributeId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val brandId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val businessModel: kotlin.collections.List<kotlin.String>? =
-            null,
-        val categoryId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val categoryIdExclude: kotlin.collections.List<kotlin.String>? =
-            null,
-        val chainId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val countryCode: kotlin.collections.List<kotlin.String>? =
-            null,
-        val dateAddedEnd: kotlin.String? =
-            null,
-        val dateAddedStart: kotlin.String? =
-            null,
-        val dateUpdatedEnd: kotlin.String? =
-            null,
-        val dateUpdatedStart: kotlin.String? =
-            null,
-        val include: kotlin.collections.List<kotlin.String>? =
-            null,
-        val multiUnit: kotlin.Boolean? =
-            null,
-        val propertyId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val propertyRatingMax: kotlin.String? =
-            null,
-        val propertyRatingMin: kotlin.String? =
-            null,
-        val spokenLanguageId: kotlin.collections.List<kotlin.String>? =
-            null,
-        val billingTerms: kotlin.String? =
-            null,
-        val partnerPointOfSale: kotlin.String? =
-            null,
-        val paymentTerms: kotlin.String? =
-            null,
-        val platformName: kotlin.String? =
-            null,
+        val customerSessionId: kotlin.String? = null,
+        val language: kotlin.String? = null,
+        val supplySource: kotlin.String? = null,
+        val allInclusive: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val amenityId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val attributeId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val brandId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val businessModel: kotlin.collections.List<
+            GetPropertyContentOperationParams.BusinessModel
+        >? = null,
+        val categoryId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val categoryIdExclude: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val chainId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val countryCode: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val dateAddedEnd: kotlin.String? = null,
+        val dateAddedStart: kotlin.String? = null,
+        val dateUpdatedEnd: kotlin.String? = null,
+        val dateUpdatedStart: kotlin.String? = null,
+        val include: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val multiUnit: kotlin.Boolean? = null,
+        val propertyId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val propertyRatingMax: kotlin.String? = null,
+        val propertyRatingMin: kotlin.String? = null,
+        val spokenLanguageId: kotlin.collections.List<
+            kotlin.String
+        >? = null,
+        val billingTerms: kotlin.String? = null,
+        val partnerPointOfSale: kotlin.String? = null,
+        val paymentTerms: kotlin.String? = null,
+        val platformName: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -108,32 +106,80 @@ data class GetPropertyContentOperationParams
         }
 
         constructor(
-            customerSessionId: kotlin.String? = null,
+            customerSessionId: kotlin.String? =
+                null,
             language: kotlin.String,
             supplySource: kotlin.String,
-            allInclusive: kotlin.collections.List<kotlin.String>? = null,
-            amenityId: kotlin.collections.List<kotlin.String>? = null,
-            attributeId: kotlin.collections.List<kotlin.String>? = null,
-            brandId: kotlin.collections.List<kotlin.String>? = null,
-            businessModel: kotlin.collections.List<kotlin.String>? = null,
-            categoryId: kotlin.collections.List<kotlin.String>? = null,
-            categoryIdExclude: kotlin.collections.List<kotlin.String>? = null,
-            chainId: kotlin.collections.List<kotlin.String>? = null,
-            countryCode: kotlin.collections.List<kotlin.String>? = null,
-            dateAddedEnd: kotlin.String? = null,
-            dateAddedStart: kotlin.String? = null,
-            dateUpdatedEnd: kotlin.String? = null,
-            dateUpdatedStart: kotlin.String? = null,
-            include: kotlin.collections.List<kotlin.String>? = null,
-            multiUnit: kotlin.Boolean? = null,
-            propertyId: kotlin.collections.List<kotlin.String>? = null,
-            propertyRatingMax: kotlin.String? = null,
-            propertyRatingMin: kotlin.String? = null,
-            spokenLanguageId: kotlin.collections.List<kotlin.String>? = null,
-            billingTerms: kotlin.String? = null,
-            partnerPointOfSale: kotlin.String? = null,
-            paymentTerms: kotlin.String? = null,
-            platformName: kotlin.String? = null
+            allInclusive: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            amenityId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            attributeId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            brandId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            businessModel: kotlin.collections.List<
+                GetPropertyContentOperationParams.BusinessModel
+            >? =
+                null,
+            categoryId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            categoryIdExclude: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            chainId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            countryCode: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            dateAddedEnd: kotlin.String? =
+                null,
+            dateAddedStart: kotlin.String? =
+                null,
+            dateUpdatedEnd: kotlin.String? =
+                null,
+            dateUpdatedStart: kotlin.String? =
+                null,
+            include: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            multiUnit: kotlin.Boolean? =
+                null,
+            propertyId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            propertyRatingMax: kotlin.String? =
+                null,
+            propertyRatingMin: kotlin.String? =
+                null,
+            spokenLanguageId: kotlin.collections.List<
+                kotlin.String
+            >? =
+                null,
+            billingTerms: kotlin.String? =
+                null,
+            partnerPointOfSale: kotlin.String? =
+                null,
+            paymentTerms: kotlin.String? =
+                null,
+            platformName: kotlin.String? =
+                null
         ) : this(
             customerSessionId = customerSessionId,
             language = language,
@@ -169,29 +215,60 @@ data class GetPropertyContentOperationParams
             dummy = Unit
         )
 
+        enum class BusinessModel(
+            val value: kotlin.String
+        ) {
+            EXPEDIA_COLLECT("expedia_collect"),
+            PROPERTY_COLLECT("property_collect")
+        }
+
         class Builder(
             private var customerSessionId: kotlin.String? = null,
             private var language: kotlin.String? = null,
             private var supplySource: kotlin.String? = null,
-            private var allInclusive: kotlin.collections.List<kotlin.String>? = null,
-            private var amenityId: kotlin.collections.List<kotlin.String>? = null,
-            private var attributeId: kotlin.collections.List<kotlin.String>? = null,
-            private var brandId: kotlin.collections.List<kotlin.String>? = null,
-            private var businessModel: kotlin.collections.List<kotlin.String>? = null,
-            private var categoryId: kotlin.collections.List<kotlin.String>? = null,
-            private var categoryIdExclude: kotlin.collections.List<kotlin.String>? = null,
-            private var chainId: kotlin.collections.List<kotlin.String>? = null,
-            private var countryCode: kotlin.collections.List<kotlin.String>? = null,
+            private var allInclusive: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var amenityId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var attributeId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var brandId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var businessModel: kotlin.collections.List<
+                GetPropertyContentOperationParams.BusinessModel
+            >? = null,
+            private var categoryId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var categoryIdExclude: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var chainId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
+            private var countryCode: kotlin.collections.List<
+                kotlin.String
+            >? = null,
             private var dateAddedEnd: kotlin.String? = null,
             private var dateAddedStart: kotlin.String? = null,
             private var dateUpdatedEnd: kotlin.String? = null,
             private var dateUpdatedStart: kotlin.String? = null,
-            private var include: kotlin.collections.List<kotlin.String>? = null,
+            private var include: kotlin.collections.List<
+                kotlin.String
+            >? = null,
             private var multiUnit: kotlin.Boolean? = null,
-            private var propertyId: kotlin.collections.List<kotlin.String>? = null,
+            private var propertyId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
             private var propertyRatingMax: kotlin.String? = null,
             private var propertyRatingMin: kotlin.String? = null,
-            private var spokenLanguageId: kotlin.collections.List<kotlin.String>? = null,
+            private var spokenLanguageId: kotlin.collections.List<
+                kotlin.String
+            >? = null,
             private var billingTerms: kotlin.String? = null,
             private var partnerPointOfSale: kotlin.String? = null,
             private var paymentTerms: kotlin.String? = null,
@@ -215,47 +292,83 @@ data class GetPropertyContentOperationParams
             /**
              * @param allInclusive Search to include properties that have the requested `all_inclusive` values equal to true. If this parameter is not supplied, all `all_inclusive` scenarios are included. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested scenarios.   * `all_rate_plans` - Return properties where `all_inclusive.all_rate_plans` is true.   * `some_rate_plans` = Return properties where `all_inclusive.some_rate_plans` is true.
              */
-            fun allInclusive(allInclusive: kotlin.collections.List<kotlin.String>) = apply { this.allInclusive = allInclusive }
+            fun allInclusive(
+                allInclusive: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.allInclusive = allInclusive }
 
             /**
              * @param amenityId The ID of the amenity you want to search for. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested amenity IDs. This is currently only capable of searching for property level amenities. Room and rate level amenities cannot be searched on.
              */
-            fun amenityId(amenityId: kotlin.collections.List<kotlin.String>) = apply { this.amenityId = amenityId }
+            fun amenityId(
+                amenityId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.amenityId = amenityId }
 
             /**
              * @param attributeId The ID of the attribute you want to search for. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested attribute IDs.
              */
-            fun attributeId(attributeId: kotlin.collections.List<kotlin.String>) = apply { this.attributeId = attributeId }
+            fun attributeId(
+                attributeId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.attributeId = attributeId }
 
             /**
              * @param brandId The ID of the brand you want to search for. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested brand IDs.
              */
-            fun brandId(brandId: kotlin.collections.List<kotlin.String>) = apply { this.brandId = brandId }
+            fun brandId(
+                brandId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.brandId = brandId }
 
             /**
              * @param businessModel Search for properties with the requested business model enabled. This parameter can be supplied multiple times with different values, which will return all properties that match any of the requested business models. The value must be lower case.   * `expedia_collect` - Return only properties where the payment is collected by Expedia.   * `property_collect` - Return only properties where the payment is collected at the property.
              */
-            fun businessModel(businessModel: kotlin.collections.List<kotlin.String>) = apply { this.businessModel = businessModel }
+            fun businessModel(
+                businessModel: kotlin.collections.List<
+                    GetPropertyContentOperationParams.BusinessModel
+                >
+            ) = apply { this.businessModel = businessModel }
 
             /**
              * @param categoryId Search to include properties that have the requested [category ID](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists). If this parameter is not supplied, all category IDs are included. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested category IDs.
              */
-            fun categoryId(categoryId: kotlin.collections.List<kotlin.String>) = apply { this.categoryId = categoryId }
+            fun categoryId(
+                categoryId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.categoryId = categoryId }
 
             /**
              * @param categoryIdExclude Search to exclude properties that do not have the requested [category ID](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists). If this parameter is not supplied, all category IDs are included. This parameter can be supplied multiple times with different values, which will exclude properties that match any of the requested category IDs.
              */
-            fun categoryIdExclude(categoryIdExclude: kotlin.collections.List<kotlin.String>) = apply { this.categoryIdExclude = categoryIdExclude }
+            fun categoryIdExclude(
+                categoryIdExclude: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.categoryIdExclude = categoryIdExclude }
 
             /**
              * @param chainId The ID of the chain you want to search for. These chain IDs can be positive and negative numbers. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested chain IDs.
              */
-            fun chainId(chainId: kotlin.collections.List<kotlin.String>) = apply { this.chainId = chainId }
+            fun chainId(
+                chainId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.chainId = chainId }
 
             /**
              * @param countryCode Search for properties with the requested country code, in ISO 3166-1 alpha-2 format. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested country codes.
              */
-            fun countryCode(countryCode: kotlin.collections.List<kotlin.String>) = apply { this.countryCode = countryCode }
+            fun countryCode(
+                countryCode: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.countryCode = countryCode }
 
             /**
              * @param dateAddedEnd Search for properties added on or before the requested UTC date, in ISO 8601 format (YYYY-MM-DD)
@@ -280,7 +393,11 @@ data class GetPropertyContentOperationParams
             /**
              * @param include Each time this parameter is specified will add to the list of fields and associated objects returned in the response. All values and field names are lower case. The values `property_ids` and `catalog` will continue to behave as specified below for backwards compatibility. All other top level field names will add the specified field to the list of fields returned in the response. See the response schema for a full list of top level field names. Additionally, the field `property_id` will always be returned regardless of what include values are passed.<br><br> Possible values:  * `property_ids` - ***DEPRECATED*** - Please use `property_id` which matches the response field name.  * `catalog` - Include all property catalog fields. See     [Property Catalog File endpoint](https://developers.expediagroup.com/docs/rapid/resources/rapid-api#get-/files/properties/catalog) for a list of fields.  * `property_id` - Passing in the value `property_id` and no other values will limit the response to only      `property_id`. Not necessary to include in combination with other field name values, as it will always      be returned.  * All field names found at the top level of the property content response are now valid values for     inclusion.
              */
-            fun include(include: kotlin.collections.List<kotlin.String>) = apply { this.include = include }
+            fun include(
+                include: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.include = include }
 
             /**
              * @param multiUnit Search for multi-unit properties. If this parameter is not supplied, both single-unit and multi-unit properties will be included.   * `true` - Include only properties that are multi-unit.   * `false` - Do not include properties that are multi-unit.
@@ -290,7 +407,11 @@ data class GetPropertyContentOperationParams
             /**
              * @param propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
              */
-            fun propertyId(propertyId: kotlin.collections.List<kotlin.String>) = apply { this.propertyId = propertyId }
+            fun propertyId(
+                propertyId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.propertyId = propertyId }
 
             /**
              * @param propertyRatingMax Search for properties with a property rating less than or equal to the requested rating. The highest property rating value is 5.0.
@@ -305,7 +426,11 @@ data class GetPropertyContentOperationParams
             /**
              * @param spokenLanguageId The id of the spoken language you want to search for. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested spoken languages. The language code as a subset of BCP47 format.
              */
-            fun spokenLanguageId(spokenLanguageId: kotlin.collections.List<kotlin.String>) = apply { this.spokenLanguageId = spokenLanguageId }
+            fun spokenLanguageId(
+                spokenLanguageId: kotlin.collections.List<
+                    kotlin.String
+                >
+            ) = apply { this.spokenLanguageId = spokenLanguageId }
 
             /**
              * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -372,37 +497,165 @@ data class GetPropertyContentOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                put("Accept", "application/json")
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                language?.also { put("language", listOf(language.toString())) }
-                supplySource?.also { put("supply_source", listOf(supplySource.toString())) }
-                allInclusive?.also { put("all_inclusive", allInclusive) }
-                amenityId?.also { put("amenity_id", amenityId) }
-                attributeId?.also { put("attribute_id", attributeId) }
-                brandId?.also { put("brand_id", brandId) }
-                businessModel?.also { put("business_model", businessModel) }
-                categoryId?.also { put("category_id", categoryId) }
-                categoryIdExclude?.also { put("category_id_exclude", categoryIdExclude) }
-                chainId?.also { put("chain_id", chainId) }
-                countryCode?.also { put("country_code", countryCode) }
-                dateAddedEnd?.also { put("date_added_end", listOf(dateAddedEnd.toString())) }
-                dateAddedStart?.also { put("date_added_start", listOf(dateAddedStart.toString())) }
-                dateUpdatedEnd?.also { put("date_updated_end", listOf(dateUpdatedEnd.toString())) }
-                dateUpdatedStart?.also { put("date_updated_start", listOf(dateUpdatedStart.toString())) }
-                include?.also { put("include", include) }
-                multiUnit?.also { put("multi_unit", listOf(multiUnit.toString())) }
-                propertyId?.also { put("property_id", propertyId) }
-                propertyRatingMax?.also { put("property_rating_max", listOf(propertyRatingMax.toString())) }
-                propertyRatingMin?.also { put("property_rating_min", listOf(propertyRatingMin.toString())) }
-                spokenLanguageId?.also { put("spoken_language_id", spokenLanguageId) }
-                billingTerms?.also { put("billing_terms", listOf(billingTerms.toString())) }
-                partnerPointOfSale?.also { put("partner_point_of_sale", listOf(partnerPointOfSale.toString())) }
-                paymentTerms?.also { put("payment_terms", listOf(paymentTerms.toString())) }
-                platformName?.also { put("platform_name", listOf(platformName.toString())) }
+                language?.also {
+                    put(
+                        "language",
+                        listOf(language)
+                    )
+                }
+                supplySource?.also {
+                    put(
+                        "supply_source",
+                        listOf(supplySource)
+                    )
+                }
+                allInclusive?.also {
+                    put(
+                        "all_inclusive",
+                        allInclusive
+                    )
+                }
+                amenityId?.also {
+                    put(
+                        "amenity_id",
+                        amenityId
+                    )
+                }
+                attributeId?.also {
+                    put(
+                        "attribute_id",
+                        attributeId
+                    )
+                }
+                brandId?.also {
+                    put(
+                        "brand_id",
+                        brandId
+                    )
+                }
+                businessModel?.also {
+                    put(
+                        "business_model",
+                        businessModel.map { it.value }
+                    )
+                }
+                categoryId?.also {
+                    put(
+                        "category_id",
+                        categoryId
+                    )
+                }
+                categoryIdExclude?.also {
+                    put(
+                        "category_id_exclude",
+                        categoryIdExclude
+                    )
+                }
+                chainId?.also {
+                    put(
+                        "chain_id",
+                        chainId
+                    )
+                }
+                countryCode?.also {
+                    put(
+                        "country_code",
+                        countryCode
+                    )
+                }
+                dateAddedEnd?.also {
+                    put(
+                        "date_added_end",
+                        listOf(dateAddedEnd)
+                    )
+                }
+                dateAddedStart?.also {
+                    put(
+                        "date_added_start",
+                        listOf(dateAddedStart)
+                    )
+                }
+                dateUpdatedEnd?.also {
+                    put(
+                        "date_updated_end",
+                        listOf(dateUpdatedEnd)
+                    )
+                }
+                dateUpdatedStart?.also {
+                    put(
+                        "date_updated_start",
+                        listOf(dateUpdatedStart)
+                    )
+                }
+                include?.also {
+                    put(
+                        "include",
+                        include
+                    )
+                }
+                multiUnit?.also {
+                    put(
+                        "multi_unit",
+                        listOf(multiUnit.toString())
+                    )
+                }
+                propertyId?.also {
+                    put(
+                        "property_id",
+                        propertyId
+                    )
+                }
+                propertyRatingMax?.also {
+                    put(
+                        "property_rating_max",
+                        listOf(propertyRatingMax)
+                    )
+                }
+                propertyRatingMin?.also {
+                    put(
+                        "property_rating_min",
+                        listOf(propertyRatingMin)
+                    )
+                }
+                spokenLanguageId?.also {
+                    put(
+                        "spoken_language_id",
+                        spokenLanguageId
+                    )
+                }
+                billingTerms?.also {
+                    put(
+                        "billing_terms",
+                        listOf(billingTerms)
+                    )
+                }
+                partnerPointOfSale?.also {
+                    put(
+                        "partner_point_of_sale",
+                        listOf(partnerPointOfSale)
+                    )
+                }
+                paymentTerms?.also {
+                    put(
+                        "payment_terms",
+                        listOf(paymentTerms)
+                    )
+                }
+                platformName?.also {
+                    put(
+                        "platform_name",
+                        listOf(platformName)
+                    )
+                }
             }
         }
 

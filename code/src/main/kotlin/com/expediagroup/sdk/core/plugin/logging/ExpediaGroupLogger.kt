@@ -21,6 +21,8 @@ import com.expediagroup.sdk.core.constant.LoggingMessage.LOGGING_PREFIX
 import org.slf4j.Logger
 
 internal class ExpediaGroupLogger(private val logger: Logger, private val client: Client? = null) : Logger by logger {
+    private val mask = LogMasker(getMaskedBodyFieldFilters())
+
     override fun info(msg: String) {
         if (logger.isInfoEnabled) {
             logger.info(decorate(msg))
@@ -39,7 +41,12 @@ internal class ExpediaGroupLogger(private val logger: Logger, private val client
         }
     }
 
-    private fun decorate(msg: String): String = "$LOGGING_PREFIX ${mask(msg, getMaskedBodyFields())}"
+    private fun decorate(msg: String): String = "$LOGGING_PREFIX ${mask(msg)}"
 
     private fun getMaskedBodyFields(): Set<String> = client?.getLoggingMaskedFieldsProvider()?.getMaskedBodyFields() ?: LogMaskingFields.DEFAULT_MASKED_BODY_FIELDS
+
+    private fun getMaskedBodyFieldFilters(): Iterable<ExpediaGroupJsonFieldFilter> =
+        listOf(
+            ExpediaGroupJsonFieldFilter(getMaskedBodyFields().toTypedArray())
+        )
 }

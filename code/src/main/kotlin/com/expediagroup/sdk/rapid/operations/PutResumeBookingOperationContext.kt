@@ -22,8 +22,10 @@ package com.expediagroup.sdk.rapid.operations
  */
 data class PutResumeBookingOperationContext(
     val customerIp: kotlin.String,
-    val customerSessionId: kotlin.String? = null,
-    val test: kotlin.String? = null
+    val customerSessionId: kotlin.String? =
+        null,
+    val test: PutResumeBookingOperationParams.Test? =
+        null
 ) {
     companion object {
         @JvmStatic
@@ -33,7 +35,7 @@ data class PutResumeBookingOperationContext(
     class Builder(
         private var customerIp: kotlin.String? = null,
         private var customerSessionId: kotlin.String? = null,
-        private var test: kotlin.String? = null
+        private var test: PutResumeBookingOperationParams.Test? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -48,7 +50,7 @@ data class PutResumeBookingOperationContext(
         /**
          * @param test The resume call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test held booking. * `service_unavailable` - Returns the HTTP 202 response caused by partial service unavailablity. * `internal_server_error`
          */
-        fun test(test: kotlin.String) = apply { this.test = test }
+        fun test(test: PutResumeBookingOperationParams.Test) = apply { this.test = test }
 
         fun build(): PutResumeBookingOperationContext {
             validateNullity()
@@ -69,9 +71,15 @@ data class PutResumeBookingOperationContext(
 
     fun getHeaders(): Map<String, String> {
         return buildMap {
-            customerIp.also { put("Customer-Ip", customerIp) }
-            customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-            test?.also { put("Test", test) }
+            customerIp.also {
+                put("Customer-Ip", customerIp)
+            }
+            customerSessionId?.also {
+                put("Customer-Session-Id", customerSessionId)
+            }
+            test?.also {
+                put("Test", test.value)
+            }
         }
     }
 }

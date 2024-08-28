@@ -43,6 +43,7 @@ import javax.validation.constraints.Size
  * A map of links, including links to resume or cancel a held booking. This is only included for held bookings.
  * @param resume
  * @param cancel
+ * @param nonVatExpediaInvoice
  */
 data class ItineraryLinks(
     @JsonProperty("resume")
@@ -50,7 +51,10 @@ data class ItineraryLinks(
     val resume: Link? = null,
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: Link? = null
+    val cancel: Link? = null,
+    @JsonProperty("non_vat_expedia_invoice")
+    @field:Valid
+    val nonVatExpediaInvoice: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -59,16 +63,20 @@ data class ItineraryLinks(
 
     class Builder(
         private var resume: Link? = null,
-        private var cancel: Link? = null
+        private var cancel: Link? = null,
+        private var nonVatExpediaInvoice: Link? = null
     ) {
         fun resume(resume: Link?) = apply { this.resume = resume }
 
         fun cancel(cancel: Link?) = apply { this.cancel = cancel }
 
+        fun nonVatExpediaInvoice(nonVatExpediaInvoice: Link?) = apply { this.nonVatExpediaInvoice = nonVatExpediaInvoice }
+
         fun build(): ItineraryLinks {
             return ItineraryLinks(
                 resume = resume,
-                cancel = cancel
+                cancel = cancel,
+                nonVatExpediaInvoice = nonVatExpediaInvoice
             )
         }
     }
