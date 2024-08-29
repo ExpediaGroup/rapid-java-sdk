@@ -79,7 +79,7 @@
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
-        <kotlin.version>2.0.0</kotlin.version>
+        <kotlin.version>2.0.20</kotlin.version>
         <kotlinx.coroutines.version>1.8.1</kotlinx.coroutines.version>
         <ktor.version>2.3.12</ktor.version>
         <kotlin-atomic.version>0.25.0</kotlin-atomic.version>
