@@ -82,7 +82,7 @@ jobs:
           git commit -m "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
           commit-message: "chore: publishing docs for version ${{ env.NEW_DOCS_VERSION }}"
