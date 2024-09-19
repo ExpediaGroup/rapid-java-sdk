@@ -55,7 +55,7 @@ class GetPaymentOptionsOperation private constructor(
         override fun pathPattern(): String {
             val paramsMap =
                 buildMap {
-                    put("property_id", "[a-z0-9]+")
+                    put("property_id", "[a-z0-9\\-]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
             return substitutor.replace("/v3/properties/{property_id}/payment-options")

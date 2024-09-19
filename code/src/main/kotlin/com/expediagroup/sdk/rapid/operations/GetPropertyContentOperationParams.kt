@@ -16,10 +16,12 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
- * @property language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/) <br> Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+ * @property language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
  * @property supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
  * @property allInclusive Search to include properties that have the requested `all_inclusive` values equal to true. If this parameter is not supplied, all `all_inclusive` scenarios are included. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested scenarios.   * `all_rate_plans` - Return properties where `all_inclusive.all_rate_plans` is true.   * `some_rate_plans` = Return properties where `all_inclusive.some_rate_plans` is true.
  * @property amenityId The ID of the amenity you want to search for. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested amenity IDs. This is currently only capable of searching for property level amenities. Room and rate level amenities cannot be searched on.
@@ -45,6 +47,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
  * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
  */
+@JsonDeserialize(builder = GetPropertyContentOperationParams.Builder::class)
 data class GetPropertyContentOperationParams
     internal constructor(
         val customerSessionId: kotlin.String? = null,
@@ -223,56 +226,56 @@ data class GetPropertyContentOperationParams
         }
 
         class Builder(
-            private var customerSessionId: kotlin.String? = null,
-            private var language: kotlin.String? = null,
-            private var supplySource: kotlin.String? = null,
-            private var allInclusive: kotlin.collections.List<
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("language") private var language: kotlin.String? = null,
+            @JsonProperty("supply_source") private var supplySource: kotlin.String? = null,
+            @JsonProperty("all_inclusive") private var allInclusive: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var amenityId: kotlin.collections.List<
+            @JsonProperty("amenity_id") private var amenityId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var attributeId: kotlin.collections.List<
+            @JsonProperty("attribute_id") private var attributeId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var brandId: kotlin.collections.List<
+            @JsonProperty("brand_id") private var brandId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var businessModel: kotlin.collections.List<
+            @JsonProperty("business_model") private var businessModel: kotlin.collections.List<
                 GetPropertyContentOperationParams.BusinessModel
             >? = null,
-            private var categoryId: kotlin.collections.List<
+            @JsonProperty("category_id") private var categoryId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var categoryIdExclude: kotlin.collections.List<
+            @JsonProperty("category_id_exclude") private var categoryIdExclude: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var chainId: kotlin.collections.List<
+            @JsonProperty("chain_id") private var chainId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var countryCode: kotlin.collections.List<
+            @JsonProperty("country_code") private var countryCode: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var dateAddedEnd: kotlin.String? = null,
-            private var dateAddedStart: kotlin.String? = null,
-            private var dateUpdatedEnd: kotlin.String? = null,
-            private var dateUpdatedStart: kotlin.String? = null,
-            private var include: kotlin.collections.List<
+            @JsonProperty("date_added_end") private var dateAddedEnd: kotlin.String? = null,
+            @JsonProperty("date_added_start") private var dateAddedStart: kotlin.String? = null,
+            @JsonProperty("date_updated_end") private var dateUpdatedEnd: kotlin.String? = null,
+            @JsonProperty("date_updated_start") private var dateUpdatedStart: kotlin.String? = null,
+            @JsonProperty("include") private var include: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var multiUnit: kotlin.Boolean? = null,
-            private var propertyId: kotlin.collections.List<
+            @JsonProperty("multi_unit") private var multiUnit: kotlin.Boolean? = null,
+            @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var propertyRatingMax: kotlin.String? = null,
-            private var propertyRatingMin: kotlin.String? = null,
-            private var spokenLanguageId: kotlin.collections.List<
+            @JsonProperty("property_rating_max") private var propertyRatingMax: kotlin.String? = null,
+            @JsonProperty("property_rating_min") private var propertyRatingMin: kotlin.String? = null,
+            @JsonProperty("spoken_language_id") private var spokenLanguageId: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var billingTerms: kotlin.String? = null,
-            private var partnerPointOfSale: kotlin.String? = null,
-            private var paymentTerms: kotlin.String? = null,
-            private var platformName: kotlin.String? = null
+            @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
+            @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
+            @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
+            @JsonProperty("platform_name") private var platformName: kotlin.String? = null
         ) {
             /**
              * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -280,7 +283,7 @@ data class GetPropertyContentOperationParams
             fun customerSessionId(customerSessionId: kotlin.String) = apply { this.customerSessionId = customerSessionId }
 
             /**
-             * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/) <br> Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+             * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
              */
             fun language(language: kotlin.String) = apply { this.language = language }
 

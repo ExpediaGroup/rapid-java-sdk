@@ -55,9 +55,9 @@ class PriceCheckOperation private constructor(
         override fun pathPattern(): String {
             val paramsMap =
                 buildMap {
-                    put("property_id", "[a-z0-9]+")
-                    put("room_id", "[a-z0-9]+")
-                    put("rate_id", "[a-z0-9]+")
+                    put("property_id", "[a-z0-9\\-]+")
+                    put("room_id", "[a-z0-9\\-]+")
+                    put("rate_id", "[a-z0-9\\-]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
             return substitutor.replace("/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}")
