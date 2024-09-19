@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -38,10 +40,11 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.
  * @property travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`
  * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
- * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
  * @property partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+ * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
  * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
  */
+@JsonDeserialize(builder = GetAvailabilityOperationParams.Builder::class)
 data class GetAvailabilityOperationParams(
     val customerIp: kotlin.String? =
         null,
@@ -87,9 +90,9 @@ data class GetAvailabilityOperationParams(
         null,
     val billingTerms: kotlin.String? =
         null,
-    val paymentTerms: kotlin.String? =
-        null,
     val partnerPointOfSale: kotlin.String? =
+        null,
+    val paymentTerms: kotlin.String? =
         null,
     val platformName: kotlin.String? =
         null
@@ -147,43 +150,43 @@ data class GetAvailabilityOperationParams(
     }
 
     class Builder(
-        private var customerIp: kotlin.String? = null,
-        private var customerSessionId: kotlin.String? = null,
-        private var test: GetAvailabilityOperationParams.Test? = null,
-        private var checkin: kotlin.String? = null,
-        private var checkout: kotlin.String? = null,
-        private var currency: kotlin.String? = null,
-        private var countryCode: kotlin.String? = null,
-        private var language: kotlin.String? = null,
-        private var occupancy: kotlin.collections.List<
+        @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+        @JsonProperty("Test") private var test: GetAvailabilityOperationParams.Test? = null,
+        @JsonProperty("checkin") private var checkin: kotlin.String? = null,
+        @JsonProperty("checkout") private var checkout: kotlin.String? = null,
+        @JsonProperty("currency") private var currency: kotlin.String? = null,
+        @JsonProperty("country_code") private var countryCode: kotlin.String? = null,
+        @JsonProperty("language") private var language: kotlin.String? = null,
+        @JsonProperty("occupancy") private var occupancy: kotlin.collections.List<
             kotlin.String
         >? = null,
-        private var propertyId: kotlin.collections.List<
+        @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
             kotlin.String
         >? = null,
-        private var ratePlanCount: java.math.BigDecimal? = null,
-        private var salesChannel: kotlin.String? = null,
-        private var salesEnvironment: kotlin.String? = null,
-        private var amenityCategory: kotlin.collections.List<
+        @JsonProperty("rate_plan_count") private var ratePlanCount: java.math.BigDecimal? = null,
+        @JsonProperty("sales_channel") private var salesChannel: kotlin.String? = null,
+        @JsonProperty("sales_environment") private var salesEnvironment: kotlin.String? = null,
+        @JsonProperty("amenity_category") private var amenityCategory: kotlin.collections.List<
             kotlin.String
         >? = null,
-        private var exclusion: kotlin.collections.List<
+        @JsonProperty("exclusion") private var exclusion: kotlin.collections.List<
             GetAvailabilityOperationParams.Exclusion
         >? = null,
-        private var filter: kotlin.collections.List<
+        @JsonProperty("filter") private var filter: kotlin.collections.List<
             GetAvailabilityOperationParams.Filter
         >? = null,
-        private var include: kotlin.collections.List<
+        @JsonProperty("include") private var include: kotlin.collections.List<
             GetAvailabilityOperationParams.Include
         >? = null,
-        private var rateOption: kotlin.collections.List<
+        @JsonProperty("rate_option") private var rateOption: kotlin.collections.List<
             GetAvailabilityOperationParams.RateOption
         >? = null,
-        private var travelPurpose: GetAvailabilityOperationParams.TravelPurpose? = null,
-        private var billingTerms: kotlin.String? = null,
-        private var paymentTerms: kotlin.String? = null,
-        private var partnerPointOfSale: kotlin.String? = null,
-        private var platformName: kotlin.String? = null
+        @JsonProperty("travel_purpose") private var travelPurpose: GetAvailabilityOperationParams.TravelPurpose? = null,
+        @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
+        @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
+        @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -314,14 +317,14 @@ data class GetAvailabilityOperationParams(
         fun billingTerms(billingTerms: kotlin.String) = apply { this.billingTerms = billingTerms }
 
         /**
-         * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
-         */
-        fun paymentTerms(paymentTerms: kotlin.String) = apply { this.paymentTerms = paymentTerms }
-
-        /**
          * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
          */
         fun partnerPointOfSale(partnerPointOfSale: kotlin.String) = apply { this.partnerPointOfSale = partnerPointOfSale }
+
+        /**
+         * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
+         */
+        fun paymentTerms(paymentTerms: kotlin.String) = apply { this.paymentTerms = paymentTerms }
 
         /**
          * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
@@ -352,8 +355,8 @@ data class GetAvailabilityOperationParams(
                 rateOption = rateOption,
                 travelPurpose = travelPurpose,
                 billingTerms = billingTerms,
-                paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
                 platformName = platformName
             )
         }
@@ -511,16 +514,16 @@ data class GetAvailabilityOperationParams(
                     listOf(billingTerms)
                 )
             }
-            paymentTerms?.also {
-                put(
-                    "payment_terms",
-                    listOf(paymentTerms)
-                )
-            }
             partnerPointOfSale?.also {
                 put(
                     "partner_point_of_sale",
                     listOf(partnerPointOfSale)
+                )
+            }
+            paymentTerms?.also {
+                put(
+                    "payment_terms",
+                    listOf(paymentTerms)
                 )
             }
             platformName?.also {

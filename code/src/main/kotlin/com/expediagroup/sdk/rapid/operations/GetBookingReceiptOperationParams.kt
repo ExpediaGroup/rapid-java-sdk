@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
@@ -25,6 +27,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  * @property branding This parameter specifies which branding should be present on the generated PDF. Default behavior will be to provide the booking receipt with `expedia_group` branding. Some partner configurations may change the default to unbranded.
  */
+@JsonDeserialize(builder = GetBookingReceiptOperationParams.Builder::class)
 data class GetBookingReceiptOperationParams(
     val itineraryId: kotlin.String,
     val customerIp: kotlin.String,
@@ -58,12 +61,12 @@ data class GetBookingReceiptOperationParams(
     }
 
     class Builder(
-        private var itineraryId: kotlin.String? = null,
-        private var customerIp: kotlin.String? = null,
-        private var customerSessionId: kotlin.String? = null,
-        private var test: GetBookingReceiptOperationParams.Test? = null,
-        private var token: kotlin.String? = null,
-        private var branding: GetBookingReceiptOperationParams.Branding? = null
+        @JsonProperty("itinerary_id") private var itineraryId: kotlin.String? = null,
+        @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+        @JsonProperty("Test") private var test: GetBookingReceiptOperationParams.Test? = null,
+        @JsonProperty("token") private var token: kotlin.String? = null,
+        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null
     ) {
         /**
          * @param itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
