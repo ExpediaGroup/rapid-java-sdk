@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -23,6 +25,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property test The book call has a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `internal_server_error`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  */
+@JsonDeserialize(builder = PostPaymentSessionsOperationParams.Builder::class)
 data class PostPaymentSessionsOperationParams
     internal constructor(
         val customerIp: kotlin.String? = null,
@@ -68,10 +71,10 @@ data class PostPaymentSessionsOperationParams
         }
 
         class Builder(
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: PostPaymentSessionsOperationParams.Test? = null,
-            private var token: kotlin.String? = null
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: PostPaymentSessionsOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
