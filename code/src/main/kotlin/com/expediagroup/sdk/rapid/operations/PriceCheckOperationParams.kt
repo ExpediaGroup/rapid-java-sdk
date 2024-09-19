@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -26,6 +28,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property test Price check calls have a test header that can be used to return set responses with the following keywords:   * `available`   * `price_changed`   * `sold_out`   * `service_unavailable`   * `unknown_internal_error`
  * @property token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
  */
+@JsonDeserialize(builder = PriceCheckOperationParams.Builder::class)
 data class PriceCheckOperationParams
     internal constructor(
         val propertyId: kotlin.String? = null,
@@ -83,13 +86,13 @@ data class PriceCheckOperationParams
         }
 
         class Builder(
-            private var propertyId: kotlin.String? = null,
-            private var roomId: kotlin.String? = null,
-            private var rateId: kotlin.String? = null,
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: PriceCheckOperationParams.Test? = null,
-            private var token: kotlin.String? = null
+            @JsonProperty("property_id") private var propertyId: kotlin.String? = null,
+            @JsonProperty("room_id") private var roomId: kotlin.String? = null,
+            @JsonProperty("rate_id") private var rateId: kotlin.String? = null,
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: PriceCheckOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>

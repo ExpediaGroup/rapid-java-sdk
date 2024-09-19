@@ -15,11 +15,15 @@
  */
 package com.expediagroup.sdk.rapid.operations
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  * @property test The booking receipt call has a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `internal_server_error`
  */
+@JsonDeserialize(builder = GetBookingReceiptOperationParams.Builder::class)
 data class GetBookingReceiptOperationContext(
     val customerIp: kotlin.String,
     val customerSessionId: kotlin.String? =
@@ -33,9 +37,9 @@ data class GetBookingReceiptOperationContext(
     }
 
     class Builder(
-        private var customerIp: kotlin.String? = null,
-        private var customerSessionId: kotlin.String? = null,
-        private var test: GetBookingReceiptOperationParams.Test? = null
+        @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+        @JsonProperty("Test") private var test: GetBookingReceiptOperationParams.Test? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.

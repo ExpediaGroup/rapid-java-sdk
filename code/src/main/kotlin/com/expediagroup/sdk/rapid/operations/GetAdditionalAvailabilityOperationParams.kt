@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -33,6 +35,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property salesChannel Provide the sales channel if you wish to override the sales_channel provided in the previous call. EPS dynamically provides the best content for optimal conversion on each sales channel.<br> Note: Must specify this value for hard change requests.<br> * `website` - Standard website accessed from the customer's computer * `agent_tool` - Your own agent tool used by your call center or retail store agent * `mobile_app` - An application installed on a phone or tablet device * `mobile_web` - A web browser application on a phone or tablet device * `meta` - Rates will be passed to and displayed on a 3rd party comparison website * `cache` - Rates will be used to populate a local cache
  * @property currency Determines the returned currency type throughout the response <br> Note: This parameter is only valid for hard change requests and is ignored in all other cases
  */
+@JsonDeserialize(builder = GetAdditionalAvailabilityOperationParams.Builder::class)
 data class GetAdditionalAvailabilityOperationParams
     internal constructor(
         val propertyId: kotlin.String? = null,
@@ -169,30 +172,30 @@ data class GetAdditionalAvailabilityOperationParams
         }
 
         class Builder(
-            private var propertyId: kotlin.String? = null,
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: GetAdditionalAvailabilityOperationParams.Test? = null,
-            private var token: kotlin.String? = null,
-            private var checkin: kotlin.String? = null,
-            private var checkout: kotlin.String? = null,
-            private var exclusion: kotlin.collections.List<
+            @JsonProperty("property_id") private var propertyId: kotlin.String? = null,
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: GetAdditionalAvailabilityOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null,
+            @JsonProperty("checkin") private var checkin: kotlin.String? = null,
+            @JsonProperty("checkout") private var checkout: kotlin.String? = null,
+            @JsonProperty("exclusion") private var exclusion: kotlin.collections.List<
                 GetAdditionalAvailabilityOperationParams.Exclusion
             >? = null,
-            private var filter: kotlin.collections.List<
+            @JsonProperty("filter") private var filter: kotlin.collections.List<
                 GetAdditionalAvailabilityOperationParams.Filter
             >? = null,
-            private var include: kotlin.collections.List<
+            @JsonProperty("include") private var include: kotlin.collections.List<
                 GetAdditionalAvailabilityOperationParams.Include
             >? = null,
-            private var occupancy: kotlin.collections.List<
+            @JsonProperty("occupancy") private var occupancy: kotlin.collections.List<
                 kotlin.String
             >? = null,
-            private var rateOption: kotlin.collections.List<
+            @JsonProperty("rate_option") private var rateOption: kotlin.collections.List<
                 GetAdditionalAvailabilityOperationParams.RateOption
             >? = null,
-            private var salesChannel: kotlin.String? = null,
-            private var currency: kotlin.String? = null
+            @JsonProperty("sales_channel") private var salesChannel: kotlin.String? = null,
+            @JsonProperty("currency") private var currency: kotlin.String? = null
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>

@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -25,6 +27,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property test The cancel call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `unknown_internal_error` * `post_stay_cancel`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  */
+@JsonDeserialize(builder = DeleteRoomOperationParams.Builder::class)
 data class DeleteRoomOperationParams
     internal constructor(
         val itineraryId: kotlin.String? = null,
@@ -77,12 +80,12 @@ data class DeleteRoomOperationParams
         }
 
         class Builder(
-            private var itineraryId: kotlin.String? = null,
-            private var roomId: kotlin.String? = null,
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: DeleteRoomOperationParams.Test? = null,
-            private var token: kotlin.String? = null
+            @JsonProperty("itinerary_id") private var itineraryId: kotlin.String? = null,
+            @JsonProperty("room_id") private var roomId: kotlin.String? = null,
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: DeleteRoomOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
