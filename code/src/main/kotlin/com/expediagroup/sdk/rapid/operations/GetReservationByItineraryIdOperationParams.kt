@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -24,8 +26,9 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  * @property email Email associated with the booking. Special characters in the local part or domain should be encoded. (Email is required if the token is not provided the request) <br>
- * @property include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary
+ * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
  */
+@JsonDeserialize(builder = GetReservationByItineraryIdOperationParams.Builder::class)
 data class GetReservationByItineraryIdOperationParams
     internal constructor(
         val itineraryId: kotlin.String? = null,
@@ -93,13 +96,13 @@ data class GetReservationByItineraryIdOperationParams
         }
 
         class Builder(
-            private var itineraryId: kotlin.String? = null,
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: GetReservationByItineraryIdOperationParams.Test? = null,
-            private var token: kotlin.String? = null,
-            private var email: kotlin.String? = null,
-            private var include: kotlin.collections.List<
+            @JsonProperty("itinerary_id") private var itineraryId: kotlin.String? = null,
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: GetReservationByItineraryIdOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null,
+            @JsonProperty("email") private var email: kotlin.String? = null,
+            @JsonProperty("include") private var include: kotlin.collections.List<
                 GetReservationByItineraryIdOperationParams.Include
             >? = null
         ) {
@@ -134,7 +137,7 @@ data class GetReservationByItineraryIdOperationParams
             fun email(email: kotlin.String) = apply { this.email = email }
 
             /**
-             * @param include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary
+             * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
              */
             fun include(
                 include: kotlin.collections.List<

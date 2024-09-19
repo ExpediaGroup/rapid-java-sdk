@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -23,6 +25,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
  * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
  */
+@JsonDeserialize(builder = RequestTestNotificationOperationParams.Builder::class)
 data class RequestTestNotificationOperationParams(
     val billingTerms: kotlin.String? =
         null,
@@ -40,10 +43,10 @@ data class RequestTestNotificationOperationParams(
     }
 
     class Builder(
-        private var billingTerms: kotlin.String? = null,
-        private var partnerPointOfSale: kotlin.String? = null,
-        private var paymentTerms: kotlin.String? = null,
-        private var platformName: kotlin.String? = null
+        @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
+        @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
+        @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
     ) {
         /**
          * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
