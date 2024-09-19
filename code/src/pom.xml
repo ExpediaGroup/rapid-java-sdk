@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>5.0.0</version>
+    <version>5.0.1</version>
     <name>EG rapid-sdk for Java</name>
-    <description>EG rapid-sdk v5.0.0</description>
+    <description>EG rapid-sdk v5.0.1</description>
     <url>https://github.com/ExpediaGroup/test-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
