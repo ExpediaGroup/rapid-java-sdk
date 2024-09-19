@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -23,6 +25,7 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  */
+@JsonDeserialize(builder = GetPaymentOptionsOperationParams.Builder::class)
 data class GetPaymentOptionsOperationParams
     internal constructor(
         val propertyId: kotlin.String? = null,
@@ -59,10 +62,10 @@ data class GetPaymentOptionsOperationParams
         )
 
         class Builder(
-            private var propertyId: kotlin.String? = null,
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var token: kotlin.String? = null
+            @JsonProperty("property_id") private var propertyId: kotlin.String? = null,
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>

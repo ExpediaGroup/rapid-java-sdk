@@ -15,9 +15,13 @@
  */
 package com.expediagroup.sdk.rapid.operations
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
 /**
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  */
+@JsonDeserialize(builder = GetChainReferenceOperationParams.Builder::class)
 data class GetChainReferenceOperationContext(
     val customerSessionId: kotlin.String? =
         null
@@ -28,7 +32,7 @@ data class GetChainReferenceOperationContext(
     }
 
     class Builder(
-        private var customerSessionId: kotlin.String? = null
+        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null
     ) {
         /**
          * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
