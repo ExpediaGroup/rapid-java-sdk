@@ -77,7 +77,7 @@
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
-        <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
+        <maven.licence.plugin.version>4.6</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
         <kotlin.version>2.0.20</kotlin.version>
         <kotlinx.coroutines.version>1.9.0</kotlinx.coroutines.version>
