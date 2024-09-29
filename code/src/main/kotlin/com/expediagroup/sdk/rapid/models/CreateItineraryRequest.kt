@@ -30,6 +30,7 @@
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.rapid.models.CreateItineraryRequestInvoicing
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequestRoom
 import com.expediagroup.sdk.rapid.models.PaymentRequest
 import com.expediagroup.sdk.rapid.models.PhoneRequest
@@ -52,6 +53,7 @@ import javax.validation.constraints.Size
  * @param affiliateMetadata Field that stores up to 256 characters of additional metadata with the itinerary. Will be returned on all retrieve responses for this itinerary. The data must be in the format 'key1:value|key2:value|key3:value'. Other Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
  * @param taxRegistrationNumber The customer's taxpayer identification number that is provided by the government to nationals or resident aliens. This number should be collected from individuals that pay taxes or participate in activities that provide revenue for one or more tax types. Note: This value is only needed from Brazilian and Indian customers.
  * @param travelerHandlingInstructions Custom traveler handling instructions for the hotel. Do not include PCI sensitive data, such as credit card numbers, in this field.
+ * @param invoicing
  */
 data class CreateItineraryRequest(
     // Email address for the customer. Must adhere to standard RFC 822 email format. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
@@ -63,7 +65,10 @@ data class CreateItineraryRequest(
     val phone: PhoneRequest,
     @JsonProperty("rooms")
     @field:Valid
-    val rooms: kotlin.collections.List<CreateItineraryRequestRoom>,
+    val rooms: kotlin.collections
+        .List<
+            CreateItineraryRequestRoom
+        >,
     // Your unique reference value. This field supports from 3 to a maximum of 28 characters and is required to be unique (if provided). Entering special characters (\"<\", \">\", \"(\", \")\", and \"&\") in this field will result in the request being rejected.
     @JsonProperty("affiliate_reference_id")
     @field:Valid
@@ -87,7 +92,10 @@ data class CreateItineraryRequest(
     // Custom traveler handling instructions for the hotel. Do not include PCI sensitive data, such as credit card numbers, in this field.
     @JsonProperty("traveler_handling_instructions")
     @field:Valid
-    val travelerHandlingInstructions: kotlin.String? = null
+    val travelerHandlingInstructions: kotlin.String? = null,
+    @JsonProperty("invoicing")
+    @field:Valid
+    val invoicing: CreateItineraryRequestInvoicing? = null
 ) {
     companion object {
         @JvmStatic
@@ -103,7 +111,8 @@ data class CreateItineraryRequest(
         private var payments: kotlin.collections.List<PaymentRequest>? = null,
         private var affiliateMetadata: kotlin.String? = null,
         private var taxRegistrationNumber: kotlin.String? = null,
-        private var travelerHandlingInstructions: kotlin.String? = null
+        private var travelerHandlingInstructions: kotlin.String? = null,
+        private var invoicing: CreateItineraryRequestInvoicing? = null
     ) {
         fun email(email: kotlin.String) = apply { this.email = email }
 
@@ -123,6 +132,8 @@ data class CreateItineraryRequest(
 
         fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) = apply { this.travelerHandlingInstructions = travelerHandlingInstructions }
 
+        fun invoicing(invoicing: CreateItineraryRequestInvoicing?) = apply { this.invoicing = invoicing }
+
         fun build(): CreateItineraryRequest {
             // Check required params
             validateNullity()
@@ -135,7 +146,8 @@ data class CreateItineraryRequest(
                 payments = payments,
                 affiliateMetadata = affiliateMetadata,
                 taxRegistrationNumber = taxRegistrationNumber,
-                travelerHandlingInstructions = travelerHandlingInstructions
+                travelerHandlingInstructions = travelerHandlingInstructions,
+                invoicing = invoicing
             )
         }
 

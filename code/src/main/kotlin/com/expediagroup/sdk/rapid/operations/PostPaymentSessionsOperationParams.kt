@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -23,16 +25,13 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property test The book call has a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `internal_server_error`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  */
+@JsonDeserialize(builder = PostPaymentSessionsOperationParams.Builder::class)
 data class PostPaymentSessionsOperationParams
     internal constructor(
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val test: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val test: PostPaymentSessionsOperationParams.Test? = null,
+        val token: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -43,8 +42,10 @@ data class PostPaymentSessionsOperationParams
 
         constructor(
             customerIp: kotlin.String,
-            customerSessionId: kotlin.String? = null,
-            test: kotlin.String? = null,
+            customerSessionId: kotlin.String? =
+                null,
+            test: PostPaymentSessionsOperationParams.Test? =
+                null,
             token: kotlin.String
         ) : this(
             customerIp = customerIp,
@@ -61,11 +62,19 @@ data class PostPaymentSessionsOperationParams
             dummy = Unit
         )
 
+        enum class Test(
+            val value: kotlin.String
+        ) {
+            STANDARD("standard"),
+            SERVICE_UNAVAILABLE("service_unavailable"),
+            INTERNAL_SERVER_ERROR("internal_server_error")
+        }
+
         class Builder(
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: kotlin.String? = null,
-            private var token: kotlin.String? = null
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: PostPaymentSessionsOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -80,7 +89,7 @@ data class PostPaymentSessionsOperationParams
             /**
              * @param test The book call has a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `internal_server_error`
              */
-            fun test(test: kotlin.String) = apply { this.test = test }
+            fun test(test: PostPaymentSessionsOperationParams.Test) = apply { this.test = test }
 
             /**
              * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -110,15 +119,26 @@ data class PostPaymentSessionsOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-                test?.also { put("Test", test) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                test?.also {
+                    put("Test", test.value)
+                }
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
             }
         }
 

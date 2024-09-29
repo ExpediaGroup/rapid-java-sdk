@@ -75,7 +75,10 @@ data class PaymentSessionsRequest(
     val customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails,
     @JsonProperty("payments")
     @field:Valid
-    val payments: kotlin.collections.List<PaymentRequest>
+    val payments: kotlin.collections
+        .List<
+            PaymentRequest
+        >
 ) {
     companion object {
         @JvmStatic

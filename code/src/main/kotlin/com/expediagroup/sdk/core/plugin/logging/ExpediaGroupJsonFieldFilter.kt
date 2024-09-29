@@ -16,17 +16,8 @@
 package com.expediagroup.sdk.core.plugin.logging
 
 import com.ebay.ejmask.core.BaseFilter
-import com.ebay.ejmask.core.EJMask
-import com.ebay.ejmask.core.EJMaskInitializer
-import com.ebay.ejmask.core.util.LoggerUtil
 
-internal class LogMasker(
-    filters: Iterable<BaseFilter>
-) : (String) -> String {
-    init {
-        LoggerUtil.register { _, _, _ -> /* disable logging */ }
-        filters.forEach { EJMaskInitializer.addFilter(it) }
-    }
-
-    override fun invoke(message: String): String = EJMask.mask(message)
-}
+internal class ExpediaGroupJsonFieldFilter(maskedFields: Array<String>) : BaseFilter(
+    ExpediaGroupJsonFieldPatternBuilder::class.java,
+    *maskedFields
+)

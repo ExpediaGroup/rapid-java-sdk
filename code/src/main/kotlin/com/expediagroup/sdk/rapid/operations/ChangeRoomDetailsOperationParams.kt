@@ -16,6 +16,8 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 
 /**
  * @property itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -25,20 +27,15 @@ import com.expediagroup.sdk.core.model.OperationParams
  * @property test The change call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `unknown_internal_error`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  */
+@JsonDeserialize(builder = ChangeRoomDetailsOperationParams.Builder::class)
 data class ChangeRoomDetailsOperationParams
     internal constructor(
-        val itineraryId: kotlin.String? =
-            null,
-        val roomId: kotlin.String? =
-            null,
-        val customerIp: kotlin.String? =
-            null,
-        val customerSessionId: kotlin.String? =
-            null,
-        val test: kotlin.String? =
-            null,
-        val token: kotlin.String? =
-            null,
+        val itineraryId: kotlin.String? = null,
+        val roomId: kotlin.String? = null,
+        val customerIp: kotlin.String? = null,
+        val customerSessionId: kotlin.String? = null,
+        val test: ChangeRoomDetailsOperationParams.Test? = null,
+        val token: kotlin.String? = null,
         private val dummy: Unit
     ) :
     OperationParams {
@@ -51,8 +48,10 @@ data class ChangeRoomDetailsOperationParams
             itineraryId: kotlin.String,
             roomId: kotlin.String,
             customerIp: kotlin.String,
-            customerSessionId: kotlin.String? = null,
-            test: kotlin.String? = null,
+            customerSessionId: kotlin.String? =
+                null,
+            test: ChangeRoomDetailsOperationParams.Test? =
+                null,
             token: kotlin.String
         ) : this(
             itineraryId = itineraryId,
@@ -71,13 +70,21 @@ data class ChangeRoomDetailsOperationParams
             dummy = Unit
         )
 
+        enum class Test(
+            val value: kotlin.String
+        ) {
+            STANDARD("standard"),
+            SERVICE_UNAVAILABLE("service_unavailable"),
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+        }
+
         class Builder(
-            private var itineraryId: kotlin.String? = null,
-            private var roomId: kotlin.String? = null,
-            private var customerIp: kotlin.String? = null,
-            private var customerSessionId: kotlin.String? = null,
-            private var test: kotlin.String? = null,
-            private var token: kotlin.String? = null
+            @JsonProperty("itinerary_id") private var itineraryId: kotlin.String? = null,
+            @JsonProperty("room_id") private var roomId: kotlin.String? = null,
+            @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
+            @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+            @JsonProperty("Test") private var test: ChangeRoomDetailsOperationParams.Test? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -102,7 +109,7 @@ data class ChangeRoomDetailsOperationParams
             /**
              * @param test The change call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `unknown_internal_error`
              */
-            fun test(test: kotlin.String) = apply { this.test = test }
+            fun test(test: ChangeRoomDetailsOperationParams.Test) = apply { this.test = test }
 
             /**
              * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -140,22 +147,37 @@ data class ChangeRoomDetailsOperationParams
 
         override fun getHeaders(): Map<String, String> {
             return buildMap {
-                customerIp?.also { put("Customer-Ip", customerIp) }
-                customerSessionId?.also { put("Customer-Session-Id", customerSessionId) }
-                test?.also { put("Test", test) }
+                customerIp?.also {
+                    put("Customer-Ip", customerIp)
+                }
+                customerSessionId?.also {
+                    put("Customer-Session-Id", customerSessionId)
+                }
+                test?.also {
+                    put("Test", test.value)
+                }
             }
         }
 
         override fun getQueryParams(): Map<String, Iterable<String>> {
             return buildMap {
-                token?.also { put("token", listOf(token.toString())) }
+                token?.also {
+                    put(
+                        "token",
+                        listOf(token)
+                    )
+                }
             }
         }
 
         override fun getPathParams(): Map<String, String> {
             return buildMap {
-                itineraryId?.also { put("itinerary_id", itineraryId) }
-                roomId?.also { put("room_id", roomId) }
+                itineraryId?.also {
+                    put("itinerary_id", itineraryId)
+                }
+                roomId?.also {
+                    put("room_id", roomId)
+                }
             }
         }
     }

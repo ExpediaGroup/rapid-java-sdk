@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,13 +32,13 @@ public class GeographyService extends RapidService {
         logger.info("------------- Calling getRegions paginated results with no ancestor ID and include=details to get all regions:");
 
         GetRegionsOperationParams params = GetRegionsOperationParams.builder()
-                .include(Arrays.asList("details"))
+                .include(Collections.singletonList(GetRegionsOperationParams.Include.DETAILS))
                 .language("en-US")
                 .customerSessionId(Constants.CUSTOMER_SESSION_ID)
                 .limit(BigDecimal.valueOf(10))
                 .area("50,37.227924,-93.310036")
                 .supplySource("expedia")
-                .countryCode(Arrays.asList("US"))
+                .countryCode(Collections.singletonList("US"))
                 .build();
 
         ResponsePaginator<List<Region>> responsePaginator = rapidClient.getPaginator(new GetRegionsOperation(params));
@@ -46,9 +47,7 @@ public class GeographyService extends RapidService {
 
         logger.info("Paginator total results count: {}", responsePaginator.getPaginationTotalResults());
 
-       responsePaginator.forEachRemaining(page -> {
-               pages.add(page.getData());
-       });
+       responsePaginator.forEachRemaining(page -> pages.add(page.getData()));
 
         return pages;
     }
@@ -57,12 +56,12 @@ public class GeographyService extends RapidService {
         logger.info("------------- Calling getRegionsPaginator by ancestor ID: [{}]", ancestorId);
 
         GetRegionsOperationParams params = GetRegionsOperationParams.builder()
-                .include(Arrays.asList("details"))
+                .include(Collections.singletonList(GetRegionsOperationParams.Include.DETAILS))
                 .language("en-US")
                 .customerSessionId(Constants.CUSTOMER_SESSION_ID)
                 .limit(BigDecimal.valueOf(10))
                 .supplySource("expedia")
-                .countryCode(Arrays.asList("US"))
+                .countryCode(Collections.singletonList("US"))
                 .ancestorId(ancestorId)
                 .build();
 
@@ -72,9 +71,7 @@ public class GeographyService extends RapidService {
 
         logger.info("Paginator total results count: {}", responsePaginator.getPaginationTotalResults());
 
-        responsePaginator.forEachRemaining(page -> {
-            pages.add(page.getData());
-        });
+        responsePaginator.forEachRemaining(page -> pages.add(page.getData()));
 
         return pages;
     }
@@ -83,7 +80,7 @@ public class GeographyService extends RapidService {
         logger.info("------------- Calling GetRegion:");
 
         GetRegionOperationParams params = GetRegionOperationParams.builder()
-                .include(Arrays.asList("details", "property_ids"))
+                .include(Arrays.asList(GetRegionOperationParams.Include.DETAILS, GetRegionOperationParams.Include.PROPERTY_IDS))
                 .language(language)
                 .regionId(regionId)
                 .customerSessionId(Constants.CUSTOMER_SESSION_ID)

@@ -1,0 +1,20 @@
+name: Generate and Publish SDK
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: |
+          SDK Version.
+          E.g., 1.0.0, 1.0.1, 1.0.0-SNAPSHOT, etc.
+        required: true
+        type: string
+
+jobs:
+  generate-and-publish:
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
+    secrets: inherit
+    with:
+      name: rapid
+      version: ${{ inputs.version }}
+      transformations: "-th -te /v3 --operationIdsToTags"

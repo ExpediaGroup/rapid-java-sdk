@@ -55,7 +55,7 @@ class DeleteHeldBookingOperation private constructor(
         override fun pathPattern(): String {
             val paramsMap =
                 buildMap {
-                    put("itinerary_id", "[a-z0-9]+")
+                    put("itinerary_id", "[a-z0-9\\-]+")
                 }
             val substitutor = StringSubstitutor(paramsMap, "{", "}")
             return substitutor.replace("/v3/itineraries/{itinerary_id}")

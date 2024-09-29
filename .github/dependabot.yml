@@ -1,0 +1,28 @@
+# dependabot configuration available at: https://docs.github.com/en/code-security/dependabot
+version: 2
+updates:
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "11:30"
+      timezone: "UTC"
+    target-branch: main
+    reviewers:
+      - ExpediaGroup/openworld-committers
+    labels:
+      - Dependabot
+
+  - package-ecosystem: maven
+    directory: "/code"
+    schedule:
+      interval: daily
+      time: "11:30"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    target-branch: main
+    reviewers:
+      - ExpediaGroup/openworld-committers
+    labels:
+      - Dependabot

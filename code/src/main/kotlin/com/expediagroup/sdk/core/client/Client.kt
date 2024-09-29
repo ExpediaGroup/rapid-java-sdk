@@ -50,11 +50,20 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.request
+import okhttp3.Dispatcher
+
+// Create a Dispatcher with limits
+val dispatcher =
+    Dispatcher().apply {
+        maxRequests = 10000 // Maximum number of concurrent requests
+        maxRequestsPerHost = 1000
+    }
 
 val DEFAULT_HTTP_CLIENT_ENGINE: HttpClientEngine =
     OkHttp.create {
         config {
             eventListener(OkHttpEventListener)
+            dispatcher(dispatcher)
         }
     }
 

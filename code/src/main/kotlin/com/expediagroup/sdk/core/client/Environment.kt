@@ -22,7 +22,7 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpHeaders
 
 interface EnvironmentProvider {
-    fun HttpRequestBuilder.appendHeaders(transactionId: TransactionId = TransactionId())
+    fun HttpRequestBuilder.appendHeaders(extraHeaders: Map<String, String> = mapOf(HeaderKey.TRANSACTION_ID to TransactionId().dequeue().toString()))
 }
 
 class DefaultEnvironmentProvider(
@@ -35,11 +35,11 @@ class DefaultEnvironmentProvider(
     private val userAgent = "expediagroup-sdk-java-$namespace/${properties["sdk-version"]!!} (Java $javaVersion; $operatingSystemName $operatingSystemVersion)"
 
     @Suppress("MemberVisibilityCanBePrivate")
-    override fun HttpRequestBuilder.appendHeaders(transactionId: TransactionId) {
+    override fun HttpRequestBuilder.appendHeaders(extraHeaders: Map<String, String>) {
         with(headers) {
             append(HttpHeaders.UserAgent, userAgent)
             append(HeaderKey.X_SDK_TITLE, properties["sdk-title"]!!)
-            append(HeaderKey.TRANSACTION_ID, transactionId.dequeue().toString())
+            extraHeaders.forEach { (key, value) -> append(key, value) }
         }
     }
 }
