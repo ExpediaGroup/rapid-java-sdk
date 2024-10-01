@@ -23,7 +23,7 @@ on:
         default: ''
 jobs:
   generate-and-publish:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@${{ inputs.sdk_repo_ref }}
     secrets: inherit
     with:
       name: rapid
