@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.expediagroup.sdk.domain.rapid
 
 import com.expediagroup.sdk.core.client.BaseRapidClient
 import com.expediagroup.sdk.core.client.ClientHelpers
