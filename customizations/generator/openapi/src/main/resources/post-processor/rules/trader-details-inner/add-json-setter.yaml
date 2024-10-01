@@ -1,0 +1,9 @@
+rule:
+  kind: "annotation"
+  nthChild: 1
+  pattern: "$ANNOTATION"
+  inside:
+    kind: "modifiers"
+    inside:
+      kind: "class_parameter"
+      regex: "contact_message"

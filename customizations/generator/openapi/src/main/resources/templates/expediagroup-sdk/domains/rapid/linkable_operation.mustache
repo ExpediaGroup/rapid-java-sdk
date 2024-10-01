@@ -1,0 +1,30 @@
+
+package com.expediagroup.sdk.{{namespace}}.operations
+
+import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.ExpediaGroupClientException
+import com.expediagroup.sdk.{{namespace}}.models.Link
+import org.apache.commons.text.StringSubstitutor
+import java.net.URI
+
+interface LinkableOperation {
+    fun url(
+        params: OperationParams?,
+        link: Link?,
+        url: String
+    ): String {
+        val pathParams = params?.getPathParams()
+
+        if (link?.href != null) {
+            val uri = URI(link.href)
+
+            if (Regex(pathPattern()).matches(uri.path)) return "${uri.path}?${uri.query}"
+            throw ExpediaGroupClientException()
+        }
+
+        val substitutor = StringSubstitutor(pathParams, "{", "}")
+        return substitutor.replace(url)
+    }
+
+    fun pathPattern(): String
+}

@@ -1,0 +1,72 @@
+{{#operations}}
+    {{#operation}}
+        {{#isLinkable}}
+            {{#hasHeaderParams}}
+                package com.expediagroup.sdk.{{namespace}}.operations
+
+                import com.fasterxml.jackson.annotation.JsonProperty
+                import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
+                /**
+                {{#headerParams}}
+                    * @property {{{paramName}}} {{{description}}}
+                {{/headerParams}}
+                */
+                @JsonDeserialize(builder = {{classname}}Params.Builder::class)
+                data class {{classname}}Context(
+                    {{#headerParams}}
+                        {{>modelMutable}} {{>client/apiParam}}{{^-last}}, {{/-last}}
+                    {{/headerParams}}
+                ) {
+                    companion object {
+                        @JvmStatic
+                        fun builder() = Builder()
+                    }
+
+                    class Builder(
+                        {{#headerParams}}
+                            @JsonProperty("{{{baseName}}}") private var {{{paramName}}}: {{>partials/datatype}}? = null{{^-last}},{{/-last}}
+                        {{/headerParams}}
+                    ) {
+                        {{#headerParams}}
+                            /**
+                            * @param {{{paramName}}} {{{description}}}
+                            */
+                            fun {{{paramName}}}({{{paramName}}}: {{>partials/datatype}}) = apply { this.{{{paramName}}} = {{{paramName}}} }
+                        {{/headerParams}}
+
+                        fun build(): {{classname}}Context {
+                            validateNullity()
+
+                            return {{classname}}Context(
+                                {{#headerParams}}
+                                    {{{paramName}}} = {{{paramName}}}{{#required}}!!{{/required}}{{^-last}},{{/-last}}
+                                {{/headerParams}}
+                            )
+                        }
+
+                        private fun validateNullity() {
+                            {{#headerParams}}
+                                {{#required}}
+                                    if ({{{paramName}}} == null) {
+                                        throw NullPointerException("Required parameter {{{paramName}}} is missing")
+                                    }
+                                {{/required}}
+                            {{/headerParams}}
+                        }
+                    }
+
+                    fun getHeaders(): Map<String, String> {
+                        return buildMap {
+                            {{#headerParams}}
+                                {{paramName}}{{^required}}?{{/required}}.also {
+                                    put("{{baseName}}", {{paramName}}{{#isEnum}}.value{{/isEnum}})
+                                }
+                            {{/headerParams}}
+                        }
+                    }
+                }
+            {{/hasHeaderParams}}
+        {{/isLinkable}}
+    {{/operation}}
+{{/operations}}
