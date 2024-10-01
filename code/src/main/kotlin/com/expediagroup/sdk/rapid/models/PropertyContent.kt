@@ -99,7 +99,6 @@ import javax.validation.constraints.Size
  * @param paymentRegistrationRecommended Boolean value indicating if a property may require payment registration to process payments, even when using the property_collect Business Model. If true, then a property may not be successfully bookable without registering payments first.
  * @param vacationRentalDetails
  * @param supplySource The supply source of the property.
- * @param registryNumber The property's registry number required by some jurisdictions.
  */
 data class PropertyContent(
     // Unique Expedia property ID.
@@ -219,11 +218,7 @@ data class PropertyContent(
     // The supply source of the property.
     @JsonProperty("supply_source")
     @field:Valid
-    val supplySource: kotlin.String? = null,
-    // The property's registry number required by some jurisdictions.
-    @JsonProperty("registry_number")
-    @field:Valid
-    val registryNumber: kotlin.String? = null
+    val supplySource: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -264,8 +259,7 @@ data class PropertyContent(
         private var multiUnit: kotlin.Boolean? = null,
         private var paymentRegistrationRecommended: kotlin.Boolean? = null,
         private var vacationRentalDetails: VacationRentalDetails? = null,
-        private var supplySource: kotlin.String? = null,
-        private var registryNumber: kotlin.String? = null
+        private var supplySource: kotlin.String? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -335,8 +329,6 @@ data class PropertyContent(
 
         fun supplySource(supplySource: kotlin.String?) = apply { this.supplySource = supplySource }
 
-        fun registryNumber(registryNumber: kotlin.String?) = apply { this.registryNumber = registryNumber }
-
         fun build(): PropertyContent {
             return PropertyContent(
                 propertyId = propertyId,
@@ -372,8 +364,7 @@ data class PropertyContent(
                 multiUnit = multiUnit,
                 paymentRegistrationRecommended = paymentRegistrationRecommended,
                 vacationRentalDetails = vacationRentalDetails,
-                supplySource = supplySource,
-                registryNumber = registryNumber
+                supplySource = supplySource
             )
         }
     }

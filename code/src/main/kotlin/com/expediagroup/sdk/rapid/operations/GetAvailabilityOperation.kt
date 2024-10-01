@@ -22,14 +22,36 @@ import com.expediagroup.sdk.core.model.Operation
  * Get property room rates and availability
  * @property params [GetAvailabilityOperationParams]
  */
-class GetAvailabilityOperation(
-    params: GetAvailabilityOperationParams
+class GetAvailabilityOperation private constructor(
+    params: GetAvailabilityOperationParams?,
+    link: GetAvailabilityOperationLink?
 ) : Operation<
         Nothing
     >(
-        "/v3/properties/availability",
+        url(null, link, "/v3/properties/availability"),
         "GET",
         "getAvailability",
         null,
         params
+    ) {
+    constructor(
+        params: GetAvailabilityOperationParams
+    ) : this(
+        params,
+        null
     )
+
+    constructor(
+        link: GetAvailabilityOperationLink,
+        context: GetAvailabilityOperationContext?
+    ) : this(
+        GetAvailabilityOperationParams(context),
+        link
+    )
+
+    companion object : LinkableOperation {
+        override fun pathPattern(): String {
+            return "/v3/properties/availability"
+        }
+    }
+}

@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>5.0.1</version>
+    <version>5.1.0-SNAPSHOT</version>
     <name>EG rapid-sdk for Java</name>
-    <description>EG rapid-sdk v5.0.1</description>
+    <description>EG rapid-sdk v5.1.0-SNAPSHOT</description>
     <url>https://github.com/ExpediaGroup/test-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
@@ -64,28 +64,28 @@
 
         <!-- Plugin Versions -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.8.0</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
-        <ktlint-plugin.version>3.3.0</ktlint-plugin.version>
+        <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
-        <kotlin.version>2.0.20</kotlin.version>
-        <kotlinx.coroutines.version>1.9.0</kotlinx.coroutines.version>
+        <kotlin.version>2.0.0</kotlin.version>
+        <kotlinx.coroutines.version>1.8.1</kotlinx.coroutines.version>
         <ktor.version>2.3.12</ktor.version>
         <kotlin-atomic.version>0.25.0</kotlin-atomic.version>
-        <slf4j.version>2.0.16</slf4j.version>
+        <slf4j.version>2.0.13</slf4j.version>
         <maven.nexus-staging.plugin.version>1.7.0</maven.nexus-staging.plugin.version>
-        <maven.gpg.plugin.version>3.2.6</maven.gpg.plugin.version>
+        <maven.gpg.plugin.version>3.2.5</maven.gpg.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -138,7 +138,7 @@
             <dependency>
                 <groupId>com.squareup.okio</groupId>
                 <artifactId>okio-jvm</artifactId>
-                <version>3.9.1</version>
+                <version>3.9.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains</groupId>
@@ -159,143 +159,7 @@
     </dependencyManagement>
 
     <build>
-
-        <pluginManagement>
-            <plugins>
-                <!-- Enforce Sane Build Environment -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${maven-enforcer-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>enforce-pom-standards</id>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <banDuplicatePomDependencyVersions/>
-                                    <dependencyConvergence/>
-                                    <reactorModuleConvergence/>
-                                    <requireUpperBoundDeps/>
-                                    <requireJavaVersion>
-                                        <version>${minimum.jdk.version}</version>
-                                    </requireJavaVersion>
-                                    <requireMavenVersion>
-                                        <version>${minimum.maven.version}</version>
-                                    </requireMavenVersion>
-                                    <requireReleaseDeps>
-                                        <onlyWhenRelease>true</onlyWhenRelease>
-                                        <message>Snapshot dependencies must be resolved before releasing</message>
-                                    </requireReleaseDeps>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <!-- To run Kotlin Tests-->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <jacoco-agent.destfile>**/jacoco.exec</jacoco-agent.destfile>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-
-                <!-- Configure Code Coverage -->
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-plugin.version}</version>
-                    <configuration>
-                        <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-                        <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>instrument-coverage</id>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>coverage-report</id>
-                            <phase>prepare-package</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>coverage-check</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <rule>
-                                        <element>CLASS</element>
-                                        <excludes>
-                                            <exclude>*Test</exclude>
-                                        </excludes>
-                                        <limits>
-                                            <limit>
-                                                <counter>INSTRUCTION</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>${minimum.code.coverage}</minimum>
-                                            </limit>
-                                            <limit>
-                                                <counter>BRANCH</counter>
-                                                <value>COVEREDRATIO</value>
-                                                <minimum>${minimum.code.coverage}</minimum>
-                                            </limit>
-                                        </limits>
-                                    </rule>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <plugin>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin</artifactId>
-                    <version>${maven.licence.plugin.version}</version>
-                    <configuration>
-                        <properties>
-                            <year>${current.year}</year>
-                            <owner>Expedia, Inc.</owner>
-                        </properties>
-                        <licenseSets>
-                            <licenseSet>
-                                <header>./LICENSE-HEADER.txt</header>
-                                <includes>
-                                    <include>**/*.kt</include>
-                                </includes>
-                            </licenseSet>
-                        </licenseSets>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>add-license-header</id>
-                            <phase>validate</phase>
-                            <goals>
-                                <goal>format</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -324,7 +188,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -342,7 +205,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
@@ -370,7 +232,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -393,7 +254,6 @@
                     </archive>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -431,7 +291,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
@@ -448,7 +307,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- Configure Kotlin -->
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
@@ -493,7 +351,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
             <!-- Add source directories -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -540,7 +397,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- Ensure Sources are attached -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -555,7 +411,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <!-- Shading -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -589,7 +445,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- Configure KDocs -->
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
@@ -628,8 +483,120 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- Configure Kotlin Linting -->
+            <!-- Enforce Sane Build Environment -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-pom-standards</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <banDuplicatePomDependencyVersions/>
+                                <dependencyConvergence/>
+                                <reactorModuleConvergence/>
+                                <requireUpperBoundDeps/>
+                                <requireJavaVersion>
+                                    <version>${minimum.jdk.version}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${minimum.maven.version}</version>
+                                </requireMavenVersion>
+                                <requireReleaseDeps>
+                                    <onlyWhenRelease>true</onlyWhenRelease>
+                                    <message>Snapshot dependencies must be resolved before releasing</message>
+                                </requireReleaseDeps>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Configure Code Coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-plugin.version}</version>
+                <configuration>
+                    <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+                    <outputDirectory>${project.build.directory}/jacoco</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>instrument-coverage</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>coverage-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>coverage-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <excludes>
+                                        <exclude>*Test</exclude>
+                                    </excludes>
+                                    <limits>
+                                        <limit>
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${minimum.code.coverage}</minimum>
+                                        </limit>
+                                        <limit>
+                                            <counter>BRANCH</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${minimum.code.coverage}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Delete empty files -->
+            <plugin>
+                <artifactId>exec-maven-plugin</artifactId>
+                <groupId>org.codehaus.mojo</groupId>
+                <executions>
+                    <execution>
+                        <id>delete-empty-files</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>find</executable>
+                            <arguments>
+                                <argument>src</argument>
+                                <argument>-type</argument>
+                                <argument>f</argument>
+                                <argument>-empty</argument>
+                                <argument>-print</argument>
+                                <argument>-delete</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Configure Kotlin linting -->
             <plugin>
                 <groupId>com.github.gantsign.maven</groupId>
                 <artifactId>ktlint-maven-plugin</artifactId>
@@ -641,26 +608,43 @@
                             <goal>format</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <phase>compile</phase>
+                    <!--<execution>
                         <id>check</id>
-                    </execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>-->
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
+            <!-- Add license header -->
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
+                <version>${maven.licence.plugin.version}</version>
+                <configuration>
+                    <properties>
+                        <year>${current.year}</year>
+                        <owner>Expedia, Inc.</owner>
+                    </properties>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>./LICENSE-HEADER.txt</header>
+                            <includes>
+                                <include>**/*.kt</include>
+                            </includes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>add-license-header</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
         </plugins>
     </build>
 
@@ -748,7 +732,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.17.0</version>
+            <version>3.14.0</version>
         </dependency>
 
         <dependency>
@@ -811,12 +795,16 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
+                    <!-- To run Kotlin Tests-->
                     <!-- skip some test cases during the release -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
+                            <systemPropertyVariables>
+                                <jacoco-agent.destfile>**/jacoco.exec</jacoco-agent.destfile>
+                            </systemPropertyVariables>
                             <excludes>
                                 <exclude>**/PerformanceTest.java</exclude>
                                 <argLine>@{argLine}</argLine>

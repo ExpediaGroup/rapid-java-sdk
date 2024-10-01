@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequest
-import com.expediagroup.sdk.rapid.models.Link
 
 /**
  * Create Booking
@@ -27,7 +26,7 @@ import com.expediagroup.sdk.rapid.models.Link
 class PostItineraryOperation private constructor(
     params: PostItineraryOperationParams?,
     requestBody: CreateItineraryRequest?,
-    link: Link?
+    link: PostItineraryOperationLink?
 ) : Operation<
         CreateItineraryRequest
     >(
@@ -53,7 +52,7 @@ class PostItineraryOperation private constructor(
     )
 
     constructor(
-        link: Link,
+        link: PostItineraryOperationLink,
         context: PostItineraryOperationContext,
         requestBody: CreateItineraryRequest?
     ) : this(

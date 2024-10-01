@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -26,7 +25,7 @@ import org.apache.commons.text.StringSubstitutor
  */
 class PutCompletePaymentSessionOperation private constructor(
     params: PutCompletePaymentSessionOperationParams?,
-    link: Link?
+    link: PutCompletePaymentSessionOperationLink?
 ) : Operation<
         Nothing
     >(
@@ -44,7 +43,7 @@ class PutCompletePaymentSessionOperation private constructor(
     )
 
     constructor(
-        link: Link,
+        link: PutCompletePaymentSessionOperationLink,
         context: PutCompletePaymentSessionOperationContext
     ) : this(
         PutCompletePaymentSessionOperationParams(context),

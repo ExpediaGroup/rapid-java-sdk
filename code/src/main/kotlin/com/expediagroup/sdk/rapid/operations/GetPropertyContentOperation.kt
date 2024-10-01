@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 
 /**
  * Property Content
@@ -25,7 +24,7 @@ import com.expediagroup.sdk.rapid.models.Link
  */
 class GetPropertyContentOperation private constructor(
     params: GetPropertyContentOperationParams?,
-    link: Link?
+    link: GetPropertyContentOperationLink?
 ) : Operation<
         Nothing
     >(
@@ -43,7 +42,7 @@ class GetPropertyContentOperation private constructor(
     )
 
     constructor(
-        link: Link,
+        link: GetPropertyContentOperationLink,
         context: GetPropertyContentOperationContext?
     ) : this(
         GetPropertyContentOperationParams(context),

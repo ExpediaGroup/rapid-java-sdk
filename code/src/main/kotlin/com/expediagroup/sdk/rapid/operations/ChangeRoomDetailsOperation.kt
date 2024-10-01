@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.ChangeRoomDetailsRequest
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -28,7 +27,7 @@ import org.apache.commons.text.StringSubstitutor
 class ChangeRoomDetailsOperation private constructor(
     params: ChangeRoomDetailsOperationParams?,
     requestBody: ChangeRoomDetailsRequest?,
-    link: Link?
+    link: ChangeRoomDetailsOperationLink?
 ) : Operation<
         ChangeRoomDetailsRequest
     >(
@@ -54,7 +53,7 @@ class ChangeRoomDetailsOperation private constructor(
     )
 
     constructor(
-        link: Link,
+        link: ChangeRoomDetailsOperationLink,
         context: ChangeRoomDetailsOperationContext,
         requestBody: ChangeRoomDetailsRequest?
     ) : this(

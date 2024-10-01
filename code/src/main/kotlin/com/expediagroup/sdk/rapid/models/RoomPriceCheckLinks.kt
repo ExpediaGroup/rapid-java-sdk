@@ -31,6 +31,10 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.CommitChangeOperationLink
+import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationLink
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperationLink
+import com.expediagroup.sdk.rapid.operations.PostPaymentSessionsOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -49,16 +53,16 @@ import javax.validation.constraints.Size
 data class RoomPriceCheckLinks(
     @JsonProperty("book")
     @field:Valid
-    val book: Link? = null,
+    val book: PostItineraryOperationLink? = null,
     @JsonProperty("commit")
     @field:Valid
-    val commit: Link? = null,
+    val commit: CommitChangeOperationLink? = null,
     @JsonProperty("payment_session")
     @field:Valid
-    val paymentSession: Link? = null,
+    val paymentSession: PostPaymentSessionsOperationLink? = null,
     @JsonProperty("additional_rates")
     @field:Valid
-    val additionalRates: Link? = null
+    val additionalRates: GetAdditionalAvailabilityOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,18 +70,18 @@ data class RoomPriceCheckLinks(
     }
 
     class Builder(
-        private var book: Link? = null,
-        private var commit: Link? = null,
-        private var paymentSession: Link? = null,
-        private var additionalRates: Link? = null
+        private var book: PostItineraryOperationLink? = null,
+        private var commit: CommitChangeOperationLink? = null,
+        private var paymentSession: PostPaymentSessionsOperationLink? = null,
+        private var additionalRates: GetAdditionalAvailabilityOperationLink? = null
     ) {
-        fun book(book: Link?) = apply { this.book = book }
+        fun book(book: PostItineraryOperationLink?) = apply { this.book = book }
 
-        fun commit(commit: Link?) = apply { this.commit = commit }
+        fun commit(commit: CommitChangeOperationLink?) = apply { this.commit = commit }
 
-        fun paymentSession(paymentSession: Link?) = apply { this.paymentSession = paymentSession }
+        fun paymentSession(paymentSession: PostPaymentSessionsOperationLink?) = apply { this.paymentSession = paymentSession }
 
-        fun additionalRates(additionalRates: Link?) = apply { this.additionalRates = additionalRates }
+        fun additionalRates(additionalRates: GetAdditionalAvailabilityOperationLink?) = apply { this.additionalRates = additionalRates }
 
         fun build(): RoomPriceCheckLinks {
             return RoomPriceCheckLinks(

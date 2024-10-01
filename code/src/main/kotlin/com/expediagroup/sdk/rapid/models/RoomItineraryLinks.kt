@@ -31,6 +31,9 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.ChangeRoomDetailsOperationLink
+import com.expediagroup.sdk.rapid.operations.DeleteRoomOperationLink
+import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -48,13 +51,13 @@ import javax.validation.constraints.Size
 data class RoomItineraryLinks(
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: Link? = null,
+    val cancel: DeleteRoomOperationLink? = null,
     @JsonProperty("change")
     @field:Valid
-    val change: Link? = null,
+    val change: ChangeRoomDetailsOperationLink? = null,
     @JsonProperty("shop_for_change")
     @field:Valid
-    val shopForChange: Link? = null
+    val shopForChange: GetAdditionalAvailabilityOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,15 +65,15 @@ data class RoomItineraryLinks(
     }
 
     class Builder(
-        private var cancel: Link? = null,
-        private var change: Link? = null,
-        private var shopForChange: Link? = null
+        private var cancel: DeleteRoomOperationLink? = null,
+        private var change: ChangeRoomDetailsOperationLink? = null,
+        private var shopForChange: GetAdditionalAvailabilityOperationLink? = null
     ) {
-        fun cancel(cancel: Link?) = apply { this.cancel = cancel }
+        fun cancel(cancel: DeleteRoomOperationLink?) = apply { this.cancel = cancel }
 
-        fun change(change: Link?) = apply { this.change = change }
+        fun change(change: ChangeRoomDetailsOperationLink?) = apply { this.change = change }
 
-        fun shopForChange(shopForChange: Link?) = apply { this.shopForChange = shopForChange }
+        fun shopForChange(shopForChange: GetAdditionalAvailabilityOperationLink?) = apply { this.shopForChange = shopForChange }
 
         fun build(): RoomItineraryLinks {
             return RoomItineraryLinks(

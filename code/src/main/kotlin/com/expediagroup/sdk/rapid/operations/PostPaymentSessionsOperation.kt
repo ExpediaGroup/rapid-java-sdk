@@ -16,7 +16,6 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest
 
 /**
@@ -27,7 +26,7 @@ import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest
 class PostPaymentSessionsOperation private constructor(
     params: PostPaymentSessionsOperationParams?,
     requestBody: PaymentSessionsRequest?,
-    link: Link?
+    link: PostPaymentSessionsOperationLink?
 ) : Operation<
         PaymentSessionsRequest
     >(
@@ -53,7 +52,7 @@ class PostPaymentSessionsOperation private constructor(
     )
 
     constructor(
-        link: Link,
+        link: PostPaymentSessionsOperationLink,
         context: PostPaymentSessionsOperationContext,
         requestBody: PaymentSessionsRequest?
     ) : this(
