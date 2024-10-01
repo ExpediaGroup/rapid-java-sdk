@@ -26,7 +26,7 @@ class {{clientClassname}}Client private constructor(clientConfiguration: RapidCl
 
     class Builder : BaseRapidClient.Builder<Builder>() {
         override fun build() = {{clientClassname}}Client(
-            RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields {{>partials/authEndpoint}})
+            RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields)
         )
     }
 
