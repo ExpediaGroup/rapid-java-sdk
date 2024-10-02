@@ -22,24 +22,27 @@ public class GetRegionByAncestorIdScenario implements RapidScenario {
     }
 
     @Override
-        public void run() {
-            // Calling region API with details and property ids by Ancestor ID
-            logger.info("Calling GET /region API to get region details and property ids by ancestor id: [{}]...", Constants.TEST_ANCESTOR_ID);
-            List<List<Region>> regionsPages = geographyService.getRegionsByAncestor(Constants.TEST_ANCESTOR_ID, this.rapidPartnerSalesProfile);
+    public void run() {
 
-            if (regionsPages == null || regionsPages.isEmpty()) {
-                throw new IllegalStateException(String.format("No regions found for the ancestor id: [%s].", Constants.TEST_ANCESTOR_ID));
-            }
+        logger.info("Running Get Region By Ancestor Id Scenario...");
 
-            logger.info("Regions found for the ancestor id: [{}]:", Constants.TEST_ANCESTOR_ID);
-            regionsPages.forEach(page -> {
-                page.forEach(region -> {
-                    logger.info("---------------------------------");
-                    logger.info("Region Full Name: {}", region.getNameFull());
-                    logger.info("Region Type: {}", region.getType());
-                    logger.info("Region Country Code: {}", region.getCountryCode());
-                    logger.info("---------------------------------");
-                });
-            });
+        // Calling region API with details and property ids by Ancestor ID
+        logger.info("Calling GET /region API to get region details and property ids by ancestor id: [{}]...", Constants.TEST_ANCESTOR_ID);
+        List<List<Region>> regionsPages = geographyService.getRegionsByAncestor(Constants.TEST_ANCESTOR_ID, this.rapidPartnerSalesProfile);
+
+        if (regionsPages == null || regionsPages.isEmpty()) {
+            throw new IllegalStateException(String.format("No regions found for the ancestor id: [%s].", Constants.TEST_ANCESTOR_ID));
         }
+
+        logger.info("Regions found for the ancestor id: [{}]:", Constants.TEST_ANCESTOR_ID);
+        regionsPages.forEach(page -> {
+            page.forEach(region -> {
+                logger.info("---------------------------------");
+                logger.info("Region Full Name: {}", region.getNameFull());
+                logger.info("Region Type: {}", region.getType());
+                logger.info("Region Country Code: {}", region.getCountryCode());
+                logger.info("---------------------------------");
+            });
+        });
+    }
 }

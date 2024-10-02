@@ -32,6 +32,8 @@ public class AsyncSingleRoomBookScenario implements RapidScenario {
     @Override
     public void run() {
 
+        logger.info("Running Book Single Room Scenario using the default profile in asynchronous manner...");
+
         // Shopping for properties
         logger.info("Async call - Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
 
@@ -59,7 +61,7 @@ public class AsyncSingleRoomBookScenario implements RapidScenario {
         // Manage booking
         logger.info("Getting itinerary by itinerary id...");
         BookService bookService = new BookService();
-        return bookService.asyncGetReservationByItineraryId(itineraryCreation)
+        return bookService.asyncGetReservation(itineraryCreation)
                 .thenApply(response -> response.getData());
     }
 

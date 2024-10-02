@@ -21,17 +21,20 @@ public class GetListOfRegionNamesScenario implements RapidScenario {
     }
 
     @Override
-        public void run() {
-            // Calling regions API with details
-            logger.info("Calling GET /regions API to get list of regions...");
-            List<List<Region>> regions = geographyService.getAllRegionsWithDetails(this.rapidPartnerSalesProfile);
+    public void run() {
 
-            // Filter regions names
-            logger.info("Regions names:");
-            regions.forEach(regionList -> {
-                regionList.forEach(region -> {
-                    logger.info(region.getNameFull());
-                });
+        logger.info("Running Get List of Region Names Scenario...");
+
+        // Calling regions API with details
+        logger.info("Calling GET /regions API to get list of regions...");
+        List<List<Region>> regions = geographyService.getAllRegionsWithDetails(this.rapidPartnerSalesProfile);
+
+        // Filter regions names
+        logger.info("Regions names:");
+        regions.forEach(regionList -> {
+            regionList.forEach(region -> {
+                logger.info(region.getNameFull());
             });
-        }
+        });
+    }
 }

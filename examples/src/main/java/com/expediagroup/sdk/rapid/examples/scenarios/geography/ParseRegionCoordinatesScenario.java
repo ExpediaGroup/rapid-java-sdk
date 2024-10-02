@@ -25,38 +25,41 @@ public class ParseRegionCoordinatesScenario implements RapidScenario {
     }
 
     @Override
-        public void run() {
-            // Calling region API with details and property ids
-            logger.info("Calling GET /region API to get region details and property ids by region id: [{}]...", Constants.TEST_REGION_ID);
-            Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID, "en-US", this.rapidPartnerSalesProfile);
+    public void run() {
 
-            logger.info("Region full name: {}", region.getNameFull());
-            logger.info("Region type: {}", region.getType());
-            logger.info("Region country code: {}", region.getCountryCode());
-            logger.info("Region center coordinates: lat:[{}], long:[{}]",
-                    region.getCoordinates().getCenterLatitude(), region.getCoordinates().getCenterLongitude());
+        logger.info("Running Parse Region Coordinates Scenario...");
 
-            String regionCoordinatesType = region.getCoordinates().getBoundingPolygon().getType();
-            logger.info("Region coordinates type: [{}]", regionCoordinatesType);
+        // Calling region API with details and property ids
+        logger.info("Calling GET /region API to get region details and property ids by region id: [{}]...", Constants.TEST_REGION_ID);
+        Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID, "en-US", this.rapidPartnerSalesProfile);
 
-            if (regionCoordinatesType.equals("POLYGON")) {
-                Polygon regionBoundingPolygon = (Polygon) region.getCoordinates().getBoundingPolygon();
-                logger.info("Parse region coordinates: [{}]", regionBoundingPolygon.getCoordinates().get(0).stream()
+        logger.info("Region full name: {}", region.getNameFull());
+        logger.info("Region type: {}", region.getType());
+        logger.info("Region country code: {}", region.getCountryCode());
+        logger.info("Region center coordinates: lat:[{}], long:[{}]",
+                region.getCoordinates().getCenterLatitude(), region.getCoordinates().getCenterLongitude());
+
+        String regionCoordinatesType = region.getCoordinates().getBoundingPolygon().getType();
+        logger.info("Region coordinates type: [{}]", regionCoordinatesType);
+
+        if (regionCoordinatesType.equals("POLYGON")) {
+            Polygon regionBoundingPolygon = (Polygon) region.getCoordinates().getBoundingPolygon();
+            logger.info("Parse region coordinates: [{}]", regionBoundingPolygon.getCoordinates().get(0).stream()
+                    .map(coordinate -> "[" + coordinate.get(0) + "," + coordinate.get(1) + "]")
+                    .collect(Collectors.joining(",")));
+
+        } else if (regionCoordinatesType.equals("MultiPolygon")) {
+            MultiPolygon regionBoundingMultipolygons = (MultiPolygon) region.getCoordinates().getBoundingPolygon();
+            logger.info("Number of bounding polygons in multipolygon region: [{}]", regionBoundingMultipolygons.getCoordinates().size());
+
+            AtomicInteger index = new AtomicInteger();
+
+            regionBoundingMultipolygons.getCoordinates().forEach(polygon -> {
+                String coordinates = polygon.get(0).stream()
                         .map(coordinate -> "[" + coordinate.get(0) + "," + coordinate.get(1) + "]")
-                        .collect(Collectors.joining(",")));
-
-            } else if (regionCoordinatesType.equals("MultiPolygon")) {
-                MultiPolygon regionBoundingMultipolygons = (MultiPolygon) region.getCoordinates().getBoundingPolygon();
-                logger.info("Number of bounding polygons in multipolygon region: [{}]", regionBoundingMultipolygons.getCoordinates().size());
-
-                AtomicInteger index = new AtomicInteger();
-
-                regionBoundingMultipolygons.getCoordinates().forEach(polygon -> {
-                    String coordinates = polygon.get(0).stream()
-                            .map(coordinate -> "[" + coordinate.get(0) + "," + coordinate.get(1) + "]")
-                            .collect(Collectors.joining(","));
-                    logger.info("Parse region polygon index: [{}] coordinates: [{}]", index.getAndIncrement(), coordinates);
-                });
-            }
+                        .collect(Collectors.joining(","));
+                logger.info("Parse region polygon index: [{}] coordinates: [{}]", index.getAndIncrement(), coordinates);
+            });
+        }
     }
 }

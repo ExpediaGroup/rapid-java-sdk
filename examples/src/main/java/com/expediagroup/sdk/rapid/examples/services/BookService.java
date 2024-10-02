@@ -4,23 +4,19 @@ import com.expediagroup.sdk.core.model.Nothing;
 import com.expediagroup.sdk.core.model.Response;
 import com.expediagroup.sdk.rapid.models.BillingContactRequest;
 import com.expediagroup.sdk.rapid.models.BillingContactRequestAddress;
+import com.expediagroup.sdk.rapid.models.ChangeRoomDetailsRequest;
+import com.expediagroup.sdk.rapid.models.CompletePaymentSession;
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequest;
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequestRoom;
 import com.expediagroup.sdk.rapid.models.Itinerary;
 import com.expediagroup.sdk.rapid.models.ItineraryCreation;
 import com.expediagroup.sdk.rapid.models.ItineraryCreationLinks;
-import com.expediagroup.sdk.rapid.models.Link;
 import com.expediagroup.sdk.rapid.models.PaymentRequest;
+import com.expediagroup.sdk.rapid.models.PaymentSessions;
+import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest;
 import com.expediagroup.sdk.rapid.models.PhoneRequest;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
-import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperation;
-import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationContext;
-import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperation;
-import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationContext;
-import com.expediagroup.sdk.rapid.operations.PostItineraryOperation;
-import com.expediagroup.sdk.rapid.operations.PostItineraryOperationContext;
-import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperation;
-import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationContext;
+import com.expediagroup.sdk.rapid.operations.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,7 +43,8 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        Link bookLink = roomPriceCheck.getLinks().getBook();
+        PostItineraryOperationLink bookLink = roomPriceCheck.getLinks().getBook();
+        if (bookLink == null) throw new IllegalStateException("Book link not found");
 
         PostItineraryOperationContext postItineraryOperationContext =
                 PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
@@ -73,7 +70,8 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        Link bookLink = roomPriceCheck.getLinks().getBook();
+        PostItineraryOperationLink bookLink = roomPriceCheck.getLinks().getBook();
+        if (bookLink == null) throw new IllegalStateException("Book link not found");
 
         PostItineraryOperationContext postItineraryOperationContext =
                 PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
@@ -101,7 +99,9 @@ public class BookService extends RapidService {
                 .travelerHandlingInstructions("Please use the card provided for payment. Avoid cancellation as this is for a corporate traveler. Contact traveler if any issues.")
                 .build();
 
-        Link bookLink = roomPriceCheck.getLinks().getBook();
+        PostItineraryOperationLink bookLink = roomPriceCheck.getLinks().getBook();
+        if (bookLink == null) throw new IllegalStateException("Book link not found");
+
 
         PostItineraryOperationContext postItineraryOperationContext =
                 PostItineraryOperationContext.builder().customerIp("127.0.0.1").build();
@@ -112,9 +112,10 @@ public class BookService extends RapidService {
 
     public Response<Nothing> resumeBooking(ItineraryCreation itineraryCreation) {
         ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
-        if (itineraryCreationLinks == null) throw new RuntimeException();
-        Link resumeLink = itineraryCreationLinks.getResume();
-        if (resumeLink == null) throw new RuntimeException();
+        if (itineraryCreationLinks == null) throw new IllegalStateException("itineraryCreationLinks not found");
+
+        PutResumeBookingOperationLink resumeLink = itineraryCreationLinks.getResume();
+        if (resumeLink == null) throw new IllegalStateException("Resume link not found");
 
         PutResumeBookingOperationContext putResumeBookingOperationContext =
                 PutResumeBookingOperationContext.builder().customerIp("127.0.0.1").build();
@@ -122,8 +123,9 @@ public class BookService extends RapidService {
         return rapidClient.execute(new PutResumeBookingOperation(resumeLink, putResumeBookingOperationContext));
     }
 
-    public Response<Itinerary> getReservationByItineraryId(ItineraryCreation itineraryCreation) {
-        Link retrieveLink = itineraryCreation.getLinks().getRetrieve();
+    public Response<Itinerary> getReservation(ItineraryCreation itineraryCreation) {
+        GetReservationByItineraryIdOperationLink retrieveLink = itineraryCreation.getLinks().getRetrieve();
+        if (retrieveLink == null) throw new IllegalStateException("Retrieve link not found");
 
         GetReservationByItineraryIdOperationContext getReservationByItineraryIdOperationContext =
                 GetReservationByItineraryIdOperationContext.builder().customerIp("127.0.0.1").build();
@@ -131,10 +133,11 @@ public class BookService extends RapidService {
         return rapidClient.execute(new GetReservationByItineraryIdOperation(retrieveLink, getReservationByItineraryIdOperationContext  ));
     }
 
-    public Response<Nothing> cancelHeldReservationByItineraryId(ItineraryCreation itineraryCreation) {
+    public Response<Nothing> cancelHeldReservation(ItineraryCreation itineraryCreation) {
         ItineraryCreationLinks itineraryCreationLinks = itineraryCreation.getLinks();
         if (itineraryCreationLinks == null) throw new RuntimeException();
-        Link cancelLink = itineraryCreationLinks.getCancel();
+
+        DeleteHeldBookingOperationLink cancelLink = itineraryCreationLinks.getCancel();
         if (cancelLink == null) throw new IllegalStateException("Cancel link not found");
 
         DeleteHeldBookingOperationContext deleteHeldBookingOperationContext =
@@ -143,14 +146,68 @@ public class BookService extends RapidService {
         return rapidClient.execute(new DeleteHeldBookingOperation(cancelLink, deleteHeldBookingOperationContext));
     }
 
-    public CompletableFuture<Response<Itinerary>> asyncGetReservationByItineraryId(ItineraryCreation itineraryCreation) {
+    public Response<Nothing> deleteRoom(Itinerary itinerary, int roomIndex) {
+        DeleteRoomOperationLink cancelRoomLink = itinerary.getRooms().get(roomIndex).getLinks().getCancel();
 
-        Link retrieveLink = itineraryCreation.getLinks().getRetrieve();
+        if (cancelRoomLink == null) throw new IllegalStateException("Cancel room link not found");
+
+        DeleteRoomOperation deleteRoomOperation = new DeleteRoomOperation(cancelRoomLink,
+                DeleteRoomOperationContext.builder().customerIp("127.0.0.1").build());
+
+        return rapidClient.execute(deleteRoomOperation);
+    }
+
+    public Response<Nothing> changeRoomDetails(Itinerary itinerary, int roomIndex) {
+        ChangeRoomDetailsOperationLink changeRoomDetailsLink = itinerary.getRooms().get(roomIndex).getLinks().getChange();
+
+        if (changeRoomDetailsLink == null) throw new IllegalStateException("Change room link not found");
+
+        ChangeRoomDetailsOperation changeRoomDetailsOperation = new ChangeRoomDetailsOperation(changeRoomDetailsLink,
+                ChangeRoomDetailsOperationContext.builder().customerIp("127.0.0.1").build(),
+                ChangeRoomDetailsRequest.builder()
+                        .givenName("Jane")
+                        .familyName("Doe")
+                        .smoking(true)
+                        .build());
+
+        return rapidClient.execute(changeRoomDetailsOperation);
+    }
+
+    public CompletableFuture<Response<Itinerary>> asyncGetReservation(ItineraryCreation itineraryCreation) {
+
+        GetReservationByItineraryIdOperationLink retrieveLink = itineraryCreation.getLinks().getRetrieve();
+        if (retrieveLink == null) throw new IllegalStateException("Retrieve link not found");
 
         GetReservationByItineraryIdOperationContext getReservationByItineraryIdOperationContext =
                 GetReservationByItineraryIdOperationContext.builder().customerIp("127.0.0.1").build();
 
         return rapidClient.executeAsync(new GetReservationByItineraryIdOperation(retrieveLink, getReservationByItineraryIdOperationContext));
+    }
+
+    public Response<CompletePaymentSession> completePaymentSession(ItineraryCreation itineraryCreation) {
+        PutCompletePaymentSessionOperationLink putCompletePaymentSessionLink = itineraryCreation.getLinks().getCompletePaymentSession();
+        if (putCompletePaymentSessionLink == null) throw new IllegalStateException("Complete payment session link not found");
+
+        PutCompletePaymentSessionOperationContext putCompletePaymentSessionOperationContext =
+                PutCompletePaymentSessionOperationContext.builder().customerIp("127.0.0.1").build();
+
+        return rapidClient.execute(new PutCompletePaymentSessionOperation(putCompletePaymentSessionLink,
+                putCompletePaymentSessionOperationContext));
+    }
+
+    public Response<PaymentSessions> postPaymentSession(RoomPriceCheck roomPriceCheck) {
+        PostPaymentSessionsOperationLink postPaymentSessionLink = roomPriceCheck.getLinks().getPaymentSession();
+        if (postPaymentSessionLink == null) throw new IllegalStateException("Post payment session link not found");
+
+        PostPaymentSessionsOperationContext postPaymentSessionOperationContext =
+                PostPaymentSessionsOperationContext.builder().customerIp("127.0.0.1").build();
+
+        return rapidClient.execute(new PostPaymentSessionsOperation(postPaymentSessionLink,
+                postPaymentSessionOperationContext, PaymentSessionsRequest.builder().build()));
+    }
+
+    public Response<Nothing> commitChange(CommitChangeOperationLink commitChangeLink) {
+        return rapidClient.execute(new CommitChangeOperation(commitChangeLink, null, null));
     }
 
     /* Helper methods */
