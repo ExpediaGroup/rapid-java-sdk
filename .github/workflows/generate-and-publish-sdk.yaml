@@ -23,12 +23,11 @@ on:
         default: ''
 jobs:
   generate-and-publish:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@nanssari/rapid_links
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
     secrets: inherit
     with:
       name: rapid
       version: ${{ inputs.version }}
       transformations: "-th -te /v3 --operationIdsToTags"
-      sdk_repo_ref: ${{ inputs.sdk_repo_ref }}
       repository:  'ExpediaGroup/rapid-java-sdk'
-      ref: ${{ github.head_ref || github.ref_name }}
+      sdk_repo_ref: ${{ inputs.sdk_repo_ref }}
