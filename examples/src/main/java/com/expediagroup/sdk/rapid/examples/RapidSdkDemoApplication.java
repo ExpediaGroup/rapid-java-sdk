@@ -1,10 +1,11 @@
 package com.expediagroup.sdk.rapid.examples;
 
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
-import com.expediagroup.sdk.rapid.examples.scenarios.booking.CancelHeldBookingScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.AsyncSingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.content.GetPropertyContentInAdditionalLanguageScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.content.GetPropertyContentScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetListOfRegionNamesScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetRegionByAncestorIdScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetRegionDetailsAndPropertyIdsScenario;
@@ -13,7 +14,12 @@ import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCatego
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionCoordinatesScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionDescendantsScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionWithMultiPolygonCoordinatesScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.CancelHeldBookingScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.ChangeRoomDetailsScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.CommitHardChangeScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.DeleteRoomScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetAdditionalAvailabilityOfPropertyScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetPaymentOptionsOfRoomScenario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,11 +45,19 @@ public class RapidSdkDemoApplication {
             1. Getting property availability for a test property
             2. Getting additional availability of the first property returned
         */
-
-        logger.info("Running Get Additional Availability Of Property Scenario...");
         GetAdditionalAvailabilityOfPropertyScenario getAdditionalAvailabilityOfPropertyScenario = new GetAdditionalAvailabilityOfPropertyScenario();
         getAdditionalAvailabilityOfPropertyScenario.setProfile(new DefaultRapidPartnerProfile());
         getAdditionalAvailabilityOfPropertyScenario.run();
+
+        /*  Run Get Payment Options Of Room Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Checking room prices for the property
+            3. Getting payment options of the first room in the property
+        */
+        GetPaymentOptionsOfRoomScenario getPaymentOptionsOfRoomScenario = new GetPaymentOptionsOfRoomScenario();
+        getPaymentOptionsOfRoomScenario.setProfile(new DefaultRapidPartnerProfile());
+        getPaymentOptionsOfRoomScenario.run();
 
         logger.info("=============================== End of Shopping Scenarios =============================");
 
@@ -55,7 +69,6 @@ public class RapidSdkDemoApplication {
             2. Checking room prices for the property
             3. Booking the property
         */
-        logger.info("Running Book Single Room Scenario using the default profile in synchronous manner...");
         SingleRoomBookScenario singleRoomBookScenario = new SingleRoomBookScenario();
         singleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
         singleRoomBookScenario.run();
@@ -66,7 +79,6 @@ public class RapidSdkDemoApplication {
             2. Checking room prices for the property
             3. Booking the property in asynchronous manner
         */
-        logger.info("Running Book Single Room Scenario using the default profile in asynchronous manner...");
         AsyncSingleRoomBookScenario asyncSingleRoomBookScenario = new AsyncSingleRoomBookScenario();
         asyncSingleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
         asyncSingleRoomBookScenario.run();
@@ -78,10 +90,26 @@ public class RapidSdkDemoApplication {
             3. Hold the property rooms.
             4. Resume the booking process.
         */
-        logger.info("Running Book Multiple Rooms with Hold and Resume Scenario using the default profile...");
         MultiRoomHoldAndResumeBookScenario multiRoomHoldAndResumeBookScenario = new MultiRoomHoldAndResumeBookScenario();
         multiRoomHoldAndResumeBookScenario.setProfile(new DefaultRapidPartnerProfile());
         multiRoomHoldAndResumeBookScenario.run();
+
+        logger.info("=============================== End of Booking Scenarios ==============================");
+
+        logger.info("=============================== Running Manage Booking Scenarios ===========================");
+
+        /*  Run Change Room Details Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Checking room prices for the property
+            3. Booking a single room in the property
+            4. Retrieve itinerary by itinerary id
+            5. Change room details for first room in booking
+            6. Retrieve updated itinerary
+        */
+        ChangeRoomDetailsScenario changeRoomDetailsScenario = new ChangeRoomDetailsScenario();
+        changeRoomDetailsScenario.setProfile(new DefaultRapidPartnerProfile());
+        changeRoomDetailsScenario.run();
 
         /*  Run Cancel Held Booking Scenario using the default profile
             This scenario demonstrates the following:
@@ -90,12 +118,59 @@ public class RapidSdkDemoApplication {
             3. Booking a room with hold in the property
             4. Cancelling the held booking
         */
-        logger.info("Running Cancel Held Booking Scenario using the default profile...");
         CancelHeldBookingScenario cancelHeldBookingScenario = new CancelHeldBookingScenario();
         cancelHeldBookingScenario.setProfile(new DefaultRapidPartnerProfile());
         cancelHeldBookingScenario.run();
 
-        logger.info("=============================== End of Booking Scenarios ==============================");
+        /* Run Delete Room Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Checking room prices for the property
+            3. Booking a room in the property
+            4. Retrieve itinerary by itinerary id
+            5. Deleting the first room in booking
+            6. Retrieve updated itinerary
+         */
+        DeleteRoomScenario deleteRoomScenario = new DeleteRoomScenario();
+        deleteRoomScenario.setProfile(new DefaultRapidPartnerProfile());
+        deleteRoomScenario.run();
+
+        /*  Run Commit Change Room With Refund Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Checking room prices for the property
+            3. Booking two rooms in the property
+            4. Retrieve itinerary by itinerary id
+            5. Check if booking is eligible for hard change
+            6. Delete first room in booking
+            7. Retrieve updated itinerary
+        */
+        CommitHardChangeScenario commitHardChangeScenario = new CommitHardChangeScenario();
+        commitHardChangeScenario.setProfile(new DefaultRapidPartnerProfile());
+        commitHardChangeScenario.run();
+
+        logger.info("=============================== End of Manage Booking Scenarios ===========================");
+
+        logger.info("=============================== Running Property Content Scenarios ===========================");
+
+        /*  Run Get Property Content Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting property content by property id
+        */
+        GetPropertyContentScenario getPropertyContentScenario = new GetPropertyContentScenario();
+        getPropertyContentScenario.setProfile(new DefaultRapidPartnerProfile());
+        getPropertyContentScenario.run();
+
+        /*  Run Get Property Content In Additional Language Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Getting property content by property id
+            2. Getting property content in additional language
+        */
+        GetPropertyContentInAdditionalLanguageScenario getPropertyContentInAdditionalLanguageScenario = new GetPropertyContentInAdditionalLanguageScenario();
+        getPropertyContentInAdditionalLanguageScenario.setProfile(new DefaultRapidPartnerProfile());
+        getPropertyContentInAdditionalLanguageScenario.run();
+
+        logger.info("=============================== End of Property Content Scenarios ===========================");
 
         logger.info("=============================== Running Geography Scenarios ===========================");
 
@@ -104,7 +179,6 @@ public class RapidSdkDemoApplication {
             1. Getting all regions with details in a paginated manner
             2. Filtering region names
         */
-        logger.info("Running Get List of Region Names Scenario...");
         GetListOfRegionNamesScenario getListOfRegionNamesScenario = new GetListOfRegionNamesScenario();
         getListOfRegionNamesScenario.setProfile(new DefaultRapidPartnerProfile());
         getListOfRegionNamesScenario.run();
@@ -114,7 +188,6 @@ public class RapidSdkDemoApplication {
             1. Getting region details by region id
             2. Accessing region details
         */
-        logger.info("Running Get Region Name of Region Scenario...");
         GetRegionDetailsAndPropertyIdsScenario getRegionNameOfRegionScenario = new GetRegionDetailsAndPropertyIdsScenario();
         getRegionNameOfRegionScenario.setProfile(new DefaultRapidPartnerProfile());
         getRegionNameOfRegionScenario.run();
@@ -124,7 +197,6 @@ public class RapidSdkDemoApplication {
             1. Getting paginated regions details by ancestor id
             2. Accessing region details
         */
-        logger.info("Running Get Region By Ancestor Id Scenario...");
         GetRegionByAncestorIdScenario getRegionByAncestorIdScenario = new GetRegionByAncestorIdScenario();
         getRegionByAncestorIdScenario.setProfile(new DefaultRapidPartnerProfile());
         getRegionByAncestorIdScenario.run();
@@ -135,7 +207,6 @@ public class RapidSdkDemoApplication {
             2. Accessing region coordinates of type multipolygon
             3. Accessing every polygon list of coordinates.
         */
-        logger.info("Running Get Region With MultiPolygon Coordinates Scenario...");
         ParseRegionWithMultiPolygonCoordinatesScenario parseRegionWithMultiPolygonCoordinatesScenario = new ParseRegionWithMultiPolygonCoordinatesScenario();
         parseRegionWithMultiPolygonCoordinatesScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionWithMultiPolygonCoordinatesScenario.run();
@@ -145,7 +216,6 @@ public class RapidSdkDemoApplication {
             1. Getting region details with ancestors by region id
             2. Parsing region ancestors
         */
-        logger.info("Running Parse Region Ancestors Scenario...");
         ParseRegionAncestorsScenario parseRegionAncestorsScenario = new ParseRegionAncestorsScenario();
         parseRegionAncestorsScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionAncestorsScenario.run();
@@ -155,7 +225,6 @@ public class RapidSdkDemoApplication {
             1. Getting region details with descendants by region id
             2. Parsing region descendants
         */
-        logger.info("Running Parse Region Descendants Scenario...");
         ParseRegionDescendantsScenario parseRegionDescendantsScenario = new ParseRegionDescendantsScenario();
         parseRegionDescendantsScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionDescendantsScenario.run();
@@ -165,7 +234,6 @@ public class RapidSdkDemoApplication {
             1. Getting region details with coordinates by region id
             2. Parsing region coordinates
         */
-        logger.info("Running Parse Region Coordinates Scenario...");
         ParseRegionCoordinatesScenario parseRegionCoordinatesScenario = new ParseRegionCoordinatesScenario();
         parseRegionCoordinatesScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionCoordinatesScenario.run();
@@ -175,7 +243,6 @@ public class RapidSdkDemoApplication {
             1. Getting region details with property ids by region id
             2. Parsing region categories
         */
-        logger.info("Running Parse Region Categories Scenario...");
         ParseRegionCategoriesScenario parseRegionCategoriesScenario = new ParseRegionCategoriesScenario();
         parseRegionCategoriesScenario.setProfile(new DefaultRapidPartnerProfile());
         parseRegionCategoriesScenario.run();

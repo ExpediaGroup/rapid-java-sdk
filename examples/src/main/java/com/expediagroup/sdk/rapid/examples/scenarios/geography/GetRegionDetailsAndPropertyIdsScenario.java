@@ -22,19 +22,22 @@ public class GetRegionDetailsAndPropertyIdsScenario implements RapidScenario {
     }
 
     @Override
-        public void run() {
-            // Calling region API with details and property ids
-            logger.info("Calling GET /region API to get region details and property ids by region id: [{}]...", Constants.TEST_REGION_ID);
-            Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID, "en-US", this.rapidPartnerSalesProfile);
+    public void run() {
 
-            logger.info("Region Full Name: {}", region.getNameFull());
-            logger.info("Region Type: {}", region.getType());
-            logger.info("Region Country Code: {}", region.getCountryCode());
+        logger.info("Running Get Region Name of Region Scenario...");
 
-            String result = region.getPropertyIds().stream()
-                    .map(Object::toString)
-                    .collect(Collectors.joining(","));
-            logger.info("Region Property IDs: [{}]", result);
+        // Calling region API with details and property ids
+        logger.info("Calling GET /region API to get region details and property ids by region id: [{}]...", Constants.TEST_REGION_ID);
+        Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID, "en-US", this.rapidPartnerSalesProfile);
 
-        }
+        logger.info("Region Full Name: {}", region.getNameFull());
+        logger.info("Region Type: {}", region.getType());
+        logger.info("Region Country Code: {}", region.getCountryCode());
+
+        String result = region.getPropertyIds().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+        logger.info("Region Property IDs: [{}]", result);
+
+    }
 }

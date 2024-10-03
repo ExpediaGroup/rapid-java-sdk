@@ -32,6 +32,8 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
     @Override
     public void run() {
 
+        logger.info("Running Book Multiple Rooms with Hold and Resume Scenario using the default profile...");
+
         // Shopping for properties
         /*
          * To request multiple rooms (of the same type), include one instance of occupancy for each room requested.
@@ -39,7 +41,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
          */
         logger.info("Getting property availability for test property: [{}]", Constants.TEST_PROPERTY_ID);
         List<String> occupancy = Arrays.asList("2", "2");
-        List<Property> propertyAvailabilityList = shopService.getMultipleRoomsPropertiesAvailability(this.rapidPartnerSalesProfile, occupancy).getData();
+        List<Property> propertyAvailabilityList = shopService.getPropertiesAvailability(occupancy, this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             throw new IllegalStateException("No property availability found for the test property.");
@@ -77,7 +79,7 @@ public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
         // Make a retrieve call to verify the booking has been resumed properly.
         logger.info("Getting itinerary by itinerary id: [{}] to verify the booking has been resumed successfully...",
                 itineraryCreation.getItineraryId());
-        Itinerary itinerary = bookService.getReservationByItineraryId(itineraryCreation).getData();
+        Itinerary itinerary = bookService.getReservation(itineraryCreation).getData();
 
         logger.info("Itinerary rooms status after resume booking:");
         itinerary.getRooms().forEach(room ->
