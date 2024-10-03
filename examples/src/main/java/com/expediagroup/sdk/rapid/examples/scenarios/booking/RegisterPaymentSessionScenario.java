@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.List;
 
-public class SingleRoomBookScenario implements RapidScenario {
+public class CompletePaymentSessionScenario implements RapidScenario {
 
-    private static final Logger logger = LoggerFactory.getLogger(SingleRoomBookScenario.class);
+    private static final Logger logger = LoggerFactory.getLogger(CompletePaymentSessionScenario.class);
     private ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
@@ -30,12 +30,10 @@ public class SingleRoomBookScenario implements RapidScenario {
     @Override
     public void run() {
 
-        logger.info("Running Book Single Room Scenario using the default profile in synchronous manner...");
-
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
 
-        List<Property> propertyAvailabilityList = shopService.getPropertiesAvailability(Arrays.asList("2"), this.rapidPartnerSalesProfile).getData();
+        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             throw new IllegalStateException("No property availability found for the test property.");
@@ -54,18 +52,30 @@ public class SingleRoomBookScenario implements RapidScenario {
             logger.info("Room Price Check: {}", roomPriceCheck.getStatus());
         }
 
-        // Booking a single room in the property
-        logger.info("Booking a room in test property: {}...", Constants.TEST_PROPERTY_ID);
+        // Booking a single room with hold in the property
+        logger.info("Booking a room with hold=true in test property: {}...", Constants.TEST_PROPERTY_ID);
 
         BookService bookService = new BookService();
         ItineraryCreation itineraryCreation = bookService.createBooking(roomPriceCheck, Arrays.asList("2")).getData();
 
-        logger.info("Booking Success. Itinerary id: {}", itineraryCreation.getItineraryId());
+        logger.info("Booking Success. Itinerary id: [{}]", itineraryCreation.getItineraryId());
 
-        // Manage booking
+        // Check room status
+        logger.info("Checking room status for itinerary id: {}...", itineraryCreation.getItineraryId());
         logger.info("Getting itinerary by itinerary id...");
         Itinerary itinerary = bookService.getReservation(itineraryCreation).getData();
-        logger.info("Itinerary: {}", itinerary.getItineraryId());
-        logger.info("Count of rooms booked: {}", itinerary.getRooms().size());
+//        logger.info("Itinerary status: [{}]", itinerary.getRooms().get(0).getStatus());
+//        logger.info("Count of rooms booked: {}", itinerary.getRooms().size());
+//
+//        // Complete payment session
+//        logger.info("Completing payment session for itinerary id: {}...", itineraryCreation.getItineraryId());
+//        bookService.completePaymentSession(itineraryCreation);
+//
+//        // Manage booking
+//        logger.info("Check itinerary status after completePaymentSession...");
+//        Itinerary completedItinerary = bookService.getReservation(itineraryCreation).getData();
+//        logger.info("Itinerary: {}", completedItinerary.getItineraryId());
+//        logger.info("Itinerary status: {}", completedItinerary.getRooms().get(0).getStatus());
+//        logger.info("Count of rooms booked: {}", completedItinerary.getRooms().size());
     }
 }

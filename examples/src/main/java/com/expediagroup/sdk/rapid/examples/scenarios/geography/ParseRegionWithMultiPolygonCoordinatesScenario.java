@@ -24,30 +24,33 @@ public class ParseRegionWithMultiPolygonCoordinatesScenario implements RapidScen
     }
 
     @Override
-        public void run() {
-            // Calling region API with details and property ids
-            logger.info("Calling GET /region API to get region details of a region with multipolygon coordinates by region id: [{}]...",
-                    Constants.TEST_REGION_ID_WITH_MULTIPOLYGON);
-            Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID_WITH_MULTIPOLYGON,
-                    "en-US", this.rapidPartnerSalesProfile);
+    public void run() {
 
-            logger.info("Region Full Name: {}", region.getNameFull());
-            logger.info("Region Type: {}", region.getType());
-            logger.info("Region Country Code: {}", region.getCountryCode());
+        logger.info("Running Get Region With MultiPolygon Coordinates Scenario...");
 
-            logger.info("Verify the returned region has multipolygon coordinates by checking coordinates type...");
-            logger.info("Region coordinates type: [{}]", region.getCoordinates().getBoundingPolygon().getType());
+        // Calling region API with details and property ids
+        logger.info("Calling GET /region API to get region details of a region with multipolygon coordinates by region id: [{}]...",
+                Constants.TEST_REGION_ID_WITH_MULTIPOLYGON);
+        Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID_WITH_MULTIPOLYGON,
+                "en-US", this.rapidPartnerSalesProfile);
 
-            MultiPolygon multiPolygonRegionCoordinates = (MultiPolygon) region.getCoordinates().getBoundingPolygon();
-            logger.info("Number of bounding polygons in multipolygon region: [{}]", multiPolygonRegionCoordinates.getCoordinates().size());
+        logger.info("Region Full Name: {}", region.getNameFull());
+        logger.info("Region Type: {}", region.getType());
+        logger.info("Region Country Code: {}", region.getCountryCode());
 
-            AtomicInteger index = new AtomicInteger();
-            multiPolygonRegionCoordinates.getCoordinates().forEach(polygon -> {
-                String coordinates = polygon.get(0).stream()
-                        .map(coordinate -> "[" + coordinate.get(0) + "," + coordinate.get(1) + "]")
-                        .collect(Collectors.joining(","));
-                logger.info("Polygon index: [{}] coordinates: [{}]", index.getAndIncrement(), coordinates);
+        logger.info("Verify the returned region has multipolygon coordinates by checking coordinates type...");
+        logger.info("Region coordinates type: [{}]", region.getCoordinates().getBoundingPolygon().getType());
+
+        MultiPolygon multiPolygonRegionCoordinates = (MultiPolygon) region.getCoordinates().getBoundingPolygon();
+        logger.info("Number of bounding polygons in multipolygon region: [{}]", multiPolygonRegionCoordinates.getCoordinates().size());
+
+        AtomicInteger index = new AtomicInteger();
+        multiPolygonRegionCoordinates.getCoordinates().forEach(polygon -> {
+            String coordinates = polygon.get(0).stream()
+                    .map(coordinate -> "[" + coordinate.get(0) + "," + coordinate.get(1) + "]")
+                    .collect(Collectors.joining(","));
+            logger.info("Polygon index: [{}] coordinates: [{}]", index.getAndIncrement(), coordinates);
         });
 
-        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.expediagroup.sdk.rapid.examples.scenarios.booking;
+package com.expediagroup.sdk.rapid.examples.scenarios.managebooking;
 
 import com.expediagroup.sdk.rapid.examples.Constants;
 import com.expediagroup.sdk.rapid.examples.salesprofiles.RapidPartnerSalesProfile;
@@ -29,10 +29,12 @@ public class CancelHeldBookingScenario implements RapidScenario {
     @Override
     public void run() {
 
+        logger.info("Running Cancel Held Booking Scenario using the default profile...");
+
         // Shopping for properties
         logger.info("Getting property availability for test property: [{}]", Constants.TEST_PROPERTY_ID);
 
-        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
+        List<Property> propertyAvailabilityList = shopService.getPropertiesAvailability(Arrays.asList("2"), this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             throw new IllegalStateException("No property availability found for the test property.");
@@ -61,6 +63,6 @@ public class CancelHeldBookingScenario implements RapidScenario {
 
         // Cancel the held booking
         logger.info("Cancelling the held booking with itinerary id: [{}]...", itineraryCreation.getItineraryId());
-        bookService.cancelHeldReservationByItineraryId(itineraryCreation);
+        bookService.cancelHeldReservation(itineraryCreation);
     }
 }

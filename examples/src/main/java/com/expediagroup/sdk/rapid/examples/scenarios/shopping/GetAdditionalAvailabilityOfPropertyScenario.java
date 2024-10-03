@@ -10,6 +10,7 @@ import com.expediagroup.sdk.rapid.models.PropertyAvailability;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class GetAdditionalAvailabilityOfPropertyScenario implements RapidScenario {
@@ -26,10 +27,12 @@ public class GetAdditionalAvailabilityOfPropertyScenario implements RapidScenari
     @Override
     public void run() {
 
+        logger.info("Running Get Additional Availability Of Property Scenario...");
+
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
 
-        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
+        List<Property> propertyAvailabilityList = shopService.getPropertiesAvailability(Arrays.asList("2"), this.rapidPartnerSalesProfile).getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             throw new IllegalStateException("No property availability found for the test property.");
