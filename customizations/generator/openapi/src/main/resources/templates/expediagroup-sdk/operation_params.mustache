@@ -1,0 +1,183 @@
+{{#operations}}
+    {{#operation}}
+        {{#hasNonBodyParams}}
+            package com.expediagroup.sdk.{{namespace}}.operations
+
+            import com.expediagroup.sdk.core.model.OperationParams
+            import com.fasterxml.jackson.annotation.JsonProperty
+            import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
+            /**
+            {{#nonBodyParams}}
+                {{#params}}
+                    * @property {{{paramName}}} {{{description}}}
+                {{/params}}
+            {{/nonBodyParams}}
+            */
+            @JsonDeserialize(builder = {{classname}}Params.Builder::class)
+            data class {{classname}}Params
+            {{^isLinkable}}
+                (
+                    {{#nonBodyParams}}
+                        {{#params}}
+                            {{>modelMutable}} {{>client/apiParam}}{{^-last}}, {{/-last}}
+                        {{/params}}
+                    {{/nonBodyParams}}
+                )
+            {{/isLinkable}}
+            {{#isLinkable}}
+                internal constructor(
+                    {{#nonBodyParams}}
+                        {{#params}}
+                            {{>modelMutable}} {{{paramName}}}: {{>partials/datatype}}? = null,
+                        {{/params}}
+                    {{/nonBodyParams}}
+                    private val dummy: Unit
+                )
+            {{/isLinkable}}
+            : OperationParams {
+                companion object {
+                    @JvmStatic
+                    fun builder() = Builder()
+                }
+
+                {{#isLinkable}}
+                    constructor(
+                        {{#nonBodyParams}}
+                            {{#params}}
+                                {{>client/apiParam}}{{^-last}}, {{/-last}}
+                            {{/params}}
+                        {{/nonBodyParams}}
+                    ) : this(
+                        {{#nonBodyParams}}
+                            {{#params}}
+                                {{paramName}} = {{paramName}},
+                            {{/params}}
+                        {{/nonBodyParams}}
+                        dummy = Unit
+                    )
+
+                    constructor(context: {{classname}}Context?) : this(
+                        {{#headerParams}}
+                            {{paramName}} = context?.{{paramName}}
+                            {{#defaultValue}}
+                                {{^isNumber}} ?: {{{defaultValue}}}{{/isNumber}}
+                                {{#isNumber}} ?: {{{defaultValue}}}.toDouble(){{/isNumber}}
+                            {{/defaultValue}}
+                            ,
+                        {{/headerParams}}
+                        dummy = Unit
+                    )
+                {{/isLinkable}}
+
+                {{#nonBodyParams}}
+                    {{#params}}
+                        {{#isEnum}}
+                            enum class {{enumName}}(
+                                val value:
+                                {{#isContainer}}{{{items.dataType}}}{{/isContainer}}
+                                {{^isContainer}}{{dataType}}{{/isContainer}}
+                            ) {
+                                {{#allowableValues}}
+                                    {{#enumVars}}
+                                        {{name}}({{{value}}})
+                                        {{^-last}},{{/-last}}
+                                    {{/enumVars}}
+                                {{/allowableValues}}
+                            }
+                        {{/isEnum}}
+                    {{/params}}
+                {{/nonBodyParams}}
+
+                class Builder(
+                    {{#nonBodyParams}}
+                        {{#params}}
+                            @JsonProperty("{{{baseName}}}") private var {{{paramName}}}: {{>partials/datatype}}? = null
+                            {{^-last}},{{/-last}}
+                        {{/params}}
+                    {{/nonBodyParams}}
+                ) {
+                    {{#nonBodyParams}}
+                        {{#params}}
+                            /**
+                            * @param {{{paramName}}} {{{description}}}
+                            */
+                            fun {{{paramName}}}({{{paramName}}}: {{>partials/datatype}}) = apply { this.{{{paramName}}} = {{{paramName}}} }
+                        {{/params}}
+                    {{/nonBodyParams}}
+
+                    fun build(): {{classname}}Params {
+                        {{#hasRequiredParams}}
+                            validateNullity()
+                        {{/hasRequiredParams}}
+
+                        return {{classname}}Params(
+                            {{#nonBodyParams}}
+                                {{#params}}
+                                    {{{paramName}}} = {{{paramName}}}{{#required}}!!{{/required}}{{^-last}},{{/-last}}
+                                {{/params}}
+                            {{/nonBodyParams}}
+                        )
+                    }
+
+                    {{#hasRequiredParams}}
+                        private fun validateNullity() {
+                            {{#nonBodyParams}}
+                                {{#params}}
+                                    {{#required}}
+                                        if ({{{paramName}}} == null) {
+                                            throw NullPointerException("Required parameter {{{paramName}}} is missing")
+                                        }
+                                    {{/required}}
+                                {{/params}}
+                            {{/nonBodyParams}}
+                        }
+                    {{/hasRequiredParams}}
+                }
+
+                override fun getHeaders(): Map<String, String> {
+                    return buildMap {
+                        {{#headerParams}}
+                            {{paramName}}?.also {
+                                put("{{baseName}}", {{paramName}}{{#isEnum}}.value{{/isEnum}})
+                            }
+                        {{/headerParams}}
+                        {{#responses}}
+                            {{#httpAcceptHeader}}
+                                put("Accept", "{{mediaTypes}}")
+                            {{/httpAcceptHeader}}
+                        {{/responses}}
+                    }
+                }
+
+                override fun getQueryParams(): Map<String, Iterable<String>> {
+                    return buildMap {
+                        {{#queryParams}}
+                            {{paramName}}?.also {
+                                put(
+                                    "{{baseName}}",
+                                    {{#isContainer}}
+                                        {{paramName}}{{#isEnum}}.map { it.value }{{/isEnum}}
+                                    {{/isContainer}}
+                                    {{^isContainer}}
+                                            listOf({{paramName}}{{#isEnum}}.value{{/isEnum}}{{^isString}}.toString(){{/isString}})
+                                    {{/isContainer}}
+                                )
+                            }
+                        {{/queryParams}}
+                    }
+                }
+
+                override fun getPathParams() : Map<String, String> {
+                    return buildMap {
+                        {{#pathParams}}
+                            {{paramName}}?.also {
+                                put("{{baseName}}", {{paramName}}{{#isEnum}}.value{{/isEnum}})
+                            }
+                        {{/pathParams}}
+                    }
+                }
+            }
+        {{/hasNonBodyParams}}
+    {{/operation}}
+{{/operations}}

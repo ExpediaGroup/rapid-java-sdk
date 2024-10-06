@@ -1,0 +1,9 @@
+rule:
+  kind: modifiers
+  pattern: $MODIFIERS
+  inside:
+    kind: class_parameter
+    inside:
+      stopBy:
+        kind: class_declaration
+      pattern: data class Link

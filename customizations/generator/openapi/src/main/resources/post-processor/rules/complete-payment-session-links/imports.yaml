@@ -1,0 +1,3 @@
+rule:
+  kind: import_list
+  pattern: $LIST

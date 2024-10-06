@@ -1,0 +1,16 @@
+rule:
+  kind: type_identifier
+  regex: Link
+  any:
+    - inside:
+        kind: class_parameter
+        stopBy: end
+        has:
+          kind: simple_identifier
+          regex: retrieve
+    - inside:
+        kind: function_declaration
+        stopBy: end
+        has:
+          kind: simple_identifier
+          regex: retrieve

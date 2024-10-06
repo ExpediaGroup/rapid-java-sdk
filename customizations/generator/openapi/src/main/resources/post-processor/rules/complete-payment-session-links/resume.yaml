@@ -1,0 +1,17 @@
+rule:
+  kind: type_identifier
+  regex: Link
+  pattern: $LINK
+  any:
+    - inside:
+        kind: class_parameter
+        stopBy: end
+        has:
+          kind: simple_identifier
+          regex: resume
+    - inside:
+        kind: function_declaration
+        stopBy: end
+        has:
+          kind: simple_identifier
+          regex: resume

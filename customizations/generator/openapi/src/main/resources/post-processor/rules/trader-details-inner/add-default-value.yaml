@@ -1,0 +1,11 @@
+rule:
+  kind: "user_type"
+  pattern: "$TYPE"
+  inside:
+    kind: "class_parameter"
+    regex: "contactMessage"
+    inside:
+      kind: "primary_constructor"
+      inside:
+        kind: "class_declaration"
+        regex: "data class TraderDetailsInner"

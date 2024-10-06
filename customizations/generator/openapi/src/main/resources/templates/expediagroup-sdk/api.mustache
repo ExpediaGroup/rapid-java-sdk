@@ -1,0 +1,124 @@
+package com.expediagroup.sdk.{{namespace}}.operations
+
+import com.expediagroup.sdk.core.model.Operation
+
+{{#operations}}{{#operation}}
+    {{^hasBodyParam}}
+        import com.expediagroup.sdk.core.model.Nothing
+    {{/hasBodyParam}}
+
+    {{#bodyParam}}
+        import com.expediagroup.sdk.{{namespace}}.models.{{dataType}}
+    {{/bodyParam}}
+
+    {{#hasPathParams}}
+        import org.apache.commons.text.StringSubstitutor
+    {{/hasPathParams}}
+{{/operation}}{{/operations}}
+
+
+{{#operations}}
+    {{#operation}}
+        /**
+        * {{{summary}}}
+        {{#hasBodyParam}}
+            * @property requestBody [{{#bodyParam}}{{dataType}}{{/bodyParam}}]
+        {{/hasBodyParam}}
+        {{#hasNonBodyParams}}
+            * @property params [{{classname}}Params]
+        {{/hasNonBodyParams}}
+        */
+        class {{classname}} {{#isLinkable}}private constructor{{/isLinkable}}(
+            {{#hasNonBodyParams}}
+                params: {{classname}}Params{{#isLinkable}}?{{/isLinkable}},
+            {{/hasNonBodyParams}}
+            {{#hasBodyParam}}
+                requestBody: {{#bodyParam}}{{dataType}}{{/bodyParam}}{{^required}}?{{/required}},
+            {{/hasBodyParam}}
+            {{#isLinkable}}link: {{classname}}Link?{{/isLinkable}}
+        ) : Operation<
+            {{#hasBodyParam}}{{#bodyParam}}{{dataType}}{{/bodyParam}}{{/hasBodyParam}}
+            {{^hasBodyParam}}Nothing{{/hasBodyParam}}
+        >(
+            {{#hasPathParams}}
+                {{#isLinkable}}url(params, link, "{{{path}}}"),{{/isLinkable}}
+                {{^isLinkable}}url(params),{{/isLinkable}}
+            {{/hasPathParams}}
+            {{^hasPathParams}}
+                {{#isLinkable}}url(null, link, "{{{path}}}"),{{/isLinkable}}
+                {{^isLinkable}}"{{#removeLeadingSlashes}}{{{path}}}{{/removeLeadingSlashes}}",{{/isLinkable}}
+            {{/hasPathParams}}
+            "{{httpMethod}}",
+            "{{operationId}}",
+            {{#hasBodyParam}}requestBody{{/hasBodyParam}}{{^hasBodyParam}}null{{/hasBodyParam}},
+            {{#hasNonBodyParams}}
+                params
+            {{/hasNonBodyParams}}
+            {{^hasPathParams}}{{^hasHeaderParams}}{{^hasQueryParams}}
+                null
+            {{/hasQueryParams}}{{/hasHeaderParams}}{{/hasPathParams}}
+        ) {
+            {{#hasBodyParam}}{{#hasNonBodyParams}}
+                @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: {{classname}}Params, requestBody: {{#bodyParam}}{{dataType}}{{/bodyParam}}{{^required}}?{{/required}})"))
+                constructor(
+                    requestBody: {{#bodyParam}}{{dataType}}{{/bodyParam}}{{^required}}?{{/required}},
+                    params: {{classname}}Params
+                ): this(params, requestBody)
+            {{/hasNonBodyParams}}{{/hasBodyParam}}
+            {{#isLinkable}}
+                constructor(
+                    {{#hasNonBodyParams}}
+                        params: {{classname}}Params,
+                    {{/hasNonBodyParams}}
+                    {{#hasBodyParam}}
+                        requestBody: {{#bodyParam}}{{dataType}}{{/bodyParam}}{{^required}}?{{/required}}
+                    {{/hasBodyParam}}
+                ): this(
+                    {{#hasNonBodyParams}}params,{{/hasNonBodyParams}}
+                    {{#hasBodyParam}}requestBody,{{/hasBodyParam}}
+                    null
+                )
+
+                constructor(
+                    link: {{classname}}Link,
+                    context: {{classname}}Context{{^hasRequiredContext}}?{{/hasRequiredContext}},
+                    {{#hasBodyParam}}
+                        requestBody: {{#bodyParam}}{{dataType}}{{/bodyParam}}{{^required}}?{{/required}}
+                    {{/hasBodyParam}}
+                ): this(
+                    {{#hasNonBodyParams}}{{classname}}Params(context),{{/hasNonBodyParams}}
+                    {{#hasBodyParam}}requestBody,{{/hasBodyParam}}
+                    link
+                )
+
+                companion object : LinkableOperation {
+                    override fun pathPattern(): String {
+                        {{#hasPathParams}}
+                            val paramsMap = buildMap {
+                                {{#pathParams}}
+                                    put("{{baseName}}", "[a-z0-9\\-]+")
+                                {{/pathParams}}
+                            }
+                            val substitutor = StringSubstitutor(paramsMap, "{", "}")
+                            return substitutor.replace("{{#removeLeadingSlashes}}{{{path}}}{{/removeLeadingSlashes}}")
+                        {{/hasPathParams}}
+                        {{^hasPathParams}}
+                            return "{{#removeLeadingSlashes}}{{{path}}}{{/removeLeadingSlashes}}"
+                        {{/hasPathParams}}
+                    }
+                }
+            {{/isLinkable}}
+            {{^isLinkable}}
+                {{#hasPathParams}}
+                    companion object {
+                        fun url(params: {{classname}}Params) : String {
+                            val url = "{{#removeLeadingSlashes}}{{{path}}}{{/removeLeadingSlashes}}"
+                            val substitutor = StringSubstitutor(params.getPathParams(), "{", "}")
+                            return substitutor.replace(url)
+                        }
+                    }
+                {{/hasPathParams}}
+            {{/isLinkable}}
+        }
+    {{/operation}}
+{{/operations}}

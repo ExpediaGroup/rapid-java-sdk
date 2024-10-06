@@ -1,0 +1,236 @@
+package com.expediagroup.sdk.{{namespace}}.client
+
+import java.util.concurrent.CompletableFuture
+import java.util.stream.Collectors
+import kotlin.collections.Map.Entry
+import kotlinx.coroutines.runBlocking
+
+{{#imports}}
+    import {{import}}
+{{/imports}}
+
+{{>imports/domain}}
+
+{{>imports/core}}
+
+{{>imports/helpers}}
+
+{{>imports/defaults}}
+
+/**
+* {{#openAPI}}{{#info}}{{{description}}}{{/info}}{{/openAPI}}
+*/
+
+class {{clientClassname}}Client private constructor(clientConfiguration: RapidClientConfiguration) : BaseRapidClient("{{namespace}}", clientConfiguration){
+    @JvmField val helpers = RapidHelpers(this)
+
+    class Builder : BaseRapidClient.Builder<Builder>() {
+        override fun build() = {{clientClassname}}Client(
+            RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields)
+        )
+    }
+
+    companion object {
+        @JvmStatic fun builder() = Builder()
+    }
+
+    override suspend fun throwServiceException(response: HttpResponse, operationId: String) {
+        throw ErrorObjectMapper.process(response, operationId)
+    }
+
+    private suspend inline fun <reified RequestType> executeHttpRequest(operation: Operation<RequestType>): HttpResponse {
+        return httpClient.request {
+            method = HttpMethod.parse(operation.method)
+            url(operation.url)
+
+            operation.params?.getHeaders()?.forEach { (key, value) ->
+                headers.append(key, value)
+            }
+
+            operation.params?.getQueryParams()?.forEach { (key, value) ->
+                url.parameters.appendAll(key, value)
+            }
+
+            val extraHeaders = buildMap {
+                put(HeaderKey.TRANSACTION_ID, operation.transactionId.dequeue().toString())
+            }
+
+            appendHeaders(extraHeaders)
+            validateConstraints(operation.requestBody)
+            contentType(ContentType.Application.Json)
+            setBody(operation.requestBody)
+        }
+    }
+
+    private inline fun <reified RequestType> executeWithEmptyResponse(operation: Operation<RequestType>) : EmptyResponse {
+        try {
+            return executeAsyncWithEmptyResponse(operation).get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    private inline fun <reified RequestType> executeAsyncWithEmptyResponse(operation: Operation<RequestType>) : CompletableFuture<EmptyResponse> {
+        return GlobalScope.future(Dispatchers.IO) {
+            try {
+                val response = executeHttpRequest(operation)
+                throwIfError(response, operation.operationId)
+                EmptyResponse(response.status.value, response.headers.entries())
+
+            } catch (exception: Exception) {
+                exception.handle()
+            }
+        }
+    }
+
+    private inline fun <reified RequestType, reified ResponseType> execute(operation: Operation<RequestType>) : Response<ResponseType> {
+        try {
+            return executeAsync<RequestType, ResponseType>(operation).get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    private inline fun <reified RequestType, reified ResponseType> executeAsync(operation: Operation<RequestType>) : CompletableFuture<Response<ResponseType>> {
+        return GlobalScope.future(Dispatchers.IO) {
+            try {
+                val response = executeHttpRequest(operation)
+                throwIfError(response, operation.operationId)
+                Response(response.status.value, response.body<ResponseType>(), response.headers.entries())
+            } catch (exception: Exception) {
+                exception.handle()
+            }
+        }
+    }
+
+    {{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}
+        /**
+        * {{{summary}}}
+        * {{{notes}}}
+        * @param operation [{{operationIdCamelCase}}Operation]
+        {{#exceptionDataTypes}}
+            {{#dataTypes}}
+                * @throws ExpediaGroupApi{{.}}Exception
+            {{/dataTypes}}
+        {{/exceptionDataTypes}}
+        * @return a [Response] object with a body of type {{{returnType}}}{{^returnType}}Nothing{{/returnType}}
+        */
+        fun execute(operation: {{operationIdCamelCase}}Operation) : {{#returnType}}Response<{{{returnType}}}>{{/returnType}}{{^returnType}}EmptyResponse{{/returnType}} {
+            {{#returnType}}
+                return execute<{{#bodyParam}}{{dataType}}{{/bodyParam}}{{^hasBodyParam}}Nothing{{/hasBodyParam}}, {{{returnType}}}>(operation)
+            {{/returnType}}
+            {{^returnType}}
+                return executeWithEmptyResponse<{{#bodyParam}}{{dataType}}{{/bodyParam}}{{^hasBodyParam}}Nothing{{/hasBodyParam}}>(operation)
+            {{/returnType}}
+        }
+
+        /**
+        * {{{summary}}}
+        * {{{notes}}}
+        * @param operation [{{operationIdCamelCase}}Operation]
+        {{#exceptionDataTypes}}
+            {{#dataTypes}}
+                * @throws ExpediaGroupApi{{.}}Exception
+            {{/dataTypes}}
+        {{/exceptionDataTypes}}
+        * @return a [CompletableFuture<Response>] object with a body of type {{{returnType}}}{{^returnType}}Nothing{{/returnType}}
+        */
+        fun executeAsync(operation: {{operationIdCamelCase}}Operation) : CompletableFuture<{{#returnType}}Response<{{{returnType}}}>{{/returnType}}{{^returnType}}EmptyResponse{{/returnType}}> {
+        {{#returnType}}
+            return executeAsync<{{#bodyParam}}{{dataType}}{{/bodyParam}}{{^hasBodyParam}}Nothing{{/hasBodyParam}}, {{{returnType}}}>(operation)
+        {{/returnType}}
+        {{^returnType}}
+            return executeAsyncWithEmptyResponse<{{#bodyParam}}{{dataType}}{{/bodyParam}}{{^hasBodyParam}}Nothing{{/hasBodyParam}}>(operation)
+        {{/returnType}}
+        }
+
+        private suspend {{^isKotlin}}inline {{/isKotlin}}fun {{^isKotlin}}k{{/isKotlin}}{{operationId}}WithResponse({{>client/apiParamsDecleration}}): {{#returnType}}Response<{{{returnType}}}>{{/returnType}}{{^returnType}}Response<Nothing>{{/returnType}} {
+            {{#hasNonBodyParams}}
+                val params =  {{operationIdCamelCase}}OperationParams(
+                {{#nonBodyParams}}
+                    {{#params}}
+                        {{{paramName}}} = {{{paramName}}}{{^-last}}, {{/-last}}
+                    {{/params}}
+                {{/nonBodyParams}}
+                )
+            {{/hasNonBodyParams}}
+
+            val operation = {{operationIdCamelCase}}Operation(
+                {{#hasNonBodyParams}}
+                    params,
+                {{/hasNonBodyParams}}
+                {{#hasBodyParam}}
+                    {{#bodyParam}}{{{paramName}}}{{/bodyParam}}
+                {{/hasBodyParam}}
+            )
+
+            return execute(operation)
+        }
+
+        {{^isKotlin}}
+            /**
+            * {{{summary}}}
+            * {{{notes}}}
+            {{#allParams}}
+                * @param {{{paramName}}} {{{description}}}{{^required}} (optional{{#defaultValue}}, defaults to {{{.}}}{{/defaultValue}}){{/required}}{{#required}}{{#defaultValue}} (defaults to {{{.}}}){{/defaultValue}}{{/required}}
+            {{/allParams}}
+            {{#exceptionDataTypes}}
+                {{#dataTypes}}
+                    * @throws ExpediaGroupApi{{.}}Exception
+                {{/dataTypes}}
+            {{/exceptionDataTypes}}
+            * @return {{{returnType}}}{{^returnType}}Nothing{{/returnType}}
+            */
+            @Throws(
+                {{#exceptionDataTypes}}
+                    {{#dataTypes}}
+                        ExpediaGroupApi{{.}}Exception::class
+                        {{^-last}},{{/-last}}
+                    {{/dataTypes}}
+                {{/exceptionDataTypes}}
+            )
+            @JvmOverloads
+            @Deprecated("Use execute method instead", ReplaceWith("execute(operation: {{operationIdCamelCase}}Operation)"))
+            fun {{operationId}}({{>client/apiParamsDecleration}}) : {{{returnType}}}{{^returnType}}Nothing{{/returnType}} {
+                return {{operationId}}WithResponse({{>client/apiParamsPassed}}).data
+            }
+
+            /**
+            * {{{summary}}}
+            * {{{notes}}}
+            {{#allParams}}
+                * @param {{{paramName}}} {{{description}}}{{^required}} (optional{{#defaultValue}}, defaults to {{{.}}}{{/defaultValue}}){{/required}}{{#required}}{{#defaultValue}} (defaults to {{{.}}}){{/defaultValue}}{{/required}}
+            {{/allParams}}
+            {{#exceptionDataTypes}}
+                {{#dataTypes}}
+                    * @throws ExpediaGroupApi{{.}}Exception
+                {{/dataTypes}}
+            {{/exceptionDataTypes}}
+            * @return a [Response] object with a body of type {{{returnType}}}{{^returnType}}Nothing{{/returnType}}
+            */
+            @Throws(
+                {{#exceptionDataTypes}}
+                    {{#dataTypes}}
+                        ExpediaGroupApi{{.}}Exception::class
+                        {{^-last}}, {{/-last}}
+                    {{/dataTypes}}
+                {{/exceptionDataTypes}}
+            )
+            @JvmOverloads
+            @Deprecated("Use execute method instead", ReplaceWith("execute(operation: {{operationIdCamelCase}}Operation)"))
+            fun {{operationId}}WithResponse({{>client/apiParamsDecleration}}) : {{#returnType}}Response<{{{returnType}}}>{{/returnType}}{{^returnType}}Response<Nothing>{{/returnType}} {
+                try {
+                    return GlobalScope.future(Dispatchers.IO) {
+                        k{{operationId}}WithResponse({{>client/apiParamsPassed}})
+                    }.get()
+                } catch (exception: Exception) {
+                    exception.handle()
+                }
+            }
+        {{/isKotlin}}
+
+        {{#isPaginatable}}
+            {{>client/paginatorMethods}}
+        {{/isPaginatable}}
+    {{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
+}
