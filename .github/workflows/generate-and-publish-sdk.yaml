@@ -32,7 +32,7 @@ jobs:
 #      sdk_repo_ref: ${{ inputs.sdk_repo_ref }}
 
   release-sdk:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@${{ inputs.sdk_repo_ref }}
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@${{inputs.sdk_repo_ref}}
     secrets: inherit
     with:
       branch: ${{ inputs.branch }}
