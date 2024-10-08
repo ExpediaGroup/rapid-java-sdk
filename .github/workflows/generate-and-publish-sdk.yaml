@@ -19,6 +19,11 @@ jobs:
   release-sdk:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
       - name: Call SDK release workflow
         run: |
           gh workflow run ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml --ref ${{ inputs.sdk_version }} --field branch=${{ inputs.branch }}
