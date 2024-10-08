@@ -17,15 +17,7 @@ on:
 
 jobs:
   release-sdk:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
-
-      - name: Call SDK release workflow
-        run: |
-          gh workflow run .github/workflows/selfserve-release-sdk.yaml --repo ExpediaGroup/expediagroup-java-sdk --ref ${{ inputs.sdk_repo_ref }} --field branch=${{ inputs.branch }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@mohnoor94/SDK-1441
+    secrets: inherit
+    with:
+      branch: ${{ inputs.branch }}
