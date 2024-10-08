@@ -17,7 +17,10 @@ on:
 
 jobs:
   release-sdk:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@${{ inputs.sdk_version }}
-    secrets: inherit
-    with:
-      branch: ${{ inputs.branch }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call SDK release workflow
+        run: |
+          gh workflow run ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml --ref ${{ inputs.sdk_version }} --field branch=${{ inputs.branch }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
