@@ -3,12 +3,6 @@ name: Generate and Publish SDK
 on:
   workflow_dispatch:
     inputs:
-      #      version:
-      #        description: |
-      #          SDK Version.
-      #          E.g., 1.0.0, 1.0.1, 1.0.0-SNAPSHOT, etc.
-      #        required: true
-      #        type: string
       sdk_repo_ref:
         description: |
           Branch or tag to checkout on the `expediagroup-java-sdk` repository.
@@ -22,24 +16,8 @@ on:
         default: 'main'
 
 jobs:
-  #  generate-and-publish-sources:
-  #    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@${{ inputs.sdk_repo_ref }}
-  #    secrets: inherit
-  #    with:
-  #      name: rapid
-  #      version: ${{ inputs.version }}
-  #      transformations: "-th -te /v3 --operationIdsToTags"
-  #      repository:  'ExpediaGroup/rapid-java-sdk'
-  #      sdk_repo_ref: ${{ inputs.sdk_repo_ref }}
-
-  prepare-actions:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "release_action=ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@${{inputs.sdk_repo_ref}}" >> $GITHUB_ENV
-
   release-sdk:
-    uses: ${{ env.release_action }}
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@${{ inputs.sdk_version }}
     secrets: inherit
     with:
       branch: ${{ inputs.branch }}
