@@ -8,7 +8,7 @@ on:
           Branch to release the SDK from.
           Defaults to the branch the action is being run from.
         type: string
-        default: ${{ github.ref }}
+        default: ''
 
 jobs:
   release-sdk:

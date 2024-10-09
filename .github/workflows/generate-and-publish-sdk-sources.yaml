@@ -17,23 +17,8 @@ on:
         default: ''
 
 jobs:
-  echo-things:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - run: |
-          current_branch=$(git rev-parse --abbrev-ref HEAD)
-          echo "Current branch: $current_branch"
-          echo ${{ github.ref }}
-          git checkout ${{ github.ref }}
-          current_branch=$(git rev-parse --abbrev-ref HEAD)
-          echo "Current branch: $current_branch"
-          echo ${{ inputs.sdk_repo_ref }}
-
   generate-and-publish-sources:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@mohnoor94/SDK-1441
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
     secrets: inherit
     with:
       name: rapid
