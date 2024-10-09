@@ -21,10 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          git branch
+          current_branch=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch: $current_branch"
           echo ${{ github.ref }}
           git checkout ${{ github.ref }}
-          git branch
+          current_branch=$(git rev-parse --abbrev-ref HEAD)
+          echo "Current branch: $current_branch"
           echo ${{ inputs.sdk_repo_ref }}
 
   generate-and-publish-sources:
