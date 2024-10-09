@@ -21,12 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
+          git branch
           echo ${{ github.ref }}
           git checkout ${{ github.ref }}
           git branch
           echo ${{ inputs.sdk_repo_ref }}
-          git checkout ${{ inputs.sdk_repo_ref }}
-          git branch
 
   generate-and-publish-sources:
     uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@mohnoor94/SDK-1441
