@@ -15,10 +15,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-public class SingleRoomBookScenario implements RapidScenario {
+public class CompletePaymentSessionSingleRoomBookScenario implements RapidScenario {
 
-    private static final Logger logger = LoggerFactory.getLogger(SingleRoomBookScenario.class);
+    private static final Logger logger = LoggerFactory.getLogger(CompletePaymentSessionSingleRoomBookScenario.class);
     private ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
@@ -28,12 +29,12 @@ public class SingleRoomBookScenario implements RapidScenario {
     }
 
     @Override
-    public void run() {
+    public void run() throws ExecutionException, InterruptedException {
 
         // Shopping for properties
         logger.info("Getting property availability for test property: {}", Constants.TEST_PROPERTY_ID);
 
-        List<Property> propertyAvailabilityList = shopService.getSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).getData();
+        List<Property> propertyAvailabilityList = shopService.asyncGetSingleRoomPropertiesAvailability(this.rapidPartnerSalesProfile).get().getData();
 
         if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
             throw new IllegalStateException("No property availability found for the test property.");
