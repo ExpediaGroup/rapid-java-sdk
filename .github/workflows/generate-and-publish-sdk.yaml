@@ -11,7 +11,7 @@ on:
         type: string
       sdk_repo_ref:
         description: |
-          Branch or tag to checkout on the `expediagroup-sdk-core` repository.
+          Branch or tag to checkout on the `expediagroup-java-sdk` repository.
           Leave empty to use the default branch.
         type: string
         default: ''
@@ -20,7 +20,10 @@ jobs:
   echo-things:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.ref }}
+      - run: |
+          echo ${{ github.ref }}
+          git checkout ${{ github.ref }}
+          git branch
   generate-and-publish-sources:
     uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@mohnoor94/SDK-1441
     secrets: inherit
