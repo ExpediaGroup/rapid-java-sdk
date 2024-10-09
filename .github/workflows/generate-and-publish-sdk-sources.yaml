@@ -1,4 +1,4 @@
-name: Generate and Publish SDK
+name: Generate and Publish SDK Sources
 
 on:
   workflow_dispatch:
@@ -11,23 +11,18 @@ on:
         type: string
       sdk_repo_ref:
         description: |
-          Branch or tag to checkout on the `expediagroup-sdk-core` repository.
+          Branch or tag to checkout on the `expediagroup-java-sdk` repository.
           Leave empty to use the default branch.
         type: string
         default: ''
-      ref:
-        description: |
-          Branch or tag to checkout on the provided repository.
-          Leave empty to use the default branch.
-        type: string
-        default: ''
+
 jobs:
-  generate-and-publish:
+  generate-and-publish-sources:
     uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@main
     secrets: inherit
     with:
       name: rapid
       version: ${{ inputs.version }}
       transformations: "-th -te /v3 --operationIdsToTags"
-      repository:  'ExpediaGroup/rapid-java-sdk'
+      repository: 'ExpediaGroup/rapid-java-sdk'
       sdk_repo_ref: ${{ inputs.sdk_repo_ref }}
