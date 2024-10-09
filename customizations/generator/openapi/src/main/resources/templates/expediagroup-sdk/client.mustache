@@ -43,12 +43,12 @@ class {{clientClassname}}Client private constructor(clientConfiguration: RapidCl
             method = HttpMethod.parse(operation.method)
             url(operation.url)
 
-            operation.params?.getHeaders()?.forEach { (key, value) ->
-                headers.append(key, value)
+            operation.params?.getHeaders()?.let {
+                headers.appendAll(it)
             }
 
-            operation.params?.getQueryParams()?.forEach { (key, value) ->
-                url.parameters.appendAll(key, value)
+            operation.params?.getQueryParams()?.let {
+                url.parameters.appendAll(it)
             }
 
             val extraHeaders = buildMap {

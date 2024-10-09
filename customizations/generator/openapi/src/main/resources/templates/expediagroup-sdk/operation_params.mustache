@@ -6,6 +6,8 @@
             import com.expediagroup.sdk.core.model.OperationParams
             import com.fasterxml.jackson.annotation.JsonProperty
             import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+            import io.ktor.http.Headers
+            import io.ktor.http.Parameters
 
             /**
             {{#nonBodyParams}}
@@ -135,34 +137,39 @@
                     {{/hasRequiredParams}}
                 }
 
-                override fun getHeaders(): Map<String, String> {
-                    return buildMap {
+                fun toBuilder() = Builder(
+                    {{#nonBodyParams}}
+                        {{#params}}
+                            {{{paramName}}} = {{{paramName}}}{{^-last}},{{/-last}}
+                        {{/params}}
+                    {{/nonBodyParams}}
+                )
+
+                override fun getHeaders(): Headers {
+                    return Headers.build {
                         {{#headerParams}}
-                            {{paramName}}?.also {
-                                put("{{baseName}}", {{paramName}}{{#isEnum}}.value{{/isEnum}})
+                            {{paramName}}?.let {
+                                append("{{baseName}}", it{{#isEnum}}.value{{/isEnum}})
                             }
                         {{/headerParams}}
                         {{#responses}}
                             {{#httpAcceptHeader}}
-                                put("Accept", "{{mediaTypes}}")
+                                append("Accept", "{{mediaTypes}}")
                             {{/httpAcceptHeader}}
                         {{/responses}}
                     }
                 }
 
-                override fun getQueryParams(): Map<String, Iterable<String>> {
-                    return buildMap {
+                override fun getQueryParams(): Parameters {
+                    return Parameters.build {
                         {{#queryParams}}
-                            {{paramName}}?.also {
-                                put(
-                                    "{{baseName}}",
-                                    {{#isContainer}}
-                                        {{paramName}}{{#isEnum}}.map { it.value }{{/isEnum}}
-                                    {{/isContainer}}
-                                    {{^isContainer}}
-                                            listOf({{paramName}}{{#isEnum}}.value{{/isEnum}}{{^isString}}.toString(){{/isString}})
-                                    {{/isContainer}}
-                                )
+                            {{paramName}}?.let {
+                                {{#isContainer}}
+                                    appendAll("{{baseName}}", it{{#isEnum}}.map { it.value }{{/isEnum}})
+                                {{/isContainer}}
+                                {{^isContainer}}
+                                    append("{{baseName}}", it{{#isEnum}}.value{{/isEnum}}{{^isString}}.toString(){{/isString}})
+                                {{/isContainer}}
                             }
                         {{/queryParams}}
                     }
