@@ -14,7 +14,7 @@ on:
           Branch or tag to checkout on the `expediagroup-java-sdk` repository.
           Leave empty to use the default branch.
         type: string
-        default: ${{ github.ref }}
+        default: ''
 
 jobs:
   echo-things:
@@ -25,6 +25,8 @@ jobs:
           git checkout ${{ github.ref }}
           git branch
           echo ${{ inputs.sdk_repo_ref }}
+          git checkout ${{ inputs.sdk_repo_ref }}
+          git branch
 
   generate-and-publish-sources:
     uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@mohnoor94/SDK-1441
