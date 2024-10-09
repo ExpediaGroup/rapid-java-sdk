@@ -3,7 +3,7 @@ package com.expediagroup.sdk.rapid.examples;
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.AsyncSingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
-import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.booking.CompletePaymentSessionSingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.content.GetPropertyContentInAdditionalLanguageScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.content.GetPropertyContentScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetListOfRegionNamesScenario;
@@ -23,12 +23,14 @@ import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetPaymentOptionsO
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class RapidSdkDemoApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(RapidSdkDemoApplication.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         logger.info("=======================================================================================");
         logger.info("=======================================================================================");
@@ -69,9 +71,9 @@ public class RapidSdkDemoApplication {
             2. Checking room prices for the property
             3. Booking the property
         */
-        SingleRoomBookScenario singleRoomBookScenario = new SingleRoomBookScenario();
-        singleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
-        singleRoomBookScenario.run();
+        CompletePaymentSessionSingleRoomBookScenario completePaymentSessionSingleRoomBookScenario = new CompletePaymentSessionSingleRoomBookScenario();
+        completePaymentSessionSingleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
+        completePaymentSessionSingleRoomBookScenario.run();
 
         /*  Run Async Single Room Book Scenario using the default profile
             This scenario demonstrates the following:
