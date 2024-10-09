@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SingleRoomBookScenario implements RapidScenario {
 
-    private static final Logger logger = LoggerFactory.getLogger(CompletePaymentSessionSingleRoomBookScenario.class);
+    private static final Logger logger = LoggerFactory.getLogger(SingleRoomBookScenario.class);
     private ShopService shopService = new ShopService();
     private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
