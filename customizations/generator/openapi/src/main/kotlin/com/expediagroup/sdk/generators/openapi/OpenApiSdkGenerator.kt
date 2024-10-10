@@ -17,7 +17,6 @@ package com.expediagroup.sdk.generators.openapi
 
 import com.expediagroup.sdk.model.ClientGenerationException
 import com.expediagroup.sdk.product.Product
-import com.expediagroup.sdk.product.ProductFamily
 import com.expediagroup.sdk.product.ProgrammingLanguage
 import com.github.rvesse.airline.SingleCommand
 import com.github.rvesse.airline.annotations.Command
@@ -118,7 +117,6 @@ class OpenApiSdkGenerator {
                     addAdditionalProperty("language", product.programmingLanguage.id)
                     addAdditionalProperty("repoName", product.repoName)
                     addAdditionalProperty("isKotlin", ProgrammingLanguage.isKotlin(product.programmingLanguage))
-                    addAdditionalProperty("isExpediaGroup", ProductFamily.isExpediaGroup(product.namespace))
 
                     // Mustache Helpers
                     mustacheHelpers.forEach { (name, function) -> addAdditionalProperty(name, function()) }
