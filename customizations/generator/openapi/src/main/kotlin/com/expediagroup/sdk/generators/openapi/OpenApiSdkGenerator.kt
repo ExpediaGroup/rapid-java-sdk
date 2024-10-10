@@ -100,7 +100,7 @@ class OpenApiSdkGenerator {
                     addGlobalProperty(CodegenConstants.MODELS, "")
                     addGlobalProperty(CodegenConstants.MODEL_DOCS, "false")
 
-                    supportingFiles.add("${namespace}Client.kt")
+                    supportingFiles.add("${namespace.pascalCase()}Client.kt")
                     addGlobalProperty(CodegenConstants.SUPPORTING_FILES, supportingFiles.joinToString(","))
                     // addGlobalProperty("debugSupportingFiles", "")
 
@@ -135,7 +135,7 @@ class OpenApiSdkGenerator {
                                 SupportingFile(
                                     "client.mustache",
                                     "$packagePath/client/",
-                                    "${namespace}Client.kt"
+                                    "${namespace.pascalCase()}Client.kt"
                                 )
                             )
                             add(SupportingFile("pom.mustache", "pom.xml"))
