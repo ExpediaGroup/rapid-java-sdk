@@ -3,7 +3,7 @@ package com.expediagroup.sdk.rapid.examples;
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.AsyncSingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
-import com.expediagroup.sdk.rapid.examples.scenarios.booking.CompletePaymentSessionSingleRoomBookScenario;
+import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.content.GetPropertyContentInAdditionalLanguageScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.content.GetPropertyContentScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.GetListOfRegionNamesScenario;
@@ -71,9 +71,9 @@ public class RapidSdkDemoApplication {
             2. Checking room prices for the property
             3. Booking the property
         */
-        CompletePaymentSessionSingleRoomBookScenario completePaymentSessionSingleRoomBookScenario = new CompletePaymentSessionSingleRoomBookScenario();
-        completePaymentSessionSingleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
-        completePaymentSessionSingleRoomBookScenario.run();
+        SingleRoomBookScenario singleRoomBookScenario = new SingleRoomBookScenario();
+        singleRoomBookScenario.setProfile(new DefaultRapidPartnerProfile());
+        singleRoomBookScenario.run();
 
         /*  Run Async Single Room Book Scenario using the default profile
             This scenario demonstrates the following:
