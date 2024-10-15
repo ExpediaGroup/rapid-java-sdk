@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class CardOption(
     // The country in which the payment will be processed.
     @JsonProperty("processing_country")
     @field:Valid
-    val processingCountry: kotlin.String? = null
+    val processingCountry: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class CardOption(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var processingCountry: kotlin.String? = null
+        private var processingCountry: kotlin.String? = null,
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -69,8 +69,14 @@ data class CardOption(
         fun build(): CardOption {
             return CardOption(
                 name = name,
-                processingCountry = processingCountry
+                processingCountry = processingCountry,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            processingCountry = processingCountry,
+        )
 }

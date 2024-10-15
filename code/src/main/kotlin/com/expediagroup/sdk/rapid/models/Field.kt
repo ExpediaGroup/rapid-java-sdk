@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class Field(
     // The value of the field that had an error.
     @JsonProperty("value")
     @field:Valid
-    val `value`: kotlin.String? = null
+    val `value`: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class Field(
     class Builder(
         private var name: kotlin.String? = null,
         private var type: kotlin.String? = null,
-        private var `value`: kotlin.String? = null
+        private var `value`: kotlin.String? = null,
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -78,8 +78,15 @@ data class Field(
             return Field(
                 name = name,
                 type = type,
-                `value` = `value`
+                `value` = `value`,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            type = type,
+            `value` = `value`,
+        )
 }

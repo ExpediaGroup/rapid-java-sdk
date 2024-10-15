@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class CancelRefund(
     // The currency of the refund amount.
     @JsonProperty("currency")
     @field:Valid
-    val currency: kotlin.String? = null
+    val currency: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class CancelRefund(
 
     class Builder(
         private var amount: kotlin.String? = null,
-        private var currency: kotlin.String? = null
+        private var currency: kotlin.String? = null,
     ) {
         fun amount(amount: kotlin.String?) = apply { this.amount = amount }
 
@@ -69,8 +69,14 @@ data class CancelRefund(
         fun build(): CancelRefund {
             return CancelRefund(
                 amount = amount,
-                currency = currency
+                currency = currency,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            amount = amount,
+            currency = currency,
+        )
 }

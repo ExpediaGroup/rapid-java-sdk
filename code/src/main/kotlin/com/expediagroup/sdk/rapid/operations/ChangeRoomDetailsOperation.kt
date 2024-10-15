@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.ChangeRoomDetailsRequest
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -28,39 +27,42 @@ import org.apache.commons.text.StringSubstitutor
 class ChangeRoomDetailsOperation private constructor(
     params: ChangeRoomDetailsOperationParams?,
     requestBody: ChangeRoomDetailsRequest?,
-    link: Link?
+    link: ChangeRoomDetailsOperationLink?,
 ) : Operation<
-        ChangeRoomDetailsRequest
+        ChangeRoomDetailsRequest,
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}/rooms/{room_id}"),
         "PUT",
         "changeRoomDetails",
         requestBody,
-        params
+        params,
     ) {
-    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: ChangeRoomDetailsOperationParams, requestBody: ChangeRoomDetailsRequest?)"))
+    @Deprecated(
+        "Switch order of arguments",
+        ReplaceWith("Operation(params: ChangeRoomDetailsOperationParams, requestBody: ChangeRoomDetailsRequest?)"),
+    )
     constructor(
         requestBody: ChangeRoomDetailsRequest?,
-        params: ChangeRoomDetailsOperationParams
+        params: ChangeRoomDetailsOperationParams,
     ) : this(params, requestBody)
 
     constructor(
         params: ChangeRoomDetailsOperationParams,
-        requestBody: ChangeRoomDetailsRequest?
+        requestBody: ChangeRoomDetailsRequest?,
     ) : this(
         params,
         requestBody,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
+        link: ChangeRoomDetailsOperationLink,
         context: ChangeRoomDetailsOperationContext,
-        requestBody: ChangeRoomDetailsRequest?
+        requestBody: ChangeRoomDetailsRequest?,
     ) : this(
         ChangeRoomDetailsOperationParams(context),
         requestBody,
-        link
+        link,
     )
 
     companion object : LinkableOperation {

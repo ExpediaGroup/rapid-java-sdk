@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -41,5 +41,5 @@ enum class MerchantOfRecord(val value: kotlin.String) {
     EXPEDIA("expedia"),
 
     @JsonProperty("property")
-    PROPERTY("property")
+    PROPERTY("property"),
 }

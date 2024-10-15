@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -52,7 +52,7 @@ data class PropertyAvailabilityAllOf(
     val rooms: kotlin.collections.List<RoomAvailability>? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyAvailabilityLinks? = null
+    val links: PropertyAvailabilityLinks? = null,
 ) {
     companion object {
         @JvmStatic
@@ -61,7 +61,7 @@ data class PropertyAvailabilityAllOf(
 
     class Builder(
         private var rooms: kotlin.collections.List<RoomAvailability>? = null,
-        private var links: PropertyAvailabilityLinks? = null
+        private var links: PropertyAvailabilityLinks? = null,
     ) {
         fun rooms(rooms: kotlin.collections.List<RoomAvailability>?) = apply { this.rooms = rooms }
 
@@ -70,8 +70,14 @@ data class PropertyAvailabilityAllOf(
         fun build(): PropertyAvailabilityAllOf {
             return PropertyAvailabilityAllOf(
                 rooms = rooms,
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            rooms = rooms,
+            links = links,
+        )
 }

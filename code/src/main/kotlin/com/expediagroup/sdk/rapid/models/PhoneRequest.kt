@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class PhoneRequest(
     // The area code of the phone number. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("area_code")
     @field:Valid
-    val areaCode: kotlin.String? = null
+    val areaCode: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class PhoneRequest(
     class Builder(
         private var countryCode: kotlin.String? = null,
         private var number: kotlin.String? = null,
-        private var areaCode: kotlin.String? = null
+        private var areaCode: kotlin.String? = null,
     ) {
         fun countryCode(countryCode: kotlin.String) = apply { this.countryCode = countryCode }
 
@@ -80,7 +80,7 @@ data class PhoneRequest(
             return PhoneRequest(
                 countryCode = countryCode!!,
                 number = number!!,
-                areaCode = areaCode
+                areaCode = areaCode,
             )
         }
 
@@ -93,4 +93,11 @@ data class PhoneRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            countryCode = countryCode!!,
+            number = number!!,
+            areaCode = areaCode,
+        )
 }

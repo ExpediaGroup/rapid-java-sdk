@@ -25,12 +25,13 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.GetPropertyContentOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -43,11 +44,12 @@ import javax.validation.constraints.Size
  * Container for localized address information.
  * @param links Keyed by the language, a map of links to the property’s localized address(es) based on the primary language(s) spoken in the property’s country. Only languages supported by the Rapid API are provided.
  */
+
 data class Localized(
     // Keyed by the language, a map of links to the property’s localized address(es) based on the primary language(s) spoken in the property’s country. Only languages supported by the Rapid API are provided.
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, Link>? = null
+    val links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -55,14 +57,19 @@ data class Localized(
     }
 
     class Builder(
-        private var links: kotlin.collections.Map<kotlin.String, Link>? = null
+        private var links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null,
     ) {
-        fun links(links: kotlin.collections.Map<kotlin.String, Link>?) = apply { this.links = links }
+        fun links(links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>?) = apply { this.links = links }
 
         fun build(): Localized {
             return Localized(
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links,
+        )
 }

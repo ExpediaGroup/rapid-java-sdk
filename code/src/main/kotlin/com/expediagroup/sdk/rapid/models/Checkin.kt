@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -71,7 +71,7 @@ data class Checkin(
     // The minimum age for a customer to be able to check-in at a property.
     @JsonProperty("min_age")
     @field:Valid
-    val minAge: java.math.BigDecimal? = null
+    val minAge: java.math.BigDecimal? = null,
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +84,7 @@ data class Checkin(
         private var endTime: kotlin.String? = null,
         private var instructions: kotlin.String? = null,
         private var specialInstructions: kotlin.String? = null,
-        private var minAge: java.math.BigDecimal? = null
+        private var minAge: java.math.BigDecimal? = null,
     ) {
         fun `24hour`(`24hour`: kotlin.String?) = apply { this.`24hour` = `24hour` }
 
@@ -105,8 +105,18 @@ data class Checkin(
                 endTime = endTime,
                 instructions = instructions,
                 specialInstructions = specialInstructions,
-                minAge = minAge
+                minAge = minAge,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `24hour` = `24hour`,
+            beginTime = beginTime,
+            endTime = endTime,
+            instructions = instructions,
+            specialInstructions = specialInstructions,
+            minAge = minAge,
+        )
 }

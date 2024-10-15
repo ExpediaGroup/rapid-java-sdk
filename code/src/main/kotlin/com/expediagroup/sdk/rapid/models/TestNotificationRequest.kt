@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class TestNotificationRequest(
     // The event type for which the test notification is requested.
     @JsonProperty("event_type")
     @field:Valid
-    val eventType: kotlin.String
+    val eventType: kotlin.String,
 ) {
     companion object {
         @JvmStatic
@@ -54,7 +54,7 @@ data class TestNotificationRequest(
     }
 
     class Builder(
-        private var eventType: kotlin.String? = null
+        private var eventType: kotlin.String? = null,
     ) {
         fun eventType(eventType: kotlin.String) = apply { this.eventType = eventType }
 
@@ -62,7 +62,7 @@ data class TestNotificationRequest(
             // Check required params
             validateNullity()
             return TestNotificationRequest(
-                eventType = eventType!!
+                eventType = eventType!!,
             )
         }
 
@@ -72,4 +72,9 @@ data class TestNotificationRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            eventType = eventType!!,
+        )
 }

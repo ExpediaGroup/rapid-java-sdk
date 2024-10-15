@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -67,7 +67,7 @@ data class CreateItineraryRequest(
     @field:Valid
     val rooms: kotlin.collections
         .List<
-            CreateItineraryRequestRoom
+            CreateItineraryRequestRoom,
         >,
     // Your unique reference value. This field supports from 3 to a maximum of 28 characters and is required to be unique (if provided). Entering special characters (\"<\", \">\", \"(\", \")\", and \"&\") in this field will result in the request being rejected.
     @JsonProperty("affiliate_reference_id")
@@ -95,7 +95,7 @@ data class CreateItineraryRequest(
     val travelerHandlingInstructions: kotlin.String? = null,
     @JsonProperty("invoicing")
     @field:Valid
-    val invoicing: CreateItineraryRequestInvoicing? = null
+    val invoicing: CreateItineraryRequestInvoicing? = null,
 ) {
     companion object {
         @JvmStatic
@@ -112,7 +112,7 @@ data class CreateItineraryRequest(
         private var affiliateMetadata: kotlin.String? = null,
         private var taxRegistrationNumber: kotlin.String? = null,
         private var travelerHandlingInstructions: kotlin.String? = null,
-        private var invoicing: CreateItineraryRequestInvoicing? = null
+        private var invoicing: CreateItineraryRequestInvoicing? = null,
     ) {
         fun email(email: kotlin.String) = apply { this.email = email }
 
@@ -130,7 +130,10 @@ data class CreateItineraryRequest(
 
         fun taxRegistrationNumber(taxRegistrationNumber: kotlin.String?) = apply { this.taxRegistrationNumber = taxRegistrationNumber }
 
-        fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) = apply { this.travelerHandlingInstructions = travelerHandlingInstructions }
+        fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) =
+            apply {
+                this.travelerHandlingInstructions = travelerHandlingInstructions
+            }
 
         fun invoicing(invoicing: CreateItineraryRequestInvoicing?) = apply { this.invoicing = invoicing }
 
@@ -147,7 +150,7 @@ data class CreateItineraryRequest(
                 affiliateMetadata = affiliateMetadata,
                 taxRegistrationNumber = taxRegistrationNumber,
                 travelerHandlingInstructions = travelerHandlingInstructions,
-                invoicing = invoicing
+                invoicing = invoicing,
             )
         }
 
@@ -163,4 +166,18 @@ data class CreateItineraryRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            email = email!!,
+            phone = phone!!,
+            rooms = rooms!!,
+            affiliateReferenceId = affiliateReferenceId,
+            hold = hold,
+            payments = payments,
+            affiliateMetadata = affiliateMetadata,
+            taxRegistrationNumber = taxRegistrationNumber,
+            travelerHandlingInstructions = travelerHandlingInstructions,
+            invoicing = invoicing,
+        )
 }

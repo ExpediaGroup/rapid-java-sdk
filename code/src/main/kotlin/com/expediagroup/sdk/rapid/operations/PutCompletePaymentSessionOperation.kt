@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -26,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class PutCompletePaymentSessionOperation private constructor(
     params: PutCompletePaymentSessionOperationParams?,
-    link: Link?
+    link: PutCompletePaymentSessionOperationLink?,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}/payment-sessions"),
         "PUT",
         "putCompletePaymentSession",
         null,
-        params
+        params,
     ) {
     constructor(
-        params: PutCompletePaymentSessionOperationParams
+        params: PutCompletePaymentSessionOperationParams,
     ) : this(
         params,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
-        context: PutCompletePaymentSessionOperationContext
+        link: PutCompletePaymentSessionOperationLink,
+        context: PutCompletePaymentSessionOperationContext,
     ) : this(
         PutCompletePaymentSessionOperationParams(context),
-        link
+        link,
     )
 
     companion object : LinkableOperation {

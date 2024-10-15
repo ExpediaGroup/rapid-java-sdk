@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class AllInclusive(
     // Details about amenities and services included in the all-inclusive rates.
     @JsonProperty("details")
     @field:Valid
-    val details: kotlin.String? = null
+    val details: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class AllInclusive(
     class Builder(
         private var allRatePlans: kotlin.Boolean? = null,
         private var someRatePlans: kotlin.Boolean? = null,
-        private var details: kotlin.String? = null
+        private var details: kotlin.String? = null,
     ) {
         fun allRatePlans(allRatePlans: kotlin.Boolean?) = apply { this.allRatePlans = allRatePlans }
 
@@ -78,8 +78,15 @@ data class AllInclusive(
             return AllInclusive(
                 allRatePlans = allRatePlans,
                 someRatePlans = someRatePlans,
-                details = details
+                details = details,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            allRatePlans = allRatePlans,
+            someRatePlans = someRatePlans,
+            details = details,
+        )
 }

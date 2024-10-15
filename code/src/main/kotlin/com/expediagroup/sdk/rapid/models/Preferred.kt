@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class Preferred(
     // The airport's IATA code.
     @JsonProperty("iata_airport_code")
     @field:Valid
-    val iataAirportCode: kotlin.String? = null
+    val iataAirportCode: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class Preferred(
     }
 
     class Builder(
-        private var iataAirportCode: kotlin.String? = null
+        private var iataAirportCode: kotlin.String? = null,
     ) {
         fun iataAirportCode(iataAirportCode: kotlin.String?) = apply { this.iataAirportCode = iataAirportCode }
 
         fun build(): Preferred {
             return Preferred(
-                iataAirportCode = iataAirportCode
+                iataAirportCode = iataAirportCode,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            iataAirportCode = iataAirportCode,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -63,7 +63,7 @@ data class Error(
     // An array of all the actual errors that occured.
     @JsonProperty("errors")
     @field:Valid
-    val errors: kotlin.collections.List<ErrorIndividual>? = null
+    val errors: kotlin.collections.List<ErrorIndividual>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -74,7 +74,7 @@ data class Error(
         private var type: kotlin.String? = null,
         private var message: kotlin.String? = null,
         private var fields: kotlin.collections.List<Field>? = null,
-        private var errors: kotlin.collections.List<ErrorIndividual>? = null
+        private var errors: kotlin.collections.List<ErrorIndividual>? = null,
     ) {
         fun type(type: kotlin.String?) = apply { this.type = type }
 
@@ -89,8 +89,16 @@ data class Error(
                 type = type,
                 message = message,
                 fields = fields,
-                errors = errors
+                errors = errors,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            message = message,
+            fields = fields,
+            errors = errors,
+        )
 }

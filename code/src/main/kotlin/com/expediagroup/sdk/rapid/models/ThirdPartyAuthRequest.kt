@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -86,7 +86,7 @@ data class ThirdPartyAuthRequest(
     // Only received for Mastercard transactions, else can be null. 0 - Non-SecureCode transaction, bypassed by the Merchant 1 - Merchant-Only SecureCode transaction 2 - Fully authenticated SecureCode transaction
     @JsonProperty("ucaf_indicator")
     @field:Valid
-    val ucafIndicator: kotlin.String? = null
+    val ucafIndicator: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -102,7 +102,7 @@ data class ThirdPartyAuthRequest(
         private var veResStatus: kotlin.String? = null,
         private var xid: kotlin.String? = null,
         private var cavvAlgorithm: kotlin.String? = null,
-        private var ucafIndicator: kotlin.String? = null
+        private var ucafIndicator: kotlin.String? = null,
     ) {
         fun cavv(cavv: kotlin.String) = apply { this.cavv = cavv }
 
@@ -134,7 +134,7 @@ data class ThirdPartyAuthRequest(
                 veResStatus = veResStatus,
                 xid = xid,
                 cavvAlgorithm = cavvAlgorithm,
-                ucafIndicator = ucafIndicator
+                ucafIndicator = ucafIndicator,
             )
         }
 
@@ -153,4 +153,17 @@ data class ThirdPartyAuthRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            cavv = cavv!!,
+            eci = eci!!,
+            threeDsVersion = threeDsVersion!!,
+            dsTransactionId = dsTransactionId!!,
+            paResStatus = paResStatus,
+            veResStatus = veResStatus,
+            xid = xid,
+            cavvAlgorithm = cavvAlgorithm,
+            ucafIndicator = ucafIndicator,
+        )
 }

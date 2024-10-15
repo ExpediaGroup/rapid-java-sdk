@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -50,7 +50,7 @@ data class ChargeCalculated(
     val billableCurrency: Amount? = null,
     @JsonProperty("request_currency")
     @field:Valid
-    val requestCurrency: Amount? = null
+    val requestCurrency: Amount? = null,
 ) {
     companion object {
         @JvmStatic
@@ -59,7 +59,7 @@ data class ChargeCalculated(
 
     class Builder(
         private var billableCurrency: Amount? = null,
-        private var requestCurrency: Amount? = null
+        private var requestCurrency: Amount? = null,
     ) {
         fun billableCurrency(billableCurrency: Amount?) = apply { this.billableCurrency = billableCurrency }
 
@@ -68,8 +68,14 @@ data class ChargeCalculated(
         fun build(): ChargeCalculated {
             return ChargeCalculated(
                 billableCurrency = billableCurrency,
-                requestCurrency = requestCurrency
+                requestCurrency = requestCurrency,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            billableCurrency = billableCurrency,
+            requestCurrency = requestCurrency,
+        )
 }

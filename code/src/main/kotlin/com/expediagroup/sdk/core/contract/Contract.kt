@@ -23,7 +23,7 @@ internal typealias Operation = (String) -> String
  * @property operation The operation to perform on a string.
  */
 internal enum class Contract(val operation: Operation) {
-    TRAILING_SLASH({ if (it.endsWith("/")) it else "$it/" })
+    TRAILING_SLASH({ if (it.endsWith("/")) it else "$it/" }),
 }
 
 /**

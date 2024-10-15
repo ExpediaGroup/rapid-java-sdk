@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -26,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class PutResumeBookingOperation private constructor(
     params: PutResumeBookingOperationParams?,
-    link: Link?
+    link: PutResumeBookingOperationLink?,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}"),
         "PUT",
         "putResumeBooking",
         null,
-        params
+        params,
     ) {
     constructor(
-        params: PutResumeBookingOperationParams
+        params: PutResumeBookingOperationParams,
     ) : this(
         params,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
-        context: PutResumeBookingOperationContext
+        link: PutResumeBookingOperationLink,
+        context: PutResumeBookingOperationContext,
     ) : this(
         PutResumeBookingOperationParams(context),
-        link
+        link,
     )
 
     companion object : LinkableOperation {

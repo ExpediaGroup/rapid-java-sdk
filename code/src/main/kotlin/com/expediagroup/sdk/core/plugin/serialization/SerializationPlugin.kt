@@ -26,7 +26,7 @@ import java.text.SimpleDateFormat
 internal object SerializationPlugin : Plugin<SerializationConfiguration> {
     override fun install(
         client: Client,
-        configurations: SerializationConfiguration
+        configurations: SerializationConfiguration,
     ) {
         configurations.httpClientConfiguration.install(ContentNegotiation) {
             jackson {

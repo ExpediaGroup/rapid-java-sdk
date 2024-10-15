@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class PropertyRating(
     // Returns a value of either \"Star\" or \"Alternate\". Star indicates the rating is provided by the property’s local star rating authority. Alternate indicates that the rating is an Expedia-assigned value; an official rating was not available.
     @JsonProperty("type")
     @field:Valid
-    val type: kotlin.String? = null
+    val type: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class PropertyRating(
 
     class Builder(
         private var rating: kotlin.String? = null,
-        private var type: kotlin.String? = null
+        private var type: kotlin.String? = null,
     ) {
         fun rating(rating: kotlin.String?) = apply { this.rating = rating }
 
@@ -69,8 +69,14 @@ data class PropertyRating(
         fun build(): PropertyRating {
             return PropertyRating(
                 rating = rating,
-                type = type
+                type = type,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            rating = rating,
+            type = type,
+        )
 }

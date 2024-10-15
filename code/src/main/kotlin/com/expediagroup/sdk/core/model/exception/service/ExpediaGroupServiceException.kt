@@ -26,5 +26,5 @@ import com.expediagroup.sdk.core.model.exception.ExpediaGroupException
 open class ExpediaGroupServiceException(
     message: String? = null,
     cause: Throwable? = null,
-    val transactionId: String? = null
+    val transactionId: String? = null,
 ) : ExpediaGroupException(message, cause)

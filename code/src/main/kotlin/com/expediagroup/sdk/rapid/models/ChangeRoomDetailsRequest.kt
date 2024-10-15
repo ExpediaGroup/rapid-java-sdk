@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -71,7 +71,7 @@ data class ChangeRoomDetailsRequest(
     val loyaltyId: kotlin.String? = null,
     @JsonProperty("loyalty")
     @field:Valid
-    val loyalty: Loyalty? = null
+    val loyalty: Loyalty? = null,
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +84,7 @@ data class ChangeRoomDetailsRequest(
         private var smoking: kotlin.Boolean? = null,
         private var specialRequest: kotlin.String? = null,
         private var loyaltyId: kotlin.String? = null,
-        private var loyalty: Loyalty? = null
+        private var loyalty: Loyalty? = null,
     ) {
         fun givenName(givenName: kotlin.String?) = apply { this.givenName = givenName }
 
@@ -105,8 +105,18 @@ data class ChangeRoomDetailsRequest(
                 smoking = smoking,
                 specialRequest = specialRequest,
                 loyaltyId = loyaltyId,
-                loyalty = loyalty
+                loyalty = loyalty,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            givenName = givenName,
+            familyName = familyName,
+            smoking = smoking,
+            specialRequest = specialRequest,
+            loyaltyId = loyaltyId,
+            loyalty = loyalty,
+        )
 }

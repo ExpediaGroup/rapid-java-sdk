@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Ratings(
     val `property`: PropertyRating? = null,
     @JsonProperty("guest")
     @field:Valid
-    val guest: GuestRating? = null
+    val guest: GuestRating? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Ratings(
 
     class Builder(
         private var `property`: PropertyRating? = null,
-        private var guest: GuestRating? = null
+        private var guest: GuestRating? = null,
     ) {
         fun `property`(`property`: PropertyRating?) = apply { this.`property` = `property` }
 
@@ -69,8 +69,14 @@ data class Ratings(
         fun build(): Ratings {
             return Ratings(
                 `property` = `property`,
-                guest = guest
+                guest = guest,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `property` = `property`,
+            guest = guest,
+        )
 }

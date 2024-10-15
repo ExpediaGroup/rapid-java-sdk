@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class UnitConfiguration(
     // The number of beds of this size.
     @JsonProperty("quantity")
     @field:Valid
-    val quantity: kotlin.Int? = null
+    val quantity: kotlin.Int? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class UnitConfiguration(
     class Builder(
         private var type: kotlin.String? = null,
         private var description: kotlin.String? = null,
-        private var quantity: kotlin.Int? = null
+        private var quantity: kotlin.Int? = null,
     ) {
         fun type(type: kotlin.String?) = apply { this.type = type }
 
@@ -78,8 +78,15 @@ data class UnitConfiguration(
             return UnitConfiguration(
                 type = type,
                 description = description,
-                quantity = quantity
+                quantity = quantity,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            description = description,
+            quantity = quantity,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -101,7 +101,7 @@ data class GuestRating(
     // The percent of guests who recommend staying at this property.
     @JsonProperty("recommendation_percent")
     @field:Valid
-    val recommendationPercent: kotlin.String? = null
+    val recommendationPercent: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -120,7 +120,7 @@ data class GuestRating(
         private var quality: kotlin.String? = null,
         private var `value`: kotlin.String? = null,
         private var amenities: kotlin.String? = null,
-        private var recommendationPercent: kotlin.String? = null
+        private var recommendationPercent: kotlin.String? = null,
     ) {
         fun count(count: java.math.BigDecimal?) = apply { this.count = count }
 
@@ -159,8 +159,24 @@ data class GuestRating(
                 quality = quality,
                 `value` = `value`,
                 amenities = amenities,
-                recommendationPercent = recommendationPercent
+                recommendationPercent = recommendationPercent,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            count = count,
+            overall = overall,
+            cleanliness = cleanliness,
+            service = service,
+            comfort = comfort,
+            condition = condition,
+            location = location,
+            neighborhood = neighborhood,
+            quality = quality,
+            `value` = `value`,
+            amenities = amenities,
+            recommendationPercent = recommendationPercent,
+        )
 }

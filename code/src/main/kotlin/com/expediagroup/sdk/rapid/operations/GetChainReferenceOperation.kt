@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [GetChainReferenceOperationParams]
  */
 class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+    params: GetChainReferenceOperationParams,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         "/v3/chains",
         "GET",
         "getChainReference",
         null,
-        params
+        params,
     )

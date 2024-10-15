@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -47,7 +47,7 @@ data class Polygon(
     // An array of linear ring coordinate arrays that combine to make up a single [Polygon](https://www.rfc-editor.org/rfc/rfc7946#section-3.1.6) in geojson format. If there is more than one linear ring at this level, the first is the outer boundary and the remaining linear rings are interior rings or holes.
     @JsonProperty("coordinates")
     @field:Valid
-    val coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null
+    val coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null,
 ) : BoundingPolygon {
     @JsonProperty("type")
     override val type: kotlin.String = "POLYGON"
@@ -58,14 +58,20 @@ data class Polygon(
     }
 
     class Builder(
-        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null
+        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null,
     ) {
-        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>?) = apply { this.coordinates = coordinates }
+        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>?) =
+            apply { this.coordinates = coordinates }
 
         fun build(): Polygon {
             return Polygon(
-                coordinates = coordinates
+                coordinates = coordinates,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Brand(
     // Brand name.
     @JsonProperty("name")
     @field:Valid
-    val name: kotlin.String? = null
+    val name: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Brand(
 
     class Builder(
         private var id: kotlin.String? = null,
-        private var name: kotlin.String? = null
+        private var name: kotlin.String? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -69,8 +69,14 @@ data class Brand(
         fun build(): Brand {
             return Brand(
                 id = id,
-                name = name
+                name = name,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+        )
 }

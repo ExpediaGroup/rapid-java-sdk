@@ -25,12 +25,13 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -43,10 +44,11 @@ import javax.validation.constraints.Size
  * A map of links, including links to create a booking.
  * @param book
  */
+
 data class PaymentSessionsLinks(
     @JsonProperty("book")
     @field:Valid
-    val book: Link? = null
+    val book: PostItineraryOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +56,19 @@ data class PaymentSessionsLinks(
     }
 
     class Builder(
-        private var book: Link? = null
+        private var book: PostItineraryOperationLink? = null,
     ) {
-        fun book(book: Link?) = apply { this.book = book }
+        fun book(book: PostItineraryOperationLink?) = apply { this.book = book }
 
         fun build(): PaymentSessionsLinks {
             return PaymentSessionsLinks(
-                book = book
+                book = book,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            book = book,
+        )
 }

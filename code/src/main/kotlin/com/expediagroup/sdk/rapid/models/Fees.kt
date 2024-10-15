@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Fees(
     // Describes additional optional fees for items such as breakfast, wifi, parking, pets etc.
     @JsonProperty("optional")
     @field:Valid
-    val optional: kotlin.String? = null
+    val optional: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Fees(
 
     class Builder(
         private var mandatory: kotlin.String? = null,
-        private var optional: kotlin.String? = null
+        private var optional: kotlin.String? = null,
     ) {
         fun mandatory(mandatory: kotlin.String?) = apply { this.mandatory = mandatory }
 
@@ -69,8 +69,14 @@ data class Fees(
         fun build(): Fees {
             return Fees(
                 mandatory = mandatory,
-                optional = optional
+                optional = optional,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            mandatory = mandatory,
+            optional = optional,
+        )
 }

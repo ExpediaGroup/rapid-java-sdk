@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -62,7 +62,7 @@ data class Essential(
     // An array of images needed for the essential item.
     @JsonProperty("images")
     @field:Valid
-    val images: kotlin.collections.List<Image1>? = null
+    val images: kotlin.collections.List<Image1>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -73,13 +73,14 @@ data class Essential(
         private var name: kotlin.String? = null,
         private var instructions: kotlin.String? = null,
         private var additionalInfo: kotlin.collections.Map<kotlin.String, kotlin.String>? = null,
-        private var images: kotlin.collections.List<Image1>? = null
+        private var images: kotlin.collections.List<Image1>? = null,
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun instructions(instructions: kotlin.String?) = apply { this.instructions = instructions }
 
-        fun additionalInfo(additionalInfo: kotlin.collections.Map<kotlin.String, kotlin.String>?) = apply { this.additionalInfo = additionalInfo }
+        fun additionalInfo(additionalInfo: kotlin.collections.Map<kotlin.String, kotlin.String>?) =
+            apply { this.additionalInfo = additionalInfo }
 
         fun images(images: kotlin.collections.List<Image1>?) = apply { this.images = images }
 
@@ -88,8 +89,16 @@ data class Essential(
                 name = name,
                 instructions = instructions,
                 additionalInfo = additionalInfo,
-                images = images
+                images = images,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            instructions = instructions,
+            additionalInfo = additionalInfo,
+            images = images,
+        )
 }

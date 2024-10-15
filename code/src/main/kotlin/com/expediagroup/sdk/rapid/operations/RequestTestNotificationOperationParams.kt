@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -34,7 +36,7 @@ data class RequestTestNotificationOperationParams(
     val paymentTerms: kotlin.String? =
         null,
     val platformName: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -46,7 +48,7 @@ data class RequestTestNotificationOperationParams(
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
-        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
     ) {
         /**
          * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -75,7 +77,7 @@ data class RequestTestNotificationOperationParams(
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
         }
 
@@ -83,36 +85,32 @@ data class RequestTestNotificationOperationParams(
         }
     }
 
-    override fun getHeaders(): Map<String, String> {
-        return buildMap {
+    fun toBuilder() =
+        Builder(
+            billingTerms = billingTerms,
+            partnerPointOfSale = partnerPointOfSale,
+            paymentTerms = paymentTerms,
+            platformName = platformName,
+        )
+
+    override fun getHeaders(): Headers {
+        return Headers.build {
         }
     }
 
-    override fun getQueryParams(): Map<String, Iterable<String>> {
-        return buildMap {
-            billingTerms?.also {
-                put(
-                    "billing_terms",
-                    listOf(billingTerms)
-                )
+    override fun getQueryParams(): Parameters {
+        return Parameters.build {
+            billingTerms?.let {
+                append("billing_terms", it)
             }
-            partnerPointOfSale?.also {
-                put(
-                    "partner_point_of_sale",
-                    listOf(partnerPointOfSale)
-                )
+            partnerPointOfSale?.let {
+                append("partner_point_of_sale", it)
             }
-            paymentTerms?.also {
-                put(
-                    "payment_terms",
-                    listOf(paymentTerms)
-                )
+            paymentTerms?.let {
+                append("payment_terms", it)
             }
-            platformName?.also {
-                put(
-                    "platform_name",
-                    listOf(platformName)
-                )
+            platformName?.let {
+                append("platform_name", it)
             }
         }
     }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -65,7 +65,7 @@ data class Day(
     val checkout: kotlin.String? = null,
     @JsonProperty("stay_constraints")
     @field:Valid
-    val stayConstraints: StayConstraints? = null
+    val stayConstraints: StayConstraints? = null,
 ) {
     companion object {
         @JvmStatic
@@ -77,7 +77,7 @@ data class Day(
         private var available: kotlin.Boolean? = null,
         private var checkin: kotlin.String? = null,
         private var checkout: kotlin.String? = null,
-        private var stayConstraints: StayConstraints? = null
+        private var stayConstraints: StayConstraints? = null,
     ) {
         fun date(date: java.time.LocalDate?) = apply { this.date = date }
 
@@ -95,8 +95,17 @@ data class Day(
                 available = available,
                 checkin = checkin,
                 checkout = checkout,
-                stayConstraints = stayConstraints
+                stayConstraints = stayConstraints,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            date = date,
+            available = available,
+            checkin = checkin,
+            checkout = checkout,
+            stayConstraints = stayConstraints,
+        )
 }

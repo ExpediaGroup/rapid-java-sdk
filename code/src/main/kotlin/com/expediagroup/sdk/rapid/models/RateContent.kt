@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -57,7 +57,7 @@ data class RateContent(
     // A text description of any special offers for this rate.
     @JsonProperty("special_offer_description")
     @field:Valid
-    val specialOfferDescription: kotlin.String? = null
+    val specialOfferDescription: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -67,20 +67,28 @@ data class RateContent(
     class Builder(
         private var id: kotlin.String? = null,
         private var amenities: kotlin.collections.Map<kotlin.String, Amenity>? = null,
-        private var specialOfferDescription: kotlin.String? = null
+        private var specialOfferDescription: kotlin.String? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
         fun amenities(amenities: kotlin.collections.Map<kotlin.String, Amenity>?) = apply { this.amenities = amenities }
 
-        fun specialOfferDescription(specialOfferDescription: kotlin.String?) = apply { this.specialOfferDescription = specialOfferDescription }
+        fun specialOfferDescription(specialOfferDescription: kotlin.String?) =
+            apply { this.specialOfferDescription = specialOfferDescription }
 
         fun build(): RateContent {
             return RateContent(
                 id = id,
                 amenities = amenities,
-                specialOfferDescription = specialOfferDescription
+                specialOfferDescription = specialOfferDescription,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            amenities = amenities,
+            specialOfferDescription = specialOfferDescription,
+        )
 }

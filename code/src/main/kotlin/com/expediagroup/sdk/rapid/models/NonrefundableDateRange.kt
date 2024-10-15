@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class NonrefundableDateRange(
     // End date of nonrefundable date range in ISO 8601 format.
     @JsonProperty("end")
     @field:Valid
-    val end: kotlin.String? = null
+    val end: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class NonrefundableDateRange(
 
     class Builder(
         private var start: kotlin.String? = null,
-        private var end: kotlin.String? = null
+        private var end: kotlin.String? = null,
     ) {
         fun start(start: kotlin.String?) = apply { this.start = start }
 
@@ -69,8 +69,14 @@ data class NonrefundableDateRange(
         fun build(): NonrefundableDateRange {
             return NonrefundableDateRange(
                 start = start,
-                end = end
+                end = end,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            start = start,
+            end = end,
+        )
 }

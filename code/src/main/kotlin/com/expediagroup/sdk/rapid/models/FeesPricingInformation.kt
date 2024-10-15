@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -54,7 +54,7 @@ data class FeesPricingInformation(
     val resortFee: ChargeCalculated? = null,
     @JsonProperty("mandatory_tax")
     @field:Valid
-    val mandatoryTax: ChargeCalculated? = null
+    val mandatoryTax: ChargeCalculated? = null,
 ) {
     companion object {
         @JvmStatic
@@ -64,7 +64,7 @@ data class FeesPricingInformation(
     class Builder(
         private var mandatoryFee: ChargeCalculated? = null,
         private var resortFee: ChargeCalculated? = null,
-        private var mandatoryTax: ChargeCalculated? = null
+        private var mandatoryTax: ChargeCalculated? = null,
     ) {
         fun mandatoryFee(mandatoryFee: ChargeCalculated?) = apply { this.mandatoryFee = mandatoryFee }
 
@@ -76,8 +76,15 @@ data class FeesPricingInformation(
             return FeesPricingInformation(
                 mandatoryFee = mandatoryFee,
                 resortFee = resortFee,
-                mandatoryTax = mandatoryTax
+                mandatoryTax = mandatoryTax,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            mandatoryFee = mandatoryFee,
+            resortFee = resortFee,
+            mandatoryTax = mandatoryTax,
+        )
 }

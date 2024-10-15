@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -55,7 +55,7 @@ data class Location(
     // When this field is true, the `obfuscated_coordinates` must be used to display approximate location instead of the precise location of `coordinates`.
     @JsonProperty("obfuscation_required")
     @field:Valid
-    val obfuscationRequired: kotlin.Boolean? = null
+    val obfuscationRequired: kotlin.Boolean? = null,
 ) {
     companion object {
         @JvmStatic
@@ -65,7 +65,7 @@ data class Location(
     class Builder(
         private var coordinates: Coordinates? = null,
         private var obfuscatedCoordinates: Coordinates? = null,
-        private var obfuscationRequired: kotlin.Boolean? = null
+        private var obfuscationRequired: kotlin.Boolean? = null,
     ) {
         fun coordinates(coordinates: Coordinates?) = apply { this.coordinates = coordinates }
 
@@ -77,8 +77,15 @@ data class Location(
             return Location(
                 coordinates = coordinates,
                 obfuscatedCoordinates = obfuscatedCoordinates,
-                obfuscationRequired = obfuscationRequired
+                obfuscationRequired = obfuscationRequired,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates,
+            obfuscatedCoordinates = obfuscatedCoordinates,
+            obfuscationRequired = obfuscationRequired,
+        )
 }

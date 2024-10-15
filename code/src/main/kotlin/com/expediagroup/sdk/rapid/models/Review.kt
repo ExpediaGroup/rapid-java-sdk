@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -92,7 +92,7 @@ data class Review(
     // A collection of the management responses to this review.
     @JsonProperty("management_responses")
     @field:Valid
-    val managementResponses: kotlin.collections.List<ManagementResponse>? = null
+    val managementResponses: kotlin.collections.List<ManagementResponse>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -109,7 +109,7 @@ data class Review(
         private var tripReason: TripReason? = null,
         private var travelCompanion: TravelCompanion? = null,
         private var text: kotlin.String? = null,
-        private var managementResponses: kotlin.collections.List<ManagementResponse>? = null
+        private var managementResponses: kotlin.collections.List<ManagementResponse>? = null,
     ) {
         fun verificationSource(verificationSource: kotlin.String?) = apply { this.verificationSource = verificationSource }
 
@@ -129,7 +129,10 @@ data class Review(
 
         fun text(text: kotlin.String?) = apply { this.text = text }
 
-        fun managementResponses(managementResponses: kotlin.collections.List<ManagementResponse>?) = apply { this.managementResponses = managementResponses }
+        fun managementResponses(managementResponses: kotlin.collections.List<ManagementResponse>?) =
+            apply {
+                this.managementResponses = managementResponses
+            }
 
         fun build(): Review {
             return Review(
@@ -142,8 +145,22 @@ data class Review(
                 tripReason = tripReason,
                 travelCompanion = travelCompanion,
                 text = text,
-                managementResponses = managementResponses
+                managementResponses = managementResponses,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            verificationSource = verificationSource,
+            title = title,
+            dateSubmitted = dateSubmitted,
+            rating = rating,
+            reviewerName = reviewerName,
+            stayDate = stayDate,
+            tripReason = tripReason,
+            travelCompanion = travelCompanion,
+            text = text,
+            managementResponses = managementResponses,
+        )
 }

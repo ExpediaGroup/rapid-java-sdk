@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -52,7 +52,7 @@ data class TraderInformation(
     // An array of traders.
     @JsonProperty("traders")
     @field:Valid
-    val traders: kotlin.collections.List<TraderDetailsInner>? = null
+    val traders: kotlin.collections.List<TraderDetailsInner>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -61,7 +61,7 @@ data class TraderInformation(
 
     class Builder(
         private var termsAndConditions: kotlin.String? = null,
-        private var traders: kotlin.collections.List<TraderDetailsInner>? = null
+        private var traders: kotlin.collections.List<TraderDetailsInner>? = null,
     ) {
         fun termsAndConditions(termsAndConditions: kotlin.String) = apply { this.termsAndConditions = termsAndConditions }
 
@@ -72,7 +72,7 @@ data class TraderInformation(
             validateNullity()
             return TraderInformation(
                 termsAndConditions = termsAndConditions!!,
-                traders = traders
+                traders = traders,
             )
         }
 
@@ -82,4 +82,10 @@ data class TraderInformation(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            termsAndConditions = termsAndConditions!!,
+            traders = traders,
+        )
 }

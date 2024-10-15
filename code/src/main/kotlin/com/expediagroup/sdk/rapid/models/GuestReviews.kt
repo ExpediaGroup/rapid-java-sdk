@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
 data class GuestReviews(
     @JsonProperty("verified")
     @field:Valid
-    val verified: GuestReviewsVerified? = null
+    val verified: GuestReviewsVerified? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class GuestReviews(
     }
 
     class Builder(
-        private var verified: GuestReviewsVerified? = null
+        private var verified: GuestReviewsVerified? = null,
     ) {
         fun verified(verified: GuestReviewsVerified?) = apply { this.verified = verified }
 
         fun build(): GuestReviews {
             return GuestReviews(
-                verified = verified
+                verified = verified,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            verified = verified,
+        )
 }

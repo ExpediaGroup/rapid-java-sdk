@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class EnhancedHouseRules(
     // List of strings detailing further information about the rule.
     @JsonProperty("additional_information")
     @field:Valid
-    val additionalInformation: kotlin.collections.List<kotlin.String>? = null
+    val additionalInformation: kotlin.collections.List<kotlin.String>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,17 +60,26 @@ data class EnhancedHouseRules(
 
     class Builder(
         private var rule: kotlin.String? = null,
-        private var additionalInformation: kotlin.collections.List<kotlin.String>? = null
+        private var additionalInformation: kotlin.collections.List<kotlin.String>? = null,
     ) {
         fun rule(rule: kotlin.String?) = apply { this.rule = rule }
 
-        fun additionalInformation(additionalInformation: kotlin.collections.List<kotlin.String>?) = apply { this.additionalInformation = additionalInformation }
+        fun additionalInformation(additionalInformation: kotlin.collections.List<kotlin.String>?) =
+            apply {
+                this.additionalInformation = additionalInformation
+            }
 
         fun build(): EnhancedHouseRules {
             return EnhancedHouseRules(
                 rule = rule,
-                additionalInformation = additionalInformation
+                additionalInformation = additionalInformation,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            rule = rule,
+            additionalInformation = additionalInformation,
+        )
 }

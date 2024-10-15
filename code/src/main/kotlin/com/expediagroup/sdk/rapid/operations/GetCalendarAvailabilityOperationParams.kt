@@ -18,9 +18,11 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
- * @property test Shop calls have a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `unknown_internal_error`
+ * @property test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
  * @property propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
  * @property startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
  * @property endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
@@ -30,10 +32,10 @@ data class GetCalendarAvailabilityOperationParams(
     val test: GetCalendarAvailabilityOperationParams.Test? =
         null,
     val propertyId: kotlin.collections.List<
-        kotlin.String
+        kotlin.String,
     >,
     val startDate: java.time.LocalDate,
-    val endDate: java.time.LocalDate
+    val endDate: java.time.LocalDate,
 ) :
     OperationParams {
     companion object {
@@ -42,23 +44,23 @@ data class GetCalendarAvailabilityOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+        UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
     }
 
     class Builder(
         @JsonProperty("Test") private var test: GetCalendarAvailabilityOperationParams.Test? = null,
         @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         @JsonProperty("start_date") private var startDate: java.time.LocalDate? = null,
-        @JsonProperty("end_date") private var endDate: java.time.LocalDate? = null
+        @JsonProperty("end_date") private var endDate: java.time.LocalDate? = null,
     ) {
         /**
-         * @param test Shop calls have a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `unknown_internal_error`
+         * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
          */
         fun test(test: GetCalendarAvailabilityOperationParams.Test) = apply { this.test = test }
 
@@ -67,8 +69,8 @@ data class GetCalendarAvailabilityOperationParams(
          */
         fun propertyId(
             propertyId: kotlin.collections.List<
-                kotlin.String
-            >
+                kotlin.String,
+            >,
         ) = apply { this.propertyId = propertyId }
 
         /**
@@ -88,7 +90,7 @@ data class GetCalendarAvailabilityOperationParams(
                 test = test,
                 propertyId = propertyId!!,
                 startDate = startDate!!,
-                endDate = endDate!!
+                endDate = endDate!!,
             )
         }
 
@@ -105,34 +107,33 @@ data class GetCalendarAvailabilityOperationParams(
         }
     }
 
-    override fun getHeaders(): Map<String, String> {
-        return buildMap {
-            test?.also {
-                put("Test", test.value)
+    fun toBuilder() =
+        Builder(
+            test = test,
+            propertyId = propertyId,
+            startDate = startDate,
+            endDate = endDate,
+        )
+
+    override fun getHeaders(): Headers {
+        return Headers.build {
+            test?.let {
+                append("Test", it.value)
             }
-            put("Accept", "application/json")
+            append("Accept", "application/json")
         }
     }
 
-    override fun getQueryParams(): Map<String, Iterable<String>> {
-        return buildMap {
-            propertyId?.also {
-                put(
-                    "property_id",
-                    propertyId
-                )
+    override fun getQueryParams(): Parameters {
+        return Parameters.build {
+            propertyId?.let {
+                appendAll("property_id", it)
             }
-            startDate?.also {
-                put(
-                    "start_date",
-                    listOf(startDate.toString())
-                )
+            startDate?.let {
+                append("start_date", it.toString())
             }
-            endDate?.also {
-                put(
-                    "end_date",
-                    listOf(endDate.toString())
-                )
+            endDate?.let {
+                append("end_date", it.toString())
             }
         }
     }

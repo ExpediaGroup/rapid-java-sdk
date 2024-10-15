@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class Phone(
     // The remaining digits of the phone number.
     @JsonProperty("number")
     @field:Valid
-    val number: kotlin.String? = null
+    val number: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class Phone(
     class Builder(
         private var countryCode: kotlin.String? = null,
         private var areaCode: kotlin.String? = null,
-        private var number: kotlin.String? = null
+        private var number: kotlin.String? = null,
     ) {
         fun countryCode(countryCode: kotlin.String?) = apply { this.countryCode = countryCode }
 
@@ -78,8 +78,15 @@ data class Phone(
             return Phone(
                 countryCode = countryCode,
                 areaCode = areaCode,
-                number = number
+                number = number,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            countryCode = countryCode,
+            areaCode = areaCode,
+            number = number,
+        )
 }

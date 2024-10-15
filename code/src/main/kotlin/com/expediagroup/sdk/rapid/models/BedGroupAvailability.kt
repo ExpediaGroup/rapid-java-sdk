@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -62,7 +62,7 @@ data class BedGroupAvailability(
     // The bed configuration for a given room. This array can be empty for the related bed group.
     @JsonProperty("configuration")
     @field:Valid
-    val configuration: kotlin.collections.List<BedGroupConfiguration>? = null
+    val configuration: kotlin.collections.List<BedGroupConfiguration>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -73,7 +73,7 @@ data class BedGroupAvailability(
         private var links: BedGroupAvailabilityLinks? = null,
         private var id: kotlin.String? = null,
         private var description: kotlin.String? = null,
-        private var configuration: kotlin.collections.List<BedGroupConfiguration>? = null
+        private var configuration: kotlin.collections.List<BedGroupConfiguration>? = null,
     ) {
         fun links(links: BedGroupAvailabilityLinks?) = apply { this.links = links }
 
@@ -88,8 +88,16 @@ data class BedGroupAvailability(
                 links = links,
                 id = id,
                 description = description,
-                configuration = configuration
+                configuration = configuration,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links,
+            id = id,
+            description = description,
+            configuration = configuration,
+        )
 }

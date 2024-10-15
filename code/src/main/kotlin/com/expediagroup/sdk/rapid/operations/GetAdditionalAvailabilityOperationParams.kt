@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -46,23 +48,23 @@ data class GetAdditionalAvailabilityOperationParams
         val checkin: kotlin.String? = null,
         val checkout: kotlin.String? = null,
         val exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? = null,
         val filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? = null,
         val include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? = null,
         val occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         val rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? = null,
         val salesChannel: kotlin.String? = null,
         val currency: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -84,29 +86,29 @@ data class GetAdditionalAvailabilityOperationParams
             checkout: kotlin.String? =
                 null,
             exclusion: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.Exclusion
+                GetAdditionalAvailabilityOperationParams.Exclusion,
             >? =
                 null,
             filter: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.Filter
+                GetAdditionalAvailabilityOperationParams.Filter,
             >? =
                 null,
             include: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.Include
+                GetAdditionalAvailabilityOperationParams.Include,
             >? =
                 null,
             occupancy: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >? =
                 null,
             rateOption: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.RateOption
+                GetAdditionalAvailabilityOperationParams.RateOption,
             >? =
                 null,
             salesChannel: kotlin.String? =
                 null,
             currency: kotlin.String? =
-                null
+                null,
         ) : this(
             propertyId = propertyId,
             customerIp = customerIp,
@@ -122,53 +124,53 @@ data class GetAdditionalAvailabilityOperationParams
             rateOption = rateOption,
             salesChannel = salesChannel,
             currency = currency,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: GetAdditionalAvailabilityOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
             UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
             NO_AVAILABILITY("no_availability"),
-            FORBIDDEN("forbidden")
+            FORBIDDEN("forbidden"),
         }
 
         enum class Exclusion(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             REFUNDABLE_DAMAGE_DEPOSIT("refundable_damage_deposit"),
-            CARD_ON_FILE("card_on_file")
+            CARD_ON_FILE("card_on_file"),
         }
 
         enum class Filter(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             REFUNDABLE("refundable"),
             EXPEDIA_COLLECT("expedia_collect"),
-            PROPERTY_COLLECT("property_collect")
+            PROPERTY_COLLECT("property_collect"),
         }
 
         enum class Include(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
-            SALE_SCENARIO_PERIOD_MOBILE_PROMOTION("sale_scenario.mobile_promotion")
+            SALE_SCENARIO_PERIOD_MOBILE_PROMOTION("sale_scenario.mobile_promotion"),
         }
 
         enum class RateOption(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             MEMBER("member"),
             NET_RATES("net_rates"),
-            CROSS_SELL("cross_sell")
+            CROSS_SELL("cross_sell"),
         }
 
         class Builder(
@@ -180,22 +182,22 @@ data class GetAdditionalAvailabilityOperationParams
             @JsonProperty("checkin") private var checkin: kotlin.String? = null,
             @JsonProperty("checkout") private var checkout: kotlin.String? = null,
             @JsonProperty("exclusion") private var exclusion: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.Exclusion
+                GetAdditionalAvailabilityOperationParams.Exclusion,
             >? = null,
             @JsonProperty("filter") private var filter: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.Filter
+                GetAdditionalAvailabilityOperationParams.Filter,
             >? = null,
             @JsonProperty("include") private var include: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.Include
+                GetAdditionalAvailabilityOperationParams.Include,
             >? = null,
             @JsonProperty("occupancy") private var occupancy: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >? = null,
             @JsonProperty("rate_option") private var rateOption: kotlin.collections.List<
-                GetAdditionalAvailabilityOperationParams.RateOption
+                GetAdditionalAvailabilityOperationParams.RateOption,
             >? = null,
             @JsonProperty("sales_channel") private var salesChannel: kotlin.String? = null,
-            @JsonProperty("currency") private var currency: kotlin.String? = null
+            @JsonProperty("currency") private var currency: kotlin.String? = null,
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -237,8 +239,8 @@ data class GetAdditionalAvailabilityOperationParams
              */
             fun exclusion(
                 exclusion: kotlin.collections.List<
-                    GetAdditionalAvailabilityOperationParams.Exclusion
-                >
+                    GetAdditionalAvailabilityOperationParams.Exclusion,
+                >,
             ) = apply { this.exclusion = exclusion }
 
             /**
@@ -246,8 +248,8 @@ data class GetAdditionalAvailabilityOperationParams
              */
             fun filter(
                 filter: kotlin.collections.List<
-                    GetAdditionalAvailabilityOperationParams.Filter
-                >
+                    GetAdditionalAvailabilityOperationParams.Filter,
+                >,
             ) = apply { this.filter = filter }
 
             /**
@@ -255,8 +257,8 @@ data class GetAdditionalAvailabilityOperationParams
              */
             fun include(
                 include: kotlin.collections.List<
-                    GetAdditionalAvailabilityOperationParams.Include
-                >
+                    GetAdditionalAvailabilityOperationParams.Include,
+                >,
             ) = apply { this.include = include }
 
             /**
@@ -264,8 +266,8 @@ data class GetAdditionalAvailabilityOperationParams
              */
             fun occupancy(
                 occupancy: kotlin.collections.List<
-                    kotlin.String
-                >
+                    kotlin.String,
+                >,
             ) = apply { this.occupancy = occupancy }
 
             /**
@@ -273,8 +275,8 @@ data class GetAdditionalAvailabilityOperationParams
              */
             fun rateOption(
                 rateOption: kotlin.collections.List<
-                    GetAdditionalAvailabilityOperationParams.RateOption
-                >
+                    GetAdditionalAvailabilityOperationParams.RateOption,
+                >,
             ) = apply { this.rateOption = rateOption }
 
             /**
@@ -304,7 +306,7 @@ data class GetAdditionalAvailabilityOperationParams
                     occupancy = occupancy,
                     rateOption = rateOption,
                     salesChannel = salesChannel,
-                    currency = currency
+                    currency = currency,
                 )
             }
 
@@ -318,82 +320,70 @@ data class GetAdditionalAvailabilityOperationParams
             }
         }
 
-        override fun getHeaders(): Map<String, String> {
-            return buildMap {
-                customerIp?.also {
-                    put("Customer-Ip", customerIp)
+        fun toBuilder() =
+            Builder(
+                propertyId = propertyId,
+                customerIp = customerIp,
+                customerSessionId = customerSessionId,
+                test = test,
+                token = token,
+                checkin = checkin,
+                checkout = checkout,
+                exclusion = exclusion,
+                filter = filter,
+                include = include,
+                occupancy = occupancy,
+                rateOption = rateOption,
+                salesChannel = salesChannel,
+                currency = currency,
+            )
+
+        override fun getHeaders(): Headers {
+            return Headers.build {
+                customerIp?.let {
+                    append("Customer-Ip", it)
                 }
-                customerSessionId?.also {
-                    put("Customer-Session-Id", customerSessionId)
+                customerSessionId?.let {
+                    append("Customer-Session-Id", it)
                 }
-                test?.also {
-                    put("Test", test.value)
+                test?.let {
+                    append("Test", it.value)
                 }
-                put("Accept", "application/json")
+                append("Accept", "application/json")
             }
         }
 
-        override fun getQueryParams(): Map<String, Iterable<String>> {
-            return buildMap {
-                token?.also {
-                    put(
-                        "token",
-                        listOf(token)
-                    )
+        override fun getQueryParams(): Parameters {
+            return Parameters.build {
+                token?.let {
+                    append("token", it)
                 }
-                checkin?.also {
-                    put(
-                        "checkin",
-                        listOf(checkin)
-                    )
+                checkin?.let {
+                    append("checkin", it)
                 }
-                checkout?.also {
-                    put(
-                        "checkout",
-                        listOf(checkout)
-                    )
+                checkout?.let {
+                    append("checkout", it)
                 }
-                exclusion?.also {
-                    put(
-                        "exclusion",
-                        exclusion.map { it.value }
-                    )
+                exclusion?.let {
+                    appendAll("exclusion", it.map { it.value })
                 }
-                filter?.also {
-                    put(
-                        "filter",
-                        filter.map { it.value }
-                    )
+                filter?.let {
+                    appendAll("filter", it.map { it.value })
                 }
-                include?.also {
-                    put(
-                        "include",
-                        include.map { it.value }
-                    )
+                include?.let {
+                    appendAll("include", it.map { it.value })
                 }
-                occupancy?.also {
-                    put(
-                        "occupancy",
-                        occupancy
-                    )
+                occupancy?.let {
+                    appendAll("occupancy", it)
                 }
-                rateOption?.also {
-                    put(
-                        "rate_option",
-                        rateOption.map { it.value }
-                    )
+                rateOption?.let {
+                    appendAll("rate_option", it.map { it.value })
                 }
-                salesChannel?.also {
-                    put(
-                        "sales_channel",
-                        listOf(salesChannel)
-                    )
+                salesChannel?.let {
+                    append("sales_channel", it)
                 }
-                currency?.also {
-                    put(
-                        "currency",
-                        listOf(currency)
-                    )
+                currency?.let {
+                    append("currency", it)
                 }
             }
         }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -82,7 +82,7 @@ data class Totals(
     val minimumSellingPrice: Charge? = null,
     @JsonProperty("property_fees")
     @field:Valid
-    val propertyFees: Charge? = null
+    val propertyFees: Charge? = null,
 ) {
     companion object {
         @JvmStatic
@@ -99,7 +99,7 @@ data class Totals(
         private var marketingFee: Charge? = null,
         private var grossProfit: Charge? = null,
         private var minimumSellingPrice: Charge? = null,
-        private var propertyFees: Charge? = null
+        private var propertyFees: Charge? = null,
     ) {
         fun inclusive(inclusive: Charge?) = apply { this.inclusive = inclusive }
 
@@ -111,7 +111,10 @@ data class Totals(
 
         fun strikethrough(strikethrough: Charge?) = apply { this.strikethrough = strikethrough }
 
-        fun propertyInclusiveStrikethrough(propertyInclusiveStrikethrough: Charge?) = apply { this.propertyInclusiveStrikethrough = propertyInclusiveStrikethrough }
+        fun propertyInclusiveStrikethrough(propertyInclusiveStrikethrough: Charge?) =
+            apply {
+                this.propertyInclusiveStrikethrough = propertyInclusiveStrikethrough
+            }
 
         fun marketingFee(marketingFee: Charge?) = apply { this.marketingFee = marketingFee }
 
@@ -132,8 +135,22 @@ data class Totals(
                 marketingFee = marketingFee,
                 grossProfit = grossProfit,
                 minimumSellingPrice = minimumSellingPrice,
-                propertyFees = propertyFees
+                propertyFees = propertyFees,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            inclusive = inclusive,
+            exclusive = exclusive,
+            propertyInclusive = propertyInclusive,
+            inclusiveStrikethrough = inclusiveStrikethrough,
+            strikethrough = strikethrough,
+            propertyInclusiveStrikethrough = propertyInclusiveStrikethrough,
+            marketingFee = marketingFee,
+            grossProfit = grossProfit,
+            minimumSellingPrice = minimumSellingPrice,
+            propertyFees = propertyFees,
+        )
 }

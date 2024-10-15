@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
@@ -25,7 +26,7 @@ interface LinkableOperation {
     fun url(
         params: OperationParams?,
         link: Link?,
-        url: String
+        url: String,
     ): String {
         val pathParams = params?.getPathParams()
 

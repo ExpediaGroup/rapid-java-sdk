@@ -24,16 +24,16 @@ import io.ktor.http.HttpMethod
 internal interface HttpHandler {
     suspend fun performGet(
         httpClient: HttpClient,
-        link: String
+        link: String,
     ): HttpResponse
 }
 
 internal class DefaultHttpHandler(
-    private val environmentProvider: EnvironmentProvider
+    private val environmentProvider: EnvironmentProvider,
 ) : HttpHandler, EnvironmentProvider by environmentProvider {
     override suspend fun performGet(
         httpClient: HttpClient,
-        link: String
+        link: String,
     ): HttpResponse {
         return httpClient.request {
             method = HttpMethod.Get

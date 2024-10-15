@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -53,8 +53,8 @@ data class PropertiesGeoJsonRequest(
     @field:Valid
     val coordinates: kotlin.collections
         .List<
-            kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>
-        >
+            kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>,
+        >,
 ) {
     companion object {
         @JvmStatic
@@ -63,18 +63,21 @@ data class PropertiesGeoJsonRequest(
 
     class Builder(
         private var type: kotlin.String? = null,
-        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null
+        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null,
     ) {
         fun type(type: kotlin.String) = apply { this.type = type }
 
-        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>) = apply { this.coordinates = coordinates }
+        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>) =
+            apply {
+                this.coordinates = coordinates
+            }
 
         fun build(): PropertiesGeoJsonRequest {
             // Check required params
             validateNullity()
             return PropertiesGeoJsonRequest(
                 type = type!!,
-                coordinates = coordinates!!
+                coordinates = coordinates!!,
             )
         }
 
@@ -87,4 +90,10 @@ data class PropertiesGeoJsonRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type!!,
+            coordinates = coordinates!!,
+        )
 }

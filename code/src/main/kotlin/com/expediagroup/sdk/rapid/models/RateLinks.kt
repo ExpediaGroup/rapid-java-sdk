@@ -25,12 +25,13 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.GetPaymentOptionsOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -43,10 +44,11 @@ import javax.validation.constraints.Size
  * A map of links, including a link to request payment options.
  * @param paymentOptions
  */
+
 data class RateLinks(
     @JsonProperty("payment_options")
     @field:Valid
-    val paymentOptions: Link? = null
+    val paymentOptions: GetPaymentOptionsOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +56,19 @@ data class RateLinks(
     }
 
     class Builder(
-        private var paymentOptions: Link? = null
+        private var paymentOptions: GetPaymentOptionsOperationLink? = null,
     ) {
-        fun paymentOptions(paymentOptions: Link?) = apply { this.paymentOptions = paymentOptions }
+        fun paymentOptions(paymentOptions: GetPaymentOptionsOperationLink?) = apply { this.paymentOptions = paymentOptions }
 
         fun build(): RateLinks {
             return RateLinks(
-                paymentOptions = paymentOptions
+                paymentOptions = paymentOptions,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            paymentOptions = paymentOptions,
+        )
 }

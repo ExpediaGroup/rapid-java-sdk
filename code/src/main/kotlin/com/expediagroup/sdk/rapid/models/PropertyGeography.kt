@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class PropertyGeography(
     // Unique Expedia property ID.
     @JsonProperty("property_id")
     @field:Valid
-    val propertyId: kotlin.String? = null
+    val propertyId: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class PropertyGeography(
     }
 
     class Builder(
-        private var propertyId: kotlin.String? = null
+        private var propertyId: kotlin.String? = null,
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
         fun build(): PropertyGeography {
             return PropertyGeography(
-                propertyId = propertyId
+                propertyId = propertyId,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId,
+        )
 }

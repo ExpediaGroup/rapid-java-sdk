@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class ManagementResponse(
     // When this management response was made, in ISO 8601 format.
     @JsonProperty("date")
     @field:Valid
-    val date: kotlin.String? = null
+    val date: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class ManagementResponse(
 
     class Builder(
         private var text: kotlin.String? = null,
-        private var date: kotlin.String? = null
+        private var date: kotlin.String? = null,
     ) {
         fun text(text: kotlin.String?) = apply { this.text = text }
 
@@ -69,8 +69,14 @@ data class ManagementResponse(
         fun build(): ManagementResponse {
             return ManagementResponse(
                 text = text,
-                date = date
+                date = date,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            text = text,
+            date = date,
+        )
 }

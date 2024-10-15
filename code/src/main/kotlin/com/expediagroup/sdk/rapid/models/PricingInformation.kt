@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -63,7 +63,7 @@ data class PricingInformation(
     val totals: Totals? = null,
     @JsonProperty("fees")
     @field:Valid
-    val fees: FeesPricingInformation? = null
+    val fees: FeesPricingInformation? = null,
 ) {
     companion object {
         @JvmStatic
@@ -74,7 +74,7 @@ data class PricingInformation(
         private var nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>? = null,
         private var stay: kotlin.collections.List<Stay>? = null,
         private var totals: Totals? = null,
-        private var fees: FeesPricingInformation? = null
+        private var fees: FeesPricingInformation? = null,
     ) {
         fun nightly(nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>?) = apply { this.nightly = nightly }
 
@@ -89,8 +89,16 @@ data class PricingInformation(
                 nightly = nightly,
                 stay = stay,
                 totals = totals,
-                fees = fees
+                fees = fees,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            nightly = nightly,
+            stay = stay,
+            totals = totals,
+            fees = fees,
+        )
 }

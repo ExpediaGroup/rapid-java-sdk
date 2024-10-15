@@ -25,12 +25,13 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.PriceCheckOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -43,10 +44,11 @@ import javax.validation.constraints.Size
  * A map of links, including links to confirm pricing and availability for the selected rate.
  * @param priceCheck
  */
+
 data class BedGroupAvailabilityLinks(
     @JsonProperty("price_check")
     @field:Valid
-    val priceCheck: Link? = null
+    val priceCheck: PriceCheckOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +56,19 @@ data class BedGroupAvailabilityLinks(
     }
 
     class Builder(
-        private var priceCheck: Link? = null
+        private var priceCheck: PriceCheckOperationLink? = null,
     ) {
-        fun priceCheck(priceCheck: Link?) = apply { this.priceCheck = priceCheck }
+        fun priceCheck(priceCheck: PriceCheckOperationLink?) = apply { this.priceCheck = priceCheck }
 
         fun build(): BedGroupAvailabilityLinks {
             return BedGroupAvailabilityLinks(
-                priceCheck = priceCheck
+                priceCheck = priceCheck,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            priceCheck = priceCheck,
+        )
 }

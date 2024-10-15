@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class Statistic(
     // Statistic value.
     @JsonProperty("value")
     @field:Valid
-    val `value`: kotlin.String? = null
+    val `value`: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class Statistic(
     class Builder(
         private var id: kotlin.String? = null,
         private var name: kotlin.String? = null,
-        private var `value`: kotlin.String? = null
+        private var `value`: kotlin.String? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -78,8 +78,15 @@ data class Statistic(
             return Statistic(
                 id = id,
                 name = name,
-                `value` = `value`
+                `value` = `value`,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            `value` = `value`,
+        )
 }

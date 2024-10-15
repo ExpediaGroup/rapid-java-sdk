@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
 data class RentalAgreement(
     @JsonProperty("links")
     @field:Valid
-    val links: RentalAgreementLinks? = null
+    val links: RentalAgreementLinks? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class RentalAgreement(
     }
 
     class Builder(
-        private var links: RentalAgreementLinks? = null
+        private var links: RentalAgreementLinks? = null,
     ) {
         fun links(links: RentalAgreementLinks?) = apply { this.links = links }
 
         fun build(): RentalAgreement {
             return RentalAgreement(
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links,
+        )
 }

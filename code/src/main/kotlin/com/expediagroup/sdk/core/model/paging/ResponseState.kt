@@ -35,7 +35,7 @@ internal interface ResponseState<T> {
 }
 
 internal class DefaultResponseState<T>(
-    private val response: Response<T>
+    private val response: Response<T>,
 ) : ResponseState<T> {
     override fun getNextResponse(): Response<T> {
         return response
@@ -60,7 +60,7 @@ internal class FetchLinkState<T>(
     private val link: String,
     private val client: Client,
     private val fallbackBody: T,
-    private val getBody: suspend (HttpResponse) -> T
+    private val getBody: suspend (HttpResponse) -> T,
 ) : ResponseState<T> {
     override fun getNextResponse(): Response<T> {
         return runBlocking {
@@ -80,7 +80,15 @@ internal class FetchLinkState<T>(
 
     private suspend fun decodeBody(response: HttpResponse): String {
         val byteReadChannel = prepareByteReadChannel(response)
-        val decodedByteReadChannel = if (response.contentEncoding().equals(HeaderValue.GZIP)) client.httpClient.decode(byteReadChannel) else byteReadChannel
+        val decodedByteReadChannel =
+            if (response.contentEncoding().equals(
+                    HeaderValue.GZIP,
+                )
+            ) {
+                client.httpClient.decode(byteReadChannel)
+            } else {
+                byteReadChannel
+            }
         val bodyString: String = decodedByteReadChannel.readRemaining().readText()
         return bodyString
     }
@@ -101,7 +109,7 @@ internal class ResponseStateFactory {
             link: String?,
             client: Client,
             fallbackBody: T,
-            getBody: suspend (HttpResponse) -> T
+            getBody: suspend (HttpResponse) -> T,
         ): ResponseState<T> {
             return link?.let { FetchLinkState(it, client, fallbackBody, getBody) } ?: LastResponseState()
         }

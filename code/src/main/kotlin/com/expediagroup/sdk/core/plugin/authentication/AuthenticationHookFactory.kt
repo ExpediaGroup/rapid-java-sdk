@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 internal object AuthenticationHookFactory : HookFactory<AuthenticationConfiguration> {
     override fun create(
         client: Client,
-        configuration: AuthenticationConfiguration
+        configuration: AuthenticationConfiguration,
     ): Hook<AuthenticationConfiguration> {
         return Hook(configuration, AuthenticationHookBuilder(client))
     }

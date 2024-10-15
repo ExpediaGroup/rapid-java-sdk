@@ -25,12 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationLink
+import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationLink
+import com.expediagroup.sdk.rapid.operations.PutCompletePaymentSessionOperationLink
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -46,19 +50,20 @@ import javax.validation.constraints.Size
  * @param completePaymentSession
  * @param cancel
  */
+
 data class ItineraryCreationLinks(
     @JsonProperty("retrieve")
     @field:Valid
-    val retrieve: Link? = null,
+    val retrieve: GetReservationByItineraryIdOperationLink? = null,
     @JsonProperty("resume")
     @field:Valid
-    val resume: Link? = null,
+    val resume: PutResumeBookingOperationLink? = null,
     @JsonProperty("complete_payment_session")
     @field:Valid
-    val completePaymentSession: Link? = null,
+    val completePaymentSession: PutCompletePaymentSessionOperationLink? = null,
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: Link? = null
+    val cancel: DeleteHeldBookingOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,26 +71,37 @@ data class ItineraryCreationLinks(
     }
 
     class Builder(
-        private var retrieve: Link? = null,
-        private var resume: Link? = null,
-        private var completePaymentSession: Link? = null,
-        private var cancel: Link? = null
+        private var retrieve: GetReservationByItineraryIdOperationLink? = null,
+        private var resume: PutResumeBookingOperationLink? = null,
+        private var completePaymentSession: PutCompletePaymentSessionOperationLink? = null,
+        private var cancel: DeleteHeldBookingOperationLink? = null,
     ) {
-        fun retrieve(retrieve: Link?) = apply { this.retrieve = retrieve }
+        fun retrieve(retrieve: GetReservationByItineraryIdOperationLink?) = apply { this.retrieve = retrieve }
 
-        fun resume(resume: Link?) = apply { this.resume = resume }
+        fun resume(resume: PutResumeBookingOperationLink?) = apply { this.resume = resume }
 
-        fun completePaymentSession(completePaymentSession: Link?) = apply { this.completePaymentSession = completePaymentSession }
+        fun completePaymentSession(completePaymentSession: PutCompletePaymentSessionOperationLink?) =
+            apply {
+                this.completePaymentSession = completePaymentSession
+            }
 
-        fun cancel(cancel: Link?) = apply { this.cancel = cancel }
+        fun cancel(cancel: DeleteHeldBookingOperationLink?) = apply { this.cancel = cancel }
 
         fun build(): ItineraryCreationLinks {
             return ItineraryCreationLinks(
                 retrieve = retrieve,
                 resume = resume,
                 completePaymentSession = completePaymentSession,
-                cancel = cancel
+                cancel = cancel,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            retrieve = retrieve,
+            resume = resume,
+            completePaymentSession = completePaymentSession,
+            cancel = cancel,
+        )
 }

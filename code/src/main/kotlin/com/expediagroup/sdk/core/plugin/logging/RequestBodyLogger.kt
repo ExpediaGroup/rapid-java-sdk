@@ -23,6 +23,7 @@ import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.HttpSendPipeline
 import io.ktor.http.content.OutputStreamContent
+import io.ktor.http.contentType
 import io.ktor.util.AttributeKey
 import io.ktor.util.pipeline.PipelineContext
 import io.ktor.utils.io.writer
@@ -36,7 +37,7 @@ internal class RequestBodyLogger {
 
         override fun install(
             plugin: RequestBodyLogger,
-            scope: HttpClient
+            scope: HttpClient,
         ) {
             scope.sendPipeline.intercept(HttpSendPipeline.Monitoring) {
                 val body: String = getBody()
@@ -46,7 +47,12 @@ internal class RequestBodyLogger {
         }
 
         private suspend fun PipelineContext<Any, HttpRequestBuilder>.getBody(): String {
-            val body = context.body
+            val body =
+                when {
+                    context.contentType() in LoggableContentTypes -> context.body
+                    else -> return "Body of type ${context.contentType()?.contentType} cannot be logged!"
+                }
+
             if (body is OutputStreamContent) {
                 return coroutineScope {
                     writer {

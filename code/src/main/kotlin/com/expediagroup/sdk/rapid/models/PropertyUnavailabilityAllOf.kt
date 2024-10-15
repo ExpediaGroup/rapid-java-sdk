@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
 data class PropertyUnavailabilityAllOf(
     @JsonProperty("unavailable_reason")
     @field:Valid
-    val unavailableReason: UnavailableReason? = null
+    val unavailableReason: UnavailableReason? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class PropertyUnavailabilityAllOf(
     }
 
     class Builder(
-        private var unavailableReason: UnavailableReason? = null
+        private var unavailableReason: UnavailableReason? = null,
     ) {
         fun unavailableReason(unavailableReason: UnavailableReason?) = apply { this.unavailableReason = unavailableReason }
 
         fun build(): PropertyUnavailabilityAllOf {
             return PropertyUnavailabilityAllOf(
-                unavailableReason = unavailableReason
+                unavailableReason = unavailableReason,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            unavailableReason = unavailableReason,
+        )
 }

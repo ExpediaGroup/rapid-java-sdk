@@ -22,7 +22,7 @@ import io.ktor.http.ContentType
 
 internal data class SerializationConfiguration(
     override val httpClientConfiguration: HttpClientConfig<out HttpClientEngineConfig>,
-    val contentType: ContentType = ContentType.Application.Json
+    val contentType: ContentType = ContentType.Application.Json,
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {
         fun from(httpClientConfig: HttpClientConfig<out HttpClientEngineConfig>) = SerializationConfiguration(httpClientConfig)

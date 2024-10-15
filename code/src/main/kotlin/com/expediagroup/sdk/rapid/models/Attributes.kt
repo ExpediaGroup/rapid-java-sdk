@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -52,7 +52,7 @@ data class Attributes(
     // Lists all of the pet attributes about the property.
     @JsonProperty("pets")
     @field:Valid
-    val pets: kotlin.collections.Map<kotlin.String, Attribute>? = null
+    val pets: kotlin.collections.Map<kotlin.String, Attribute>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -61,7 +61,7 @@ data class Attributes(
 
     class Builder(
         private var general: kotlin.collections.Map<kotlin.String, Attribute>? = null,
-        private var pets: kotlin.collections.Map<kotlin.String, Attribute>? = null
+        private var pets: kotlin.collections.Map<kotlin.String, Attribute>? = null,
     ) {
         fun general(general: kotlin.collections.Map<kotlin.String, Attribute>?) = apply { this.general = general }
 
@@ -70,8 +70,14 @@ data class Attributes(
         fun build(): Attributes {
             return Attributes(
                 general = general,
-                pets = pets
+                pets = pets,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            general = general,
+            pets = pets,
+        )
 }

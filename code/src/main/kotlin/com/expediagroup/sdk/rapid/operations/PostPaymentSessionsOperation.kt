@@ -16,7 +16,6 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest
 
 /**
@@ -27,39 +26,42 @@ import com.expediagroup.sdk.rapid.models.PaymentSessionsRequest
 class PostPaymentSessionsOperation private constructor(
     params: PostPaymentSessionsOperationParams?,
     requestBody: PaymentSessionsRequest?,
-    link: Link?
+    link: PostPaymentSessionsOperationLink?,
 ) : Operation<
-        PaymentSessionsRequest
+        PaymentSessionsRequest,
     >(
         url(null, link, "/v3/payment-sessions"),
         "POST",
         "postPaymentSessions",
         requestBody,
-        params
+        params,
     ) {
-    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: PostPaymentSessionsOperationParams, requestBody: PaymentSessionsRequest?)"))
+    @Deprecated(
+        "Switch order of arguments",
+        ReplaceWith("Operation(params: PostPaymentSessionsOperationParams, requestBody: PaymentSessionsRequest?)"),
+    )
     constructor(
         requestBody: PaymentSessionsRequest?,
-        params: PostPaymentSessionsOperationParams
+        params: PostPaymentSessionsOperationParams,
     ) : this(params, requestBody)
 
     constructor(
         params: PostPaymentSessionsOperationParams,
-        requestBody: PaymentSessionsRequest?
+        requestBody: PaymentSessionsRequest?,
     ) : this(
         params,
         requestBody,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
+        link: PostPaymentSessionsOperationLink,
         context: PostPaymentSessionsOperationContext,
-        requestBody: PaymentSessionsRequest?
+        requestBody: PaymentSessionsRequest?,
     ) : this(
         PostPaymentSessionsOperationParams(context),
         requestBody,
-        link
+        link,
     )
 
     companion object : LinkableOperation {

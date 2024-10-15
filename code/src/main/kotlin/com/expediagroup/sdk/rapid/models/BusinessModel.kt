@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class BusinessModel(
     // Whether or not a payment for this property can be taken by the property upon arrival.
     @JsonProperty("property_collect")
     @field:Valid
-    val propertyCollect: kotlin.Boolean? = null
+    val propertyCollect: kotlin.Boolean? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class BusinessModel(
 
     class Builder(
         private var expediaCollect: kotlin.Boolean? = null,
-        private var propertyCollect: kotlin.Boolean? = null
+        private var propertyCollect: kotlin.Boolean? = null,
     ) {
         fun expediaCollect(expediaCollect: kotlin.Boolean?) = apply { this.expediaCollect = expediaCollect }
 
@@ -69,8 +69,14 @@ data class BusinessModel(
         fun build(): BusinessModel {
             return BusinessModel(
                 expediaCollect = expediaCollect,
-                propertyCollect = propertyCollect
+                propertyCollect = propertyCollect,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            expediaCollect = expediaCollect,
+            propertyCollect = propertyCollect,
+        )
 }

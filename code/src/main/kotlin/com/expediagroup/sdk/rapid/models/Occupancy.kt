@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -52,7 +52,7 @@ data class Occupancy(
     // Map of the age categories used to determine the maximum children and adult occupancy.
     @JsonProperty("age_categories")
     @field:Valid
-    val ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null
+    val ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -61,7 +61,7 @@ data class Occupancy(
 
     class Builder(
         private var maxAllowed: MaxAllowed? = null,
-        private var ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null
+        private var ageCategories: kotlin.collections.Map<kotlin.String, CategoryAge>? = null,
     ) {
         fun maxAllowed(maxAllowed: MaxAllowed?) = apply { this.maxAllowed = maxAllowed }
 
@@ -70,8 +70,14 @@ data class Occupancy(
         fun build(): Occupancy {
             return Occupancy(
                 maxAllowed = maxAllowed,
-                ageCategories = ageCategories
+                ageCategories = ageCategories,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            maxAllowed = maxAllowed,
+            ageCategories = ageCategories,
+        )
 }

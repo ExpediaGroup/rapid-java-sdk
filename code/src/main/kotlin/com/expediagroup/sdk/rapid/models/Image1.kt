@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class Image1(
     // The height of the image.
     @JsonProperty("height")
     @field:Valid
-    val height: kotlin.String? = null
+    val height: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class Image1(
     class Builder(
         private var url: kotlin.String? = null,
         private var width: kotlin.String? = null,
-        private var height: kotlin.String? = null
+        private var height: kotlin.String? = null,
     ) {
         fun url(url: kotlin.String?) = apply { this.url = url }
 
@@ -78,8 +78,15 @@ data class Image1(
             return Image1(
                 url = url,
                 width = width,
-                height = height
+                height = height,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            url = url,
+            width = width,
+            height = height,
+        )
 }

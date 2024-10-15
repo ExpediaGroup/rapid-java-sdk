@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -80,7 +80,7 @@ data class PaymentRequest(
     // Date the payment account was enrolled in the cardholder's account with the merchant, in ISO 8601 format (YYYY-MM-DD).
     @JsonProperty("enrollment_date")
     @field:Valid
-    val enrollmentDate: kotlin.String? = null
+    val enrollmentDate: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -95,7 +95,7 @@ data class PaymentRequest(
         private var expirationMonth: kotlin.String? = null,
         private var expirationYear: kotlin.String? = null,
         private var thirdPartyAuthentication: ThirdPartyAuthRequest? = null,
-        private var enrollmentDate: kotlin.String? = null
+        private var enrollmentDate: kotlin.String? = null,
     ) {
         fun type(type: PaymentRequest.Type) = apply { this.type = type }
 
@@ -109,7 +109,10 @@ data class PaymentRequest(
 
         fun expirationYear(expirationYear: kotlin.String?) = apply { this.expirationYear = expirationYear }
 
-        fun thirdPartyAuthentication(thirdPartyAuthentication: ThirdPartyAuthRequest?) = apply { this.thirdPartyAuthentication = thirdPartyAuthentication }
+        fun thirdPartyAuthentication(thirdPartyAuthentication: ThirdPartyAuthRequest?) =
+            apply {
+                this.thirdPartyAuthentication = thirdPartyAuthentication
+            }
 
         fun enrollmentDate(enrollmentDate: kotlin.String?) = apply { this.enrollmentDate = enrollmentDate }
 
@@ -124,7 +127,7 @@ data class PaymentRequest(
                 expirationMonth = expirationMonth,
                 expirationYear = expirationYear,
                 thirdPartyAuthentication = thirdPartyAuthentication,
-                enrollmentDate = enrollmentDate
+                enrollmentDate = enrollmentDate,
             )
         }
 
@@ -137,6 +140,18 @@ data class PaymentRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type!!,
+            billingContact = billingContact!!,
+            number = number,
+            securityCode = securityCode,
+            expirationMonth = expirationMonth,
+            expirationYear = expirationYear,
+            thirdPartyAuthentication = thirdPartyAuthentication,
+            enrollmentDate = enrollmentDate,
+        )
 
     /**
      * Identifier for the type of payment. If affiliate_collect, card information is not required as EPS will not be processing the payment. However, billing contact information is still required.
@@ -153,6 +168,6 @@ data class PaymentRequest(
         VIRTUAL_CARD("virtual_card"),
 
         @JsonProperty("affiliate_collect")
-        AFFILIATE_COLLECT("affiliate_collect")
+        AFFILIATE_COLLECT("affiliate_collect"),
     }
 }

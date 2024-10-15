@@ -17,5 +17,5 @@ package com.expediagroup.sdk.core.client
 
 /** Handy utils and helpers for a client. */
 abstract class ClientHelpers(
-    val client: Client
+    val client: Client,
 )

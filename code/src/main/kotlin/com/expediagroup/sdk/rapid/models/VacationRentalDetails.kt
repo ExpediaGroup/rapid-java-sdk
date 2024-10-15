@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -118,7 +118,7 @@ data class VacationRentalDetails(
     // A free text description that could contain significantly unstructured information that could impact the booking and should be displayed to customers. This field could contain html break tags `<br>` that may make display challenging.
     @JsonProperty("free_text")
     @field:Valid
-    val freeText: kotlin.String? = null
+    val freeText: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -140,7 +140,7 @@ data class VacationRentalDetails(
         private var listingUnit: kotlin.String? = null,
         private var ipmName: kotlin.String? = null,
         private var unitConfigurations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<UnitConfiguration>>? = null,
-        private var freeText: kotlin.String? = null
+        private var freeText: kotlin.String? = null,
     ) {
         fun registryNumber(registryNumber: kotlin.String?) = apply { this.registryNumber = registryNumber }
 
@@ -152,7 +152,10 @@ data class VacationRentalDetails(
 
         fun houseRules(houseRules: kotlin.collections.List<kotlin.String>?) = apply { this.houseRules = houseRules }
 
-        fun enhancedHouseRules(enhancedHouseRules: kotlin.collections.Map<kotlin.String, EnhancedHouseRules>?) = apply { this.enhancedHouseRules = enhancedHouseRules }
+        fun enhancedHouseRules(enhancedHouseRules: kotlin.collections.Map<kotlin.String, EnhancedHouseRules>?) =
+            apply {
+                this.enhancedHouseRules = enhancedHouseRules
+            }
 
         fun amenities(amenities: Amenity?) = apply { this.amenities = amenities }
 
@@ -168,7 +171,10 @@ data class VacationRentalDetails(
 
         fun ipmName(ipmName: kotlin.String?) = apply { this.ipmName = ipmName }
 
-        fun unitConfigurations(unitConfigurations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<UnitConfiguration>>?) = apply { this.unitConfigurations = unitConfigurations }
+        fun unitConfigurations(unitConfigurations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<UnitConfiguration>>?) =
+            apply {
+                this.unitConfigurations = unitConfigurations
+            }
 
         fun freeText(freeText: kotlin.String?) = apply { this.freeText = freeText }
 
@@ -188,8 +194,27 @@ data class VacationRentalDetails(
                 listingUnit = listingUnit,
                 ipmName = ipmName,
                 unitConfigurations = unitConfigurations,
-                freeText = freeText
+                freeText = freeText,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            registryNumber = registryNumber,
+            privateHost = privateHost,
+            propertyManager = propertyManager,
+            rentalAgreement = rentalAgreement,
+            houseRules = houseRules,
+            enhancedHouseRules = enhancedHouseRules,
+            amenities = amenities,
+            vrboSrpId = vrboSrpId,
+            listingId = listingId,
+            listingNumber = listingNumber,
+            listingSource = listingSource,
+            listingUnit = listingUnit,
+            ipmName = ipmName,
+            unitConfigurations = unitConfigurations,
+            freeText = freeText,
+        )
 }

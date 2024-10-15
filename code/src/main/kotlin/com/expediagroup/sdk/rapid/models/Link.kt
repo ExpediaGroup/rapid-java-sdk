@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -44,19 +44,19 @@ import javax.validation.constraints.Size
  * @param href The URL for the link. This can be absolute or relative.
  * @param expires If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
  */
-data class Link(
+open class Link(
     // The request method used to access the link.
     @JsonProperty("method")
     @field:Valid
-    val method: kotlin.String? = null,
+    open val method: kotlin.String? = null,
     // The URL for the link. This can be absolute or relative.
     @JsonProperty("href")
     @field:Valid
-    val href: kotlin.String? = null,
+    open val href: kotlin.String? = null,
     // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
     @JsonProperty("expires")
     @field:Valid
-    val expires: kotlin.String? = null
+    open val expires: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class Link(
     class Builder(
         private var method: kotlin.String? = null,
         private var href: kotlin.String? = null,
-        private var expires: kotlin.String? = null
+        private var expires: kotlin.String? = null,
     ) {
         fun method(method: kotlin.String?) = apply { this.method = method }
 
@@ -78,8 +78,15 @@ data class Link(
             return Link(
                 method = method,
                 href = href,
-                expires = expires
+                expires = expires,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            method = method,
+            href = href,
+            expires = expires,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -49,7 +49,7 @@ data class StayConstraints(
     val minStay: kotlin.Int? = null,
     // The maximum number of days for a stay.
     @JsonProperty("max_stay")
-    val maxStay: kotlin.Int? = null
+    val maxStay: kotlin.Int? = null,
 ) {
     companion object {
         @JvmStatic
@@ -58,7 +58,7 @@ data class StayConstraints(
 
     class Builder(
         private var minStay: kotlin.Int? = null,
-        private var maxStay: kotlin.Int? = null
+        private var maxStay: kotlin.Int? = null,
     ) {
         fun minStay(minStay: kotlin.Int?) = apply { this.minStay = minStay }
 
@@ -67,8 +67,14 @@ data class StayConstraints(
         fun build(): StayConstraints {
             return StayConstraints(
                 minStay = minStay,
-                maxStay = maxStay
+                maxStay = maxStay,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            minStay = minStay,
+            maxStay = maxStay,
+        )
 }

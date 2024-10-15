@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -75,7 +75,7 @@ data class PaymentSessionsRequestCustomerAccountDetails(
     // Number of purchases with this cardholder's account during the previous six months.
     @JsonProperty("account_purchases")
     @field:Valid
-    val accountPurchases: java.math.BigDecimal? = null
+    val accountPurchases: java.math.BigDecimal? = null,
 ) {
     companion object {
         @JvmStatic
@@ -89,11 +89,13 @@ data class PaymentSessionsRequestCustomerAccountDetails(
         private var changeDate: kotlin.String? = null,
         private var passwordChangeDate: kotlin.String? = null,
         private var addCardAttempts: java.math.BigDecimal? = null,
-        private var accountPurchases: java.math.BigDecimal? = null
+        private var accountPurchases: java.math.BigDecimal? = null,
     ) {
-        fun authenticationMethod(authenticationMethod: PaymentSessionsRequestCustomerAccountDetails.AuthenticationMethod?) = apply { this.authenticationMethod = authenticationMethod }
+        fun authenticationMethod(authenticationMethod: PaymentSessionsRequestCustomerAccountDetails.AuthenticationMethod?) =
+            apply { this.authenticationMethod = authenticationMethod }
 
-        fun authenticationTimestamp(authenticationTimestamp: kotlin.String?) = apply { this.authenticationTimestamp = authenticationTimestamp }
+        fun authenticationTimestamp(authenticationTimestamp: kotlin.String?) =
+            apply { this.authenticationTimestamp = authenticationTimestamp }
 
         fun createDate(createDate: kotlin.String?) = apply { this.createDate = createDate }
 
@@ -113,10 +115,21 @@ data class PaymentSessionsRequestCustomerAccountDetails(
                 changeDate = changeDate,
                 passwordChangeDate = passwordChangeDate,
                 addCardAttempts = addCardAttempts,
-                accountPurchases = accountPurchases
+                accountPurchases = accountPurchases,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            authenticationMethod = authenticationMethod,
+            authenticationTimestamp = authenticationTimestamp,
+            createDate = createDate,
+            changeDate = changeDate,
+            passwordChangeDate = passwordChangeDate,
+            addCardAttempts = addCardAttempts,
+            accountPurchases = accountPurchases,
+        )
 
     /**
      * Mechanism used by the cardholder to authenticate to the merchant.
@@ -139,6 +152,6 @@ data class PaymentSessionsRequestCustomerAccountDetails(
         THIRD_PARTY_AUTHENTICATION("third_party_authentication"),
 
         @JsonProperty("fido_authentication")
-        FIDO_AUTHENTICATION("fido_authentication")
+        FIDO_AUTHENTICATION("fido_authentication"),
     }
 }
