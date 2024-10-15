@@ -36,7 +36,7 @@ data class PutCompletePaymentSessionOperationParams
         val customerSessionId: kotlin.String? = null,
         val test: PutCompletePaymentSessionOperationParams.Test? = null,
         val token: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -51,29 +51,29 @@ data class PutCompletePaymentSessionOperationParams
                 null,
             test: PutCompletePaymentSessionOperationParams.Test? =
                 null,
-            token: kotlin.String
+            token: kotlin.String,
         ) : this(
             itineraryId = itineraryId,
             customerIp = customerIp,
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: PutCompletePaymentSessionOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            INTERNAL_SERVER_ERROR("internal_server_error")
+            INTERNAL_SERVER_ERROR("internal_server_error"),
         }
 
         class Builder(
@@ -81,7 +81,7 @@ data class PutCompletePaymentSessionOperationParams
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: PutCompletePaymentSessionOperationParams.Test? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null
+            @JsonProperty("token") private var token: kotlin.String? = null,
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -116,7 +116,7 @@ data class PutCompletePaymentSessionOperationParams
                     customerIp = customerIp!!,
                     customerSessionId = customerSessionId,
                     test = test,
-                    token = token!!
+                    token = token!!,
                 )
             }
 
@@ -139,7 +139,7 @@ data class PutCompletePaymentSessionOperationParams
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         override fun getHeaders(): Headers {

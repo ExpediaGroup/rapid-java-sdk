@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -57,7 +57,7 @@ data class ItineraryLinks(
     val cancel: DeleteHeldBookingOperationLink? = null,
     @JsonProperty("non_vat_expedia_invoice")
     @field:Valid
-    val nonVatExpediaInvoice: Link? = null
+    val nonVatExpediaInvoice: Link? = null,
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +67,7 @@ data class ItineraryLinks(
     class Builder(
         private var resume: PutResumeBookingOperationLink? = null,
         private var cancel: DeleteHeldBookingOperationLink? = null,
-        private var nonVatExpediaInvoice: Link? = null
+        private var nonVatExpediaInvoice: Link? = null,
     ) {
         fun resume(resume: PutResumeBookingOperationLink?) = apply { this.resume = resume }
 
@@ -79,7 +79,7 @@ data class ItineraryLinks(
             return ItineraryLinks(
                 resume = resume,
                 cancel = cancel,
-                nonVatExpediaInvoice = nonVatExpediaInvoice
+                nonVatExpediaInvoice = nonVatExpediaInvoice,
             )
         }
     }
@@ -88,6 +88,6 @@ data class ItineraryLinks(
         Builder(
             resume = resume,
             cancel = cancel,
-            nonVatExpediaInvoice = nonVatExpediaInvoice
+            nonVatExpediaInvoice = nonVatExpediaInvoice,
         )
 }

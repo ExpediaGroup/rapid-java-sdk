@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -67,7 +67,7 @@ data class RateHistory(
     val deposits: kotlin.collections.List<DepositItinerary>? = null,
     @JsonProperty("pricing")
     @field:Valid
-    val pricing: PricingInformation? = null
+    val pricing: PricingInformation? = null,
 ) {
     companion object {
         @JvmStatic
@@ -79,7 +79,7 @@ data class RateHistory(
         private var promotions: PromotionsItinerary? = null,
         private var cancelPenalties: kotlin.collections.List<CancelPenalty>? = null,
         private var deposits: kotlin.collections.List<DepositItinerary>? = null,
-        private var pricing: PricingInformation? = null
+        private var pricing: PricingInformation? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -97,7 +97,7 @@ data class RateHistory(
                 promotions = promotions,
                 cancelPenalties = cancelPenalties,
                 deposits = deposits,
-                pricing = pricing
+                pricing = pricing,
             )
         }
     }
@@ -108,6 +108,6 @@ data class RateHistory(
             promotions = promotions,
             cancelPenalties = cancelPenalties,
             deposits = deposits,
-            pricing = pricing
+            pricing = pricing,
         )
 }

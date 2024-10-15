@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -53,7 +53,7 @@ data class PropertyAvailabilityLinks(
     val additionalRates: GetAdditionalAvailabilityOperationLink? = null,
     @JsonProperty("recommendations")
     @field:Valid
-    val recommendations: GetAvailabilityOperationLink? = null
+    val recommendations: GetAvailabilityOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -62,7 +62,7 @@ data class PropertyAvailabilityLinks(
 
     class Builder(
         private var additionalRates: GetAdditionalAvailabilityOperationLink? = null,
-        private var recommendations: GetAvailabilityOperationLink? = null
+        private var recommendations: GetAvailabilityOperationLink? = null,
     ) {
         fun additionalRates(additionalRates: GetAdditionalAvailabilityOperationLink?) = apply { this.additionalRates = additionalRates }
 
@@ -71,7 +71,7 @@ data class PropertyAvailabilityLinks(
         fun build(): PropertyAvailabilityLinks {
             return PropertyAvailabilityLinks(
                 additionalRates = additionalRates,
-                recommendations = recommendations
+                recommendations = recommendations,
             )
         }
     }
@@ -79,6 +79,6 @@ data class PropertyAvailabilityLinks(
     fun toBuilder() =
         Builder(
             additionalRates = additionalRates,
-            recommendations = recommendations
+            recommendations = recommendations,
         )
 }

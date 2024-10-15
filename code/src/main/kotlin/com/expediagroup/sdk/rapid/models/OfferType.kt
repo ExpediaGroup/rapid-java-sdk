@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -50,5 +50,5 @@ enum class OfferType(val value: kotlin.String) {
     FREE("free"),
 
     @JsonProperty("voucher")
-    VOUCHER("voucher")
+    VOUCHER("voucher"),
 }

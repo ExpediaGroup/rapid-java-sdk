@@ -32,14 +32,15 @@ import io.ktor.client.engine.HttpClientEngine
 abstract class BaseXapClient(
     namespace: String,
     clientConfiguration: XapClientConfiguration,
-    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE
+    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE,
 ) : Client(namespace) {
     private val _configurationProvider: ConfigurationProvider =
         ConfigurationCollector.create(
             clientConfiguration.toProvider(),
-            XapConfigurationProvider
+            XapConfigurationProvider,
         )
-    private val _httpClient: HttpClient = buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BASIC, httpClientEngine)
+    private val _httpClient: HttpClient =
+        buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BASIC, httpClientEngine)
 
     init {
         finalize()

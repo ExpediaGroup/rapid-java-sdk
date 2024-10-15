@@ -43,7 +43,7 @@ data class GetRegionsOperationParams(
     val customerSessionId: kotlin.String? =
         null,
     val include: kotlin.collections.List<
-        GetRegionsOperationParams.Include
+        GetRegionsOperationParams.Include,
     >,
     val language: kotlin.String,
     val ancestorId: kotlin.String? =
@@ -51,11 +51,11 @@ data class GetRegionsOperationParams(
     val area: kotlin.String? =
         null,
     val countryCode: kotlin.collections.List<
-        kotlin.String
+        kotlin.String,
     >? =
         null,
     val countrySubdivisionCode: kotlin.collections.List<
-        kotlin.String
+        kotlin.String,
     >? =
         null,
     val iataLocationCode: kotlin.String? =
@@ -65,7 +65,7 @@ data class GetRegionsOperationParams(
     val supplySource: kotlin.String? =
         null,
     val type: kotlin.collections.List<
-        kotlin.String
+        kotlin.String,
     >? =
         null,
     val billingTerms: kotlin.String? =
@@ -75,7 +75,7 @@ data class GetRegionsOperationParams(
     val paymentTerms: kotlin.String? =
         null,
     val platformName: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -84,38 +84,38 @@ data class GetRegionsOperationParams(
     }
 
     enum class Include(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         DETAILS("details"),
         PROPERTY_IDS("property_ids"),
-        PROPERTY_IDS_EXPANDED("property_ids_expanded")
+        PROPERTY_IDS_EXPANDED("property_ids_expanded"),
     }
 
     class Builder(
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
         @JsonProperty("include") private var include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >? = null,
         @JsonProperty("language") private var language: kotlin.String? = null,
         @JsonProperty("ancestor_id") private var ancestorId: kotlin.String? = null,
         @JsonProperty("area") private var area: kotlin.String? = null,
         @JsonProperty("country_code") private var countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         @JsonProperty("country_subdivision_code") private var countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         @JsonProperty("iata_location_code") private var iataLocationCode: kotlin.String? = null,
         @JsonProperty("limit") private var limit: java.math.BigDecimal? = null,
         @JsonProperty("supply_source") private var supplySource: kotlin.String? = null,
         @JsonProperty("type") private var type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
-        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
     ) {
         /**
          * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -127,8 +127,8 @@ data class GetRegionsOperationParams(
          */
         fun include(
             include: kotlin.collections.List<
-                GetRegionsOperationParams.Include
-            >
+                GetRegionsOperationParams.Include,
+            >,
         ) = apply { this.include = include }
 
         /**
@@ -151,8 +151,8 @@ data class GetRegionsOperationParams(
          */
         fun countryCode(
             countryCode: kotlin.collections.List<
-                kotlin.String
-            >
+                kotlin.String,
+            >,
         ) = apply { this.countryCode = countryCode }
 
         /**
@@ -160,8 +160,8 @@ data class GetRegionsOperationParams(
          */
         fun countrySubdivisionCode(
             countrySubdivisionCode: kotlin.collections.List<
-                kotlin.String
-            >
+                kotlin.String,
+            >,
         ) = apply { this.countrySubdivisionCode = countrySubdivisionCode }
 
         /**
@@ -184,8 +184,8 @@ data class GetRegionsOperationParams(
          */
         fun type(
             type: kotlin.collections.List<
-                kotlin.String
-            >
+                kotlin.String,
+            >,
         ) = apply { this.type = type }
 
         /**
@@ -226,7 +226,7 @@ data class GetRegionsOperationParams(
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
         }
 
@@ -256,7 +256,7 @@ data class GetRegionsOperationParams(
             billingTerms = billingTerms,
             partnerPointOfSale = partnerPointOfSale,
             paymentTerms = paymentTerms,
-            platformName = platformName
+            platformName = platformName,
         )
 
     override fun getHeaders(): Headers {

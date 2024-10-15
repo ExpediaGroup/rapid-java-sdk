@@ -43,19 +43,31 @@ class ResponseBodyLogger {
         @OptIn(InternalAPI::class)
         override fun install(
             plugin: ResponseBodyLogger,
-            scope: HttpClient
+            scope: HttpClient,
         ) {
             scope.responsePipeline.intercept(HttpResponsePipeline.Receive) {
                 val response: HttpResponse = context.response
-                val byteReadChannel: ByteReadChannel = if (response.contentEncoding().equals(HeaderValue.GZIP)) scope.decode(response.content) else response.content
+                val byteReadChannel: ByteReadChannel =
+                    if (response.contentEncoding().equals(
+                            HeaderValue.GZIP,
+                        )
+                    ) {
+                        scope.decode(response.content)
+                    } else {
+                        response.content
+                    }
 
                 when {
                     response.contentType() in LoggableContentTypes ->
                         LoggingMessageProvider.getResponseBodyMessage(
                             byteReadChannel.readRemaining().readText(),
-                            response.request.headers.getTransactionId()
+                            response.request.headers.getTransactionId(),
                         )
-                    else -> LoggingMessageProvider.getResponseBodyMessage("Body of type ${response.contentType()?.contentType} cannot be logged!", response.request.headers.getTransactionId())
+                    else ->
+                        LoggingMessageProvider.getResponseBodyMessage(
+                            "Body of type ${response.contentType()?.contentType} cannot be logged!",
+                            response.request.headers.getTransactionId(),
+                        )
                 }.let {
                     plugin.log.debug(it)
                 }

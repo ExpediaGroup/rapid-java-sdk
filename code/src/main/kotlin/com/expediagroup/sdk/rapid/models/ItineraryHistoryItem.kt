@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -64,7 +64,7 @@ data class ItineraryHistoryItem(
     // An agent user id number associated with a modification.
     @JsonProperty("agent_id")
     @field:Valid
-    val agentId: kotlin.Int? = null
+    val agentId: kotlin.Int? = null,
 ) {
     companion object {
         @JvmStatic
@@ -76,7 +76,7 @@ data class ItineraryHistoryItem(
         private var eventTimestamp: kotlin.String? = null,
         private var eventType: ItineraryHistoryItem.EventType? = null,
         private var amount: Amount? = null,
-        private var agentId: kotlin.Int? = null
+        private var agentId: kotlin.Int? = null,
     ) {
         fun historyId(historyId: kotlin.String?) = apply { this.historyId = historyId }
 
@@ -94,7 +94,7 @@ data class ItineraryHistoryItem(
                 eventTimestamp = eventTimestamp,
                 eventType = eventType,
                 amount = amount,
-                agentId = agentId
+                agentId = agentId,
             )
         }
     }
@@ -105,7 +105,7 @@ data class ItineraryHistoryItem(
             eventTimestamp = eventTimestamp,
             eventType = eventType,
             amount = amount,
-            agentId = agentId
+            agentId = agentId,
         )
 
     /**
@@ -117,6 +117,6 @@ data class ItineraryHistoryItem(
         ADJUSTMENT("adjustment"),
 
         @JsonProperty("coupon")
-        COUPON("coupon")
+        COUPON("coupon"),
     }
 }

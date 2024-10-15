@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class PropertyCalendarAvailability(
     val propertyId: kotlin.String? = null,
     @JsonProperty("days")
     @field:Valid
-    val days: kotlin.collections.List<Day>? = null
+    val days: kotlin.collections.List<Day>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class PropertyCalendarAvailability(
 
     class Builder(
         private var propertyId: kotlin.String? = null,
-        private var days: kotlin.collections.List<Day>? = null
+        private var days: kotlin.collections.List<Day>? = null,
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -69,7 +69,7 @@ data class PropertyCalendarAvailability(
         fun build(): PropertyCalendarAvailability {
             return PropertyCalendarAvailability(
                 propertyId = propertyId,
-                days = days
+                days = days,
             )
         }
     }
@@ -77,6 +77,6 @@ data class PropertyCalendarAvailability(
     fun toBuilder() =
         Builder(
             propertyId = propertyId,
-            days = days
+            days = days,
         )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -86,7 +86,7 @@ data class Address(
     val obfuscationRequired: kotlin.Boolean? = null,
     @JsonProperty("localized")
     @field:Valid
-    val localized: Localized? = null
+    val localized: Localized? = null,
 ) {
     companion object {
         @JvmStatic
@@ -102,7 +102,7 @@ data class Address(
         private var postalCode: kotlin.String? = null,
         private var countryCode: kotlin.String? = null,
         private var obfuscationRequired: kotlin.Boolean? = null,
-        private var localized: Localized? = null
+        private var localized: Localized? = null,
     ) {
         fun line1(line1: kotlin.String?) = apply { this.line1 = line1 }
 
@@ -132,7 +132,7 @@ data class Address(
                 postalCode = postalCode,
                 countryCode = countryCode,
                 obfuscationRequired = obfuscationRequired,
-                localized = localized
+                localized = localized,
             )
         }
     }
@@ -147,6 +147,6 @@ data class Address(
             postalCode = postalCode,
             countryCode = countryCode,
             obfuscationRequired = obfuscationRequired,
-            localized = localized
+            localized = localized,
         )
 }

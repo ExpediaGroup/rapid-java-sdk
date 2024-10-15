@@ -39,7 +39,7 @@ data class GetRegionOperationParams(
         null,
     val language: kotlin.String,
     val include: kotlin.collections.List<
-        GetRegionOperationParams.Include
+        GetRegionOperationParams.Include,
     >,
     val billingTerms: kotlin.String? =
         null,
@@ -50,7 +50,7 @@ data class GetRegionOperationParams(
     val platformName: kotlin.String? =
         null,
     val supplySource: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -59,11 +59,11 @@ data class GetRegionOperationParams(
     }
 
     enum class Include(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         DETAILS("details"),
         PROPERTY_IDS("property_ids"),
-        PROPERTY_IDS_EXPANDED("property_ids_expanded")
+        PROPERTY_IDS_EXPANDED("property_ids_expanded"),
     }
 
     class Builder(
@@ -71,13 +71,13 @@ data class GetRegionOperationParams(
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
         @JsonProperty("language") private var language: kotlin.String? = null,
         @JsonProperty("include") private var include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >? = null,
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
         @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
-        @JsonProperty("supply_source") private var supplySource: kotlin.String? = null
+        @JsonProperty("supply_source") private var supplySource: kotlin.String? = null,
     ) {
         /**
          * @param regionId ID of the region to retrieve.
@@ -99,8 +99,8 @@ data class GetRegionOperationParams(
          */
         fun include(
             include: kotlin.collections.List<
-                GetRegionOperationParams.Include
-            >
+                GetRegionOperationParams.Include,
+            >,
         ) = apply { this.include = include }
 
         /**
@@ -140,7 +140,7 @@ data class GetRegionOperationParams(
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
                 platformName = platformName,
-                supplySource = supplySource
+                supplySource = supplySource,
             )
         }
 
@@ -167,7 +167,7 @@ data class GetRegionOperationParams(
             partnerPointOfSale = partnerPointOfSale,
             paymentTerms = paymentTerms,
             platformName = platformName,
-            supplySource = supplySource
+            supplySource = supplySource,
         )
 
     override fun getHeaders(): Headers {

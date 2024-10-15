@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Ancestors(
     // Region type of ancestor region.
     @JsonProperty("type")
     @field:Valid
-    val type: kotlin.String? = null
+    val type: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Ancestors(
 
     class Builder(
         private var id: kotlin.String? = null,
-        private var type: kotlin.String? = null
+        private var type: kotlin.String? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -69,7 +69,7 @@ data class Ancestors(
         fun build(): Ancestors {
             return Ancestors(
                 id = id,
-                type = type
+                type = type,
             )
         }
     }
@@ -77,6 +77,6 @@ data class Ancestors(
     fun toBuilder() =
         Builder(
             id = id,
-            type = type
+            type = type,
         )
 }

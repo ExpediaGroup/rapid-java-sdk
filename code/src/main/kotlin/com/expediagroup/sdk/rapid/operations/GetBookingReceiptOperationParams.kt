@@ -39,7 +39,7 @@ data class GetBookingReceiptOperationParams(
         null,
     val token: kotlin.String,
     val branding: GetBookingReceiptOperationParams.Branding? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -48,18 +48,18 @@ data class GetBookingReceiptOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        INTERNAL_SERVER_ERROR("internal_server_error")
+        INTERNAL_SERVER_ERROR("internal_server_error"),
     }
 
     enum class Branding(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         EXPEDIA_GROUP("expedia_group"),
-        UNBRANDED("unbranded")
+        UNBRANDED("unbranded"),
     }
 
     class Builder(
@@ -68,7 +68,7 @@ data class GetBookingReceiptOperationParams(
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
         @JsonProperty("Test") private var test: GetBookingReceiptOperationParams.Test? = null,
         @JsonProperty("token") private var token: kotlin.String? = null,
-        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null
+        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null,
     ) {
         /**
          * @param itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
@@ -109,7 +109,7 @@ data class GetBookingReceiptOperationParams(
                 customerSessionId = customerSessionId,
                 test = test,
                 token = token!!,
-                branding = branding
+                branding = branding,
             )
         }
 
@@ -133,7 +133,7 @@ data class GetBookingReceiptOperationParams(
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            branding = branding
+            branding = branding,
         )
 
     override fun getHeaders(): Headers {

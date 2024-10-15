@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -49,7 +49,7 @@ data class Localized(
     // Keyed by the language, a map of links to the property’s localized address(es) based on the primary language(s) spoken in the property’s country. Only languages supported by the Rapid API are provided.
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null
+    val links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -57,19 +57,19 @@ data class Localized(
     }
 
     class Builder(
-        private var links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null
+        private var links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null,
     ) {
         fun links(links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>?) = apply { this.links = links }
 
         fun build(): Localized {
             return Localized(
-                links = links
+                links = links,
             )
         }
     }
 
     fun toBuilder() =
         Builder(
-            links = links
+            links = links,
         )
 }

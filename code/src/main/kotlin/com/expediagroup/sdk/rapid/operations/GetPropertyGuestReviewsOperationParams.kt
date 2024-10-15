@@ -39,11 +39,11 @@ data class GetPropertyGuestReviewsOperationParams(
         null,
     val language: kotlin.String,
     val filter: kotlin.collections.List<
-        GetPropertyGuestReviewsOperationParams.Filter
+        GetPropertyGuestReviewsOperationParams.Filter,
     >? =
         null,
     val tripReason: kotlin.collections.List<
-        GetPropertyGuestReviewsOperationParams.TripReason
+        GetPropertyGuestReviewsOperationParams.TripReason,
     >? =
         null,
     val billingTerms: kotlin.String? =
@@ -53,7 +53,7 @@ data class GetPropertyGuestReviewsOperationParams(
     val partnerPointOfSale: kotlin.String? =
         null,
     val platformName: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -62,18 +62,18 @@ data class GetPropertyGuestReviewsOperationParams(
     }
 
     enum class Filter(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
-        LANGUAGE("language")
+        LANGUAGE("language"),
     }
 
     enum class TripReason(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         BUSINESS("business"),
         LEISURE("leisure"),
         FRIENDS_AND_FAMILY("friends_and_family"),
-        BUSINESS_AND_LEISURE("business_and_leisure")
+        BUSINESS_AND_LEISURE("business_and_leisure"),
     }
 
     class Builder(
@@ -81,15 +81,15 @@ data class GetPropertyGuestReviewsOperationParams(
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
         @JsonProperty("language") private var language: kotlin.String? = null,
         @JsonProperty("filter") private var filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? = null,
         @JsonProperty("trip_reason") private var tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? = null,
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
-        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
     ) {
         /**
          * @param propertyId Expedia Property ID.<br>
@@ -111,8 +111,8 @@ data class GetPropertyGuestReviewsOperationParams(
          */
         fun filter(
             filter: kotlin.collections.List<
-                GetPropertyGuestReviewsOperationParams.Filter
-            >
+                GetPropertyGuestReviewsOperationParams.Filter,
+            >,
         ) = apply { this.filter = filter }
 
         /**
@@ -120,8 +120,8 @@ data class GetPropertyGuestReviewsOperationParams(
          */
         fun tripReason(
             tripReason: kotlin.collections.List<
-                GetPropertyGuestReviewsOperationParams.TripReason
-            >
+                GetPropertyGuestReviewsOperationParams.TripReason,
+            >,
         ) = apply { this.tripReason = tripReason }
 
         /**
@@ -156,7 +156,7 @@ data class GetPropertyGuestReviewsOperationParams(
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
         }
 
@@ -180,7 +180,7 @@ data class GetPropertyGuestReviewsOperationParams(
             billingTerms = billingTerms,
             paymentTerms = paymentTerms,
             partnerPointOfSale = partnerPointOfSale,
-            platformName = platformName
+            platformName = platformName,
         )
 
     override fun getHeaders(): Headers {

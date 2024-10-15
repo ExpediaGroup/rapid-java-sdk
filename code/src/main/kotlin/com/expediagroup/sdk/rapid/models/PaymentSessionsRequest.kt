@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -77,8 +77,8 @@ data class PaymentSessionsRequest(
     @field:Valid
     val payments: kotlin.collections
         .List<
-            PaymentRequest
-        >
+            PaymentRequest,
+        >,
 ) {
     companion object {
         @JvmStatic
@@ -92,7 +92,7 @@ data class PaymentSessionsRequest(
         private var preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize? = null,
         private var merchantUrl: kotlin.String? = null,
         private var customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails? = null,
-        private var payments: kotlin.collections.List<PaymentRequest>? = null
+        private var payments: kotlin.collections.List<PaymentRequest>? = null,
     ) {
         fun version(version: kotlin.String) = apply { this.version = version }
 
@@ -100,11 +100,17 @@ data class PaymentSessionsRequest(
 
         fun encodedBrowserMetadata(encodedBrowserMetadata: kotlin.String) = apply { this.encodedBrowserMetadata = encodedBrowserMetadata }
 
-        fun preferredChallengeWindowSize(preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize) = apply { this.preferredChallengeWindowSize = preferredChallengeWindowSize }
+        fun preferredChallengeWindowSize(preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize) =
+            apply {
+                this.preferredChallengeWindowSize = preferredChallengeWindowSize
+            }
 
         fun merchantUrl(merchantUrl: kotlin.String) = apply { this.merchantUrl = merchantUrl }
 
-        fun customerAccountDetails(customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails) = apply { this.customerAccountDetails = customerAccountDetails }
+        fun customerAccountDetails(customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails) =
+            apply {
+                this.customerAccountDetails = customerAccountDetails
+            }
 
         fun payments(payments: kotlin.collections.List<PaymentRequest>) = apply { this.payments = payments }
 
@@ -118,7 +124,7 @@ data class PaymentSessionsRequest(
                 preferredChallengeWindowSize = preferredChallengeWindowSize!!,
                 merchantUrl = merchantUrl!!,
                 customerAccountDetails = customerAccountDetails!!,
-                payments = payments!!
+                payments = payments!!,
             )
         }
 
@@ -155,7 +161,7 @@ data class PaymentSessionsRequest(
             preferredChallengeWindowSize = preferredChallengeWindowSize!!,
             merchantUrl = merchantUrl!!,
             customerAccountDetails = customerAccountDetails!!,
-            payments = payments!!
+            payments = payments!!,
         )
 
     /**
@@ -176,6 +182,6 @@ data class PaymentSessionsRequest(
         LARGE("large"),
 
         @JsonProperty("full_screen")
-        FULL_SCREEN("full_screen")
+        FULL_SCREEN("full_screen"),
     }
 }

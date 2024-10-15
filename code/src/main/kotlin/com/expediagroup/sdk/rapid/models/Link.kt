@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ open class Link(
     // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
     @JsonProperty("expires")
     @field:Valid
-    open val expires: kotlin.String? = null
+    open val expires: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ open class Link(
     class Builder(
         private var method: kotlin.String? = null,
         private var href: kotlin.String? = null,
-        private var expires: kotlin.String? = null
+        private var expires: kotlin.String? = null,
     ) {
         fun method(method: kotlin.String?) = apply { this.method = method }
 
@@ -78,7 +78,7 @@ open class Link(
             return Link(
                 method = method,
                 href = href,
-                expires = expires
+                expires = expires,
             )
         }
     }
@@ -87,6 +87,6 @@ open class Link(
         Builder(
             method = method,
             href = href,
-            expires = expires
+            expires = expires,
         )
 }

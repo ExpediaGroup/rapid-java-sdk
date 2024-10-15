@@ -24,29 +24,29 @@ import com.expediagroup.sdk.core.model.Operation
  */
 class GetAvailabilityOperation private constructor(
     params: GetAvailabilityOperationParams?,
-    link: GetAvailabilityOperationLink?
+    link: GetAvailabilityOperationLink?,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(null, link, "/v3/properties/availability"),
         "GET",
         "getAvailability",
         null,
-        params
+        params,
     ) {
     constructor(
-        params: GetAvailabilityOperationParams
+        params: GetAvailabilityOperationParams,
     ) : this(
         params,
-        null
+        null,
     )
 
     constructor(
         link: GetAvailabilityOperationLink,
-        context: GetAvailabilityOperationContext?
+        context: GetAvailabilityOperationContext?,
     ) : this(
         GetAvailabilityOperationParams(context),
-        link
+        link,
     )
 
     companion object : LinkableOperation {

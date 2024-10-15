@@ -40,7 +40,7 @@ data class PriceCheckOperationParams
         val customerSessionId: kotlin.String? = null,
         val test: PriceCheckOperationParams.Test? = null,
         val token: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -58,7 +58,7 @@ data class PriceCheckOperationParams
                 null,
             test: PriceCheckOperationParams.Test? =
                 null,
-            token: kotlin.String
+            token: kotlin.String,
         ) : this(
             propertyId = propertyId,
             roomId = roomId,
@@ -67,24 +67,24 @@ data class PriceCheckOperationParams
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: PriceCheckOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             AVAILABLE("available"),
             PRICE_CHANGED("price_changed"),
             SOLD_OUT("sold_out"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
         }
 
         class Builder(
@@ -94,7 +94,7 @@ data class PriceCheckOperationParams
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: PriceCheckOperationParams.Test? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null
+            @JsonProperty("token") private var token: kotlin.String? = null,
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -141,7 +141,7 @@ data class PriceCheckOperationParams
                     customerIp = customerIp,
                     customerSessionId = customerSessionId,
                     test = test,
-                    token = token!!
+                    token = token!!,
                 )
             }
 
@@ -169,7 +169,7 @@ data class PriceCheckOperationParams
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         override fun getHeaders(): Headers {

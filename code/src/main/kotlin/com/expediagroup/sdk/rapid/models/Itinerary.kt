@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -126,7 +126,7 @@ data class Itinerary(
     // An array of rooms each containing an array of room history events.
     @JsonProperty("room_history")
     @field:Valid
-    val roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null
+    val roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -150,7 +150,7 @@ data class Itinerary(
         private var essentialInformation: EssentialInformation? = null,
         private var travelPurpose: Itinerary.TravelPurpose? = null,
         private var itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>? = null,
-        private var roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null
+        private var roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null,
     ) {
         fun itineraryId(itineraryId: kotlin.String?) = apply { this.itineraryId = itineraryId }
 
@@ -182,9 +182,11 @@ data class Itinerary(
 
         fun travelPurpose(travelPurpose: Itinerary.TravelPurpose?) = apply { this.travelPurpose = travelPurpose }
 
-        fun itineraryHistory(itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>?) = apply { this.itineraryHistory = itineraryHistory }
+        fun itineraryHistory(itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>?) =
+            apply { this.itineraryHistory = itineraryHistory }
 
-        fun roomHistory(roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>?) = apply { this.roomHistory = roomHistory }
+        fun roomHistory(roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>?) =
+            apply { this.roomHistory = roomHistory }
 
         fun build(): Itinerary {
             return Itinerary(
@@ -204,7 +206,7 @@ data class Itinerary(
                 essentialInformation = essentialInformation,
                 travelPurpose = travelPurpose,
                 itineraryHistory = itineraryHistory,
-                roomHistory = roomHistory
+                roomHistory = roomHistory,
             )
         }
     }
@@ -227,7 +229,7 @@ data class Itinerary(
             essentialInformation = essentialInformation,
             travelPurpose = travelPurpose,
             itineraryHistory = itineraryHistory,
-            roomHistory = roomHistory
+            roomHistory = roomHistory,
         )
 
     /**
@@ -242,6 +244,6 @@ data class Itinerary(
         BUSINESS("business"),
 
         @JsonProperty("unspecified")
-        UNSPECIFIED("unspecified")
+        UNSPECIFIED("unspecified"),
     }
 }

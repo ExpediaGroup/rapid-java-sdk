@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -61,7 +61,7 @@ data class ItineraryCreation(
     val encodedChallengeConfig: kotlin.String? = null,
     @JsonProperty("trader_information")
     @field:Valid
-    val traderInformation: TraderInformation? = null
+    val traderInformation: TraderInformation? = null,
 ) {
     companion object {
         @JvmStatic
@@ -72,7 +72,7 @@ data class ItineraryCreation(
         private var itineraryId: kotlin.String? = null,
         private var links: ItineraryCreationLinks? = null,
         private var encodedChallengeConfig: kotlin.String? = null,
-        private var traderInformation: TraderInformation? = null
+        private var traderInformation: TraderInformation? = null,
     ) {
         fun itineraryId(itineraryId: kotlin.String?) = apply { this.itineraryId = itineraryId }
 
@@ -87,7 +87,7 @@ data class ItineraryCreation(
                 itineraryId = itineraryId,
                 links = links,
                 encodedChallengeConfig = encodedChallengeConfig,
-                traderInformation = traderInformation
+                traderInformation = traderInformation,
             )
         }
     }
@@ -97,6 +97,6 @@ data class ItineraryCreation(
             itineraryId = itineraryId,
             links = links,
             encodedChallengeConfig = encodedChallengeConfig,
-            traderInformation = traderInformation
+            traderInformation = traderInformation,
         )
 }

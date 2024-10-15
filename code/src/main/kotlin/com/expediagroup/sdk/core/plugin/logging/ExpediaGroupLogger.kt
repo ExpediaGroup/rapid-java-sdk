@@ -43,10 +43,11 @@ internal class ExpediaGroupLogger(private val logger: Logger, private val client
 
     private fun decorate(msg: String): String = "$LOGGING_PREFIX ${mask(msg)}"
 
-    private fun getMaskedBodyFields(): Set<String> = client?.getLoggingMaskedFieldsProvider()?.getMaskedBodyFields() ?: LogMaskingFields.DEFAULT_MASKED_BODY_FIELDS
+    private fun getMaskedBodyFields(): Set<String> =
+        client?.getLoggingMaskedFieldsProvider()?.getMaskedBodyFields() ?: LogMaskingFields.DEFAULT_MASKED_BODY_FIELDS
 
     private fun getMaskedBodyFieldFilters(): Iterable<ExpediaGroupJsonFieldFilter> =
         listOf(
-            ExpediaGroupJsonFieldFilter(getMaskedBodyFields().toTypedArray())
+            ExpediaGroupJsonFieldFilter(getMaskedBodyFields().toTypedArray()),
         )
 }

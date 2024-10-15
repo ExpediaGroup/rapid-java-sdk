@@ -24,15 +24,15 @@ import org.apache.commons.text.StringSubstitutor
  * @property params [GetBookingReceiptOperationParams]
  */
 class GetBookingReceiptOperation(
-    params: GetBookingReceiptOperationParams
+    params: GetBookingReceiptOperationParams,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(params),
         "GET",
         "getBookingReceipt",
         null,
-        params
+        params,
     ) {
     companion object {
         fun url(params: GetBookingReceiptOperationParams): String {

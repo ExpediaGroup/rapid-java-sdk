@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.validation
@@ -48,7 +48,7 @@ internal object PropertyConstraintsValidator {
                     if (violations.isNotEmpty()) {
                         throw PropertyConstraintViolationException(
                             "Some field constraints have been violated",
-                            violations.stream().map { toConstraintViolation(it) }.collect(Collectors.toList())
+                            violations.stream().map { toConstraintViolation(it) }.collect(Collectors.toList()),
                         )
                     }
                 }
@@ -59,7 +59,7 @@ internal object PropertyConstraintsValidator {
         return PropertyConstraintViolation(
             violation.propertyPath.iterator().next().name,
             violation.propertyPath.toString(),
-            violation.message
+            violation.message,
         )
     }
 }

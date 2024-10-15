@@ -39,7 +39,7 @@ data class GetChainReferenceOperationParams(
     val paymentTerms: kotlin.String? =
         null,
     val platformName: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -52,7 +52,7 @@ data class GetChainReferenceOperationParams(
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
-        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
     ) {
         /**
          * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -85,7 +85,7 @@ data class GetChainReferenceOperationParams(
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
         }
     }
@@ -96,7 +96,7 @@ data class GetChainReferenceOperationParams(
             billingTerms = billingTerms,
             partnerPointOfSale = partnerPointOfSale,
             paymentTerms = paymentTerms,
-            platformName = platformName
+            platformName = platformName,
         )
 
     override fun getHeaders(): Headers {

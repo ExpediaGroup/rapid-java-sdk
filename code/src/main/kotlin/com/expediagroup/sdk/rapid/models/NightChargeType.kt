@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -59,5 +59,5 @@ enum class NightChargeType(val value: kotlin.String) {
     RECOVERY_CHARGES_AND_FEES("recovery_charges_and_fees"),
 
     @JsonProperty("traveler_service_fee")
-    TRAVELER_SERVICE_FEE("traveler_service_fee")
+    TRAVELER_SERVICE_FEE("traveler_service_fee"),
 }

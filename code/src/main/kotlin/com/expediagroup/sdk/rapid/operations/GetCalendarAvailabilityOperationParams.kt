@@ -32,10 +32,10 @@ data class GetCalendarAvailabilityOperationParams(
     val test: GetCalendarAvailabilityOperationParams.Test? =
         null,
     val propertyId: kotlin.collections.List<
-        kotlin.String
+        kotlin.String,
     >,
     val startDate: java.time.LocalDate,
-    val endDate: java.time.LocalDate
+    val endDate: java.time.LocalDate,
 ) :
     OperationParams {
     companion object {
@@ -44,20 +44,20 @@ data class GetCalendarAvailabilityOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+        UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
     }
 
     class Builder(
         @JsonProperty("Test") private var test: GetCalendarAvailabilityOperationParams.Test? = null,
         @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         @JsonProperty("start_date") private var startDate: java.time.LocalDate? = null,
-        @JsonProperty("end_date") private var endDate: java.time.LocalDate? = null
+        @JsonProperty("end_date") private var endDate: java.time.LocalDate? = null,
     ) {
         /**
          * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
@@ -69,8 +69,8 @@ data class GetCalendarAvailabilityOperationParams(
          */
         fun propertyId(
             propertyId: kotlin.collections.List<
-                kotlin.String
-            >
+                kotlin.String,
+            >,
         ) = apply { this.propertyId = propertyId }
 
         /**
@@ -90,7 +90,7 @@ data class GetCalendarAvailabilityOperationParams(
                 test = test,
                 propertyId = propertyId!!,
                 startDate = startDate!!,
-                endDate = endDate!!
+                endDate = endDate!!,
             )
         }
 
@@ -112,7 +112,7 @@ data class GetCalendarAvailabilityOperationParams(
             test = test,
             propertyId = propertyId,
             startDate = startDate,
-            endDate = endDate
+            endDate = endDate,
         )
 
     override fun getHeaders(): Headers {

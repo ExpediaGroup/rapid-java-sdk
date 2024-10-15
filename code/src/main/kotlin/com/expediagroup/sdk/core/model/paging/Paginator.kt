@@ -25,7 +25,7 @@ sealed class BasePaginator<R, T>(
     private val client: Client,
     firstResponse: Response<T>,
     private val fallbackBody: T,
-    private val getBody: suspend (HttpResponse) -> T
+    private val getBody: suspend (HttpResponse) -> T,
 ) : Iterator<R> {
     private var state: ResponseState<T> = DefaultResponseState(firstResponse)
     val paginationTotalResults: Long = firstResponse.headers[PAGINATION_TOTAL_RESULTS]?.getOrNull(0)?.toLongOrNull() ?: 0
@@ -58,7 +58,7 @@ class Paginator<T>(
     client: Client,
     firstResponse: Response<T>,
     fallbackBody: T,
-    getBody: suspend (HttpResponse) -> T
+    getBody: suspend (HttpResponse) -> T,
 ) : BasePaginator<T, T>(client, firstResponse, fallbackBody, getBody) {
     /**
      * Returns the body of the next response.
@@ -79,7 +79,7 @@ class ResponsePaginator<T>(
     client: Client,
     firstResponse: Response<T>,
     fallbackBody: T,
-    getBody: suspend (HttpResponse) -> T
+    getBody: suspend (HttpResponse) -> T,
 ) : BasePaginator<Response<T>, T>(client, firstResponse, fallbackBody, getBody) {
     /**
      * Returns the next response.

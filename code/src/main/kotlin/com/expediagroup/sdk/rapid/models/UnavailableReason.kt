@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -50,7 +50,7 @@ data class UnavailableReason(
     // An associated value that provides helpful information for some codes. Not present for all codes.
     @JsonProperty("data")
     @field:Valid
-    val `data`: kotlin.String? = null
+    val `data`: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -59,7 +59,7 @@ data class UnavailableReason(
 
     class Builder(
         private var code: UnavailableReason.Code? = null,
-        private var `data`: kotlin.String? = null
+        private var `data`: kotlin.String? = null,
     ) {
         fun code(code: UnavailableReason.Code?) = apply { this.code = code }
 
@@ -68,7 +68,7 @@ data class UnavailableReason(
         fun build(): UnavailableReason {
             return UnavailableReason(
                 code = code,
-                `data` = `data`
+                `data` = `data`,
             )
         }
     }
@@ -76,7 +76,7 @@ data class UnavailableReason(
     fun toBuilder() =
         Builder(
             code = code,
-            `data` = `data`
+            `data` = `data`,
         )
 
     /**
@@ -133,6 +133,6 @@ data class UnavailableReason(
         PARTIAL_INVENTORY_AVAILABLE("partial_inventory_available"),
 
         @JsonProperty("no_inventory_available")
-        NO_INVENTORY_AVAILABLE("no_inventory_available")
+        NO_INVENTORY_AVAILABLE("no_inventory_available"),
     }
 }

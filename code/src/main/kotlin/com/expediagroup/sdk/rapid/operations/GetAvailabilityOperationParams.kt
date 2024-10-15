@@ -58,35 +58,35 @@ data class GetAvailabilityOperationParams
         val countryCode: kotlin.String? = null,
         val language: kotlin.String? = null,
         val occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         val propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         val ratePlanCount: java.math.BigDecimal? = null,
         val salesChannel: kotlin.String? = null,
         val salesEnvironment: kotlin.String? = null,
         val amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? = null,
         val exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? = null,
         val filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? = null,
         val include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? = null,
         val rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? = null,
         val travelPurpose: GetAvailabilityOperationParams.TravelPurpose? = null,
         val billingTerms: kotlin.String? = null,
         val paymentTerms: kotlin.String? = null,
         val partnerPointOfSale: kotlin.String? = null,
         val platformName: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -107,32 +107,32 @@ data class GetAvailabilityOperationParams
             countryCode: kotlin.String,
             language: kotlin.String,
             occupancy: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >,
             propertyId: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >,
             ratePlanCount: java.math.BigDecimal,
             salesChannel: kotlin.String,
             salesEnvironment: kotlin.String,
             amenityCategory: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >? =
                 null,
             exclusion: kotlin.collections.List<
-                GetAvailabilityOperationParams.Exclusion
+                GetAvailabilityOperationParams.Exclusion,
             >? =
                 null,
             filter: kotlin.collections.List<
-                GetAvailabilityOperationParams.Filter
+                GetAvailabilityOperationParams.Filter,
             >? =
                 null,
             include: kotlin.collections.List<
-                GetAvailabilityOperationParams.Include
+                GetAvailabilityOperationParams.Include,
             >? =
                 null,
             rateOption: kotlin.collections.List<
-                GetAvailabilityOperationParams.RateOption
+                GetAvailabilityOperationParams.RateOption,
             >? =
                 null,
             travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
@@ -144,7 +144,7 @@ data class GetAvailabilityOperationParams
             partnerPointOfSale: kotlin.String? =
                 null,
             platformName: kotlin.String? =
-                null
+                null,
         ) : this(
             customerIp = customerIp,
             customerSessionId = customerSessionId,
@@ -169,60 +169,60 @@ data class GetAvailabilityOperationParams
             paymentTerms = paymentTerms,
             partnerPointOfSale = partnerPointOfSale,
             platformName = platformName,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: GetAvailabilityOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
         }
 
         enum class Exclusion(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             REFUNDABLE_DAMAGE_DEPOSIT("refundable_damage_deposit"),
-            CARD_ON_FILE("card_on_file")
+            CARD_ON_FILE("card_on_file"),
         }
 
         enum class Filter(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             REFUNDABLE("refundable"),
             EXPEDIA_COLLECT("expedia_collect"),
-            PROPERTY_COLLECT("property_collect")
+            PROPERTY_COLLECT("property_collect"),
         }
 
         enum class Include(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             UNAVAILABLE_REASON("unavailable_reason"),
             SALE_SCENARIO_PERIOD_MOBILE_PROMOTION("sale_scenario.mobile_promotion"),
-            ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_INCENTIVES("rooms.rates.marketing_fee_incentives")
+            ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_INCENTIVES("rooms.rates.marketing_fee_incentives"),
         }
 
         enum class RateOption(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             MEMBER("member"),
             NET_RATES("net_rates"),
-            CROSS_SELL("cross_sell")
+            CROSS_SELL("cross_sell"),
         }
 
         enum class TravelPurpose(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             LEISURE("leisure"),
-            BUSINESS("business")
+            BUSINESS("business"),
         }
 
         class Builder(
@@ -235,34 +235,34 @@ data class GetAvailabilityOperationParams
             @JsonProperty("country_code") private var countryCode: kotlin.String? = null,
             @JsonProperty("language") private var language: kotlin.String? = null,
             @JsonProperty("occupancy") private var occupancy: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >? = null,
             @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >? = null,
             @JsonProperty("rate_plan_count") private var ratePlanCount: java.math.BigDecimal? = null,
             @JsonProperty("sales_channel") private var salesChannel: kotlin.String? = null,
             @JsonProperty("sales_environment") private var salesEnvironment: kotlin.String? = null,
             @JsonProperty("amenity_category") private var amenityCategory: kotlin.collections.List<
-                kotlin.String
+                kotlin.String,
             >? = null,
             @JsonProperty("exclusion") private var exclusion: kotlin.collections.List<
-                GetAvailabilityOperationParams.Exclusion
+                GetAvailabilityOperationParams.Exclusion,
             >? = null,
             @JsonProperty("filter") private var filter: kotlin.collections.List<
-                GetAvailabilityOperationParams.Filter
+                GetAvailabilityOperationParams.Filter,
             >? = null,
             @JsonProperty("include") private var include: kotlin.collections.List<
-                GetAvailabilityOperationParams.Include
+                GetAvailabilityOperationParams.Include,
             >? = null,
             @JsonProperty("rate_option") private var rateOption: kotlin.collections.List<
-                GetAvailabilityOperationParams.RateOption
+                GetAvailabilityOperationParams.RateOption,
             >? = null,
             @JsonProperty("travel_purpose") private var travelPurpose: GetAvailabilityOperationParams.TravelPurpose? = null,
             @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
             @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
             @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
-            @JsonProperty("platform_name") private var platformName: kotlin.String? = null
+            @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
         ) {
             /**
              * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -309,8 +309,8 @@ data class GetAvailabilityOperationParams
              */
             fun occupancy(
                 occupancy: kotlin.collections.List<
-                    kotlin.String
-                >
+                    kotlin.String,
+                >,
             ) = apply { this.occupancy = occupancy }
 
             /**
@@ -318,8 +318,8 @@ data class GetAvailabilityOperationParams
              */
             fun propertyId(
                 propertyId: kotlin.collections.List<
-                    kotlin.String
-                >
+                    kotlin.String,
+                >,
             ) = apply { this.propertyId = propertyId }
 
             /**
@@ -342,8 +342,8 @@ data class GetAvailabilityOperationParams
              */
             fun amenityCategory(
                 amenityCategory: kotlin.collections.List<
-                    kotlin.String
-                >
+                    kotlin.String,
+                >,
             ) = apply { this.amenityCategory = amenityCategory }
 
             /**
@@ -351,8 +351,8 @@ data class GetAvailabilityOperationParams
              */
             fun exclusion(
                 exclusion: kotlin.collections.List<
-                    GetAvailabilityOperationParams.Exclusion
-                >
+                    GetAvailabilityOperationParams.Exclusion,
+                >,
             ) = apply { this.exclusion = exclusion }
 
             /**
@@ -360,8 +360,8 @@ data class GetAvailabilityOperationParams
              */
             fun filter(
                 filter: kotlin.collections.List<
-                    GetAvailabilityOperationParams.Filter
-                >
+                    GetAvailabilityOperationParams.Filter,
+                >,
             ) = apply { this.filter = filter }
 
             /**
@@ -369,8 +369,8 @@ data class GetAvailabilityOperationParams
              */
             fun include(
                 include: kotlin.collections.List<
-                    GetAvailabilityOperationParams.Include
-                >
+                    GetAvailabilityOperationParams.Include,
+                >,
             ) = apply { this.include = include }
 
             /**
@@ -378,8 +378,8 @@ data class GetAvailabilityOperationParams
              */
             fun rateOption(
                 rateOption: kotlin.collections.List<
-                    GetAvailabilityOperationParams.RateOption
-                >
+                    GetAvailabilityOperationParams.RateOption,
+                >,
             ) = apply { this.rateOption = rateOption }
 
             /**
@@ -433,7 +433,7 @@ data class GetAvailabilityOperationParams
                     billingTerms = billingTerms,
                     paymentTerms = paymentTerms,
                     partnerPointOfSale = partnerPointOfSale,
-                    platformName = platformName
+                    platformName = platformName,
                 )
             }
 
@@ -495,7 +495,7 @@ data class GetAvailabilityOperationParams
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
 
         override fun getHeaders(): Headers {

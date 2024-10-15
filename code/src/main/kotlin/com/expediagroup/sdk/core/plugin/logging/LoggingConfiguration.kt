@@ -27,13 +27,13 @@ internal data class LoggingConfiguration(
     val maskedLoggingHeaders: Set<String>,
     val maskedLoggingBodyFields: Set<String>,
     val level: LogLevel = LogLevel.HEADERS,
-    val getLogger: (client: Client) -> Logger = createCustomLogger
+    val getLogger: (client: Client) -> Logger = createCustomLogger,
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {
         fun from(
             httpClientConfig: HttpClientConfig<out HttpClientEngineConfig>,
             maskedLoggingHeaders: Set<String>,
-            maskedLoggingBodyFields: Set<String>
+            maskedLoggingBodyFields: Set<String>,
         ) = LoggingConfiguration(httpClientConfig, maskedLoggingHeaders, maskedLoggingBodyFields)
     }
 }

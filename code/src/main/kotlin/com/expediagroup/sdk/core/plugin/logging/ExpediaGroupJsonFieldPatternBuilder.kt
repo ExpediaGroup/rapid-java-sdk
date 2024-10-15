@@ -21,6 +21,6 @@ import com.expediagroup.sdk.core.constant.LoggingMessage.OMITTED
 internal class ExpediaGroupJsonFieldPatternBuilder : JsonFieldPatternBuilder() {
     override fun buildReplacement(
         visibleCharacters: Int,
-        vararg fieldNames: String?
+        vararg fieldNames: String?,
     ): String = "\"$1$2$OMITTED\""
 }

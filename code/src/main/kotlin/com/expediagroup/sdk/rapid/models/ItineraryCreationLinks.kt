@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -63,7 +63,7 @@ data class ItineraryCreationLinks(
     val completePaymentSession: PutCompletePaymentSessionOperationLink? = null,
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: DeleteHeldBookingOperationLink? = null
+    val cancel: DeleteHeldBookingOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -74,13 +74,16 @@ data class ItineraryCreationLinks(
         private var retrieve: GetReservationByItineraryIdOperationLink? = null,
         private var resume: PutResumeBookingOperationLink? = null,
         private var completePaymentSession: PutCompletePaymentSessionOperationLink? = null,
-        private var cancel: DeleteHeldBookingOperationLink? = null
+        private var cancel: DeleteHeldBookingOperationLink? = null,
     ) {
         fun retrieve(retrieve: GetReservationByItineraryIdOperationLink?) = apply { this.retrieve = retrieve }
 
         fun resume(resume: PutResumeBookingOperationLink?) = apply { this.resume = resume }
 
-        fun completePaymentSession(completePaymentSession: PutCompletePaymentSessionOperationLink?) = apply { this.completePaymentSession = completePaymentSession }
+        fun completePaymentSession(completePaymentSession: PutCompletePaymentSessionOperationLink?) =
+            apply {
+                this.completePaymentSession = completePaymentSession
+            }
 
         fun cancel(cancel: DeleteHeldBookingOperationLink?) = apply { this.cancel = cancel }
 
@@ -89,7 +92,7 @@ data class ItineraryCreationLinks(
                 retrieve = retrieve,
                 resume = resume,
                 completePaymentSession = completePaymentSession,
-                cancel = cancel
+                cancel = cancel,
             )
         }
     }
@@ -99,6 +102,6 @@ data class ItineraryCreationLinks(
             retrieve = retrieve,
             resume = resume,
             completePaymentSession = completePaymentSession,
-            cancel = cancel
+            cancel = cancel,
         )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -63,7 +63,7 @@ data class RoomPriceCheckLinks(
     val paymentSession: PostPaymentSessionsOperationLink? = null,
     @JsonProperty("additional_rates")
     @field:Valid
-    val additionalRates: GetAdditionalAvailabilityOperationLink? = null
+    val additionalRates: GetAdditionalAvailabilityOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -74,7 +74,7 @@ data class RoomPriceCheckLinks(
         private var book: PostItineraryOperationLink? = null,
         private var commit: CommitChangeOperationLink? = null,
         private var paymentSession: PostPaymentSessionsOperationLink? = null,
-        private var additionalRates: GetAdditionalAvailabilityOperationLink? = null
+        private var additionalRates: GetAdditionalAvailabilityOperationLink? = null,
     ) {
         fun book(book: PostItineraryOperationLink?) = apply { this.book = book }
 
@@ -89,7 +89,7 @@ data class RoomPriceCheckLinks(
                 book = book,
                 commit = commit,
                 paymentSession = paymentSession,
-                additionalRates = additionalRates
+                additionalRates = additionalRates,
             )
         }
     }
@@ -99,6 +99,6 @@ data class RoomPriceCheckLinks(
             book = book,
             commit = commit,
             paymentSession = paymentSession,
-            additionalRates = additionalRates
+            additionalRates = additionalRates,
         )
 }

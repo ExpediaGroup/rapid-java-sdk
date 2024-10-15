@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Dates(
     // The UTC date the property’s content was updated by EPS, in ISO 8601 format.
     @JsonProperty("updated")
     @field:Valid
-    val updated: kotlin.String? = null
+    val updated: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Dates(
 
     class Builder(
         private var added: kotlin.String? = null,
-        private var updated: kotlin.String? = null
+        private var updated: kotlin.String? = null,
     ) {
         fun added(added: kotlin.String?) = apply { this.added = added }
 
@@ -69,7 +69,7 @@ data class Dates(
         fun build(): Dates {
             return Dates(
                 added = added,
-                updated = updated
+                updated = updated,
             )
         }
     }
@@ -77,6 +77,6 @@ data class Dates(
     fun toBuilder() =
         Builder(
             added = added,
-            updated = updated
+            updated = updated,
         )
 }

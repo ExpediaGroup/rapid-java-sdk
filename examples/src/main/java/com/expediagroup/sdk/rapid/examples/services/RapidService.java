@@ -7,8 +7,8 @@ public abstract class RapidService {
 
     protected static final RapidClient rapidClient = RapidClient
             .builder()
-            .key(System.getProperty("com.expediagroup.rapidsdkjava.apikey", "your_api_key"))
-            .secret(System.getProperty("com.expediagroup.rapidsdkjava.apisecret", "your_api_secret"))
+            .key(System.getProperty("com.expediagroup.rapidsdkjava.apikey", "6p1qjp7f060c96o0pfseh2od7a"))
+            .secret(System.getProperty("com.expediagroup.rapidsdkjava.apisecret", "dbg0mibu765va"))
             .endpoint(Constants.SANDBOX_URL) // remove to connect to the production environment
             .requestTimeout(10000)
             .build();

@@ -44,7 +44,7 @@ data class PostGeographyOperationParams(
     val platformName: kotlin.String? =
         null,
     val supplySource: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -59,7 +59,7 @@ data class PostGeographyOperationParams(
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
         @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
-        @JsonProperty("supply_source") private var supplySource: kotlin.String? = null
+        @JsonProperty("supply_source") private var supplySource: kotlin.String? = null,
     ) {
         /**
          * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -106,7 +106,7 @@ data class PostGeographyOperationParams(
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
                 platformName = platformName,
-                supplySource = supplySource
+                supplySource = supplySource,
             )
         }
 
@@ -125,7 +125,7 @@ data class PostGeographyOperationParams(
             partnerPointOfSale = partnerPointOfSale,
             paymentTerms = paymentTerms,
             platformName = platformName,
-            supplySource = supplySource
+            supplySource = supplySource,
         )
 
     override fun getHeaders(): Headers {

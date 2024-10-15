@@ -37,6 +37,6 @@ interface ClientConfiguration {
             connectionTimeout = connectionTimeout,
             socketTimeout = socketTimeout,
             maskedLoggingHeaders = maskedLoggingHeaders,
-            maskedLoggingBodyFields = maskedLoggingBodyFields
+            maskedLoggingBodyFields = maskedLoggingBodyFields,
         )
 }

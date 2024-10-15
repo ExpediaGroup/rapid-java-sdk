@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -52,7 +52,7 @@ import javax.validation.constraints.Size
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "status", visible = true)
 @JsonSubTypes(
     Type(value = PropertyAvailability::class, name = "available"),
-    Type(value = PropertyUnavailability::class, name = "partially_unavailable")
+    Type(value = PropertyUnavailability::class, name = "partially_unavailable"),
 )
 interface Property {
     // Expedia property ID.
@@ -73,6 +73,6 @@ interface Property {
         AVAILABLE("available"),
 
         @JsonProperty("partially_unavailable")
-        PARTIALLY_UNAVAILABLE("partially_unavailable")
+        PARTIALLY_UNAVAILABLE("partially_unavailable"),
     }
 }

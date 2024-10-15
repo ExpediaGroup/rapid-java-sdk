@@ -30,7 +30,8 @@ internal class ConfigurationProviderQueue private constructor(private val provid
     fun first(predicate: (ConfigurationProvider) -> Boolean): ConfigurationProvider? = providers.firstOrNull(predicate)
 
     /** Returns the first provider in the queue that matches the given [predicate] if found, null otherwise.*/
-    fun <T> firstWith(predicate: (provider: ConfigurationProvider) -> T?): ProvidedConfiguration<T>? = first { predicate(it) != null }?.let { ProvidedConfiguration(predicate(it)!!, it.name) }
+    fun <T> firstWith(predicate: (provider: ConfigurationProvider) -> T?): ProvidedConfiguration<T>? =
+        first { predicate(it) != null }?.let { ProvidedConfiguration(predicate(it)!!, it.name) }
 
     companion object {
         /** Builds a [ConfigurationProviderQueue] from the given [providers].

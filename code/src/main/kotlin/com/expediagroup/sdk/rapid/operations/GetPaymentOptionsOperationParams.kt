@@ -34,7 +34,7 @@ data class GetPaymentOptionsOperationParams
         val customerIp: kotlin.String? = null,
         val customerSessionId: kotlin.String? = null,
         val token: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -48,26 +48,26 @@ data class GetPaymentOptionsOperationParams
                 null,
             customerSessionId: kotlin.String? =
                 null,
-            token: kotlin.String
+            token: kotlin.String,
         ) : this(
             propertyId = propertyId,
             customerIp = customerIp,
             customerSessionId = customerSessionId,
             token = token,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: GetPaymentOptionsOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
-            dummy = Unit
+            dummy = Unit,
         )
 
         class Builder(
             @JsonProperty("property_id") private var propertyId: kotlin.String? = null,
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null
+            @JsonProperty("token") private var token: kotlin.String? = null,
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -96,7 +96,7 @@ data class GetPaymentOptionsOperationParams
                     propertyId = propertyId!!,
                     customerIp = customerIp,
                     customerSessionId = customerSessionId,
-                    token = token!!
+                    token = token!!,
                 )
             }
 
@@ -115,7 +115,7 @@ data class GetPaymentOptionsOperationParams
                 propertyId = propertyId,
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
-                token = token
+                token = token,
             )
 
         override fun getHeaders(): Headers {

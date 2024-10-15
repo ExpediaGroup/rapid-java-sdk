@@ -22,11 +22,13 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.HttpHeaders
 
 interface EnvironmentProvider {
-    fun HttpRequestBuilder.appendHeaders(extraHeaders: Map<String, String> = mapOf(HeaderKey.TRANSACTION_ID to TransactionId().dequeue().toString()))
+    fun HttpRequestBuilder.appendHeaders(
+        extraHeaders: Map<String, String> = mapOf(HeaderKey.TRANSACTION_ID to TransactionId().dequeue().toString()),
+    )
 }
 
 class DefaultEnvironmentProvider(
-    namespace: String
+    namespace: String,
 ) : EnvironmentProvider {
     private val properties = Properties.from(javaClass.classLoader.getResource("sdk.properties")!!)
     private val javaVersion = System.getProperty("java.version")

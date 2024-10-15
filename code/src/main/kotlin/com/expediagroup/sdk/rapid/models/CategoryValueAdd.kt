@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -50,5 +50,5 @@ enum class CategoryValueAdd(val value: kotlin.String) {
     ACTIVITY("activity"),
 
     @JsonProperty("credit")
-    CREDIT("credit")
+    CREDIT("credit"),
 }

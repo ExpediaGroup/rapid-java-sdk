@@ -39,9 +39,9 @@ data class GetReservationOperationParams(
     val affiliateReferenceId: kotlin.String,
     val email: kotlin.String,
     val include: kotlin.collections.List<
-        GetReservationOperationParams.Include
+        GetReservationOperationParams.Include,
     >? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -50,17 +50,17 @@ data class GetReservationOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        INTERNAL_SERVER_ERROR("internal_server_error")
+        INTERNAL_SERVER_ERROR("internal_server_error"),
     }
 
     enum class Include(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
-        HISTORY("history")
+        HISTORY("history"),
     }
 
     class Builder(
@@ -70,8 +70,8 @@ data class GetReservationOperationParams(
         @JsonProperty("affiliate_reference_id") private var affiliateReferenceId: kotlin.String? = null,
         @JsonProperty("email") private var email: kotlin.String? = null,
         @JsonProperty("include") private var include: kotlin.collections.List<
-            GetReservationOperationParams.Include
-        >? = null
+            GetReservationOperationParams.Include,
+        >? = null,
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -103,8 +103,8 @@ data class GetReservationOperationParams(
          */
         fun include(
             include: kotlin.collections.List<
-                GetReservationOperationParams.Include
-            >
+                GetReservationOperationParams.Include,
+            >,
         ) = apply { this.include = include }
 
         fun build(): GetReservationOperationParams {
@@ -116,7 +116,7 @@ data class GetReservationOperationParams(
                 test = test,
                 affiliateReferenceId = affiliateReferenceId!!,
                 email = email!!,
-                include = include
+                include = include,
             )
         }
 
@@ -140,7 +140,7 @@ data class GetReservationOperationParams(
             test = test,
             affiliateReferenceId = affiliateReferenceId,
             email = email,
-            include = include
+            include = include,
         )
 
     override fun getHeaders(): Headers {

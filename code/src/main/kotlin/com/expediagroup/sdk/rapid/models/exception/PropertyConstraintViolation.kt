@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models.exception
@@ -40,5 +40,5 @@ package com.expediagroup.sdk.rapid.models.exception
 data class PropertyConstraintViolation(
     val name: String,
     val path: String,
-    val message: String
+    val message: String,
 )

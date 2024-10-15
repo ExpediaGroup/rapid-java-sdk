@@ -38,7 +38,7 @@ data class RequestUndeliveredNotificationsOperationParams(
     val paymentTerms: kotlin.String? =
         null,
     val platformName: kotlin.String? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -51,7 +51,7 @@ data class RequestUndeliveredNotificationsOperationParams(
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
-        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
     ) {
         /**
          * @param undeliverable Undeliverable notifications are returned when this parameter is set to `true`.
@@ -86,7 +86,7 @@ data class RequestUndeliveredNotificationsOperationParams(
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
         }
 
@@ -103,7 +103,7 @@ data class RequestUndeliveredNotificationsOperationParams(
             billingTerms = billingTerms,
             partnerPointOfSale = partnerPointOfSale,
             paymentTerms = paymentTerms,
-            platformName = platformName
+            platformName = platformName,
         )
 
     override fun getHeaders(): Headers {

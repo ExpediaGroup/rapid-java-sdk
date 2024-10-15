@@ -107,7 +107,16 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     class Builder : BaseRapidClient.Builder<Builder>() {
         override fun build() =
             RapidClient(
-                RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields)
+                RapidClientConfiguration(
+                    key,
+                    secret,
+                    endpoint,
+                    requestTimeout,
+                    connectionTimeout,
+                    socketTimeout,
+                    maskedLoggingHeaders,
+                    maskedLoggingBodyFields,
+                ),
             )
     }
 
@@ -117,7 +126,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     override suspend fun throwServiceException(
         response: HttpResponse,
-        operationId: String
+        operationId: String,
     ) {
         throw ErrorObjectMapper.process(response, operationId)
     }
@@ -155,7 +164,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         }
     }
 
-    private inline fun <reified RequestType> executeAsyncWithEmptyResponse(operation: Operation<RequestType>): CompletableFuture<EmptyResponse> {
+    private inline fun <reified RequestType> executeAsyncWithEmptyResponse(
+        operation: Operation<RequestType>,
+    ): CompletableFuture<EmptyResponse> {
         return GlobalScope.future(Dispatchers.IO) {
             try {
                 val response = executeHttpRequest(operation)
@@ -175,7 +186,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         }
     }
 
-    private inline fun <reified RequestType, reified ResponseType> executeAsync(operation: Operation<RequestType>): CompletableFuture<Response<ResponseType>> {
+    private inline fun <reified RequestType, reified ResponseType> executeAsync(
+        operation: Operation<RequestType>,
+    ): CompletableFuture<Response<ResponseType>> {
         return GlobalScope.future(Dispatchers.IO) {
             try {
                 val response = executeHttpRequest(operation)
@@ -218,7 +231,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: ChangeRoomDetailsOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             ChangeRoomDetailsOperationParams(
@@ -227,13 +240,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             ChangeRoomDetailsOperation(
                 params,
-                changeRoomDetailsRequest
+                changeRoomDetailsRequest,
             )
 
         return execute(operation)
@@ -253,7 +266,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: ChangeRoomDetailsOperation)"))
@@ -266,7 +279,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: ChangeRoomDetailsOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return changeRoomDetailsWithResponse(customerIp, itineraryId, roomId, token, changeRoomDetailsRequest, customerSessionId, test).data
     }
@@ -285,7 +298,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: ChangeRoomDetailsOperation)"))
@@ -298,7 +311,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: ChangeRoomDetailsOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -341,7 +354,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: CommitChangeOperationParams.Test? =
             null,
         commitChangeRoomRequestBody: CommitChangeRoomRequestBody? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             CommitChangeOperationParams(
@@ -350,13 +363,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             CommitChangeOperation(
                 params,
-                commitChangeRoomRequestBody
+                commitChangeRoomRequestBody,
             )
 
         return execute(operation)
@@ -376,7 +389,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: CommitChangeOperation)"))
@@ -390,7 +403,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: CommitChangeOperationParams.Test? =
             null,
         commitChangeRoomRequestBody: CommitChangeRoomRequestBody? =
-            null
+            null,
     ): Nothing {
         return commitChangeWithResponse(customerIp, itineraryId, roomId, token, customerSessionId, test, commitChangeRoomRequestBody).data
     }
@@ -409,7 +422,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: CommitChangeOperation)"))
@@ -423,7 +436,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: CommitChangeOperationParams.Test? =
             null,
         commitChangeRoomRequestBody: CommitChangeRoomRequestBody? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -463,7 +476,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteHeldBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             DeleteHeldBookingOperationParams(
@@ -471,12 +484,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             DeleteHeldBookingOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -494,7 +507,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteHeldBookingOperation)"))
@@ -505,7 +518,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteHeldBookingOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return deleteHeldBookingWithResponse(customerIp, itineraryId, token, customerSessionId, test).data
     }
@@ -522,7 +535,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteHeldBookingOperation)"))
@@ -533,7 +546,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteHeldBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -574,7 +587,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteRoomOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             DeleteRoomOperationParams(
@@ -583,12 +596,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             DeleteRoomOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -607,7 +620,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteRoomOperation)"))
@@ -619,7 +632,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteRoomOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return deleteRoomWithResponse(customerIp, itineraryId, roomId, token, customerSessionId, test).data
     }
@@ -637,7 +650,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteRoomOperation)"))
@@ -649,7 +662,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteRoomOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -678,7 +691,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.List<PropertyAvailability>
      */
-    fun executeAsync(operation: GetAdditionalAvailabilityOperation): CompletableFuture<Response<kotlin.collections.List<PropertyAvailability>>> {
+    fun executeAsync(
+        operation: GetAdditionalAvailabilityOperation,
+    ): CompletableFuture<Response<kotlin.collections.List<PropertyAvailability>>> {
         return executeAsync<Nothing, kotlin.collections.List<PropertyAvailability>>(operation)
     }
 
@@ -696,29 +711,29 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         checkout: kotlin.String? =
             null,
         exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? =
             null,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? =
             null,
         salesChannel: kotlin.String? =
             null,
         currency: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyAvailability>> {
         val params =
             GetAdditionalAvailabilityOperationParams(
@@ -735,12 +750,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 occupancy = occupancy,
                 rateOption = rateOption,
                 salesChannel = salesChannel,
-                currency = currency
+                currency = currency,
             )
 
         val operation =
             GetAdditionalAvailabilityOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -767,7 +782,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<PropertyAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdditionalAvailabilityOperation)"))
@@ -785,29 +800,29 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         checkout: kotlin.String? =
             null,
         exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? =
             null,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? =
             null,
         salesChannel: kotlin.String? =
             null,
         currency: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<PropertyAvailability> {
         return getAdditionalAvailabilityWithResponse(
             propertyId,
@@ -823,7 +838,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             occupancy,
             rateOption,
             salesChannel,
-            currency
+            currency,
         ).data
     }
 
@@ -848,7 +863,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdditionalAvailabilityOperation)"))
@@ -866,29 +881,29 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         checkout: kotlin.String? =
             null,
         exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? =
             null,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? =
             null,
         salesChannel: kotlin.String? =
             null,
         currency: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyAvailability>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -906,7 +921,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     occupancy,
                     rateOption,
                     salesChannel,
-                    currency
+                    currency,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -943,10 +958,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         countryCode: kotlin.String,
         language: kotlin.String,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         ratePlanCount: java.math.BigDecimal,
         salesChannel: kotlin.String,
@@ -958,23 +973,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetAvailabilityOperationParams.Test? =
             null,
         amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? =
             null,
         travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
@@ -986,7 +1001,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Property>> {
         val params =
             GetAvailabilityOperationParams(
@@ -1012,12 +1027,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetAvailabilityOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1053,7 +1068,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<Property>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAvailabilityOperation)"))
@@ -1064,10 +1079,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         countryCode: kotlin.String,
         language: kotlin.String,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         ratePlanCount: java.math.BigDecimal,
         salesChannel: kotlin.String,
@@ -1079,23 +1094,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetAvailabilityOperationParams.Test? =
             null,
         amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? =
             null,
         travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
@@ -1107,7 +1122,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<Property> {
         return getAvailabilityWithResponse(
             checkin,
@@ -1132,7 +1147,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             billingTerms,
             paymentTerms,
             partnerPointOfSale,
-            platformName
+            platformName,
         ).data
     }
 
@@ -1166,7 +1181,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Property>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAvailabilityOperation)"))
@@ -1177,10 +1192,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         countryCode: kotlin.String,
         language: kotlin.String,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         ratePlanCount: java.math.BigDecimal,
         salesChannel: kotlin.String,
@@ -1192,23 +1207,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetAvailabilityOperationParams.Test? =
             null,
         amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? =
             null,
         travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
@@ -1220,7 +1235,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Property>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1247,7 +1262,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     billingTerms,
                     paymentTerms,
                     partnerPointOfSale,
-                    platformName
+                    platformName,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -1286,7 +1301,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetBookingReceiptOperationParams.Test? =
             null,
         branding: GetBookingReceiptOperationParams.Branding? =
-            null
+            null,
     ): Response<java.io.InputStream> {
         val params =
             GetBookingReceiptOperationParams(
@@ -1295,12 +1310,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerSessionId = customerSessionId,
                 test = test,
                 token = token,
-                branding = branding
+                branding = branding,
             )
 
         val operation =
             GetBookingReceiptOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1319,7 +1334,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return java.io.InputStream
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetBookingReceiptOperation)"))
@@ -1332,7 +1347,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetBookingReceiptOperationParams.Test? =
             null,
         branding: GetBookingReceiptOperationParams.Branding? =
-            null
+            null,
     ): java.io.InputStream {
         return getBookingReceiptWithResponse(customerIp, itineraryId, token, customerSessionId, test, branding).data
     }
@@ -1350,7 +1365,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type java.io.InputStream
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetBookingReceiptOperation)"))
@@ -1363,7 +1378,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetBookingReceiptOperationParams.Test? =
             null,
         branding: GetBookingReceiptOperationParams.Branding? =
-            null
+            null,
     ): Response<java.io.InputStream> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1392,30 +1407,32 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.List<PropertyCalendarAvailability>
      */
-    fun executeAsync(operation: GetCalendarAvailabilityOperation): CompletableFuture<Response<kotlin.collections.List<PropertyCalendarAvailability>>> {
+    fun executeAsync(
+        operation: GetCalendarAvailabilityOperation,
+    ): CompletableFuture<Response<kotlin.collections.List<PropertyCalendarAvailability>>> {
         return executeAsync<Nothing, kotlin.collections.List<PropertyCalendarAvailability>>(operation)
     }
 
     private suspend inline fun kgetCalendarAvailabilityWithResponse(
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         startDate: java.time.LocalDate,
         endDate: java.time.LocalDate,
         test: GetCalendarAvailabilityOperationParams.Test? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyCalendarAvailability>> {
         val params =
             GetCalendarAvailabilityOperationParams(
                 test = test,
                 propertyId = propertyId,
                 startDate = startDate,
-                endDate = endDate
+                endDate = endDate,
             )
 
         val operation =
             GetCalendarAvailabilityOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1432,18 +1449,18 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<PropertyCalendarAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetCalendarAvailabilityOperation)"))
     fun getCalendarAvailability(
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         startDate: java.time.LocalDate,
         endDate: java.time.LocalDate,
         test: GetCalendarAvailabilityOperationParams.Test? =
-            null
+            null,
     ): kotlin.collections.List<PropertyCalendarAvailability> {
         return getCalendarAvailabilityWithResponse(propertyId, startDate, endDate, test).data
     }
@@ -1459,18 +1476,18 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyCalendarAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetCalendarAvailabilityOperation)"))
     fun getCalendarAvailabilityWithResponse(
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         startDate: java.time.LocalDate,
         endDate: java.time.LocalDate,
         test: GetCalendarAvailabilityOperationParams.Test? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyCalendarAvailability>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1513,7 +1530,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, Chain>> {
         val params =
             GetChainReferenceOperationParams(
@@ -1521,12 +1538,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetChainReferenceOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1544,7 +1561,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.Map<kotlin.String, Chain>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetChainReferenceOperation)"))
@@ -1558,7 +1575,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.Map<kotlin.String, Chain> {
         return getChainReferenceWithResponse(customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
     }
@@ -1575,7 +1592,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetChainReferenceOperation)"))
@@ -1589,7 +1606,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, Chain>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1636,7 +1653,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyInactive>> {
         val params =
             GetInactivePropertiesOperationParams(
@@ -1646,12 +1663,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetInactivePropertiesOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1671,7 +1688,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<PropertyInactive>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetInactivePropertiesOperation)"))
@@ -1689,9 +1706,17 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<PropertyInactive> {
-        return getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName).data
+        return getInactivePropertiesWithResponse(
+            customerSessionId,
+            since,
+            token,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
@@ -1708,7 +1733,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyInactive>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetInactivePropertiesOperation)"))
@@ -1726,11 +1751,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyInactive>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
+                kgetInactivePropertiesWithResponse(
+                    customerSessionId,
+                    since,
+                    token,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -1759,9 +1792,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Paginator<kotlin.collections.List<PropertyInactive>> {
-        val response = getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
+        val response =
+            getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
         return Paginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
@@ -1781,9 +1815,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): ResponsePaginator<kotlin.collections.List<PropertyInactive>> {
-        val response = getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
+        val response =
+            getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
         return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
@@ -1815,19 +1850,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerIp: kotlin.String? =
             null,
         customerSessionId: kotlin.String? =
-            null
+            null,
     ): Response<PaymentOption> {
         val params =
             GetPaymentOptionsOperationParams(
                 propertyId = propertyId,
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
-                token = token
+                token = token,
             )
 
         val operation =
             GetPaymentOptionsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1844,7 +1879,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return PaymentOption
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPaymentOptionsOperation)"))
@@ -1854,7 +1889,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerIp: kotlin.String? =
             null,
         customerSessionId: kotlin.String? =
-            null
+            null,
     ): PaymentOption {
         return getPaymentOptionsWithResponse(propertyId, token, customerIp, customerSessionId).data
     }
@@ -1870,7 +1905,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type PaymentOption
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPaymentOptionsOperation)"))
@@ -1880,7 +1915,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerIp: kotlin.String? =
             null,
         customerSessionId: kotlin.String? =
-            null
+            null,
     ): Response<PaymentOption> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1925,7 +1960,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         val params =
             GetPropertyCatalogFileOperationParams(
@@ -1935,12 +1970,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyCatalogFileOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1960,7 +1995,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyCatalogFileOperation)"))
@@ -1976,9 +2011,17 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Link {
-        return getPropertyCatalogFileWithResponse(language, supplySource, customerSessionId, billingTerms, paymentTerms, partnerPointOfSale, platformName).data
+        return getPropertyCatalogFileWithResponse(
+            language,
+            supplySource,
+            customerSessionId,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
@@ -1995,7 +2038,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyCatalogFileOperation)"))
@@ -2011,11 +2054,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetPropertyCatalogFileWithResponse(language, supplySource, customerSessionId, billingTerms, paymentTerms, partnerPointOfSale, platformName)
+                kgetPropertyCatalogFileWithResponse(
+                    language,
+                    supplySource,
+                    customerSessionId,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -2040,7 +2091,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, PropertyContent>
      */
-    fun executeAsync(operation: GetPropertyContentOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyContent>>> {
+    fun executeAsync(
+        operation: GetPropertyContentOperation,
+    ): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyContent>>> {
         return executeAsync<Nothing, kotlin.collections.Map<kotlin.String, PropertyContent>>(operation)
     }
 
@@ -2050,39 +2103,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2094,13 +2147,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2108,7 +2161,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2118,7 +2171,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val params =
             GetPropertyContentOperationParams(
@@ -2147,12 +2200,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyContentOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2191,7 +2244,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.Map<kotlin.String, PropertyContent>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentOperation)"))
@@ -2201,39 +2254,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2245,13 +2298,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2259,7 +2312,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2269,7 +2322,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.Map<kotlin.String, PropertyContent> {
         return getPropertyContentWithResponse(
             language,
@@ -2297,7 +2350,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             billingTerms,
             partnerPointOfSale,
             paymentTerms,
-            platformName
+            platformName,
         ).data
     }
 
@@ -2334,7 +2387,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PropertyContent>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentOperation)"))
@@ -2344,39 +2397,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2388,13 +2441,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2402,7 +2455,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2412,7 +2465,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -2442,7 +2495,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     billingTerms,
                     partnerPointOfSale,
                     paymentTerms,
-                    platformName
+                    platformName,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -2464,39 +2517,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2508,13 +2561,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2522,7 +2575,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2532,7 +2585,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Paginator<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val response =
             getPropertyContentWithResponse(
@@ -2561,7 +2614,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return Paginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
@@ -2574,39 +2627,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2618,13 +2671,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2632,7 +2685,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2642,7 +2695,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): ResponsePaginator<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val response =
             getPropertyContentWithResponse(
@@ -2671,7 +2724,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return ResponsePaginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
@@ -2710,7 +2763,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         val params =
             GetPropertyContentFileOperationParams(
@@ -2720,12 +2773,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyContentFileOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2745,7 +2798,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentFileOperation)"))
@@ -2761,9 +2814,17 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Link {
-        return getPropertyContentFileWithResponse(language, supplySource, customerSessionId, billingTerms, paymentTerms, partnerPointOfSale, platformName).data
+        return getPropertyContentFileWithResponse(
+            language,
+            supplySource,
+            customerSessionId,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
@@ -2780,7 +2841,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentFileOperation)"))
@@ -2796,11 +2857,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetPropertyContentFileWithResponse(language, supplySource, customerSessionId, billingTerms, paymentTerms, partnerPointOfSale, platformName)
+                kgetPropertyContentFileWithResponse(
+                    language,
+                    supplySource,
+                    customerSessionId,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -2835,11 +2904,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? =
             null,
         tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2849,7 +2918,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<GuestReviews> {
         val params =
             GetPropertyGuestReviewsOperationParams(
@@ -2861,12 +2930,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyGuestReviewsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2888,7 +2957,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return GuestReviews
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyGuestReviewsOperation)"))
@@ -2898,11 +2967,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? =
             null,
         tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2912,9 +2981,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): GuestReviews {
-        return getPropertyGuestReviewsWithResponse(propertyId, language, customerSessionId, filter, tripReason, billingTerms, paymentTerms, partnerPointOfSale, platformName).data
+        return getPropertyGuestReviewsWithResponse(
+            propertyId,
+            language,
+            customerSessionId,
+            filter,
+            tripReason,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
@@ -2933,7 +3012,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type GuestReviews
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyGuestReviewsOperation)"))
@@ -2943,11 +3022,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? =
             null,
         tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2957,11 +3036,21 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         partnerPointOfSale: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<GuestReviews> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetPropertyGuestReviewsWithResponse(propertyId, language, customerSessionId, filter, tripReason, billingTerms, paymentTerms, partnerPointOfSale, platformName)
+                kgetPropertyGuestReviewsWithResponse(
+                    propertyId,
+                    language,
+                    customerSessionId,
+                    filter,
+                    tripReason,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -2994,7 +3083,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         regionId: kotlin.String,
         language: kotlin.String,
         include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >,
         customerSessionId: kotlin.String? =
             null,
@@ -3007,7 +3096,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         platformName: kotlin.String? =
             null,
         supplySource: kotlin.String? =
-            null
+            null,
     ): Response<Region> {
         val params =
             GetRegionOperationParams(
@@ -3019,12 +3108,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
                 platformName = platformName,
-                supplySource = supplySource
+                supplySource = supplySource,
             )
 
         val operation =
             GetRegionOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3046,7 +3135,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Region
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionOperation)"))
@@ -3054,7 +3143,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         regionId: kotlin.String,
         language: kotlin.String,
         include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >,
         customerSessionId: kotlin.String? =
             null,
@@ -3067,9 +3156,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         platformName: kotlin.String? =
             null,
         supplySource: kotlin.String? =
-            null
+            null,
     ): Region {
-        return getRegionWithResponse(regionId, language, include, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName, supplySource).data
+        return getRegionWithResponse(
+            regionId,
+            language,
+            include,
+            customerSessionId,
+            billingTerms,
+            partnerPointOfSale,
+            paymentTerms,
+            platformName,
+            supplySource,
+        ).data
     }
 
     /**
@@ -3088,7 +3187,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Region
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionOperation)"))
@@ -3096,7 +3195,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         regionId: kotlin.String,
         language: kotlin.String,
         include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >,
         customerSessionId: kotlin.String? =
             null,
@@ -3109,11 +3208,21 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         platformName: kotlin.String? =
             null,
         supplySource: kotlin.String? =
-            null
+            null,
     ): Response<Region> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetRegionWithResponse(regionId, language, include, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName, supplySource)
+                kgetRegionWithResponse(
+                    regionId,
+                    language,
+                    include,
+                    customerSessionId,
+                    billingTerms,
+                    partnerPointOfSale,
+                    paymentTerms,
+                    platformName,
+                    supplySource,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -3144,7 +3253,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     private suspend inline fun kgetRegionsWithResponse(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3154,11 +3263,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3168,7 +3277,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3178,7 +3287,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Region>> {
         val params =
             GetRegionsOperationParams(
@@ -3196,12 +3305,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetRegionsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3229,13 +3338,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<Region>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionsOperation)"))
     fun getRegions(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3245,11 +3354,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3259,7 +3368,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3269,7 +3378,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<Region> {
         return getRegionsWithResponse(
             include,
@@ -3286,7 +3395,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             billingTerms,
             partnerPointOfSale,
             paymentTerms,
-            platformName
+            platformName,
         ).data
     }
 
@@ -3312,13 +3421,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Region>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionsOperation)"))
     fun getRegionsWithResponse(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3328,11 +3437,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3342,7 +3451,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3352,7 +3461,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Region>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3371,7 +3480,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     billingTerms,
                     partnerPointOfSale,
                     paymentTerms,
-                    platformName
+                    platformName,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -3389,7 +3498,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @Deprecated("Use getPaginator method instead", ReplaceWith("getPaginator(operation: GetRegionsOperation)"))
     fun getRegionsPaginator(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3399,11 +3508,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3413,7 +3522,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3423,7 +3532,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Paginator<kotlin.collections.List<Region>> {
         val response =
             getRegionsWithResponse(
@@ -3441,7 +3550,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return Paginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
     }
@@ -3450,7 +3559,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @Deprecated("Use getPaginator method instead", ReplaceWith("getPaginator(operation: GetRegionsOperation)"))
     fun getRegionsPaginatorWithResponse(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3460,11 +3569,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3474,7 +3583,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3484,7 +3593,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): ResponsePaginator<kotlin.collections.List<Region>> {
         val response =
             getRegionsWithResponse(
@@ -3502,7 +3611,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
     }
@@ -3538,9 +3647,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetReservationOperationParams.Test? =
             null,
         include: kotlin.collections.List<
-            GetReservationOperationParams.Include
+            GetReservationOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<kotlin.collections.List<Itinerary>> {
         val params =
             GetReservationOperationParams(
@@ -3549,12 +3658,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 test = test,
                 affiliateReferenceId = affiliateReferenceId,
                 email = email,
-                include = include
+                include = include,
             )
 
         val operation =
             GetReservationOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3573,7 +3682,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<Itinerary>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationOperation)"))
@@ -3586,9 +3695,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetReservationOperationParams.Test? =
             null,
         include: kotlin.collections.List<
-            GetReservationOperationParams.Include
+            GetReservationOperationParams.Include,
         >? =
-            null
+            null,
     ): kotlin.collections.List<Itinerary> {
         return getReservationWithResponse(customerIp, affiliateReferenceId, email, customerSessionId, test, include).data
     }
@@ -3606,7 +3715,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Itinerary>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationOperation)"))
@@ -3619,9 +3728,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetReservationOperationParams.Test? =
             null,
         include: kotlin.collections.List<
-            GetReservationOperationParams.Include
+            GetReservationOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<kotlin.collections.List<Itinerary>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3666,9 +3775,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         email: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<Itinerary> {
         val params =
             GetReservationByItineraryIdOperationParams(
@@ -3678,12 +3787,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 test = test,
                 token = token,
                 email = email,
-                include = include
+                include = include,
             )
 
         val operation =
             GetReservationByItineraryIdOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3703,7 +3812,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Itinerary
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationByItineraryIdOperation)"))
@@ -3719,9 +3828,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         email: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? =
-            null
+            null,
     ): Itinerary {
         return getReservationByItineraryIdWithResponse(customerIp, itineraryId, customerSessionId, test, token, email, include).data
     }
@@ -3740,7 +3849,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Itinerary
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationByItineraryIdOperation)"))
@@ -3756,9 +3865,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         email: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<Itinerary> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3787,7 +3896,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
-    fun executeAsync(operation: PostGeographyOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyGeography>>> {
+    fun executeAsync(
+        operation: PostGeographyOperation,
+    ): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyGeography>>> {
         return executeAsync<PropertiesGeoJsonRequest, kotlin.collections.Map<kotlin.String, PropertyGeography>>(operation)
     }
 
@@ -3805,7 +3916,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         platformName: kotlin.String? =
             null,
         supplySource: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyGeography>> {
         val params =
             PostGeographyOperationParams(
@@ -3815,13 +3926,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
                 platformName = platformName,
-                supplySource = supplySource
+                supplySource = supplySource,
             )
 
         val operation =
             PostGeographyOperation(
                 params,
-                propertiesGeoJsonRequest
+                propertiesGeoJsonRequest,
             )
 
         return execute(operation)
@@ -3842,7 +3953,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostGeographyOperation)"))
@@ -3860,9 +3971,18 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         platformName: kotlin.String? =
             null,
         supplySource: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.Map<kotlin.String, PropertyGeography> {
-        return postGeographyWithResponse(include, propertiesGeoJsonRequest, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName, supplySource).data
+        return postGeographyWithResponse(
+            include,
+            propertiesGeoJsonRequest,
+            customerSessionId,
+            billingTerms,
+            partnerPointOfSale,
+            paymentTerms,
+            platformName,
+            supplySource,
+        ).data
     }
 
     /**
@@ -3880,7 +4000,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostGeographyOperation)"))
@@ -3898,11 +4018,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         platformName: kotlin.String? =
             null,
         supplySource: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyGeography>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kpostGeographyWithResponse(include, propertiesGeoJsonRequest, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName, supplySource)
+                kpostGeographyWithResponse(
+                    include,
+                    propertiesGeoJsonRequest,
+                    customerSessionId,
+                    billingTerms,
+                    partnerPointOfSale,
+                    paymentTerms,
+                    platformName,
+                    supplySource,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -3938,20 +4067,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostItineraryOperationParams.Test? =
-            null
+            null,
     ): Response<ItineraryCreation> {
         val params =
             PostItineraryOperationParams(
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PostItineraryOperation(
                 params,
-                createItineraryRequest
+                createItineraryRequest,
             )
 
         return execute(operation)
@@ -3969,7 +4098,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return ItineraryCreation
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostItineraryOperation)"))
@@ -3980,7 +4109,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostItineraryOperationParams.Test? =
-            null
+            null,
     ): ItineraryCreation {
         return postItineraryWithResponse(customerIp, token, createItineraryRequest, customerSessionId, test).data
     }
@@ -3997,7 +4126,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type ItineraryCreation
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostItineraryOperation)"))
@@ -4008,7 +4137,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostItineraryOperationParams.Test? =
-            null
+            null,
     ): Response<ItineraryCreation> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4048,20 +4177,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostPaymentSessionsOperationParams.Test? =
-            null
+            null,
     ): Response<PaymentSessions> {
         val params =
             PostPaymentSessionsOperationParams(
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PostPaymentSessionsOperation(
                 params,
-                paymentSessionsRequest
+                paymentSessionsRequest,
             )
 
         return execute(operation)
@@ -4079,7 +4208,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return PaymentSessions
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostPaymentSessionsOperation)"))
@@ -4090,7 +4219,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostPaymentSessionsOperationParams.Test? =
-            null
+            null,
     ): PaymentSessions {
         return postPaymentSessionsWithResponse(customerIp, token, paymentSessionsRequest, customerSessionId, test).data
     }
@@ -4107,7 +4236,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type PaymentSessions
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostPaymentSessionsOperation)"))
@@ -4118,7 +4247,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostPaymentSessionsOperationParams.Test? =
-            null
+            null,
     ): Response<PaymentSessions> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4161,7 +4290,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PriceCheckOperationParams.Test? =
-            null
+            null,
     ): Response<RoomPriceCheck> {
         val params =
             PriceCheckOperationParams(
@@ -4171,12 +4300,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PriceCheckOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4196,7 +4325,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return RoomPriceCheck
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PriceCheckOperation)"))
@@ -4210,7 +4339,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PriceCheckOperationParams.Test? =
-            null
+            null,
     ): RoomPriceCheck {
         return priceCheckWithResponse(propertyId, roomId, rateId, token, customerIp, customerSessionId, test).data
     }
@@ -4229,7 +4358,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type RoomPriceCheck
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PriceCheckOperation)"))
@@ -4243,7 +4372,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PriceCheckOperationParams.Test? =
-            null
+            null,
     ): Response<RoomPriceCheck> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4283,7 +4412,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutCompletePaymentSessionOperationParams.Test? =
-            null
+            null,
     ): Response<CompletePaymentSession> {
         val params =
             PutCompletePaymentSessionOperationParams(
@@ -4291,12 +4420,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PutCompletePaymentSessionOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4314,7 +4443,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return CompletePaymentSession
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutCompletePaymentSessionOperation)"))
@@ -4325,7 +4454,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutCompletePaymentSessionOperationParams.Test? =
-            null
+            null,
     ): CompletePaymentSession {
         return putCompletePaymentSessionWithResponse(customerIp, itineraryId, token, customerSessionId, test).data
     }
@@ -4342,7 +4471,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type CompletePaymentSession
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutCompletePaymentSessionOperation)"))
@@ -4353,7 +4482,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutCompletePaymentSessionOperationParams.Test? =
-            null
+            null,
     ): Response<CompletePaymentSession> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4393,7 +4522,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutResumeBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             PutResumeBookingOperationParams(
@@ -4401,12 +4530,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PutResumeBookingOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4424,7 +4553,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutResumeBookingOperation)"))
@@ -4435,7 +4564,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutResumeBookingOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return putResumeBookingWithResponse(customerIp, itineraryId, token, customerSessionId, test).data
     }
@@ -4452,7 +4581,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutResumeBookingOperation)"))
@@ -4463,7 +4592,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutResumeBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4505,20 +4634,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             RequestTestNotificationOperationParams(
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             RequestTestNotificationOperation(
                 params,
-                testNotificationRequest
+                testNotificationRequest,
             )
 
         return execute(operation)
@@ -4536,7 +4665,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: RequestTestNotificationOperation)"))
@@ -4549,9 +4678,15 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Nothing {
-        return requestTestNotificationWithResponse(testNotificationRequest, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return requestTestNotificationWithResponse(
+            testNotificationRequest,
+            billingTerms,
+            partnerPointOfSale,
+            paymentTerms,
+            platformName,
+        ).data
     }
 
     /**
@@ -4566,7 +4701,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: RequestTestNotificationOperation)"))
@@ -4579,7 +4714,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4606,7 +4741,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param operation [RequestUndeliveredNotificationsOperation]
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.List<Notification>
      */
-    fun executeAsync(operation: RequestUndeliveredNotificationsOperation): CompletableFuture<Response<kotlin.collections.List<Notification>>> {
+    fun executeAsync(
+        operation: RequestUndeliveredNotificationsOperation,
+    ): CompletableFuture<Response<kotlin.collections.List<Notification>>> {
         return executeAsync<Nothing, kotlin.collections.List<Notification>>(operation)
     }
 
@@ -4619,7 +4756,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Notification>> {
         val params =
             RequestUndeliveredNotificationsOperationParams(
@@ -4627,12 +4764,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             RequestUndeliveredNotificationsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4660,7 +4797,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<Notification> {
         return requestUndeliveredNotificationsWithResponse(undeliverable, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
     }
@@ -4687,7 +4824,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Notification>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -66,7 +66,7 @@ data class SaleScenario(
     // If true, this rate has an associated mobile promotion which can be advertised as a special mobile only deal. This will only be present when `include=sale_scenario.mobile_promotion` is passed as a request parameter.
     @JsonProperty("mobile_promotion")
     @field:Valid
-    val mobilePromotion: kotlin.Boolean? = null
+    val mobilePromotion: kotlin.Boolean? = null,
 ) {
     companion object {
         @JvmStatic
@@ -78,7 +78,7 @@ data class SaleScenario(
         private var member: kotlin.Boolean? = null,
         private var corporate: kotlin.Boolean? = null,
         private var distribution: kotlin.Boolean? = null,
-        private var mobilePromotion: kotlin.Boolean? = null
+        private var mobilePromotion: kotlin.Boolean? = null,
     ) {
         fun `package`(`package`: kotlin.Boolean?) = apply { this.`package` = `package` }
 
@@ -96,7 +96,7 @@ data class SaleScenario(
                 member = member,
                 corporate = corporate,
                 distribution = distribution,
-                mobilePromotion = mobilePromotion
+                mobilePromotion = mobilePromotion,
             )
         }
     }
@@ -107,6 +107,6 @@ data class SaleScenario(
             member = member,
             corporate = corporate,
             distribution = distribution,
-            mobilePromotion = mobilePromotion
+            mobilePromotion = mobilePromotion,
         )
 }

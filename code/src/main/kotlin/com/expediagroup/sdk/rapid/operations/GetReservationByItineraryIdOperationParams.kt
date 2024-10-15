@@ -40,9 +40,9 @@ data class GetReservationByItineraryIdOperationParams
         val token: kotlin.String? = null,
         val email: kotlin.String? = null,
         val include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -62,9 +62,9 @@ data class GetReservationByItineraryIdOperationParams
             email: kotlin.String? =
                 null,
             include: kotlin.collections.List<
-                GetReservationByItineraryIdOperationParams.Include
+                GetReservationByItineraryIdOperationParams.Include,
             >? =
-                null
+                null,
         ) : this(
             itineraryId = itineraryId,
             customerIp = customerIp,
@@ -73,28 +73,28 @@ data class GetReservationByItineraryIdOperationParams
             token = token,
             email = email,
             include = include,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: GetReservationByItineraryIdOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            INTERNAL_SERVER_ERROR("internal_server_error")
+            INTERNAL_SERVER_ERROR("internal_server_error"),
         }
 
         enum class Include(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
-            HISTORY("history")
+            HISTORY("history"),
         }
 
         class Builder(
@@ -105,8 +105,8 @@ data class GetReservationByItineraryIdOperationParams
             @JsonProperty("token") private var token: kotlin.String? = null,
             @JsonProperty("email") private var email: kotlin.String? = null,
             @JsonProperty("include") private var include: kotlin.collections.List<
-                GetReservationByItineraryIdOperationParams.Include
-            >? = null
+                GetReservationByItineraryIdOperationParams.Include,
+            >? = null,
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -143,8 +143,8 @@ data class GetReservationByItineraryIdOperationParams
              */
             fun include(
                 include: kotlin.collections.List<
-                    GetReservationByItineraryIdOperationParams.Include
-                >
+                    GetReservationByItineraryIdOperationParams.Include,
+                >,
             ) = apply { this.include = include }
 
             fun build(): GetReservationByItineraryIdOperationParams {
@@ -157,7 +157,7 @@ data class GetReservationByItineraryIdOperationParams
                     test = test,
                     token = token,
                     email = email,
-                    include = include
+                    include = include,
                 )
             }
 
@@ -179,7 +179,7 @@ data class GetReservationByItineraryIdOperationParams
                 test = test,
                 token = token,
                 email = email,
-                include = include
+                include = include,
             )
 
         override fun getHeaders(): Headers {

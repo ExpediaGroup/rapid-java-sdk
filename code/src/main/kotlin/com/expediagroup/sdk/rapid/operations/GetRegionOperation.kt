@@ -24,15 +24,15 @@ import org.apache.commons.text.StringSubstitutor
  * @property params [GetRegionOperationParams]
  */
 class GetRegionOperation(
-    params: GetRegionOperationParams
+    params: GetRegionOperationParams,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(params),
         "GET",
         "getRegion",
         null,
-        params
+        params,
     ) {
     companion object {
         fun url(params: GetRegionOperationParams): String {
