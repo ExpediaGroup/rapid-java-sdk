@@ -1,0 +1,352 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Builder</title>
+    <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../../styles/multimodule.css" rel="Stylesheet">
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../../scripts/symbol-parameters-wrapper_deferred.js" defer></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../../index.html">
+                            rapid-sdk
+                    </a>
+            </div>
+            <div class="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html&quot;}"><div class="versions-dropdown">
+  <div class="versions-dropdown-button">5.0.1</div>
+  <div class="versions-dropdown-data"><a href="../../../../../../rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">5.1.0</a><a href="index.html">5.0.1</a><a href="../../../../../5.0.0/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">5.0.0</a><a href="../../../../../4.3.0/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">4.3.0</a><a href="../../../../../4.2.0/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">4.2.0</a><a href="../../../../../4.1.3/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">4.1.3</a><a href="../../../../../4.1.2/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">4.1.2</a><a href="../../../../../4.1.1/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">4.1.1</a><a href="../../../../../4.1.0/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">4.1.0</a><a href="../../../../../3.2.2/rapid-sdk/com.expediagroup.sdk.rapid.models/-vacation-rental-details/-builder/index.html">3.2.2</a></div>
+</div>
+</dokka-template-command>            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="rapid-sdk/JVM">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="rapid-sdk::com.expediagroup.sdk.rapid.models/VacationRentalDetails.Builder///PointingToDeclaration//700308213">
+  <div class="breadcrumbs"><a href="../../../../index.html">rapid-sdk</a><span class="delimiter">/</span><a href="../../index.html">com.expediagroup.sdk.rapid.models</a><span class="delimiter">/</span><a href="../index.html">VacationRentalDetails</a><span class="delimiter">/</span><span class="current">Builder</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Builder</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><span class="token keyword">class </span><a href="index.html">Builder</a></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="2130796737%2FConstructors%2F700308213" anchor-label="VacationRentalDetails.Builder" id="2130796737%2FConstructors%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vacation-rental-details.-builder.html"><span>Vacation</span><wbr><span>Rental</span><wbr><span>Details.</span><wbr><span>Builder</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2130796737%2FConstructors%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="-vacation-rental-details.-builder.html"><span class="token function">VacationRentalDetails.Builder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;registryNumber<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a>&nbsp;privateHost<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../../-property-manager/index.html">PropertyManager</a>&nbsp;propertyManager<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../../-rental-agreement/index.html">RentalAgreement</a>&nbsp;rentalAgreement<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span>&nbsp;houseRules<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../-enhanced-house-rules/index.html">EnhancedHouseRules</a><span class="token operator">&gt;</span>&nbsp;enhancedHouseRules<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="../../-amenity/index.html">Amenity</a>&nbsp;amenities<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;vrboSrpId<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingId<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingNumber<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingSource<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingUnit<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;ipmName<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../-unit-configuration/index.html">UnitConfiguration</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span>&nbsp;unitConfigurations<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;freeText</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="1762695650%2FFunctions%2F700308213" anchor-label="amenities" id="1762695650%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="amenities.html"><span><span>amenities</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1762695650%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="amenities.html"><span class="token function">amenities</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="../../-amenity/index.html">Amenity</a>&nbsp;amenities</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="367113817%2FFunctions%2F700308213" anchor-label="build" id="367113817%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build.html"><span><span>build</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="367113817%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="../index.html">VacationRentalDetails</a>&nbsp;<a href="build.html"><span class="token function">build</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1411124078%2FFunctions%2F700308213" anchor-label="enhancedHouseRules" id="-1411124078%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="enhanced-house-rules.html"><span>enhanced</span><wbr><span>House</span><wbr><span><span>Rules</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1411124078%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="enhanced-house-rules.html"><span class="token function">enhancedHouseRules</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="../../-enhanced-house-rules/index.html">EnhancedHouseRules</a><span class="token operator">&gt;</span>&nbsp;enhancedHouseRules</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="87117689%2FFunctions%2F700308213" anchor-label="freeText" id="87117689%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="free-text.html"><span>free</span><wbr><span><span>Text</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="87117689%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="free-text.html"><span class="token function">freeText</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;freeText</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="993070589%2FFunctions%2F700308213" anchor-label="houseRules" id="993070589%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="house-rules.html"><span>house</span><wbr><span><span>Rules</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="993070589%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="house-rules.html"><span class="token function">houseRules</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token operator">&gt;</span>&nbsp;houseRules</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1347341237%2FFunctions%2F700308213" anchor-label="ipmName" id="1347341237%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ipm-name.html"><span>ipm</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1347341237%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="ipm-name.html"><span class="token function">ipmName</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;ipmName</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2028166521%2FFunctions%2F700308213" anchor-label="listingId" id="-2028166521%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listing-id.html"><span>listing</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2028166521%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="listing-id.html"><span class="token function">listingId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingId</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="155621785%2FFunctions%2F700308213" anchor-label="listingNumber" id="155621785%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listing-number.html"><span>listing</span><wbr><span><span>Number</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="155621785%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="listing-number.html"><span class="token function">listingNumber</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingNumber</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1753668473%2FFunctions%2F700308213" anchor-label="listingSource" id="-1753668473%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listing-source.html"><span>listing</span><wbr><span><span>Source</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1753668473%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="listing-source.html"><span class="token function">listingSource</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingSource</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2120773506%2FFunctions%2F700308213" anchor-label="listingUnit" id="-2120773506%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="listing-unit.html"><span>listing</span><wbr><span><span>Unit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2120773506%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="listing-unit.html"><span class="token function">listingUnit</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;listingUnit</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-624541022%2FFunctions%2F700308213" anchor-label="privateHost" id="-624541022%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="private-host.html"><span>private</span><wbr><span><span>Host</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-624541022%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="private-host.html"><span class="token function">privateHost</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html">Boolean</a>&nbsp;privateHost</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1913739808%2FFunctions%2F700308213" anchor-label="propertyManager" id="1913739808%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="property-manager.html"><span>property</span><wbr><span><span>Manager</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1913739808%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="property-manager.html"><span class="token function">propertyManager</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="../../-property-manager/index.html">PropertyManager</a>&nbsp;propertyManager</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="685668908%2FFunctions%2F700308213" anchor-label="registryNumber" id="685668908%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="registry-number.html"><span>registry</span><wbr><span><span>Number</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="685668908%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="registry-number.html"><span class="token function">registryNumber</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;registryNumber</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="911882080%2FFunctions%2F700308213" anchor-label="rentalAgreement" id="911882080%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="rental-agreement.html"><span>rental</span><wbr><span><span>Agreement</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="911882080%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="rental-agreement.html"><span class="token function">rentalAgreement</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="../../-rental-agreement/index.html">RentalAgreement</a>&nbsp;rentalAgreement</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2007580751%2FFunctions%2F700308213" anchor-label="unitConfigurations" id="-2007580751%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unit-configurations.html"><span>unit</span><wbr><span><span>Configurations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2007580751%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="unit-configurations.html"><span class="token function">unitConfigurations</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html">Map</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span class="token punctuation">, </span><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html">List</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="../../-unit-configuration/index.html">UnitConfiguration</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span>&nbsp;unitConfigurations</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1417567133%2FFunctions%2F700308213" anchor-label="vrboSrpId" id="-1417567133%2FFunctions%2F700308213" data-filterable-set="rapid-sdk/JVM"></a>
+          <div class="table-row" data-filterable-current="rapid-sdk/JVM" data-filterable-set="rapid-sdk/JVM">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="vrbo-srp-id.html"><span>vrbo</span><wbr><span>Srp</span><wbr><span><span>Id</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1417567133%2FFunctions%2F700308213"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="rapid-sdk/JVM"><div class="symbol monospace block"><span class="token keyword">public </span><span class="token keyword">final </span><span class="token keyword"></span><a href="index.html">VacationRentalDetails.Builder</a>&nbsp;<a href="vrbo-srp-id.html"><span class="token function">vrboSrpId</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword"></span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a>&nbsp;vrboSrpId</span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span class="pull-right"><span>Generated by </span><a href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
