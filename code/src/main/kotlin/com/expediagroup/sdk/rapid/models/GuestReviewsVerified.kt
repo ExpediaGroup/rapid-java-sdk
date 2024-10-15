@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -47,7 +47,7 @@ data class GuestReviewsVerified(
     // A collection of the guest reviews which have been verified, in order, starting with the newest.
     @JsonProperty("recent")
     @field:Valid
-    val recent: kotlin.collections.List<Review>? = null
+    val recent: kotlin.collections.List<Review>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -55,14 +55,19 @@ data class GuestReviewsVerified(
     }
 
     class Builder(
-        private var recent: kotlin.collections.List<Review>? = null
+        private var recent: kotlin.collections.List<Review>? = null,
     ) {
         fun recent(recent: kotlin.collections.List<Review>?) = apply { this.recent = recent }
 
         fun build(): GuestReviewsVerified {
             return GuestReviewsVerified(
-                recent = recent
+                recent = recent,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            recent = recent,
+        )
 }

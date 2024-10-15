@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -90,7 +90,7 @@ data class RoomContent(
     val views: kotlin.collections.Map<kotlin.String, View>? = null,
     @JsonProperty("occupancy")
     @field:Valid
-    val occupancy: Occupancy? = null
+    val occupancy: Occupancy? = null,
 ) {
     companion object {
         @JvmStatic
@@ -106,7 +106,7 @@ data class RoomContent(
         private var bedGroups: kotlin.collections.Map<kotlin.String, BedGroup>? = null,
         private var area: Area? = null,
         private var views: kotlin.collections.Map<kotlin.String, View>? = null,
-        private var occupancy: Occupancy? = null
+        private var occupancy: Occupancy? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -136,8 +136,21 @@ data class RoomContent(
                 bedGroups = bedGroups,
                 area = area,
                 views = views,
-                occupancy = occupancy
+                occupancy = occupancy,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            descriptions = descriptions,
+            amenities = amenities,
+            images = images,
+            bedGroups = bedGroups,
+            area = area,
+            views = views,
+            occupancy = occupancy,
+        )
 }

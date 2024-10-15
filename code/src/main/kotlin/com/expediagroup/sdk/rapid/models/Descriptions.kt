@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -91,7 +91,7 @@ data class Descriptions(
     // A general description of a vacation rental property.
     @JsonProperty("general")
     @field:Valid
-    val general: kotlin.String? = null
+    val general: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -108,7 +108,7 @@ data class Descriptions(
         private var attractions: kotlin.String? = null,
         private var location: kotlin.String? = null,
         private var headline: kotlin.String? = null,
-        private var general: kotlin.String? = null
+        private var general: kotlin.String? = null,
     ) {
         fun amenities(amenities: kotlin.String?) = apply { this.amenities = amenities }
 
@@ -141,8 +141,22 @@ data class Descriptions(
                 attractions = attractions,
                 location = location,
                 headline = headline,
-                general = general
+                general = general,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            amenities = amenities,
+            dining = dining,
+            renovations = renovations,
+            nationalRatings = nationalRatings,
+            businessAmenities = businessAmenities,
+            rooms = rooms,
+            attractions = attractions,
+            location = location,
+            headline = headline,
+            general = general,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,8 +46,8 @@ import javax.validation.constraints.Size
  * A room history event, representing a change made to a specific room.
  * @param historyId Room history id for particular change.
  * @param eventTimestamp Date and time in UTC of the change event, in extended ISO 8601 format.
- * @param eventType Type of event associated with this history item such as modified or canceled. If the booking is marked as a no-show by the property/supplier, the value of event_type is `canceled` when the `include` request parameter is `history`. However, it is `canceled_no_show` when the `include` request parameter is `history_v2`.
- * @param eventSource The source of the event. If `voyager_agent`, `agent_id` will be supplied. If the event source is property/supplier, the value of event_source is `other` when the `include` request parameter is `history`. However, it is `supplier` when the `include` request parameter is `history_v2`.
+ * @param eventType Type type of event associated with this history item such as modified or canceled.
+ * @param eventSource The source of the event. If `voyager_agent`, `agent_id` will be supplied.
  * @param changeReferenceId Optional identifier provided during changes via Rapid.
  * @param agentId An agent user id number associated with a modification.
  * @param roomId The room id.
@@ -77,10 +77,10 @@ data class RoomHistoryItem(
     @JsonProperty("event_timestamp")
     @field:Valid
     val eventTimestamp: kotlin.String? = null,
-    // Type of event associated with this history item such as modified or canceled. If the booking is marked as a no-show by the property/supplier, the value of event_type is `canceled` when the `include` request parameter is `history`. However, it is `canceled_no_show` when the `include` request parameter is `history_v2`.
+    // Type type of event associated with this history item such as modified or canceled.
     @JsonProperty("event_type")
     val eventType: RoomHistoryItem.EventType? = null,
-    // The source of the event. If `voyager_agent`, `agent_id` will be supplied. If the event source is property/supplier, the value of event_source is `other` when the `include` request parameter is `history`. However, it is `supplier` when the `include` request parameter is `history_v2`.
+    // The source of the event. If `voyager_agent`, `agent_id` will be supplied.
     @JsonProperty("event_source")
     val eventSource: RoomHistoryItem.EventSource? = null,
     // Optional identifier provided during changes via Rapid.
@@ -152,7 +152,7 @@ data class RoomHistoryItem(
     val penalty: Charge? = null,
     @JsonProperty("rate")
     @field:Valid
-    val rate: RateHistory? = null
+    val rate: RateHistory? = null,
 ) {
     companion object {
         @JvmStatic
@@ -182,7 +182,7 @@ data class RoomHistoryItem(
         private var amountCharged: Charge? = null,
         private var amountRefunded: Charge? = null,
         private var penalty: Charge? = null,
-        private var rate: RateHistory? = null
+        private var rate: RateHistory? = null,
     ) {
         fun historyId(historyId: kotlin.String?) = apply { this.historyId = historyId }
 
@@ -254,14 +254,41 @@ data class RoomHistoryItem(
                 amountCharged = amountCharged,
                 amountRefunded = amountRefunded,
                 penalty = penalty,
-                rate = rate
+                rate = rate,
             )
         }
     }
 
+    fun toBuilder() =
+        Builder(
+            historyId = historyId,
+            eventTimestamp = eventTimestamp,
+            eventType = eventType,
+            eventSource = eventSource,
+            changeReferenceId = changeReferenceId,
+            agentId = agentId,
+            roomId = roomId,
+            confirmationId = confirmationId,
+            bedGroupId = bedGroupId,
+            checkin = checkin,
+            checkout = checkout,
+            numberOfAdults = numberOfAdults,
+            childAges = childAges,
+            givenName = givenName,
+            familyName = familyName,
+            status = status,
+            specialRequest = specialRequest,
+            smoking = smoking,
+            loyaltyId = loyaltyId,
+            amountCharged = amountCharged,
+            amountRefunded = amountRefunded,
+            penalty = penalty,
+            rate = rate,
+        )
+
     /**
-     * Type of event associated with this history item such as modified or canceled. If the booking is marked as a no-show by the property/supplier, the value of event_type is `canceled` when the `include` request parameter is `history`. However, it is `canceled_no_show` when the `include` request parameter is `history_v2`.
-     * Values: CREATED,MODIFIED,CANCELED,CANCELED_NO_SHOW
+     * Type type of event associated with this history item such as modified or canceled.
+     * Values: CREATED,MODIFIED,CANCELED
      */
     enum class EventType(val value: kotlin.String) {
         @JsonProperty("created")
@@ -272,14 +299,11 @@ data class RoomHistoryItem(
 
         @JsonProperty("canceled")
         CANCELED("canceled"),
-
-        @JsonProperty("canceled_no_show")
-        CANCELED_NO_SHOW("canceled_no_show")
     }
 
     /**
-     * The source of the event. If `voyager_agent`, `agent_id` will be supplied. If the event source is property/supplier, the value of event_source is `other` when the `include` request parameter is `history`. However, it is `supplier` when the `include` request parameter is `history_v2`.
-     * Values: RAPID_API,VOYAGER_AGENT,OTHER,SUPPLIER
+     * The source of the event. If `voyager_agent`, `agent_id` will be supplied.
+     * Values: RAPID_API,VOYAGER_AGENT,OTHER
      */
     enum class EventSource(val value: kotlin.String) {
         @JsonProperty("rapid_api")
@@ -290,8 +314,5 @@ data class RoomHistoryItem(
 
         @JsonProperty("other")
         OTHER("other"),
-
-        @JsonProperty("supplier")
-        SUPPLIER("supplier")
     }
 }

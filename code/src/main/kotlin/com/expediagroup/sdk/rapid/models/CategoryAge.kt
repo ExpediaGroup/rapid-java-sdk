@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class CategoryAge(
     // Age category minimum age.
     @JsonProperty("minimum_age")
     @field:Valid
-    val minimumAge: java.math.BigDecimal? = null
+    val minimumAge: java.math.BigDecimal? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class CategoryAge(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var minimumAge: java.math.BigDecimal? = null
+        private var minimumAge: java.math.BigDecimal? = null,
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -69,8 +69,14 @@ data class CategoryAge(
         fun build(): CategoryAge {
             return CategoryAge(
                 name = name,
-                minimumAge = minimumAge
+                minimumAge = minimumAge,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            minimumAge = minimumAge,
+        )
 }

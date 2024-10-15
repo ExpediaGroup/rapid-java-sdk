@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.CommitChangeRoomRequestBody
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -28,39 +27,42 @@ import org.apache.commons.text.StringSubstitutor
 class CommitChangeOperation private constructor(
     params: CommitChangeOperationParams?,
     requestBody: CommitChangeRoomRequestBody?,
-    link: Link?
+    link: CommitChangeOperationLink?,
 ) : Operation<
-        CommitChangeRoomRequestBody
+        CommitChangeRoomRequestBody,
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}/rooms/{room_id}/pricing"),
         "PUT",
         "commitChange",
         requestBody,
-        params
+        params,
     ) {
-    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: CommitChangeOperationParams, requestBody: CommitChangeRoomRequestBody?)"))
+    @Deprecated(
+        "Switch order of arguments",
+        ReplaceWith("Operation(params: CommitChangeOperationParams, requestBody: CommitChangeRoomRequestBody?)"),
+    )
     constructor(
         requestBody: CommitChangeRoomRequestBody?,
-        params: CommitChangeOperationParams
+        params: CommitChangeOperationParams,
     ) : this(params, requestBody)
 
     constructor(
         params: CommitChangeOperationParams,
-        requestBody: CommitChangeRoomRequestBody?
+        requestBody: CommitChangeRoomRequestBody?,
     ) : this(
         params,
         requestBody,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
+        link: CommitChangeOperationLink,
         context: CommitChangeOperationContext,
-        requestBody: CommitChangeRoomRequestBody?
+        requestBody: CommitChangeRoomRequestBody?,
     ) : this(
         CommitChangeOperationParams(context),
         requestBody,
-        link
+        link,
     )
 
     companion object : LinkableOperation {

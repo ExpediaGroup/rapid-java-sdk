@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -32,7 +34,7 @@ data class GetPaymentOptionsOperationParams
         val customerIp: kotlin.String? = null,
         val customerSessionId: kotlin.String? = null,
         val token: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -46,26 +48,26 @@ data class GetPaymentOptionsOperationParams
                 null,
             customerSessionId: kotlin.String? =
                 null,
-            token: kotlin.String
+            token: kotlin.String,
         ) : this(
             propertyId = propertyId,
             customerIp = customerIp,
             customerSessionId = customerSessionId,
             token = token,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: GetPaymentOptionsOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
-            dummy = Unit
+            dummy = Unit,
         )
 
         class Builder(
             @JsonProperty("property_id") private var propertyId: kotlin.String? = null,
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null
+            @JsonProperty("token") private var token: kotlin.String? = null,
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -94,7 +96,7 @@ data class GetPaymentOptionsOperationParams
                     propertyId = propertyId!!,
                     customerIp = customerIp,
                     customerSessionId = customerSessionId,
-                    token = token!!
+                    token = token!!,
                 )
             }
 
@@ -108,25 +110,30 @@ data class GetPaymentOptionsOperationParams
             }
         }
 
-        override fun getHeaders(): Map<String, String> {
-            return buildMap {
-                customerIp?.also {
-                    put("Customer-Ip", customerIp)
+        fun toBuilder() =
+            Builder(
+                propertyId = propertyId,
+                customerIp = customerIp,
+                customerSessionId = customerSessionId,
+                token = token,
+            )
+
+        override fun getHeaders(): Headers {
+            return Headers.build {
+                customerIp?.let {
+                    append("Customer-Ip", it)
                 }
-                customerSessionId?.also {
-                    put("Customer-Session-Id", customerSessionId)
+                customerSessionId?.let {
+                    append("Customer-Session-Id", it)
                 }
-                put("Accept", "application/json")
+                append("Accept", "application/json")
             }
         }
 
-        override fun getQueryParams(): Map<String, Iterable<String>> {
-            return buildMap {
-                token?.also {
-                    put(
-                        "token",
-                        listOf(token)
-                    )
+        override fun getQueryParams(): Parameters {
+            return Parameters.build {
+                token?.let {
+                    append("token", it)
                 }
             }
         }

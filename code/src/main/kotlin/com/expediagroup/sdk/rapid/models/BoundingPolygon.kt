@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -50,7 +50,7 @@ import javax.validation.constraints.Size
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", visible = true)
 @JsonSubTypes(
     Type(value = MultiPolygon::class, name = "MultiPolygon"),
-    Type(value = Polygon::class, name = "Polygon")
+    Type(value = Polygon::class, name = "Polygon"),
 )
 interface BoundingPolygon {
     // Type of bounding polygon.

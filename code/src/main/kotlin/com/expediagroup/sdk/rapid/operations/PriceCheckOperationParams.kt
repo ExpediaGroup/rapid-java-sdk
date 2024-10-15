@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -38,7 +40,7 @@ data class PriceCheckOperationParams
         val customerSessionId: kotlin.String? = null,
         val test: PriceCheckOperationParams.Test? = null,
         val token: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -56,7 +58,7 @@ data class PriceCheckOperationParams
                 null,
             test: PriceCheckOperationParams.Test? =
                 null,
-            token: kotlin.String
+            token: kotlin.String,
         ) : this(
             propertyId = propertyId,
             roomId = roomId,
@@ -65,24 +67,24 @@ data class PriceCheckOperationParams
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: PriceCheckOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             AVAILABLE("available"),
             PRICE_CHANGED("price_changed"),
             SOLD_OUT("sold_out"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
         }
 
         class Builder(
@@ -92,7 +94,7 @@ data class PriceCheckOperationParams
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: PriceCheckOperationParams.Test? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null
+            @JsonProperty("token") private var token: kotlin.String? = null,
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -139,7 +141,7 @@ data class PriceCheckOperationParams
                     customerIp = customerIp,
                     customerSessionId = customerSessionId,
                     test = test,
-                    token = token!!
+                    token = token!!,
                 )
             }
 
@@ -159,28 +161,36 @@ data class PriceCheckOperationParams
             }
         }
 
-        override fun getHeaders(): Map<String, String> {
-            return buildMap {
-                customerIp?.also {
-                    put("Customer-Ip", customerIp)
+        fun toBuilder() =
+            Builder(
+                propertyId = propertyId,
+                roomId = roomId,
+                rateId = rateId,
+                customerIp = customerIp,
+                customerSessionId = customerSessionId,
+                test = test,
+                token = token,
+            )
+
+        override fun getHeaders(): Headers {
+            return Headers.build {
+                customerIp?.let {
+                    append("Customer-Ip", it)
                 }
-                customerSessionId?.also {
-                    put("Customer-Session-Id", customerSessionId)
+                customerSessionId?.let {
+                    append("Customer-Session-Id", it)
                 }
-                test?.also {
-                    put("Test", test.value)
+                test?.let {
+                    append("Test", it.value)
                 }
-                put("Accept", "application/json")
+                append("Accept", "application/json")
             }
         }
 
-        override fun getQueryParams(): Map<String, Iterable<String>> {
-            return buildMap {
-                token?.also {
-                    put(
-                        "token",
-                        listOf(token)
-                    )
+        override fun getQueryParams(): Parameters {
+            return Parameters.build {
+                token?.let {
+                    append("token", it)
                 }
             }
         }

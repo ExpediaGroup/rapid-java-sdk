@@ -22,7 +22,7 @@ internal object ExceptionMessageProvider {
 
     fun getExceptionOccurredWithTransactionIdMessage(
         transactionId: String?,
-        message: String?
+        message: String?,
     ): String = "Exception occurred" + getTransactionIdMessage(transactionId) + getConcatenatedMessage(message)
 
     private fun getConcatenatedMessage(message: String?) = if (message != null) ": $message" else ""

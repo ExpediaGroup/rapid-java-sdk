@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Coordinates(
     // The longitude of the property.
     @JsonProperty("longitude")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val longitude: java.math.BigDecimal? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Coordinates(
 
     class Builder(
         private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var longitude: java.math.BigDecimal? = null,
     ) {
         fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
 
@@ -69,8 +69,14 @@ data class Coordinates(
         fun build(): Coordinates {
             return Coordinates(
                 latitude = latitude,
-                longitude = longitude
+                longitude = longitude,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            latitude = latitude,
+            longitude = longitude,
+        )
 }

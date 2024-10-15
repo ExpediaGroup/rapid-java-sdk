@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class DescriptionsRoom(
     // Provides an overview of a room.
     @JsonProperty("overview")
     @field:Valid
-    val overview: kotlin.String? = null
+    val overview: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class DescriptionsRoom(
     }
 
     class Builder(
-        private var overview: kotlin.String? = null
+        private var overview: kotlin.String? = null,
     ) {
         fun overview(overview: kotlin.String?) = apply { this.overview = overview }
 
         fun build(): DescriptionsRoom {
             return DescriptionsRoom(
-                overview = overview
+                overview = overview,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            overview = overview,
+        )
 }

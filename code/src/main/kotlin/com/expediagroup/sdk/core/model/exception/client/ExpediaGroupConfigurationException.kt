@@ -23,5 +23,5 @@ package com.expediagroup.sdk.core.model.exception.client
  */
 class ExpediaGroupConfigurationException(
     message: String? = null,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : ExpediaGroupClientException(message, cause)

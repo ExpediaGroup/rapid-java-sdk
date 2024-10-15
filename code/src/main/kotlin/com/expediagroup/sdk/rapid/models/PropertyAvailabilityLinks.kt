@@ -25,12 +25,14 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationLink
+import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -44,13 +46,14 @@ import javax.validation.constraints.Size
  * @param additionalRates
  * @param recommendations
  */
+
 data class PropertyAvailabilityLinks(
     @JsonProperty("additional_rates")
     @field:Valid
-    val additionalRates: Link? = null,
+    val additionalRates: GetAdditionalAvailabilityOperationLink? = null,
     @JsonProperty("recommendations")
     @field:Valid
-    val recommendations: Link? = null
+    val recommendations: GetAvailabilityOperationLink? = null,
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +61,24 @@ data class PropertyAvailabilityLinks(
     }
 
     class Builder(
-        private var additionalRates: Link? = null,
-        private var recommendations: Link? = null
+        private var additionalRates: GetAdditionalAvailabilityOperationLink? = null,
+        private var recommendations: GetAvailabilityOperationLink? = null,
     ) {
-        fun additionalRates(additionalRates: Link?) = apply { this.additionalRates = additionalRates }
+        fun additionalRates(additionalRates: GetAdditionalAvailabilityOperationLink?) = apply { this.additionalRates = additionalRates }
 
-        fun recommendations(recommendations: Link?) = apply { this.recommendations = recommendations }
+        fun recommendations(recommendations: GetAvailabilityOperationLink?) = apply { this.recommendations = recommendations }
 
         fun build(): PropertyAvailabilityLinks {
             return PropertyAvailabilityLinks(
                 additionalRates = additionalRates,
-                recommendations = recommendations
+                recommendations = recommendations,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            additionalRates = additionalRates,
+            recommendations = recommendations,
+        )
 }

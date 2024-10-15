@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -76,7 +76,7 @@ data class Notification(
     // The Affiliate Reference ID of the affected booking
     @JsonProperty("affiliate_reference_id")
     @field:Valid
-    val affiliateReferenceId: kotlin.String? = null
+    val affiliateReferenceId: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -90,7 +90,7 @@ data class Notification(
         private var itineraryId: kotlin.String? = null,
         private var email: kotlin.String? = null,
         private var message: kotlin.String? = null,
-        private var affiliateReferenceId: kotlin.String? = null
+        private var affiliateReferenceId: kotlin.String? = null,
     ) {
         fun eventId(eventId: kotlin.String?) = apply { this.eventId = eventId }
 
@@ -114,8 +114,19 @@ data class Notification(
                 itineraryId = itineraryId,
                 email = email,
                 message = message,
-                affiliateReferenceId = affiliateReferenceId
+                affiliateReferenceId = affiliateReferenceId,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            eventId = eventId,
+            eventType = eventType,
+            eventTime = eventTime,
+            itineraryId = itineraryId,
+            email = email,
+            message = message,
+            affiliateReferenceId = affiliateReferenceId,
+        )
 }

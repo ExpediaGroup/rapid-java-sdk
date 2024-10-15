@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -61,7 +61,7 @@ data class PropertyAvailability(
     val rooms: kotlin.collections.List<RoomAvailability>? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyAvailabilityLinks? = null
+    val links: PropertyAvailabilityLinks? = null,
 ) : Property {
     @JsonProperty("status")
     override val status: Property.Status = Property.Status.AVAILABLE
@@ -75,7 +75,7 @@ data class PropertyAvailability(
         private var propertyId: kotlin.String? = null,
         private var score: java.math.BigDecimal? = null,
         private var rooms: kotlin.collections.List<RoomAvailability>? = null,
-        private var links: PropertyAvailabilityLinks? = null
+        private var links: PropertyAvailabilityLinks? = null,
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -90,8 +90,16 @@ data class PropertyAvailability(
                 propertyId = propertyId,
                 score = score,
                 rooms = rooms,
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId,
+            score = score,
+            rooms = rooms,
+            links = links,
+        )
 }

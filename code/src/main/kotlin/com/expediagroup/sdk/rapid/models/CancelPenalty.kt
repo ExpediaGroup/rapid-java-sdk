@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -71,7 +71,7 @@ data class CancelPenalty(
     // Percentage of total booking charged for as penalty. A thirty percent penalty would be returned as 30%
     @JsonProperty("percent")
     @field:Valid
-    val percent: kotlin.String? = null
+    val percent: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +84,7 @@ data class CancelPenalty(
         private var end: kotlin.String? = null,
         private var amount: kotlin.String? = null,
         private var nights: kotlin.String? = null,
-        private var percent: kotlin.String? = null
+        private var percent: kotlin.String? = null,
     ) {
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
@@ -105,8 +105,18 @@ data class CancelPenalty(
                 end = end,
                 amount = amount,
                 nights = nights,
-                percent = percent
+                percent = percent,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            currency = currency,
+            start = start,
+            end = end,
+            amount = amount,
+            nights = nights,
+            percent = percent,
+        )
 }

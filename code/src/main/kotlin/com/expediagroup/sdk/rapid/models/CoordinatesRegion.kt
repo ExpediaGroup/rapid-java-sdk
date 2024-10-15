@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class CoordinatesRegion(
     val centerLatitude: java.math.BigDecimal? = null,
     @JsonProperty("bounding_polygon")
     @field:Valid
-    val boundingPolygon: BoundingPolygon? = null
+    val boundingPolygon: BoundingPolygon? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class CoordinatesRegion(
     class Builder(
         private var centerLongitude: java.math.BigDecimal? = null,
         private var centerLatitude: java.math.BigDecimal? = null,
-        private var boundingPolygon: BoundingPolygon? = null
+        private var boundingPolygon: BoundingPolygon? = null,
     ) {
         fun centerLongitude(centerLongitude: java.math.BigDecimal?) = apply { this.centerLongitude = centerLongitude }
 
@@ -78,8 +78,15 @@ data class CoordinatesRegion(
             return CoordinatesRegion(
                 centerLongitude = centerLongitude,
                 centerLatitude = centerLatitude,
-                boundingPolygon = boundingPolygon
+                boundingPolygon = boundingPolygon,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            centerLongitude = centerLongitude,
+            centerLatitude = centerLatitude,
+            boundingPolygon = boundingPolygon,
+        )
 }

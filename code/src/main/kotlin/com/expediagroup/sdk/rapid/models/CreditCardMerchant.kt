@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class CreditCardMerchant(
     // Name of the merchant to use during 3rd party authorization for PSD2.
     @JsonProperty("name")
     @field:Valid
-    val name: kotlin.String? = null
+    val name: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class CreditCardMerchant(
     }
 
     class Builder(
-        private var name: kotlin.String? = null
+        private var name: kotlin.String? = null,
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun build(): CreditCardMerchant {
             return CreditCardMerchant(
-                name = name
+                name = name,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+        )
 }

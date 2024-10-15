@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class ConfirmationId(
     // The property confirmation id.
     @JsonProperty("property")
     @field:Valid
-    val `property`: kotlin.String? = null
+    val `property`: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class ConfirmationId(
 
     class Builder(
         private var expedia: kotlin.String? = null,
-        private var `property`: kotlin.String? = null
+        private var `property`: kotlin.String? = null,
     ) {
         fun expedia(expedia: kotlin.String?) = apply { this.expedia = expedia }
 
@@ -69,8 +69,14 @@ data class ConfirmationId(
         fun build(): ConfirmationId {
             return ConfirmationId(
                 expedia = expedia,
-                `property` = `property`
+                `property` = `property`,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            expedia = expedia,
+            `property` = `property`,
+        )
 }

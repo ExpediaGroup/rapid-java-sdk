@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [RequestUndeliveredNotificationsOperationParams]
  */
 class RequestUndeliveredNotificationsOperation(
-    params: RequestUndeliveredNotificationsOperationParams
+    params: RequestUndeliveredNotificationsOperationParams,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         "/v3/notifications",
         "GET",
         "requestUndeliveredNotifications",
         null,
-        params
+        params,
     )

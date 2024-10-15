@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models.exception
@@ -40,5 +40,5 @@ import com.expediagroup.sdk.core.model.exception.client.ExpediaGroupClientExcept
  */
 class PropertyConstraintViolationException(
     message: String,
-    val constraintViolations: List<PropertyConstraintViolation>
+    val constraintViolations: List<PropertyConstraintViolation>,
 ) : ExpediaGroupClientException("$message ${constraintViolations.joinToString(separator = ",\n\t- ", prefix = "[\n\t- ", postfix = "\n]")}")

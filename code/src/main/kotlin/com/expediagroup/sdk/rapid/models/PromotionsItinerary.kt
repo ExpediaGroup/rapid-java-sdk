@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -47,7 +47,7 @@ data class PromotionsItinerary(
     // Promotions provided by the property that add value to the stay, but don’t affect the booking price (i.e., ski lift tickets or premium wifi).
     @JsonProperty("value_adds")
     @field:Valid
-    val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null
+    val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -55,14 +55,19 @@ data class PromotionsItinerary(
     }
 
     class Builder(
-        private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null
+        private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
     ) {
         fun valueAdds(valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>?) = apply { this.valueAdds = valueAdds }
 
         fun build(): PromotionsItinerary {
             return PromotionsItinerary(
-                valueAdds = valueAdds
+                valueAdds = valueAdds,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            valueAdds = valueAdds,
+        )
 }

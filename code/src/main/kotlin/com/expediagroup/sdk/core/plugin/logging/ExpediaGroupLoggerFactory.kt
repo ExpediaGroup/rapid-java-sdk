@@ -23,6 +23,6 @@ internal object ExpediaGroupLoggerFactory {
 
     fun getLogger(
         clazz: Class<*>,
-        client: Client
+        client: Client,
     ) = ExpediaGroupLogger(LoggerFactory.getLogger(clazz), client)
 }

@@ -28,7 +28,7 @@ internal object AuthenticationPlugin : Plugin<AuthenticationConfiguration> {
 
     override fun install(
         client: Client,
-        configurations: AuthenticationConfiguration
+        configurations: AuthenticationConfiguration,
     ) {
         val strategy = AuthenticationStrategy.from(configurations, client)
         clientAuthenticationStrategies[client] = strategy

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class Checkout(
     // The time by which a guest must check out.
     @JsonProperty("time")
     @field:Valid
-    val time: kotlin.String? = null
+    val time: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class Checkout(
     }
 
     class Builder(
-        private var time: kotlin.String? = null
+        private var time: kotlin.String? = null,
     ) {
         fun time(time: kotlin.String?) = apply { this.time = time }
 
         fun build(): Checkout {
             return Checkout(
-                time = time
+                time = time,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            time = time,
+        )
 }

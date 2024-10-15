@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -101,7 +101,7 @@ data class RateItinerary(
     val refundableDamageDeposit: Amount? = null,
     @JsonProperty("pricing")
     @field:Valid
-    val pricing: PricingInformation? = null
+    val pricing: PricingInformation? = null,
 ) {
     companion object {
         @JvmStatic
@@ -120,7 +120,7 @@ data class RateItinerary(
         private var deposits: kotlin.collections.List<DepositItinerary>? = null,
         private var cardOnFileLimit: Amount? = null,
         private var refundableDamageDeposit: Amount? = null,
-        private var pricing: PricingInformation? = null
+        private var pricing: PricingInformation? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -136,7 +136,10 @@ data class RateItinerary(
 
         fun cancelPenalties(cancelPenalties: kotlin.collections.List<CancelPenalty>?) = apply { this.cancelPenalties = cancelPenalties }
 
-        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) = apply { this.nonrefundableDateRanges = nonrefundableDateRanges }
+        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) =
+            apply {
+                this.nonrefundableDateRanges = nonrefundableDateRanges
+            }
 
         fun deposits(deposits: kotlin.collections.List<DepositItinerary>?) = apply { this.deposits = deposits }
 
@@ -159,8 +162,24 @@ data class RateItinerary(
                 deposits = deposits,
                 cardOnFileLimit = cardOnFileLimit,
                 refundableDamageDeposit = refundableDamageDeposit,
-                pricing = pricing
+                pricing = pricing,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            merchantOfRecord = merchantOfRecord,
+            refundable = refundable,
+            cancelRefund = cancelRefund,
+            amenities = amenities,
+            promotions = promotions,
+            cancelPenalties = cancelPenalties,
+            nonrefundableDateRanges = nonrefundableDateRanges,
+            deposits = deposits,
+            cardOnFileLimit = cardOnFileLimit,
+            refundableDamageDeposit = refundableDamageDeposit,
+            pricing = pricing,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Loyalty(
     // The identifier for the loyalty program.
     @JsonProperty("program_id")
     @field:Valid
-    val programId: kotlin.String? = null
+    val programId: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Loyalty(
 
     class Builder(
         private var memberId: kotlin.String? = null,
-        private var programId: kotlin.String? = null
+        private var programId: kotlin.String? = null,
     ) {
         fun memberId(memberId: kotlin.String?) = apply { this.memberId = memberId }
 
@@ -69,8 +69,14 @@ data class Loyalty(
         fun build(): Loyalty {
             return Loyalty(
                 memberId = memberId,
-                programId = programId
+                programId = programId,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            memberId = memberId,
+            programId = programId,
+        )
 }

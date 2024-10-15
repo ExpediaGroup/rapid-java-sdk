@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -47,7 +47,7 @@ data class Conversations(
     // Contains urls for links to initiate conversations via EPS.
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, Link>? = null
+    val links: kotlin.collections.Map<kotlin.String, Link>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -55,14 +55,19 @@ data class Conversations(
     }
 
     class Builder(
-        private var links: kotlin.collections.Map<kotlin.String, Link>? = null
+        private var links: kotlin.collections.Map<kotlin.String, Link>? = null,
     ) {
         fun links(links: kotlin.collections.Map<kotlin.String, Link>?) = apply { this.links = links }
 
         fun build(): Conversations {
             return Conversations(
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links,
+        )
 }

@@ -40,7 +40,7 @@ data class ExpediaGroupClientConfiguration(
     override val socketTimeout: Long? = null,
     override val maskedLoggingHeaders: Set<String>? = null,
     override val maskedLoggingBodyFields: Set<String>? = null,
-    val authEndpoint: String? = null
+    val authEndpoint: String? = null,
 ) : ClientConfiguration {
     /** Build a [RuntimeConfigurationProvider] from an [ExpediaGroupClientConfiguration]. */
     override fun toProvider(): RuntimeConfigurationProvider = super.toProvider().copy(authEndpoint = authEndpoint)

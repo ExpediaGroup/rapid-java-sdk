@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -57,7 +57,7 @@ data class RoomAvailability(
     // Array of objects containing rate information.
     @JsonProperty("rates")
     @field:Valid
-    val rates: kotlin.collections.List<Rate>? = null
+    val rates: kotlin.collections.List<Rate>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +67,7 @@ data class RoomAvailability(
     class Builder(
         private var id: kotlin.String? = null,
         private var roomName: kotlin.String? = null,
-        private var rates: kotlin.collections.List<Rate>? = null
+        private var rates: kotlin.collections.List<Rate>? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -79,8 +79,15 @@ data class RoomAvailability(
             return RoomAvailability(
                 id = id,
                 roomName = roomName,
-                rates = rates
+                rates = rates,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            roomName = roomName,
+            rates = rates,
+        )
 }

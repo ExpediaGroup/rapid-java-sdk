@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -26,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class GetAdditionalAvailabilityOperation private constructor(
     params: GetAdditionalAvailabilityOperationParams?,
-    link: Link?
+    link: GetAdditionalAvailabilityOperationLink?,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(params, link, "/v3/properties/{property_id}/availability"),
         "GET",
         "getAdditionalAvailability",
         null,
-        params
+        params,
     ) {
     constructor(
-        params: GetAdditionalAvailabilityOperationParams
+        params: GetAdditionalAvailabilityOperationParams,
     ) : this(
         params,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
-        context: GetAdditionalAvailabilityOperationContext?
+        link: GetAdditionalAvailabilityOperationLink,
+        context: GetAdditionalAvailabilityOperationContext?,
     ) : this(
         GetAdditionalAvailabilityOperationParams(context),
-        link
+        link,
     )
 
     companion object : LinkableOperation {

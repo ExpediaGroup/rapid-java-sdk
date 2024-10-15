@@ -25,12 +25,14 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.rapid.models.Link
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationLink
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.constraints.Length
 import javax.validation.Valid
@@ -45,16 +47,17 @@ import javax.validation.constraints.Size
  * @param cancel
  * @param nonVatExpediaInvoice
  */
+
 data class ItineraryLinks(
     @JsonProperty("resume")
     @field:Valid
-    val resume: Link? = null,
+    val resume: PutResumeBookingOperationLink? = null,
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: Link? = null,
+    val cancel: DeleteHeldBookingOperationLink? = null,
     @JsonProperty("non_vat_expedia_invoice")
     @field:Valid
-    val nonVatExpediaInvoice: Link? = null
+    val nonVatExpediaInvoice: Link? = null,
 ) {
     companion object {
         @JvmStatic
@@ -62,13 +65,13 @@ data class ItineraryLinks(
     }
 
     class Builder(
-        private var resume: Link? = null,
-        private var cancel: Link? = null,
-        private var nonVatExpediaInvoice: Link? = null
+        private var resume: PutResumeBookingOperationLink? = null,
+        private var cancel: DeleteHeldBookingOperationLink? = null,
+        private var nonVatExpediaInvoice: Link? = null,
     ) {
-        fun resume(resume: Link?) = apply { this.resume = resume }
+        fun resume(resume: PutResumeBookingOperationLink?) = apply { this.resume = resume }
 
-        fun cancel(cancel: Link?) = apply { this.cancel = cancel }
+        fun cancel(cancel: DeleteHeldBookingOperationLink?) = apply { this.cancel = cancel }
 
         fun nonVatExpediaInvoice(nonVatExpediaInvoice: Link?) = apply { this.nonVatExpediaInvoice = nonVatExpediaInvoice }
 
@@ -76,8 +79,15 @@ data class ItineraryLinks(
             return ItineraryLinks(
                 resume = resume,
                 cancel = cancel,
-                nonVatExpediaInvoice = nonVatExpediaInvoice
+                nonVatExpediaInvoice = nonVatExpediaInvoice,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            resume = resume,
+            cancel = cancel,
+            nonVatExpediaInvoice = nonVatExpediaInvoice,
+        )
 }

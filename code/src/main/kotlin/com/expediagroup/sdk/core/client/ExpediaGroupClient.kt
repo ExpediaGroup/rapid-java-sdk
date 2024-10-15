@@ -32,14 +32,15 @@ import io.ktor.client.engine.HttpClientEngine
 abstract class ExpediaGroupClient(
     namespace: String,
     clientConfiguration: ExpediaGroupClientConfiguration,
-    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE
+    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE,
 ) : Client(namespace) {
     private val _configurationProvider: ConfigurationProvider =
         ConfigurationCollector.create(
             clientConfiguration.toProvider(),
-            ExpediaGroupConfigurationProvider
+            ExpediaGroupConfigurationProvider,
         )
-    private val _httpClient: HttpClient = buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BEARER, httpClientEngine)
+    private val _httpClient: HttpClient =
+        buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BEARER, httpClientEngine)
 
     init {
         finalize()

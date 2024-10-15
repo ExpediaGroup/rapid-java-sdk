@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,8 @@ data class MultiPolygonAllOf(
     // An array of multiple polygon(s) that combine to make a full [MultiPolygon](https://www.rfc-editor.org/rfc/rfc7946#section-3.1.7) in geojson format.
     @JsonProperty("coordinates")
     @field:Valid
-    val coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null
+    val coordinates:
+        kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,15 +55,23 @@ data class MultiPolygonAllOf(
     }
 
     class Builder(
-        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null
+        private var coordinates:
+            kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>? = null,
     ) {
-        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>?) =
-            apply { this.coordinates = coordinates }
+        fun coordinates(
+            coordinates:
+                kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>>?,
+        ) = apply { this.coordinates = coordinates }
 
         fun build(): MultiPolygonAllOf {
             return MultiPolygonAllOf(
-                coordinates = coordinates
+                coordinates = coordinates,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates,
+        )
 }

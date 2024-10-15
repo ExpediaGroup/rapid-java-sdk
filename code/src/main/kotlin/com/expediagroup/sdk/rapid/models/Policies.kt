@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ data class Policies(
     // Description of information that may be helpful when planning a trip to this property.
     @JsonProperty("know_before_you_go")
     @field:Valid
-    val knowBeforeYouGo: kotlin.String? = null
+    val knowBeforeYouGo: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class Policies(
     }
 
     class Builder(
-        private var knowBeforeYouGo: kotlin.String? = null
+        private var knowBeforeYouGo: kotlin.String? = null,
     ) {
         fun knowBeforeYouGo(knowBeforeYouGo: kotlin.String?) = apply { this.knowBeforeYouGo = knowBeforeYouGo }
 
         fun build(): Policies {
             return Policies(
-                knowBeforeYouGo = knowBeforeYouGo
+                knowBeforeYouGo = knowBeforeYouGo,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            knowBeforeYouGo = knowBeforeYouGo,
+        )
 }

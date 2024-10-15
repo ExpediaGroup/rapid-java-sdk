@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class PaymentSessions(
     val encodedInitConfig: kotlin.String? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PaymentSessionsLinks? = null
+    val links: PaymentSessionsLinks? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class PaymentSessions(
     class Builder(
         private var paymentSessionId: kotlin.String? = null,
         private var encodedInitConfig: kotlin.String? = null,
-        private var links: PaymentSessionsLinks? = null
+        private var links: PaymentSessionsLinks? = null,
     ) {
         fun paymentSessionId(paymentSessionId: kotlin.String?) = apply { this.paymentSessionId = paymentSessionId }
 
@@ -78,8 +78,15 @@ data class PaymentSessions(
             return PaymentSessions(
                 paymentSessionId = paymentSessionId,
                 encodedInitConfig = encodedInitConfig,
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            paymentSessionId = paymentSessionId,
+            encodedInitConfig = encodedInitConfig,
+            links = links,
+        )
 }

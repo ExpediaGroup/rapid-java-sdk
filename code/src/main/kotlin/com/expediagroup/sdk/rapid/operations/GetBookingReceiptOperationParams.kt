@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
@@ -37,7 +39,7 @@ data class GetBookingReceiptOperationParams(
         null,
     val token: kotlin.String,
     val branding: GetBookingReceiptOperationParams.Branding? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -46,18 +48,18 @@ data class GetBookingReceiptOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        INTERNAL_SERVER_ERROR("internal_server_error")
+        INTERNAL_SERVER_ERROR("internal_server_error"),
     }
 
     enum class Branding(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         EXPEDIA_GROUP("expedia_group"),
-        UNBRANDED("unbranded")
+        UNBRANDED("unbranded"),
     }
 
     class Builder(
@@ -66,7 +68,7 @@ data class GetBookingReceiptOperationParams(
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
         @JsonProperty("Test") private var test: GetBookingReceiptOperationParams.Test? = null,
         @JsonProperty("token") private var token: kotlin.String? = null,
-        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null
+        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null,
     ) {
         /**
          * @param itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
@@ -107,7 +109,7 @@ data class GetBookingReceiptOperationParams(
                 customerSessionId = customerSessionId,
                 test = test,
                 token = token!!,
-                branding = branding
+                branding = branding,
             )
         }
 
@@ -124,34 +126,38 @@ data class GetBookingReceiptOperationParams(
         }
     }
 
-    override fun getHeaders(): Map<String, String> {
-        return buildMap {
-            customerIp?.also {
-                put("Customer-Ip", customerIp)
+    fun toBuilder() =
+        Builder(
+            itineraryId = itineraryId,
+            customerIp = customerIp,
+            customerSessionId = customerSessionId,
+            test = test,
+            token = token,
+            branding = branding,
+        )
+
+    override fun getHeaders(): Headers {
+        return Headers.build {
+            customerIp?.let {
+                append("Customer-Ip", it)
             }
-            customerSessionId?.also {
-                put("Customer-Session-Id", customerSessionId)
+            customerSessionId?.let {
+                append("Customer-Session-Id", it)
             }
-            test?.also {
-                put("Test", test.value)
+            test?.let {
+                append("Test", it.value)
             }
-            put("Accept", "application/pdf")
+            append("Accept", "application/pdf")
         }
     }
 
-    override fun getQueryParams(): Map<String, Iterable<String>> {
-        return buildMap {
-            token?.also {
-                put(
-                    "token",
-                    listOf(token)
-                )
+    override fun getQueryParams(): Parameters {
+        return Parameters.build {
+            token?.let {
+                append("token", it)
             }
-            branding?.also {
-                put(
-                    "branding",
-                    listOf(branding.value)
-                )
+            branding?.let {
+                append("branding", it.value)
             }
         }
     }

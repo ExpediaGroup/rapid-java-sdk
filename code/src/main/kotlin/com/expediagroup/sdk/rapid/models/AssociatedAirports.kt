@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
 data class AssociatedAirports(
     @JsonProperty("preferred")
     @field:Valid
-    val preferred: Preferred? = null
+    val preferred: Preferred? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class AssociatedAirports(
     }
 
     class Builder(
-        private var preferred: Preferred? = null
+        private var preferred: Preferred? = null,
     ) {
         fun preferred(preferred: Preferred?) = apply { this.preferred = preferred }
 
         fun build(): AssociatedAirports {
             return AssociatedAirports(
-                preferred = preferred
+                preferred = preferred,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            preferred = preferred,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,7 +56,7 @@ data class CompletePaymentSession(
     val links: CompletePaymentSessionLinks? = null,
     @JsonProperty("trader_information")
     @field:Valid
-    val traderInformation: TraderInformation? = null
+    val traderInformation: TraderInformation? = null,
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +66,7 @@ data class CompletePaymentSession(
     class Builder(
         private var itineraryId: kotlin.String? = null,
         private var links: CompletePaymentSessionLinks? = null,
-        private var traderInformation: TraderInformation? = null
+        private var traderInformation: TraderInformation? = null,
     ) {
         fun itineraryId(itineraryId: kotlin.String?) = apply { this.itineraryId = itineraryId }
 
@@ -78,8 +78,15 @@ data class CompletePaymentSession(
             return CompletePaymentSession(
                 itineraryId = itineraryId,
                 links = links,
-                traderInformation = traderInformation
+                traderInformation = traderInformation,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            itineraryId = itineraryId,
+            links = links,
+            traderInformation = traderInformation,
+        )
 }

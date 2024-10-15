@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -26,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class GetPaymentOptionsOperation private constructor(
     params: GetPaymentOptionsOperationParams?,
-    link: Link?
+    link: GetPaymentOptionsOperationLink?,
 ) : Operation<
-        Nothing
+        Nothing,
     >(
         url(params, link, "/v3/properties/{property_id}/payment-options"),
         "GET",
         "getPaymentOptions",
         null,
-        params
+        params,
     ) {
     constructor(
-        params: GetPaymentOptionsOperationParams
+        params: GetPaymentOptionsOperationParams,
     ) : this(
         params,
-        null
+        null,
     )
 
     constructor(
-        link: Link,
-        context: GetPaymentOptionsOperationContext?
+        link: GetPaymentOptionsOperationLink,
+        context: GetPaymentOptionsOperationContext?,
     ) : this(
         GetPaymentOptionsOperationParams(context),
-        link
+        link,
     )
 
     companion object : LinkableOperation {

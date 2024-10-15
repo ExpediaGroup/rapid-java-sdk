@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class CommitChangeRoomRequestBody(
     val changeReferenceId: kotlin.String? = null,
     @JsonProperty("payments")
     @field:Valid
-    val payments: kotlin.collections.List<PaymentRequestWithPhone>? = null
+    val payments: kotlin.collections.List<PaymentRequestWithPhone>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class CommitChangeRoomRequestBody(
 
     class Builder(
         private var changeReferenceId: kotlin.String? = null,
-        private var payments: kotlin.collections.List<PaymentRequestWithPhone>? = null
+        private var payments: kotlin.collections.List<PaymentRequestWithPhone>? = null,
     ) {
         fun changeReferenceId(changeReferenceId: kotlin.String?) = apply { this.changeReferenceId = changeReferenceId }
 
@@ -69,8 +69,14 @@ data class CommitChangeRoomRequestBody(
         fun build(): CommitChangeRoomRequestBody {
             return CommitChangeRoomRequestBody(
                 changeReferenceId = changeReferenceId,
-                payments = payments
+                payments = payments,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            changeReferenceId = changeReferenceId,
+            payments = payments,
+        )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -46,7 +46,7 @@ import javax.validation.constraints.Size
 data class PropertyManagerLinks(
     @JsonProperty("image")
     @field:Valid
-    val image: Link? = null
+    val image: Link? = null,
 ) {
     companion object {
         @JvmStatic
@@ -54,14 +54,19 @@ data class PropertyManagerLinks(
     }
 
     class Builder(
-        private var image: Link? = null
+        private var image: Link? = null,
     ) {
         fun image(image: Link?) = apply { this.image = image }
 
         fun build(): PropertyManagerLinks {
             return PropertyManagerLinks(
-                image = image
+                image = image,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            image = image,
+        )
 }

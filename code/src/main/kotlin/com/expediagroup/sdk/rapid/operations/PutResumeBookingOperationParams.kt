@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -34,7 +36,7 @@ data class PutResumeBookingOperationParams
         val customerSessionId: kotlin.String? = null,
         val test: PutResumeBookingOperationParams.Test? = null,
         val token: kotlin.String? = null,
-        private val dummy: Unit
+        private val dummy: Unit,
     ) :
     OperationParams {
         companion object {
@@ -49,29 +51,29 @@ data class PutResumeBookingOperationParams
                 null,
             test: PutResumeBookingOperationParams.Test? =
                 null,
-            token: kotlin.String
+            token: kotlin.String,
         ) : this(
             itineraryId = itineraryId,
             customerIp = customerIp,
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            dummy = Unit
+            dummy = Unit,
         )
 
         constructor(context: PutResumeBookingOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit
+            dummy = Unit,
         )
 
         enum class Test(
-            val value: kotlin.String
+            val value: kotlin.String,
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            INTERNAL_SERVER_ERROR("internal_server_error")
+            INTERNAL_SERVER_ERROR("internal_server_error"),
         }
 
         class Builder(
@@ -79,7 +81,7 @@ data class PutResumeBookingOperationParams
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: PutResumeBookingOperationParams.Test? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null
+            @JsonProperty("token") private var token: kotlin.String? = null,
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -114,7 +116,7 @@ data class PutResumeBookingOperationParams
                     customerIp = customerIp!!,
                     customerSessionId = customerSessionId,
                     test = test,
-                    token = token!!
+                    token = token!!,
                 )
             }
 
@@ -131,27 +133,33 @@ data class PutResumeBookingOperationParams
             }
         }
 
-        override fun getHeaders(): Map<String, String> {
-            return buildMap {
-                customerIp?.also {
-                    put("Customer-Ip", customerIp)
+        fun toBuilder() =
+            Builder(
+                itineraryId = itineraryId,
+                customerIp = customerIp,
+                customerSessionId = customerSessionId,
+                test = test,
+                token = token,
+            )
+
+        override fun getHeaders(): Headers {
+            return Headers.build {
+                customerIp?.let {
+                    append("Customer-Ip", it)
                 }
-                customerSessionId?.also {
-                    put("Customer-Session-Id", customerSessionId)
+                customerSessionId?.let {
+                    append("Customer-Session-Id", it)
                 }
-                test?.also {
-                    put("Test", test.value)
+                test?.let {
+                    append("Test", it.value)
                 }
             }
         }
 
-        override fun getQueryParams(): Map<String, Iterable<String>> {
-            return buildMap {
-                token?.also {
-                    put(
-                        "token",
-                        listOf(token)
-                    )
+        override fun getQueryParams(): Parameters {
+            return Parameters.build {
+                token?.let {
+                    append("token", it)
                 }
             }
         }

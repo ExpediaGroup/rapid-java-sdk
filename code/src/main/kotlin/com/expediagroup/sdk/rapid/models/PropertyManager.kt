@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class PropertyManager(
     val name: kotlin.String? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyManagerLinks? = null
+    val links: PropertyManagerLinks? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class PropertyManager(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var links: PropertyManagerLinks? = null
+        private var links: PropertyManagerLinks? = null,
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -69,8 +69,14 @@ data class PropertyManager(
         fun build(): PropertyManager {
             return PropertyManager(
                 name = name,
-                links = links
+                links = links,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            links = links,
+        )
 }

@@ -30,7 +30,7 @@ data class GetAdditionalAvailabilityOperationContext(
     val customerSessionId: kotlin.String? =
         null,
     val test: GetAdditionalAvailabilityOperationParams.Test? =
-        null
+        null,
 ) {
     companion object {
         @JvmStatic
@@ -40,7 +40,7 @@ data class GetAdditionalAvailabilityOperationContext(
     class Builder(
         @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
-        @JsonProperty("Test") private var test: GetAdditionalAvailabilityOperationParams.Test? = null
+        @JsonProperty("Test") private var test: GetAdditionalAvailabilityOperationParams.Test? = null,
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -63,7 +63,7 @@ data class GetAdditionalAvailabilityOperationContext(
             return GetAdditionalAvailabilityOperationContext(
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
-                test = test
+                test = test,
             )
         }
 

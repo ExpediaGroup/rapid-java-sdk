@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -71,7 +71,7 @@ data class ValueAdd(
     // Indicates how many guests the value add promotion applies to.
     @JsonProperty("person_count")
     @field:Valid
-    val personCount: java.math.BigDecimal? = null
+    val personCount: java.math.BigDecimal? = null,
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +84,7 @@ data class ValueAdd(
         private var category: CategoryValueAdd? = null,
         private var offerType: OfferType? = null,
         private var frequency: Frequency? = null,
-        private var personCount: java.math.BigDecimal? = null
+        private var personCount: java.math.BigDecimal? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -105,8 +105,18 @@ data class ValueAdd(
                 category = category,
                 offerType = offerType,
                 frequency = frequency,
-                personCount = personCount
+                personCount = personCount,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            description = description,
+            category = category,
+            offerType = offerType,
+            frequency = frequency,
+            personCount = personCount,
+        )
 }

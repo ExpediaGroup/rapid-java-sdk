@@ -31,7 +31,7 @@ import kotlin.collections.Map.Entry
 open class Response<T>(
     val statusCode: Int,
     val data: T,
-    val headers: Map<String, List<String>>
+    val headers: Map<String, List<String>>,
 ) {
     constructor(statusCode: Int, data: T, headers: Set<Entry<String, List<String>>>) : this(statusCode, data, toHeadersMap(headers))
 
@@ -41,8 +41,8 @@ open class Response<T>(
             headers.stream().collect(
                 Collectors.toMap(
                     Entry<String, List<String>>::key,
-                    Entry<String, List<String>>::value
-                )
+                    Entry<String, List<String>>::value,
+                ),
             )
     }
 
@@ -54,7 +54,7 @@ open class Response<T>(
 
 class EmptyResponse(
     statusCode: Int,
-    headers: Map<String, List<String>>
+    headers: Map<String, List<String>>,
 ) : Response<Nothing>(statusCode, Nothing, headers) {
     constructor(statusCode: Int, headers: Set<Entry<String, List<String>>>) : this(statusCode, toHeadersMap(headers))
 

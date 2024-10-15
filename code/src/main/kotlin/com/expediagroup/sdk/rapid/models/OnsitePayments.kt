@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -52,7 +52,7 @@ data class OnsitePayments(
     // The types of payments accepted at the property.
     @JsonProperty("types")
     @field:Valid
-    val types: kotlin.collections.Map<kotlin.String, PaymentType>? = null
+    val types: kotlin.collections.Map<kotlin.String, PaymentType>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -61,7 +61,7 @@ data class OnsitePayments(
 
     class Builder(
         private var currency: kotlin.String? = null,
-        private var types: kotlin.collections.Map<kotlin.String, PaymentType>? = null
+        private var types: kotlin.collections.Map<kotlin.String, PaymentType>? = null,
     ) {
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
@@ -70,8 +70,14 @@ data class OnsitePayments(
         fun build(): OnsitePayments {
             return OnsitePayments(
                 currency = currency,
-                types = types
+                types = types,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            currency = currency,
+            types = types,
+        )
 }

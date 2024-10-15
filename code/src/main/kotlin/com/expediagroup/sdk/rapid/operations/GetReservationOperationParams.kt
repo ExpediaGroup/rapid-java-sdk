@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -25,7 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
  * @property test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
  * @property affiliateReferenceId The affilliate reference id value. This field supports a maximum of 28 characters.
  * @property email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
- * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
+ * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary
  */
 @JsonDeserialize(builder = GetReservationOperationParams.Builder::class)
 data class GetReservationOperationParams(
@@ -37,9 +39,9 @@ data class GetReservationOperationParams(
     val affiliateReferenceId: kotlin.String,
     val email: kotlin.String,
     val include: kotlin.collections.List<
-        GetReservationOperationParams.Include
+        GetReservationOperationParams.Include,
     >? =
-        null
+        null,
 ) :
     OperationParams {
     companion object {
@@ -48,17 +50,17 @@ data class GetReservationOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        INTERNAL_SERVER_ERROR("internal_server_error")
+        INTERNAL_SERVER_ERROR("internal_server_error"),
     }
 
     enum class Include(
-        val value: kotlin.String
+        val value: kotlin.String,
     ) {
-        HISTORY("history")
+        HISTORY("history"),
     }
 
     class Builder(
@@ -68,8 +70,8 @@ data class GetReservationOperationParams(
         @JsonProperty("affiliate_reference_id") private var affiliateReferenceId: kotlin.String? = null,
         @JsonProperty("email") private var email: kotlin.String? = null,
         @JsonProperty("include") private var include: kotlin.collections.List<
-            GetReservationOperationParams.Include
-        >? = null
+            GetReservationOperationParams.Include,
+        >? = null,
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -97,12 +99,12 @@ data class GetReservationOperationParams(
         fun email(email: kotlin.String) = apply { this.email = email }
 
         /**
-         * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
+         * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary
          */
         fun include(
             include: kotlin.collections.List<
-                GetReservationOperationParams.Include
-            >
+                GetReservationOperationParams.Include,
+            >,
         ) = apply { this.include = include }
 
         fun build(): GetReservationOperationParams {
@@ -114,7 +116,7 @@ data class GetReservationOperationParams(
                 test = test,
                 affiliateReferenceId = affiliateReferenceId!!,
                 email = email!!,
-                include = include
+                include = include,
             )
         }
 
@@ -131,40 +133,41 @@ data class GetReservationOperationParams(
         }
     }
 
-    override fun getHeaders(): Map<String, String> {
-        return buildMap {
-            customerIp?.also {
-                put("Customer-Ip", customerIp)
+    fun toBuilder() =
+        Builder(
+            customerIp = customerIp,
+            customerSessionId = customerSessionId,
+            test = test,
+            affiliateReferenceId = affiliateReferenceId,
+            email = email,
+            include = include,
+        )
+
+    override fun getHeaders(): Headers {
+        return Headers.build {
+            customerIp?.let {
+                append("Customer-Ip", it)
             }
-            customerSessionId?.also {
-                put("Customer-Session-Id", customerSessionId)
+            customerSessionId?.let {
+                append("Customer-Session-Id", it)
             }
-            test?.also {
-                put("Test", test.value)
+            test?.let {
+                append("Test", it.value)
             }
-            put("Accept", "application/json")
+            append("Accept", "application/json")
         }
     }
 
-    override fun getQueryParams(): Map<String, Iterable<String>> {
-        return buildMap {
-            affiliateReferenceId?.also {
-                put(
-                    "affiliate_reference_id",
-                    listOf(affiliateReferenceId)
-                )
+    override fun getQueryParams(): Parameters {
+        return Parameters.build {
+            affiliateReferenceId?.let {
+                append("affiliate_reference_id", it)
             }
-            email?.also {
-                put(
-                    "email",
-                    listOf(email)
-                )
+            email?.let {
+                append("email", it)
             }
-            include?.also {
-                put(
-                    "include",
-                    include.map { it.value }
-                )
+            include?.let {
+                appendAll("include", it.map { it.value })
             }
         }
     }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -76,7 +76,7 @@ data class BillingContactRequestAddress(
     // Customer's postal code. Mandatory for CA, GB, and US. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded. Only ISO-8859-1 compliant characters are allowed.
     @JsonProperty("postal_code")
     @field:Valid
-    val postalCode: kotlin.String? = null
+    val postalCode: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -90,7 +90,7 @@ data class BillingContactRequestAddress(
         private var line3: kotlin.String? = null,
         private var city: kotlin.String? = null,
         private var stateProvinceCode: kotlin.String? = null,
-        private var postalCode: kotlin.String? = null
+        private var postalCode: kotlin.String? = null,
     ) {
         fun countryCode(countryCode: kotlin.String) = apply { this.countryCode = countryCode }
 
@@ -116,7 +116,7 @@ data class BillingContactRequestAddress(
                 line3 = line3,
                 city = city,
                 stateProvinceCode = stateProvinceCode,
-                postalCode = postalCode
+                postalCode = postalCode,
             )
         }
 
@@ -126,4 +126,15 @@ data class BillingContactRequestAddress(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            countryCode = countryCode!!,
+            line1 = line1,
+            line2 = line2,
+            line3 = line3,
+            city = city,
+            stateProvinceCode = stateProvinceCode,
+            postalCode = postalCode,
+        )
 }

@@ -25,10 +25,64 @@ import com.expediagroup.sdk.core.model.Response
 import com.expediagroup.sdk.core.model.exception.handle
 import com.expediagroup.sdk.core.model.paging.Paginator
 import com.expediagroup.sdk.core.model.paging.ResponsePaginator
-import com.expediagroup.sdk.domain.rapid.*
+import com.expediagroup.sdk.domain.rapid.RapidHelpers
 import com.expediagroup.sdk.rapid.models.*
-import com.expediagroup.sdk.rapid.models.exception.*
-import com.expediagroup.sdk.rapid.operations.*
+import com.expediagroup.sdk.rapid.models.exception.ErrorObjectMapper
+import com.expediagroup.sdk.rapid.models.exception.ExpediaGroupApiErrorException
+import com.expediagroup.sdk.rapid.operations.ChangeRoomDetailsOperation
+import com.expediagroup.sdk.rapid.operations.ChangeRoomDetailsOperationParams
+import com.expediagroup.sdk.rapid.operations.CommitChangeOperation
+import com.expediagroup.sdk.rapid.operations.CommitChangeOperationParams
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperation
+import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationParams
+import com.expediagroup.sdk.rapid.operations.DeleteRoomOperation
+import com.expediagroup.sdk.rapid.operations.DeleteRoomOperationParams
+import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperation
+import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperation
+import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetBookingReceiptOperation
+import com.expediagroup.sdk.rapid.operations.GetBookingReceiptOperationParams
+import com.expediagroup.sdk.rapid.operations.GetCalendarAvailabilityOperation
+import com.expediagroup.sdk.rapid.operations.GetCalendarAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetChainReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetChainReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetInactivePropertiesOperation
+import com.expediagroup.sdk.rapid.operations.GetInactivePropertiesOperationParams
+import com.expediagroup.sdk.rapid.operations.GetPaymentOptionsOperation
+import com.expediagroup.sdk.rapid.operations.GetPaymentOptionsOperationParams
+import com.expediagroup.sdk.rapid.operations.GetPropertyCatalogFileOperation
+import com.expediagroup.sdk.rapid.operations.GetPropertyCatalogFileOperationParams
+import com.expediagroup.sdk.rapid.operations.GetPropertyContentFileOperation
+import com.expediagroup.sdk.rapid.operations.GetPropertyContentFileOperationParams
+import com.expediagroup.sdk.rapid.operations.GetPropertyContentOperation
+import com.expediagroup.sdk.rapid.operations.GetPropertyContentOperationParams
+import com.expediagroup.sdk.rapid.operations.GetPropertyGuestReviewsOperation
+import com.expediagroup.sdk.rapid.operations.GetPropertyGuestReviewsOperationParams
+import com.expediagroup.sdk.rapid.operations.GetRegionOperation
+import com.expediagroup.sdk.rapid.operations.GetRegionOperationParams
+import com.expediagroup.sdk.rapid.operations.GetRegionsOperation
+import com.expediagroup.sdk.rapid.operations.GetRegionsOperationParams
+import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperation
+import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationParams
+import com.expediagroup.sdk.rapid.operations.GetReservationOperation
+import com.expediagroup.sdk.rapid.operations.GetReservationOperationParams
+import com.expediagroup.sdk.rapid.operations.PostGeographyOperation
+import com.expediagroup.sdk.rapid.operations.PostGeographyOperationParams
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperation
+import com.expediagroup.sdk.rapid.operations.PostItineraryOperationParams
+import com.expediagroup.sdk.rapid.operations.PostPaymentSessionsOperation
+import com.expediagroup.sdk.rapid.operations.PostPaymentSessionsOperationParams
+import com.expediagroup.sdk.rapid.operations.PriceCheckOperation
+import com.expediagroup.sdk.rapid.operations.PriceCheckOperationParams
+import com.expediagroup.sdk.rapid.operations.PutCompletePaymentSessionOperation
+import com.expediagroup.sdk.rapid.operations.PutCompletePaymentSessionOperationParams
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperation
+import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationParams
+import com.expediagroup.sdk.rapid.operations.RequestTestNotificationOperation
+import com.expediagroup.sdk.rapid.operations.RequestTestNotificationOperationParams
+import com.expediagroup.sdk.rapid.operations.RequestUndeliveredNotificationsOperation
+import com.expediagroup.sdk.rapid.operations.RequestUndeliveredNotificationsOperationParams
 import com.expediagroup.sdk.rapid.validation.PropertyConstraintsValidator.validateConstraints
 import io.ktor.client.call.body
 import io.ktor.client.request.request
@@ -53,7 +107,16 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     class Builder : BaseRapidClient.Builder<Builder>() {
         override fun build() =
             RapidClient(
-                RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields)
+                RapidClientConfiguration(
+                    key,
+                    secret,
+                    endpoint,
+                    requestTimeout,
+                    connectionTimeout,
+                    socketTimeout,
+                    maskedLoggingHeaders,
+                    maskedLoggingBodyFields,
+                ),
             )
     }
 
@@ -63,7 +126,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     override suspend fun throwServiceException(
         response: HttpResponse,
-        operationId: String
+        operationId: String,
     ) {
         throw ErrorObjectMapper.process(response, operationId)
     }
@@ -73,12 +136,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             method = HttpMethod.parse(operation.method)
             url(operation.url)
 
-            operation.params?.getHeaders()?.forEach { (key, value) ->
-                headers.append(key, value)
+            operation.params?.getHeaders()?.let {
+                headers.appendAll(it)
             }
 
-            operation.params?.getQueryParams()?.forEach { (key, value) ->
-                url.parameters.appendAll(key, value)
+            operation.params?.getQueryParams()?.let {
+                url.parameters.appendAll(it)
             }
 
             val extraHeaders =
@@ -101,7 +164,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         }
     }
 
-    private inline fun <reified RequestType> executeAsyncWithEmptyResponse(operation: Operation<RequestType>): CompletableFuture<EmptyResponse> {
+    private inline fun <reified RequestType> executeAsyncWithEmptyResponse(
+        operation: Operation<RequestType>,
+    ): CompletableFuture<EmptyResponse> {
         return GlobalScope.future(Dispatchers.IO) {
             try {
                 val response = executeHttpRequest(operation)
@@ -121,7 +186,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         }
     }
 
-    private inline fun <reified RequestType, reified ResponseType> executeAsync(operation: Operation<RequestType>): CompletableFuture<Response<ResponseType>> {
+    private inline fun <reified RequestType, reified ResponseType> executeAsync(
+        operation: Operation<RequestType>,
+    ): CompletableFuture<Response<ResponseType>> {
         return GlobalScope.future(Dispatchers.IO) {
             try {
                 val response = executeHttpRequest(operation)
@@ -164,7 +231,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: ChangeRoomDetailsOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             ChangeRoomDetailsOperationParams(
@@ -173,13 +240,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             ChangeRoomDetailsOperation(
                 params,
-                changeRoomDetailsRequest
+                changeRoomDetailsRequest,
             )
 
         return execute(operation)
@@ -199,7 +266,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: ChangeRoomDetailsOperation)"))
@@ -212,7 +279,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: ChangeRoomDetailsOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return changeRoomDetailsWithResponse(customerIp, itineraryId, roomId, token, changeRoomDetailsRequest, customerSessionId, test).data
     }
@@ -231,7 +298,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: ChangeRoomDetailsOperation)"))
@@ -244,7 +311,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: ChangeRoomDetailsOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -287,7 +354,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: CommitChangeOperationParams.Test? =
             null,
         commitChangeRoomRequestBody: CommitChangeRoomRequestBody? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             CommitChangeOperationParams(
@@ -296,13 +363,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             CommitChangeOperation(
                 params,
-                commitChangeRoomRequestBody
+                commitChangeRoomRequestBody,
             )
 
         return execute(operation)
@@ -311,7 +378,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     /**
      * Commit a change of itinerary that may require additional payment or refund.
      * This link will be available in the change response to confirm and complete the change transaction.  If additional charges are due, a payment must be submitted with this request. Note that Two-Factor  Authentication is not supported at this time.
-     * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+     * @param customerIp IP address of the customer, as captured by your integration. Send IPV4 addresses only.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
      * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
      * @param roomId Room ID of a property.<br>
      * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -322,7 +389,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: CommitChangeOperation)"))
@@ -336,7 +403,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: CommitChangeOperationParams.Test? =
             null,
         commitChangeRoomRequestBody: CommitChangeRoomRequestBody? =
-            null
+            null,
     ): Nothing {
         return commitChangeWithResponse(customerIp, itineraryId, roomId, token, customerSessionId, test, commitChangeRoomRequestBody).data
     }
@@ -344,7 +411,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     /**
      * Commit a change of itinerary that may require additional payment or refund.
      * This link will be available in the change response to confirm and complete the change transaction.  If additional charges are due, a payment must be submitted with this request. Note that Two-Factor  Authentication is not supported at this time.
-     * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+     * @param customerIp IP address of the customer, as captured by your integration. Send IPV4 addresses only.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
      * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
      * @param roomId Room ID of a property.<br>
      * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -355,7 +422,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: CommitChangeOperation)"))
@@ -369,7 +436,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: CommitChangeOperationParams.Test? =
             null,
         commitChangeRoomRequestBody: CommitChangeRoomRequestBody? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -409,7 +476,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteHeldBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             DeleteHeldBookingOperationParams(
@@ -417,12 +484,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             DeleteHeldBookingOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -440,7 +507,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteHeldBookingOperation)"))
@@ -451,7 +518,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteHeldBookingOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return deleteHeldBookingWithResponse(customerIp, itineraryId, token, customerSessionId, test).data
     }
@@ -468,7 +535,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteHeldBookingOperation)"))
@@ -479,7 +546,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteHeldBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -520,7 +587,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteRoomOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             DeleteRoomOperationParams(
@@ -529,12 +596,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             DeleteRoomOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -553,7 +620,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteRoomOperation)"))
@@ -565,7 +632,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteRoomOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return deleteRoomWithResponse(customerIp, itineraryId, roomId, token, customerSessionId, test).data
     }
@@ -583,7 +650,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: DeleteRoomOperation)"))
@@ -595,7 +662,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: DeleteRoomOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -624,7 +691,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.List<PropertyAvailability>
      */
-    fun executeAsync(operation: GetAdditionalAvailabilityOperation): CompletableFuture<Response<kotlin.collections.List<PropertyAvailability>>> {
+    fun executeAsync(
+        operation: GetAdditionalAvailabilityOperation,
+    ): CompletableFuture<Response<kotlin.collections.List<PropertyAvailability>>> {
         return executeAsync<Nothing, kotlin.collections.List<PropertyAvailability>>(operation)
     }
 
@@ -642,29 +711,29 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         checkout: kotlin.String? =
             null,
         exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? =
             null,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? =
             null,
         salesChannel: kotlin.String? =
             null,
         currency: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyAvailability>> {
         val params =
             GetAdditionalAvailabilityOperationParams(
@@ -681,12 +750,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 occupancy = occupancy,
                 rateOption = rateOption,
                 salesChannel = salesChannel,
-                currency = currency
+                currency = currency,
             )
 
         val operation =
             GetAdditionalAvailabilityOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -713,7 +782,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<PropertyAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdditionalAvailabilityOperation)"))
@@ -731,29 +800,29 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         checkout: kotlin.String? =
             null,
         exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? =
             null,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? =
             null,
         salesChannel: kotlin.String? =
             null,
         currency: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<PropertyAvailability> {
         return getAdditionalAvailabilityWithResponse(
             propertyId,
@@ -769,7 +838,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             occupancy,
             rateOption,
             salesChannel,
-            currency
+            currency,
         ).data
     }
 
@@ -794,7 +863,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdditionalAvailabilityOperation)"))
@@ -812,29 +881,29 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         checkout: kotlin.String? =
             null,
         exclusion: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Exclusion
+            GetAdditionalAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Filter
+            GetAdditionalAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.Include
+            GetAdditionalAvailabilityOperationParams.Include,
         >? =
             null,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAdditionalAvailabilityOperationParams.RateOption
+            GetAdditionalAvailabilityOperationParams.RateOption,
         >? =
             null,
         salesChannel: kotlin.String? =
             null,
         currency: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyAvailability>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -852,7 +921,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     occupancy,
                     rateOption,
                     salesChannel,
-                    currency
+                    currency,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -889,10 +958,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         countryCode: kotlin.String,
         language: kotlin.String,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         ratePlanCount: java.math.BigDecimal,
         salesChannel: kotlin.String,
@@ -904,35 +973,35 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetAvailabilityOperationParams.Test? =
             null,
         amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? =
             null,
         travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Property>> {
         val params =
             GetAvailabilityOperationParams(
@@ -956,14 +1025,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 rateOption = rateOption,
                 travelPurpose = travelPurpose,
                 billingTerms = billingTerms,
-                partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                partnerPointOfSale = partnerPointOfSale,
+                platformName = platformName,
             )
 
         val operation =
             GetAvailabilityOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -992,14 +1061,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.  (optional)
      * @param travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return kotlin.collections.List<Property>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAvailabilityOperation)"))
@@ -1010,10 +1079,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         countryCode: kotlin.String,
         language: kotlin.String,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         ratePlanCount: java.math.BigDecimal,
         salesChannel: kotlin.String,
@@ -1025,35 +1094,35 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetAvailabilityOperationParams.Test? =
             null,
         amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? =
             null,
         travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<Property> {
         return getAvailabilityWithResponse(
             checkin,
@@ -1076,9 +1145,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             rateOption,
             travelPurpose,
             billingTerms,
-            partnerPointOfSale,
             paymentTerms,
-            platformName
+            partnerPointOfSale,
+            platformName,
         ).data
     }
 
@@ -1105,14 +1174,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.  (optional)
      * @param travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.List<Property>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAvailabilityOperation)"))
@@ -1123,10 +1192,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         countryCode: kotlin.String,
         language: kotlin.String,
         occupancy: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         ratePlanCount: java.math.BigDecimal,
         salesChannel: kotlin.String,
@@ -1138,35 +1207,35 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetAvailabilityOperationParams.Test? =
             null,
         amenityCategory: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion
+            GetAvailabilityOperationParams.Exclusion,
         >? =
             null,
         filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter
+            GetAvailabilityOperationParams.Filter,
         >? =
             null,
         include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include
+            GetAvailabilityOperationParams.Include,
         >? =
             null,
         rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption
+            GetAvailabilityOperationParams.RateOption,
         >? =
             null,
         travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Property>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1191,9 +1260,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     rateOption,
                     travelPurpose,
                     billingTerms,
-                    partnerPointOfSale,
                     paymentTerms,
-                    platformName
+                    partnerPointOfSale,
+                    platformName,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -1206,10 +1275,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * A link to the booking receipt will be provided in the retrieve response if partner configuration enabled. This endpoint will provide a PDF representation of a booking receipt that can be presented to a traveler for expense tracking purposes.
      * @param operation [GetBookingReceiptOperation]
      * @throws ExpediaGroupApiErrorException
-     * @return a [Response] object with a body of type java.io.File
+     * @return a [Response] object with a body of type java.io.InputStream
      */
-    fun execute(operation: GetBookingReceiptOperation): Response<java.io.File> {
-        return execute<Nothing, java.io.File>(operation)
+    fun execute(operation: GetBookingReceiptOperation): Response<java.io.InputStream> {
+        return execute<Nothing, java.io.InputStream>(operation)
     }
 
     /**
@@ -1217,10 +1286,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * A link to the booking receipt will be provided in the retrieve response if partner configuration enabled. This endpoint will provide a PDF representation of a booking receipt that can be presented to a traveler for expense tracking purposes.
      * @param operation [GetBookingReceiptOperation]
      * @throws ExpediaGroupApiErrorException
-     * @return a [CompletableFuture<Response>] object with a body of type java.io.File
+     * @return a [CompletableFuture<Response>] object with a body of type java.io.InputStream
      */
-    fun executeAsync(operation: GetBookingReceiptOperation): CompletableFuture<Response<java.io.File>> {
-        return executeAsync<Nothing, java.io.File>(operation)
+    fun executeAsync(operation: GetBookingReceiptOperation): CompletableFuture<Response<java.io.InputStream>> {
+        return executeAsync<Nothing, java.io.InputStream>(operation)
     }
 
     private suspend inline fun kgetBookingReceiptWithResponse(
@@ -1232,8 +1301,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetBookingReceiptOperationParams.Test? =
             null,
         branding: GetBookingReceiptOperationParams.Branding? =
-            null
-    ): Response<java.io.File> {
+            null,
+    ): Response<java.io.InputStream> {
         val params =
             GetBookingReceiptOperationParams(
                 itineraryId = itineraryId,
@@ -1241,12 +1310,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerSessionId = customerSessionId,
                 test = test,
                 token = token,
-                branding = branding
+                branding = branding,
             )
 
         val operation =
             GetBookingReceiptOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1262,10 +1331,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param test The booking receipt call has a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `internal_server_error`  (optional)
      * @param branding This parameter specifies which branding should be present on the generated PDF. Default behavior will be to provide the booking receipt with `expedia_group` branding. Some partner configurations may change the default to unbranded.  (optional)
      * @throws ExpediaGroupApiErrorException
-     * @return java.io.File
+     * @return java.io.InputStream
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetBookingReceiptOperation)"))
@@ -1278,8 +1347,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetBookingReceiptOperationParams.Test? =
             null,
         branding: GetBookingReceiptOperationParams.Branding? =
-            null
-    ): java.io.File {
+            null,
+    ): java.io.InputStream {
         return getBookingReceiptWithResponse(customerIp, itineraryId, token, customerSessionId, test, branding).data
     }
 
@@ -1293,10 +1362,10 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param test The booking receipt call has a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `internal_server_error`  (optional)
      * @param branding This parameter specifies which branding should be present on the generated PDF. Default behavior will be to provide the booking receipt with `expedia_group` branding. Some partner configurations may change the default to unbranded.  (optional)
      * @throws ExpediaGroupApiErrorException
-     * @return a [Response] object with a body of type java.io.File
+     * @return a [Response] object with a body of type java.io.InputStream
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetBookingReceiptOperation)"))
@@ -1309,8 +1378,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetBookingReceiptOperationParams.Test? =
             null,
         branding: GetBookingReceiptOperationParams.Branding? =
-            null
-    ): Response<java.io.File> {
+            null,
+    ): Response<java.io.InputStream> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
                 kgetBookingReceiptWithResponse(customerIp, itineraryId, token, customerSessionId, test, branding)
@@ -1338,30 +1407,32 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.List<PropertyCalendarAvailability>
      */
-    fun executeAsync(operation: GetCalendarAvailabilityOperation): CompletableFuture<Response<kotlin.collections.List<PropertyCalendarAvailability>>> {
+    fun executeAsync(
+        operation: GetCalendarAvailabilityOperation,
+    ): CompletableFuture<Response<kotlin.collections.List<PropertyCalendarAvailability>>> {
         return executeAsync<Nothing, kotlin.collections.List<PropertyCalendarAvailability>>(operation)
     }
 
     private suspend inline fun kgetCalendarAvailabilityWithResponse(
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         startDate: java.time.LocalDate,
         endDate: java.time.LocalDate,
         test: GetCalendarAvailabilityOperationParams.Test? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyCalendarAvailability>> {
         val params =
             GetCalendarAvailabilityOperationParams(
                 test = test,
                 propertyId = propertyId,
                 startDate = startDate,
-                endDate = endDate
+                endDate = endDate,
             )
 
         val operation =
             GetCalendarAvailabilityOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1373,23 +1444,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
      * @param startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
      * @param endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
-     * @param test Shop calls have a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `unknown_internal_error`  (optional)
+     * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return kotlin.collections.List<PropertyCalendarAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetCalendarAvailabilityOperation)"))
     fun getCalendarAvailability(
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         startDate: java.time.LocalDate,
         endDate: java.time.LocalDate,
         test: GetCalendarAvailabilityOperationParams.Test? =
-            null
+            null,
     ): kotlin.collections.List<PropertyCalendarAvailability> {
         return getCalendarAvailabilityWithResponse(propertyId, startDate, endDate, test).data
     }
@@ -1400,23 +1471,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
      * @param startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
      * @param endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
-     * @param test Shop calls have a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `unknown_internal_error`  (optional)
+     * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyCalendarAvailability>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetCalendarAvailabilityOperation)"))
     fun getCalendarAvailabilityWithResponse(
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >,
         startDate: java.time.LocalDate,
         endDate: java.time.LocalDate,
         test: GetCalendarAvailabilityOperationParams.Test? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyCalendarAvailability>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1429,7 +1500,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     /**
      * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Returns a complete collection of chains recognized by the Rapid API.  <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including Doubletree, Hampton Inn and Embassy Suites.  <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands.  <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning.  <br>Chain and brand names are provided in English only.
      * @param operation [GetChainReferenceOperation]
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
@@ -1440,7 +1511,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     /**
      * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Returns a complete collection of chains recognized by the Rapid API.  <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including Doubletree, Hampton Inn and Embassy Suites.  <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands.  <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning.  <br>Chain and brand names are provided in English only.
      * @param operation [GetChainReferenceOperation]
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
@@ -1459,7 +1530,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, Chain>> {
         val params =
             GetChainReferenceOperationParams(
@@ -1467,12 +1538,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetChainReferenceOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1480,7 +1551,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     /**
      * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Returns a complete collection of chains recognized by the Rapid API.  <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including Doubletree, Hampton Inn and Embassy Suites.  <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands.  <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning.  <br>Chain and brand names are provided in English only.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
@@ -1490,7 +1561,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.Map<kotlin.String, Chain>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetChainReferenceOperation)"))
@@ -1504,14 +1575,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.Map<kotlin.String, Chain> {
         return getChainReferenceWithResponse(customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
     }
 
     /**
      * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Returns a complete collection of chains recognized by the Rapid API.  <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including Doubletree, Hampton Inn and Embassy Suites.  <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands.  <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning.  <br>Chain and brand names are provided in English only.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
@@ -1521,7 +1592,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetChainReferenceOperation)"))
@@ -1535,7 +1606,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, Chain>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1577,12 +1648,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyInactive>> {
         val params =
             GetInactivePropertiesOperationParams(
@@ -1590,14 +1661,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 since = since,
                 token = token,
                 billingTerms = billingTerms,
-                partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                partnerPointOfSale = partnerPointOfSale,
+                platformName = platformName,
             )
 
         val operation =
             GetInactivePropertiesOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1610,14 +1681,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param since Required on initial call, not accepted on subsequent paging links provided in response header.<br> The earliest date that a property became inactive to include in the results. ISO 8601 format (YYYY-MM-DD)  (optional)
      * @param token Only used for requesting additional pages of data. Provided by the `next` URL in the `Link` response header.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return kotlin.collections.List<PropertyInactive>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetInactivePropertiesOperation)"))
@@ -1630,14 +1701,22 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<PropertyInactive> {
-        return getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return getInactivePropertiesWithResponse(
+            customerSessionId,
+            since,
+            token,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
@@ -1647,14 +1726,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param since Required on initial call, not accepted on subsequent paging links provided in response header.<br> The earliest date that a property became inactive to include in the results. ISO 8601 format (YYYY-MM-DD)  (optional)
      * @param token Only used for requesting additional pages of data. Provided by the `next` URL in the `Link` response header.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.List<PropertyInactive>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetInactivePropertiesOperation)"))
@@ -1667,16 +1746,24 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<PropertyInactive>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+                kgetInactivePropertiesWithResponse(
+                    customerSessionId,
+                    since,
+                    token,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -1700,14 +1787,15 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Paginator<kotlin.collections.List<PropertyInactive>> {
-        val response = getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+        val response =
+            getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
         return Paginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
@@ -1722,14 +1810,15 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): ResponsePaginator<kotlin.collections.List<PropertyInactive>> {
-        val response = getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+        val response =
+            getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, paymentTerms, partnerPointOfSale, platformName)
         return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
@@ -1761,19 +1850,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerIp: kotlin.String? =
             null,
         customerSessionId: kotlin.String? =
-            null
+            null,
     ): Response<PaymentOption> {
         val params =
             GetPaymentOptionsOperationParams(
                 propertyId = propertyId,
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
-                token = token
+                token = token,
             )
 
         val operation =
             GetPaymentOptionsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1790,7 +1879,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return PaymentOption
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPaymentOptionsOperation)"))
@@ -1800,7 +1889,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerIp: kotlin.String? =
             null,
         customerSessionId: kotlin.String? =
-            null
+            null,
     ): PaymentOption {
         return getPaymentOptionsWithResponse(propertyId, token, customerIp, customerSessionId).data
     }
@@ -1816,7 +1905,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type PaymentOption
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPaymentOptionsOperation)"))
@@ -1826,7 +1915,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerIp: kotlin.String? =
             null,
         customerSessionId: kotlin.String? =
-            null
+            null,
     ): Response<PaymentOption> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -1866,12 +1955,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         val params =
             GetPropertyCatalogFileOperationParams(
@@ -1879,14 +1968,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 language = language,
                 supplySource = supplySource,
                 billingTerms = billingTerms,
-                partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                partnerPointOfSale = partnerPointOfSale,
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyCatalogFileOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -1899,14 +1988,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyCatalogFileOperation)"))
@@ -1917,14 +2006,22 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Link {
-        return getPropertyCatalogFileWithResponse(language, supplySource, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return getPropertyCatalogFileWithResponse(
+            language,
+            supplySource,
+            customerSessionId,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
@@ -1934,14 +2031,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyCatalogFileOperation)"))
@@ -1952,16 +2049,24 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetPropertyCatalogFileWithResponse(language, supplySource, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+                kgetPropertyCatalogFileWithResponse(
+                    language,
+                    supplySource,
+                    customerSessionId,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -1986,7 +2091,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, PropertyContent>
      */
-    fun executeAsync(operation: GetPropertyContentOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyContent>>> {
+    fun executeAsync(
+        operation: GetPropertyContentOperation,
+    ): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyContent>>> {
         return executeAsync<Nothing, kotlin.collections.Map<kotlin.String, PropertyContent>>(operation)
     }
 
@@ -1996,39 +2103,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2040,13 +2147,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2054,7 +2161,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2064,7 +2171,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val params =
             GetPropertyContentOperationParams(
@@ -2093,12 +2200,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyContentOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2107,7 +2214,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     /**
      * Property Content
      * Search property content for active properties in the requested language.<br><br> When searching with query parameter, `property_id`, you may request 1 to 250 properties at a time.<br><br> When searching with query parameters other than `property_id`, the response will be paginated. See the `Link` header in the 200 response section.<br><br> The response is a JSON map where the key is the property ID and the value is the property object itself, which can include property-level, room-level and rate-level information.
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/) <br> Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param allInclusive Search to include properties that have the requested `all_inclusive` values equal to true. If this parameter is not supplied, all `all_inclusive` scenarios are included. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested scenarios.   * `all_rate_plans` - Return properties where `all_inclusive.all_rate_plans` is true.   * `some_rate_plans` = Return properties where `all_inclusive.some_rate_plans` is true.  (optional)
@@ -2137,7 +2244,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.Map<kotlin.String, PropertyContent>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentOperation)"))
@@ -2147,39 +2254,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2191,13 +2298,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2205,7 +2312,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2215,7 +2322,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.Map<kotlin.String, PropertyContent> {
         return getPropertyContentWithResponse(
             language,
@@ -2243,14 +2350,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             billingTerms,
             partnerPointOfSale,
             paymentTerms,
-            platformName
+            platformName,
         ).data
     }
 
     /**
      * Property Content
      * Search property content for active properties in the requested language.<br><br> When searching with query parameter, `property_id`, you may request 1 to 250 properties at a time.<br><br> When searching with query parameters other than `property_id`, the response will be paginated. See the `Link` header in the 200 response section.<br><br> The response is a JSON map where the key is the property ID and the value is the property object itself, which can include property-level, room-level and rate-level information.
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/) <br> Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param allInclusive Search to include properties that have the requested `all_inclusive` values equal to true. If this parameter is not supplied, all `all_inclusive` scenarios are included. This parameter can be supplied multiple times with different values, which will include properties that match any of the requested scenarios.   * `all_rate_plans` - Return properties where `all_inclusive.all_rate_plans` is true.   * `some_rate_plans` = Return properties where `all_inclusive.some_rate_plans` is true.  (optional)
@@ -2280,7 +2387,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PropertyContent>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentOperation)"))
@@ -2290,39 +2397,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2334,13 +2441,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2348,7 +2455,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2358,7 +2465,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -2388,7 +2495,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     billingTerms,
                     partnerPointOfSale,
                     paymentTerms,
-                    platformName
+                    platformName,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -2410,39 +2517,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2454,13 +2561,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2468,7 +2575,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2478,7 +2585,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Paginator<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val response =
             getPropertyContentWithResponse(
@@ -2507,7 +2614,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return Paginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
@@ -2520,39 +2627,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         allInclusive: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         amenityId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         attributeId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         brandId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         businessModel: kotlin.collections.List<
-            GetPropertyContentOperationParams.BusinessModel
+            GetPropertyContentOperationParams.BusinessModel,
         >? =
             null,
         categoryId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         categoryIdExclude: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         chainId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         dateAddedEnd: kotlin.String? =
@@ -2564,13 +2671,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         dateUpdatedStart: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         multiUnit: kotlin.Boolean? =
             null,
         propertyId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         propertyRatingMax: kotlin.String? =
@@ -2578,7 +2685,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         propertyRatingMin: kotlin.String? =
             null,
         spokenLanguageId: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -2588,7 +2695,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): ResponsePaginator<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val response =
             getPropertyContentWithResponse(
@@ -2617,14 +2724,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return ResponsePaginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
 
     /**
      * Property Content File
-     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   ``` 
+     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   ``` 
      * @param operation [GetPropertyContentFileOperation]
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Link
@@ -2635,7 +2742,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     /**
      * Property Content File
-     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   ``` 
+     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   ``` 
      * @param operation [GetPropertyContentFileOperation]
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type Link
@@ -2651,12 +2758,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         val params =
             GetPropertyContentFileOperationParams(
@@ -2664,14 +2771,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 language = language,
                 supplySource = supplySource,
                 billingTerms = billingTerms,
-                partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                partnerPointOfSale = partnerPointOfSale,
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyContentFileOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2679,19 +2786,19 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     /**
      * Property Content File
-     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   ``` 
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   ``` 
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentFileOperation)"))
@@ -2702,31 +2809,39 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Link {
-        return getPropertyContentFileWithResponse(language, supplySource, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return getPropertyContentFileWithResponse(
+            language,
+            supplySource,
+            customerSessionId,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
      * Property Content File
-     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\",\"registry_number\":\"Property Registration Number 123456\"}   ``` 
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * Returns a link to download all content for all of EPS’s active properties in the requested language. The response includes property-level, room-level and rate-level information.  <br>This file is in JSONL format and is gzipped. The schema of each JSON object in the JSONL file is the same as the schema of each JSON object from the Property Content call.  <br>Example of a JSONL file with 2 properties:   ```   {\"property_id\":\"12345\",\"name\":\"Test Property Name\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":false,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345\"},\"fr-FR\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":48382,\"overall\":\"3.1\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"73%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838}},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":false},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":20,\"square_feet\":215},\"views\":{\"4146\":{\"id\":\"4146\",\"name\":\"Courtyard view\"}},\"occupancy\":{\"max_allowed\":{\"total\":5,\"children\":2,\"adults\":4},\"age_categories\":{\"Adult\":{\"name\":\"Adult\",\"minimum_age\":9}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-19T05:00:00.000Z\",\"updated\":\"2018-03-22T07:23:14.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"AB-012-987-1234-01\",\"chain\":{\"id\":\"-6\",\"name\":\"Hyatt Hotels\"},\"brand\":{\"id\":\"2209\",\"name\":\"Hyatt Place\"},\"spoken_languages\":{\"vi\":{\"id\":\"vi\",\"name\":\"Vietnamese\"}},\"multi_unit\":true,\"payment_registration_recommended\":false,\"vacation_rental_details\": {\"registry_number\": \"Property Registration Number 123456\",\"private_host\": \"true\",\"property_manager\": {\"name\": \"Victor\",\"links\": {\"image\": {\"method\": \"GET\",\"href\": \"https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg\"}}},\"rental_agreement\": {\"links\": {\"rental_agreement\": {\"method\": \"GET\",\"href\": \"https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf\"}}},\"house_rules\": [\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\": {\"4296\": {\"id\": \"4296\",\"name\": \"Furnished balcony or patio\"},\"2859\": {\"id\": \"2859\",\"name\": \"Private pool\"}},\"vrbo_srp_id\": \"123.1234567.5678910\",\"listing_id\": \"1234567\",\"listing_number\": \"5678910\",\"listing_source\": \"HOMEAWAY_US\",\"listing_unit\": \"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   {\"property_id\":\"67890\",\"name\":\"Test Property Name 2\",\"address\":{\"line_1\":\"123 Main St\",\"line_2\":\"Apt A\",\"city\":\"Springfield\",\"state_province_code\":\"MO\",\"state_province_name\":\"Missouri\",\"postal_code\":\"65804\",\"country_code\":\"US\",\"obfuscation_required\":true,\"localized\":{\"links\":{\"es-ES\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890\"},\"de-DE\":{\"method\":\"GET\",\"href\":\"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890\"}}}},\"ratings\":{\"property\":{\"rating\":\"3.5\",\"type\":\"Star\"},\"guest\":{\"count\":7651,\"overall\":\"4.3\",\"cleanliness\":\"4.2\",\"service\":\"1.1\",\"comfort\":\"4.3\",\"condition\":\"1.6\",\"location\":\"4.0\",\"neighborhood\":\"3.4\",\"quality\":\"3.4\",\"value\":\"2.2\",\"amenities\":\"1.4\",\"recommendation_percent\":\"80%\"}},\"location\":{\"coordinates\":{\"latitude\":37.15845,\"longitude\":-93.26838},\"obfuscated_coordinates\":{\"latitude\":28.339303,\"longitude\":-81.47791},\"obfuscation_required\":true},\"phone\":\"1-417-862-0153\",\"fax\":\"1-417-863-7249\",\"category\":{\"id\":\"1\",\"name\":\"Hotel\"},\"rank\":42,\"business_model\":{\"expedia_collect\":true,\"property_collect\":true},\"checkin\":{\"24_hour\":\"24-hour check-in\",\"begin_time\":\"3:00 PM\",\"end_time\":\"11:00 PM\",\"instructions\":\"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />\",\"special_instructions\":\"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.\",\"min_age\":18},\"checkout\":{\"time\":\"11:00 AM\"},\"fees\":{\"mandatory\":\"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>\",\"optional\":\"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>\"},\"policies\":{\"know_before_you_go\":\"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>\"},\"attributes\":{\"general\":{\"2549\":{\"id\":\"2549\",\"name\":\"No elevators\"},\"3357\":{\"id\":\"3357\",\"name\":\"Caters to adults only\"}},\"pets\":{\"51\":{\"id\":\"51\",\"name\":\"Pets allowed\"},\"2809\":{\"id\":\"2809\",\"name\":\"Dogs only\"},\"3321\":{\"id\":\"3321\",\"name\":\"Pet maximum weight in kg is - 24\",\"value\":24}}},\"amenities\":{\"9\":{\"id\":\"9\",\"name\":\"Fitness facilities\"},\"2820\":{\"id\":\"2820\",\"name\":\"Number of indoor pools - 10\",\"value\":10}},\"images\":[{\"caption\":\"Featured Image\",\"hero_image\":true,\"category\":3,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}}}],\"onsite_payments\":{\"currency\":\"USD\",\"types\":{\"171\":{\"id\":\"171\",\"name\":\"American Express\"}}},\"rooms\":{\"224829\":{\"id\":\"224829\",\"name\":\"Single Room\",\"descriptions\":{\"overview\":\"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />\"},\"amenities\":{\"130\":{\"id\":\"130\",\"name\":\"Refrigerator\"},\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"}},\"images\":[{\"hero_image\":true,\"category\":21001,\"links\":{\"70px\":{\"method\":\"GET\",\"href\":\"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg\"}},\"caption\":\"Guestroom\"}],\"bed_groups\":{\"37321\":{\"id\":\"37321\",\"description\":\"1 King Bed\",\"configuration\":[{\"type\":\"KingBed\",\"size\":\"King\",\"quantity\":1}]}},\"area\":{\"square_meters\":17},\"views\":{\"4134\":{\"id\":\"4134\",\"name\":\"City view\"}},\"occupancy\":{\"max_allowed\":{\"total\":3,\"children\":2,\"adults\":3},\"age_categories\":{\"ChildAgeA\":{\"name\":\"ChildAgeA\",\"minimum_age\":3}}}}},\"rates\":{\"333abc\":{\"id\":\"333abc\",\"amenities\":{\"1234\":{\"id\":\"1234\",\"name\":\"Test Amenity - 200\",\"value\":\"200\"},\"2104\":{\"id\":\"2104\",\"name\":\"Full Breakfast\"}},\"special_offer_description\":\"<strong>Breakfast for 2</strong> - Rate includes the following:\\r\\n<ul><li>Accommodations as selected</li>\\r\\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\\r\\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\\r\\n\"}},\"dates\":{\"added\":\"1998-07-20T05:00:00.000Z\",\"updated\":\"2018-03-22T13:33:17.000Z\"},\"descriptions\":{\"amenities\":\"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.\",\"dining\":\"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.\",\"renovations\":\"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>\",\"national_ratings\":\"For the benefit of our customers, we have provided a rating based on our rating system.\",\"business_amenities\":\"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.\",\"rooms\":\"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.\",\"attractions\":\"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>\",\"location\":\"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.\",\"headline\":\"Near National Museum of Natural Science\",\"general\":\"General description\"},\"statistics\":{\"52\":{\"id\":\"52\",\"name\":\"Total number of rooms - 820\",\"value\":\"820\"},\"54\":{\"id\":\"54\",\"name\":\"Number of floors - 38\",\"value\":\"38\"}},\"airports\":{\"preferred\":{\"iata_airport_code\":\"SGF\"}},\"themes\":{\"2337\":{\"id\":\"2337\",\"name\":\"Luxury Hotel\"},\"2341\":{\"id\":\"2341\",\"name\":\"Spa Hotel\"}},\"all_inclusive\":{\"all_rate_plans\":true,\"some_rate_plans\":false,\"details\":\"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>\"},\"tax_id\":\"CD-012-987-1234-02\",\"chain\":{\"id\":\"-5\",\"name\":\"Hilton Worldwide\"},\"brand\":{\"id\":\"358\",\"name\":\"Hampton Inn\"},\"spoken_languages\":{\"en\":{\"id\":\"en\",\"name\":\"English\"}},\"multi_unit\":true,\"payment_registration_recommended\":true,\"vacation_rental_details\":{\"registry_number\":\"Property Registration Number 123456\",\"private_host\":\"true\",\"property_manager\":{\"name\":\"John Smith\",\"links\":{\"image\":{\"method\":\"GET\",\"href\":\"https://example.com/profile.jpg\"}}},\"rental_agreement\":{\"links\":{\"rental_agreement\":{\"method\":\"GET\",\"href\":\"https:/example.com/rentalconditions.pdf\"}}},\"house_rules\":[\"Children welcome\",\"No pets\",\"No smoking\",\"No parties or events\"],\"amenities\":{\"2859\":{\"id\":\"2859\",\"name\":\"Private pool\"},\"4296\":{\"id\":\"4296\",\"name\":\"Furnished balcony or patio\"}},\"vrbo_srp_id\":\"123.1234567.5678910\",\"listing_id\":\"1234567\",\"listing_number\":\"5678910\",\"listing_source\":\"HOMEAWAY_US\",\"listing_unit\":\"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60\"},\"supply_source\":\"vrbo\"}   ``` 
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Link
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyContentFileOperation)"))
@@ -2737,16 +2852,24 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Link> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetPropertyContentFileWithResponse(language, supplySource, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+                kgetPropertyContentFileWithResponse(
+                    language,
+                    supplySource,
+                    customerSessionId,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -2781,21 +2904,21 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? =
             null,
         tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? =
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<GuestReviews> {
         val params =
             GetPropertyGuestReviewsOperationParams(
@@ -2805,14 +2928,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 filter = filter,
                 tripReason = tripReason,
                 billingTerms = billingTerms,
-                partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                partnerPointOfSale = partnerPointOfSale,
+                platformName = platformName,
             )
 
         val operation =
             GetPropertyGuestReviewsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2821,20 +2944,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     /**
      * Property Guest Reviews
      * <i>Note: Property Guest Reviews are only available if your account is configured for access and all launch requirements have been followed. Please find the launch requirements here [https://support.expediapartnersolutions.com/hc/en-us/articles/360008646799](https://support.expediapartnersolutions.com/hc/en-us/articles/360008646799) and contact your Account Manager for more details.</i>  The response is an individual Guest Reviews object containing multiple guest reviews for the requested active property.  To ensure you always show the latest guest reviews, this call should be made whenever a customer looks at the details for a specific property.
-     * @param propertyId Expedia Property ID.
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param propertyId Expedia Property ID.<br>
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param filter Single filter value. Send multiple instances of this parameter to request multiple filters. * `language` - Filters reviews to only those that match the specified `language` parameter value. Without   this filter, the matching language will be preferred, but other language results can be returned.   Specifying this filter could produce an error when there are no matching results.  (optional)
      * @param tripReason Desired reason provided for the reviewer's trip that you wish to display. This parameter can be supplied multiple times with different values, which will include reviews that match any of the requested trip reasons.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return GuestReviews
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyGuestReviewsOperation)"))
@@ -2844,42 +2967,52 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? =
             null,
         tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? =
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): GuestReviews {
-        return getPropertyGuestReviewsWithResponse(propertyId, language, customerSessionId, filter, tripReason, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return getPropertyGuestReviewsWithResponse(
+            propertyId,
+            language,
+            customerSessionId,
+            filter,
+            tripReason,
+            billingTerms,
+            paymentTerms,
+            partnerPointOfSale,
+            platformName,
+        ).data
     }
 
     /**
      * Property Guest Reviews
      * <i>Note: Property Guest Reviews are only available if your account is configured for access and all launch requirements have been followed. Please find the launch requirements here [https://support.expediapartnersolutions.com/hc/en-us/articles/360008646799](https://support.expediapartnersolutions.com/hc/en-us/articles/360008646799) and contact your Account Manager for more details.</i>  The response is an individual Guest Reviews object containing multiple guest reviews for the requested active property.  To ensure you always show the latest guest reviews, this call should be made whenever a customer looks at the details for a specific property.
-     * @param propertyId Expedia Property ID.
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param propertyId Expedia Property ID.<br>
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param filter Single filter value. Send multiple instances of this parameter to request multiple filters. * `language` - Filters reviews to only those that match the specified `language` parameter value. Without   this filter, the matching language will be preferred, but other language results can be returned.   Specifying this filter could produce an error when there are no matching results.  (optional)
      * @param tripReason Desired reason provided for the reviewer's trip that you wish to display. This parameter can be supplied multiple times with different values, which will include reviews that match any of the requested trip reasons.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
-     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type GuestReviews
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPropertyGuestReviewsOperation)"))
@@ -2889,25 +3022,35 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         filter: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.Filter
+            GetPropertyGuestReviewsOperationParams.Filter,
         >? =
             null,
         tripReason: kotlin.collections.List<
-            GetPropertyGuestReviewsOperationParams.TripReason
+            GetPropertyGuestReviewsOperationParams.TripReason,
         >? =
             null,
         billingTerms: kotlin.String? =
             null,
-        partnerPointOfSale: kotlin.String? =
-            null,
         paymentTerms: kotlin.String? =
             null,
+        partnerPointOfSale: kotlin.String? =
+            null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<GuestReviews> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetPropertyGuestReviewsWithResponse(propertyId, language, customerSessionId, filter, tripReason, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+                kgetPropertyGuestReviewsWithResponse(
+                    propertyId,
+                    language,
+                    customerSessionId,
+                    filter,
+                    tripReason,
+                    billingTerms,
+                    paymentTerms,
+                    partnerPointOfSale,
+                    platformName,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -2940,11 +3083,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         regionId: kotlin.String,
         language: kotlin.String,
         include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >,
         customerSessionId: kotlin.String? =
-            null,
-        supplySource: kotlin.String? =
             null,
         billingTerms: kotlin.String? =
             null,
@@ -2953,7 +3094,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
+        supplySource: kotlin.String? =
+            null,
     ): Response<Region> {
         val params =
             GetRegionOperationParams(
@@ -2961,16 +3104,16 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerSessionId = customerSessionId,
                 language = language,
                 include = include,
-                supplySource = supplySource,
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
+                supplySource = supplySource,
             )
 
         val operation =
             GetRegionOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -2983,16 +3126,16 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The value must be lower case.   * details - Include the metadata, coordinates and full hierarchy of the region.   * property_ids - Include the list of property IDs within the bounding polygon of the region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of the region and property IDs from the surrounding area if minimal properties are within the region.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
-     * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return Region
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionOperation)"))
@@ -3000,11 +3143,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         regionId: kotlin.String,
         language: kotlin.String,
         include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >,
         customerSessionId: kotlin.String? =
-            null,
-        supplySource: kotlin.String? =
             null,
         billingTerms: kotlin.String? =
             null,
@@ -3013,9 +3154,21 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
+        supplySource: kotlin.String? =
+            null,
     ): Region {
-        return getRegionWithResponse(regionId, language, include, customerSessionId, supplySource, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return getRegionWithResponse(
+            regionId,
+            language,
+            include,
+            customerSessionId,
+            billingTerms,
+            partnerPointOfSale,
+            paymentTerms,
+            platformName,
+            supplySource,
+        ).data
     }
 
     /**
@@ -3025,16 +3178,16 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The value must be lower case.   * details - Include the metadata, coordinates and full hierarchy of the region.   * property_ids - Include the list of property IDs within the bounding polygon of the region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of the region and property IDs from the surrounding area if minimal properties are within the region.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
-     * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Region
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionOperation)"))
@@ -3042,11 +3195,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         regionId: kotlin.String,
         language: kotlin.String,
         include: kotlin.collections.List<
-            GetRegionOperationParams.Include
+            GetRegionOperationParams.Include,
         >,
         customerSessionId: kotlin.String? =
-            null,
-        supplySource: kotlin.String? =
             null,
         billingTerms: kotlin.String? =
             null,
@@ -3055,11 +3206,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
+        supplySource: kotlin.String? =
+            null,
     ): Response<Region> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kgetRegionWithResponse(regionId, language, include, customerSessionId, supplySource, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+                kgetRegionWithResponse(
+                    regionId,
+                    language,
+                    include,
+                    customerSessionId,
+                    billingTerms,
+                    partnerPointOfSale,
+                    paymentTerms,
+                    platformName,
+                    supplySource,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -3090,7 +3253,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
 
     private suspend inline fun kgetRegionsWithResponse(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3100,11 +3263,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3114,7 +3277,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3124,7 +3287,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Region>> {
         val params =
             GetRegionsOperationParams(
@@ -3142,12 +3305,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             GetRegionsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3156,8 +3319,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     /**
      * Regions
      * Returns the geographic definition and property mappings of regions matching the specified parameters.<br><br> To request all regions in the world, omit the `ancestor` query parameter. To request all regions in a specific continent, country or other level, specify the ID of that region as the `ancestor`. Refer to the list of [top level regions](https://developers.expediagroup.com/docs/rapid/lodging/geography/geography-reference-lists). <br><br> The response is a paginated list of regions. See the `Link` header in the 200 response section.
-     * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The standard and details options cannot be requested together. The value must be lower case.   * standard - Include the metadata and basic hierarchy of each region.   * details - Include the metadata, coordinates and full hierarchy of each region.   * property_ids - Include the list of property IDs within the bounding polygon of each region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of each region and     property IDs from the surrounding area if minimal properties are within the region.
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The standard and details options cannot be requested together. The value must be lower case.   * standard - Include the metadata and basic hierarchy of each region.   * details - Include the metadata, coordinates and full hierarchy of each region.   * property_ids - Include the list of property IDs within the bounding polygon of each region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of each region and property IDs from the surrounding area if minimal properties are within the region.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param ancestorId Search for regions whose ancestors include the requested ancestor region ID. Refer to the list of [top level regions](https://developers.expediagroup.com/docs/rapid/lodging/geography/geography-reference-lists).  (optional)
      * @param area Filter the results to regions that intersect with a specified area.<br><br> The area may be defined in one of two ways:   * radius,region_id   * radius,latitude,longitude  Radius combined with region id would search an area that extends the number of kilometers out from the boundaries of the region in all directions.<br> Radius combined with a single point, specified by a latitude, longitude pair would search an area in a circle with the specified radius and the point as the center.<br> Radius should be specified in non-negative whole kilometers, decimals will return an error. A radius of 0 is allowed.<br> When specifying the area parameter, there will be a limit of 100 results, which can be narrowed further by the limit parameter.<br> Due to the number of results, unless `point_of_interest` is specified as the only type, regions of type `point_of_interest` will not be included in a request that filters to an area.<br><br> An example use case would be searching for the closest 3 airports within 50 kilometers of a specified point.<br>   `&type=airport&limit=3&area=50,37.227924,-93.310036`  (optional)
@@ -3175,13 +3338,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return kotlin.collections.List<Region>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionsOperation)"))
     fun getRegions(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3191,11 +3354,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3205,7 +3368,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3215,7 +3378,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<Region> {
         return getRegionsWithResponse(
             include,
@@ -3232,15 +3395,15 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             billingTerms,
             partnerPointOfSale,
             paymentTerms,
-            platformName
+            platformName,
         ).data
     }
 
     /**
      * Regions
      * Returns the geographic definition and property mappings of regions matching the specified parameters.<br><br> To request all regions in the world, omit the `ancestor` query parameter. To request all regions in a specific continent, country or other level, specify the ID of that region as the `ancestor`. Refer to the list of [top level regions](https://developers.expediagroup.com/docs/rapid/lodging/geography/geography-reference-lists). <br><br> The response is a paginated list of regions. See the `Link` header in the 200 response section.
-     * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The standard and details options cannot be requested together. The value must be lower case.   * standard - Include the metadata and basic hierarchy of each region.   * details - Include the metadata, coordinates and full hierarchy of each region.   * property_ids - Include the list of property IDs within the bounding polygon of each region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of each region and     property IDs from the surrounding area if minimal properties are within the region.
-     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param include Options for which content to return in the response. This parameter can be supplied multiple times with different values. The standard and details options cannot be requested together. The value must be lower case.   * standard - Include the metadata and basic hierarchy of each region.   * details - Include the metadata, coordinates and full hierarchy of each region.   * property_ids - Include the list of property IDs within the bounding polygon of each region.   * property_ids_expanded - Include the list of property IDs within the bounding polygon of each region and property IDs from the surrounding area if minimal properties are within the region.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. See [https://www.w3.org/International/articles/language-tags/](https://www.w3.org/International/articles/language-tags/)  Language Options: [https://developers.expediagroup.com/docs/rapid/resources/reference/language-options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param ancestorId Search for regions whose ancestors include the requested ancestor region ID. Refer to the list of [top level regions](https://developers.expediagroup.com/docs/rapid/lodging/geography/geography-reference-lists).  (optional)
      * @param area Filter the results to regions that intersect with a specified area.<br><br> The area may be defined in one of two ways:   * radius,region_id   * radius,latitude,longitude  Radius combined with region id would search an area that extends the number of kilometers out from the boundaries of the region in all directions.<br> Radius combined with a single point, specified by a latitude, longitude pair would search an area in a circle with the specified radius and the point as the center.<br> Radius should be specified in non-negative whole kilometers, decimals will return an error. A radius of 0 is allowed.<br> When specifying the area parameter, there will be a limit of 100 results, which can be narrowed further by the limit parameter.<br> Due to the number of results, unless `point_of_interest` is specified as the only type, regions of type `point_of_interest` will not be included in a request that filters to an area.<br><br> An example use case would be searching for the closest 3 airports within 50 kilometers of a specified point.<br>   `&type=airport&limit=3&area=50,37.227924,-93.310036`  (optional)
@@ -3258,13 +3421,13 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type kotlin.collections.List<Region>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRegionsOperation)"))
     fun getRegionsWithResponse(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3274,11 +3437,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3288,7 +3451,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3298,7 +3461,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Region>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3317,7 +3480,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     billingTerms,
                     partnerPointOfSale,
                     paymentTerms,
-                    platformName
+                    platformName,
                 )
             }.get()
         } catch (exception: Exception) {
@@ -3335,7 +3498,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @Deprecated("Use getPaginator method instead", ReplaceWith("getPaginator(operation: GetRegionsOperation)"))
     fun getRegionsPaginator(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3345,11 +3508,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3359,7 +3522,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3369,7 +3532,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Paginator<kotlin.collections.List<Region>> {
         val response =
             getRegionsWithResponse(
@@ -3387,7 +3550,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return Paginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
     }
@@ -3396,7 +3559,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @Deprecated("Use getPaginator method instead", ReplaceWith("getPaginator(operation: GetRegionsOperation)"))
     fun getRegionsPaginatorWithResponse(
         include: kotlin.collections.List<
-            GetRegionsOperationParams.Include
+            GetRegionsOperationParams.Include,
         >,
         language: kotlin.String,
         customerSessionId: kotlin.String? =
@@ -3406,11 +3569,11 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         area: kotlin.String? =
             null,
         countryCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         countrySubdivisionCode: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         iataLocationCode: kotlin.String? =
@@ -3420,7 +3583,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         supplySource: kotlin.String? =
             null,
         type: kotlin.collections.List<
-            kotlin.String
+            kotlin.String,
         >? =
             null,
         billingTerms: kotlin.String? =
@@ -3430,7 +3593,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): ResponsePaginator<kotlin.collections.List<Region>> {
         val response =
             getRegionsWithResponse(
@@ -3448,7 +3611,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms,
                 partnerPointOfSale,
                 paymentTerms,
-                platformName
+                platformName,
             )
         return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
     }
@@ -3484,9 +3647,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetReservationOperationParams.Test? =
             null,
         include: kotlin.collections.List<
-            GetReservationOperationParams.Include
+            GetReservationOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<kotlin.collections.List<Itinerary>> {
         val params =
             GetReservationOperationParams(
@@ -3495,12 +3658,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 test = test,
                 affiliateReferenceId = affiliateReferenceId,
                 email = email,
-                include = include
+                include = include,
             )
 
         val operation =
             GetReservationOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3514,12 +3677,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
-     * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
+     * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return kotlin.collections.List<Itinerary>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationOperation)"))
@@ -3532,9 +3695,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetReservationOperationParams.Test? =
             null,
         include: kotlin.collections.List<
-            GetReservationOperationParams.Include
+            GetReservationOperationParams.Include,
         >? =
-            null
+            null,
     ): kotlin.collections.List<Itinerary> {
         return getReservationWithResponse(customerIp, affiliateReferenceId, email, customerSessionId, test, include).data
     }
@@ -3547,12 +3710,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
-     * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
+     * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.List<Itinerary>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationOperation)"))
@@ -3565,9 +3728,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         test: GetReservationOperationParams.Test? =
             null,
         include: kotlin.collections.List<
-            GetReservationOperationParams.Include
+            GetReservationOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<kotlin.collections.List<Itinerary>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3612,9 +3775,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         email: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<Itinerary> {
         val params =
             GetReservationByItineraryIdOperationParams(
@@ -3624,12 +3787,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 test = test,
                 token = token,
                 email = email,
-                include = include
+                include = include,
             )
 
         val operation =
             GetReservationByItineraryIdOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -3644,12 +3807,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
      * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.  (optional)
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded. (Email is required if the token is not provided the request) <br>  (optional)
-     * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
+     * @param include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return Itinerary
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationByItineraryIdOperation)"))
@@ -3665,9 +3828,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         email: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? =
-            null
+            null,
     ): Itinerary {
         return getReservationByItineraryIdWithResponse(customerIp, itineraryId, customerSessionId, test, token, email, include).data
     }
@@ -3681,12 +3844,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
      * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.  (optional)
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded. (Email is required if the token is not provided the request) <br>  (optional)
-     * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
+     * @param include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type Itinerary
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetReservationByItineraryIdOperation)"))
@@ -3702,9 +3865,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         email: kotlin.String? =
             null,
         include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include
+            GetReservationByItineraryIdOperationParams.Include,
         >? =
-            null
+            null,
     ): Response<Itinerary> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3733,13 +3896,14 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
-    fun executeAsync(operation: PostGeographyOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyGeography>>> {
+    fun executeAsync(
+        operation: PostGeographyOperation,
+    ): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PropertyGeography>>> {
         return executeAsync<PropertiesGeoJsonRequest, kotlin.collections.Map<kotlin.String, PropertyGeography>>(operation)
     }
 
     private suspend inline fun kpostGeographyWithResponse(
         include: kotlin.String,
-        supplySource: kotlin.String,
         propertiesGeoJsonRequest: PropertiesGeoJsonRequest,
         customerSessionId: kotlin.String? =
             null,
@@ -3750,23 +3914,25 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
+        supplySource: kotlin.String? =
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyGeography>> {
         val params =
             PostGeographyOperationParams(
                 customerSessionId = customerSessionId,
                 include = include,
-                supplySource = supplySource,
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
+                supplySource = supplySource,
             )
 
         val operation =
             PostGeographyOperation(
                 params,
-                propertiesGeoJsonRequest
+                propertiesGeoJsonRequest,
             )
 
         return execute(operation)
@@ -3776,24 +3942,23 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * Properties within Polygon
      * Returns the properties within an custom polygon that represents a multi-city area or smaller. The coordinates of the polygon should be in [GeoJSON format](https://tools.ietf.org/html/rfc7946) and the polygon must conform to the following restrictions:   * Polygon size - diagonal distance of the polygon must be less than 500km   * Polygon type - only single polygons are supported   * Number of coordinates - must be <= 2000
      * @param include Options for which content to return in the response. The value must be lower case.   * property_ids - Include the property IDs.
-     * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param propertiesGeoJsonRequest
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostGeographyOperation)"))
     fun postGeography(
         include: kotlin.String,
-        supplySource: kotlin.String,
         propertiesGeoJsonRequest: PropertiesGeoJsonRequest,
         customerSessionId: kotlin.String? =
             null,
@@ -3804,33 +3969,43 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
+        supplySource: kotlin.String? =
+            null,
     ): kotlin.collections.Map<kotlin.String, PropertyGeography> {
-        return postGeographyWithResponse(include, supplySource, propertiesGeoJsonRequest, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return postGeographyWithResponse(
+            include,
+            propertiesGeoJsonRequest,
+            customerSessionId,
+            billingTerms,
+            partnerPointOfSale,
+            paymentTerms,
+            platformName,
+            supplySource,
+        ).data
     }
 
     /**
      * Properties within Polygon
      * Returns the properties within an custom polygon that represents a multi-city area or smaller. The coordinates of the polygon should be in [GeoJSON format](https://tools.ietf.org/html/rfc7946) and the polygon must conform to the following restrictions:   * Polygon size - diagonal distance of the polygon must be less than 500km   * Polygon type - only single polygons are supported   * Number of coordinates - must be <= 2000
      * @param include Options for which content to return in the response. The value must be lower case.   * property_ids - Include the property IDs.
-     * @param supplySource Options for which supply source you would like returned in the content response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.
      * @param propertiesGeoJsonRequest
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param supplySource Options for which supply source you would like returned in the geography response. This parameter may only be supplied once and will return all properties that match the requested supply source. An error is thrown if the parameter is provided multiple times.   * `expedia` - Standard Expedia supply.   * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for more information.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PropertyGeography>
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostGeographyOperation)"))
     fun postGeographyWithResponse(
         include: kotlin.String,
-        supplySource: kotlin.String,
         propertiesGeoJsonRequest: PropertiesGeoJsonRequest,
         customerSessionId: kotlin.String? =
             null,
@@ -3841,11 +4016,22 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
+        supplySource: kotlin.String? =
+            null,
     ): Response<kotlin.collections.Map<kotlin.String, PropertyGeography>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
-                kpostGeographyWithResponse(include, supplySource, propertiesGeoJsonRequest, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+                kpostGeographyWithResponse(
+                    include,
+                    propertiesGeoJsonRequest,
+                    customerSessionId,
+                    billingTerms,
+                    partnerPointOfSale,
+                    paymentTerms,
+                    platformName,
+                    supplySource,
+                )
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -3881,20 +4067,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostItineraryOperationParams.Test? =
-            null
+            null,
     ): Response<ItineraryCreation> {
         val params =
             PostItineraryOperationParams(
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PostItineraryOperation(
                 params,
-                createItineraryRequest
+                createItineraryRequest,
             )
 
         return execute(operation)
@@ -3912,7 +4098,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return ItineraryCreation
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostItineraryOperation)"))
@@ -3923,7 +4109,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostItineraryOperationParams.Test? =
-            null
+            null,
     ): ItineraryCreation {
         return postItineraryWithResponse(customerIp, token, createItineraryRequest, customerSessionId, test).data
     }
@@ -3940,7 +4126,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type ItineraryCreation
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostItineraryOperation)"))
@@ -3951,7 +4137,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostItineraryOperationParams.Test? =
-            null
+            null,
     ): Response<ItineraryCreation> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -3991,20 +4177,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostPaymentSessionsOperationParams.Test? =
-            null
+            null,
     ): Response<PaymentSessions> {
         val params =
             PostPaymentSessionsOperationParams(
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PostPaymentSessionsOperation(
                 params,
-                paymentSessionsRequest
+                paymentSessionsRequest,
             )
 
         return execute(operation)
@@ -4022,7 +4208,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return PaymentSessions
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostPaymentSessionsOperation)"))
@@ -4033,7 +4219,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostPaymentSessionsOperationParams.Test? =
-            null
+            null,
     ): PaymentSessions {
         return postPaymentSessionsWithResponse(customerIp, token, paymentSessionsRequest, customerSessionId, test).data
     }
@@ -4050,7 +4236,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type PaymentSessions
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PostPaymentSessionsOperation)"))
@@ -4061,7 +4247,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PostPaymentSessionsOperationParams.Test? =
-            null
+            null,
     ): Response<PaymentSessions> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4104,7 +4290,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PriceCheckOperationParams.Test? =
-            null
+            null,
     ): Response<RoomPriceCheck> {
         val params =
             PriceCheckOperationParams(
@@ -4114,12 +4300,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PriceCheckOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4139,7 +4325,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return RoomPriceCheck
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PriceCheckOperation)"))
@@ -4153,7 +4339,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PriceCheckOperationParams.Test? =
-            null
+            null,
     ): RoomPriceCheck {
         return priceCheckWithResponse(propertyId, roomId, rateId, token, customerIp, customerSessionId, test).data
     }
@@ -4172,7 +4358,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type RoomPriceCheck
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PriceCheckOperation)"))
@@ -4186,7 +4372,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PriceCheckOperationParams.Test? =
-            null
+            null,
     ): Response<RoomPriceCheck> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4226,7 +4412,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutCompletePaymentSessionOperationParams.Test? =
-            null
+            null,
     ): Response<CompletePaymentSession> {
         val params =
             PutCompletePaymentSessionOperationParams(
@@ -4234,12 +4420,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PutCompletePaymentSessionOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4257,7 +4443,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return CompletePaymentSession
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutCompletePaymentSessionOperation)"))
@@ -4268,7 +4454,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutCompletePaymentSessionOperationParams.Test? =
-            null
+            null,
     ): CompletePaymentSession {
         return putCompletePaymentSessionWithResponse(customerIp, itineraryId, token, customerSessionId, test).data
     }
@@ -4285,7 +4471,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type CompletePaymentSession
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutCompletePaymentSessionOperation)"))
@@ -4296,7 +4482,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutCompletePaymentSessionOperationParams.Test? =
-            null
+            null,
     ): Response<CompletePaymentSession> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4336,7 +4522,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutResumeBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             PutResumeBookingOperationParams(
@@ -4344,12 +4530,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token
+                token = token,
             )
 
         val operation =
             PutResumeBookingOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4367,7 +4553,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutResumeBookingOperation)"))
@@ -4378,7 +4564,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutResumeBookingOperationParams.Test? =
-            null
+            null,
     ): Nothing {
         return putResumeBookingWithResponse(customerIp, itineraryId, token, customerSessionId, test).data
     }
@@ -4395,7 +4581,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: PutResumeBookingOperation)"))
@@ -4406,7 +4592,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         customerSessionId: kotlin.String? =
             null,
         test: PutResumeBookingOperationParams.Test? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4448,20 +4634,20 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Nothing> {
         val params =
             RequestTestNotificationOperationParams(
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             RequestTestNotificationOperation(
                 params,
-                testNotificationRequest
+                testNotificationRequest,
             )
 
         return execute(operation)
@@ -4479,7 +4665,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: RequestTestNotificationOperation)"))
@@ -4492,9 +4678,15 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Nothing {
-        return requestTestNotificationWithResponse(testNotificationRequest, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+        return requestTestNotificationWithResponse(
+            testNotificationRequest,
+            billingTerms,
+            partnerPointOfSale,
+            paymentTerms,
+            platformName,
+        ).data
     }
 
     /**
@@ -4509,7 +4701,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @return a [Response] object with a body of type Nothing
      */
     @Throws(
-        ExpediaGroupApiErrorException::class
+        ExpediaGroupApiErrorException::class,
     )
     @JvmOverloads
     @Deprecated("Use execute method instead", ReplaceWith("execute(operation: RequestTestNotificationOperation)"))
@@ -4522,7 +4714,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<Nothing> {
         try {
             return GlobalScope.future(Dispatchers.IO) {
@@ -4549,7 +4741,9 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param operation [RequestUndeliveredNotificationsOperation]
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.List<Notification>
      */
-    fun executeAsync(operation: RequestUndeliveredNotificationsOperation): CompletableFuture<Response<kotlin.collections.List<Notification>>> {
+    fun executeAsync(
+        operation: RequestUndeliveredNotificationsOperation,
+    ): CompletableFuture<Response<kotlin.collections.List<Notification>>> {
         return executeAsync<Nothing, kotlin.collections.List<Notification>>(operation)
     }
 
@@ -4562,7 +4756,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Notification>> {
         val params =
             RequestUndeliveredNotificationsOperationParams(
@@ -4570,12 +4764,12 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 billingTerms = billingTerms,
                 partnerPointOfSale = partnerPointOfSale,
                 paymentTerms = paymentTerms,
-                platformName = platformName
+                platformName = platformName,
             )
 
         val operation =
             RequestUndeliveredNotificationsOperation(
-                params
+                params,
             )
 
         return execute(operation)
@@ -4603,7 +4797,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): kotlin.collections.List<Notification> {
         return requestUndeliveredNotificationsWithResponse(undeliverable, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
     }
@@ -4630,7 +4824,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         paymentTerms: kotlin.String? =
             null,
         platformName: kotlin.String? =
-            null
+            null,
     ): Response<kotlin.collections.List<Notification>> {
         try {
             return GlobalScope.future(Dispatchers.IO) {

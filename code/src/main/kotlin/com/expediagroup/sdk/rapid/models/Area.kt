@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -51,7 +51,7 @@ data class Area(
     // The room's area, measured in square feet.
     @JsonProperty("square_feet")
     @field:Valid
-    val squareFeet: java.math.BigDecimal? = null
+    val squareFeet: java.math.BigDecimal? = null,
 ) {
     companion object {
         @JvmStatic
@@ -60,7 +60,7 @@ data class Area(
 
     class Builder(
         private var squareMeters: java.math.BigDecimal? = null,
-        private var squareFeet: java.math.BigDecimal? = null
+        private var squareFeet: java.math.BigDecimal? = null,
     ) {
         fun squareMeters(squareMeters: java.math.BigDecimal?) = apply { this.squareMeters = squareMeters }
 
@@ -69,8 +69,14 @@ data class Area(
         fun build(): Area {
             return Area(
                 squareMeters = squareMeters,
-                squareFeet = squareFeet
+                squareFeet = squareFeet,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            squareMeters = squareMeters,
+            squareFeet = squareFeet,
+        )
 }

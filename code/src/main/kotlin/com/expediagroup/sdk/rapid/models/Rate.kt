@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -137,7 +137,7 @@ data class Rate(
     // Array of deposits for the rate.
     @JsonProperty("deposits")
     @field:Valid
-    val deposits: kotlin.collections.List<Deposit>? = null
+    val deposits: kotlin.collections.List<Deposit>? = null,
 ) {
     companion object {
         @JvmStatic
@@ -162,7 +162,7 @@ data class Rate(
         private var promotions: Promotions? = null,
         private var cardOnFileLimit: Amount? = null,
         private var refundableDamageDeposit: Amount? = null,
-        private var deposits: kotlin.collections.List<Deposit>? = null
+        private var deposits: kotlin.collections.List<Deposit>? = null,
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -186,11 +186,20 @@ data class Rate(
 
         fun cancelPenalties(cancelPenalties: kotlin.collections.List<CancelPenalty>?) = apply { this.cancelPenalties = cancelPenalties }
 
-        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) = apply { this.nonrefundableDateRanges = nonrefundableDateRanges }
+        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) =
+            apply {
+                this.nonrefundableDateRanges = nonrefundableDateRanges
+            }
 
-        fun marketingFeeIncentives(marketingFeeIncentives: kotlin.collections.List<MarketingFeeIncentive>?) = apply { this.marketingFeeIncentives = marketingFeeIncentives }
+        fun marketingFeeIncentives(marketingFeeIncentives: kotlin.collections.List<MarketingFeeIncentive>?) =
+            apply {
+                this.marketingFeeIncentives = marketingFeeIncentives
+            }
 
-        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) = apply { this.occupancyPricing = occupancyPricing }
+        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) =
+            apply {
+                this.occupancyPricing = occupancyPricing
+            }
 
         fun promotions(promotions: Promotions?) = apply { this.promotions = promotions }
 
@@ -219,8 +228,30 @@ data class Rate(
                 promotions = promotions,
                 cardOnFileLimit = cardOnFileLimit,
                 refundableDamageDeposit = refundableDamageDeposit,
-                deposits = deposits
+                deposits = deposits,
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            status = status,
+            availableRooms = availableRooms,
+            refundable = refundable,
+            memberDealAvailable = memberDealAvailable,
+            saleScenario = saleScenario,
+            merchantOfRecord = merchantOfRecord,
+            amenities = amenities,
+            links = links,
+            bedGroups = bedGroups,
+            cancelPenalties = cancelPenalties,
+            nonrefundableDateRanges = nonrefundableDateRanges,
+            marketingFeeIncentives = marketingFeeIncentives,
+            occupancyPricing = occupancyPricing,
+            promotions = promotions,
+            cardOnFileLimit = cardOnFileLimit,
+            refundableDamageDeposit = refundableDamageDeposit,
+            deposits = deposits,
+        )
 }

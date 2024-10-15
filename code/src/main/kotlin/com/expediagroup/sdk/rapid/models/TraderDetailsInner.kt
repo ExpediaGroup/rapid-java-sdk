@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport"
+    "UnusedImport",
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -89,7 +89,7 @@ data class TraderDetailsInner(
     // The trader phone number.
     @JsonProperty("phone")
     @field:Valid
-    val phone: kotlin.String? = null
+    val phone: kotlin.String? = null,
 ) {
     companion object {
         @JvmStatic
@@ -105,7 +105,7 @@ data class TraderDetailsInner(
         private var selfCertification: kotlin.Boolean? = null,
         private var rightToWithdrawMessage: kotlin.String? = null,
         private var email: kotlin.String? = null,
-        private var phone: kotlin.String? = null
+        private var phone: kotlin.String? = null,
     ) {
         fun contactMessage(contactMessage: kotlin.String) = apply { this.contactMessage = contactMessage }
 
@@ -137,7 +137,7 @@ data class TraderDetailsInner(
                 selfCertification = selfCertification,
                 rightToWithdrawMessage = rightToWithdrawMessage,
                 email = email,
-                phone = phone
+                phone = phone,
             )
         }
 
@@ -147,4 +147,17 @@ data class TraderDetailsInner(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            contactMessage = contactMessage!!,
+            name = name,
+            address = address,
+            businessRegisterName = businessRegisterName,
+            businessRegisterNumber = businessRegisterNumber,
+            selfCertification = selfCertification,
+            rightToWithdrawMessage = rightToWithdrawMessage,
+            email = email,
+            phone = phone,
+        )
 }
