@@ -64,4 +64,9 @@ data class GuestReviews(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            verified = verified
+        )
 }

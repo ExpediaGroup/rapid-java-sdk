@@ -64,4 +64,9 @@ data class Policies(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            knowBeforeYouGo = knowBeforeYouGo
+        )
 }

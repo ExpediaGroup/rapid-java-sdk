@@ -15,10 +15,13 @@
  */
 package com.expediagroup.sdk.core.model
 
-interface OperationParams {
-    fun getHeaders(): Map<String, String>?
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
-    fun getQueryParams(): Map<String, Iterable<String>>?
+interface OperationParams {
+    fun getHeaders(): Headers
+
+    fun getQueryParams(): Parameters
 
     fun getPathParams(): Map<String, String>
 }

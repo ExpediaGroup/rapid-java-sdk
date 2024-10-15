@@ -65,4 +65,9 @@ data class PromotionsItinerary(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            valueAdds = valueAdds
+        )
 }

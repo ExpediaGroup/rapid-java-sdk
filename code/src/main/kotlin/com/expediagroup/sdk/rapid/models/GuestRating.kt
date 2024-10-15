@@ -163,4 +163,20 @@ data class GuestRating(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            count = count,
+            overall = overall,
+            cleanliness = cleanliness,
+            service = service,
+            comfort = comfort,
+            condition = condition,
+            location = location,
+            neighborhood = neighborhood,
+            quality = quality,
+            `value` = `value`,
+            amenities = amenities,
+            recommendationPercent = recommendationPercent
+        )
 }

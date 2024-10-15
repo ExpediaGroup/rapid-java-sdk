@@ -82,4 +82,10 @@ data class TraderInformation(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            termsAndConditions = termsAndConditions!!,
+            traders = traders
+        )
 }

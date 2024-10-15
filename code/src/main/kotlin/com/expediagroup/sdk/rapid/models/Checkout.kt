@@ -64,4 +64,9 @@ data class Checkout(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            time = time
+        )
 }

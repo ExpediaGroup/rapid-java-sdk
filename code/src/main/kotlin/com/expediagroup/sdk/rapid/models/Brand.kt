@@ -73,4 +73,10 @@ data class Brand(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name
+        )
 }

@@ -92,4 +92,12 @@ data class Image(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            heroImage = heroImage,
+            category = category,
+            caption = caption,
+            links = links
+        )
 }

@@ -73,4 +73,10 @@ data class View(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name
+        )
 }

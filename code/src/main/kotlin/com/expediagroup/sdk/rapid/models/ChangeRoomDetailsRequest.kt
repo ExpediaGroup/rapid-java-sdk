@@ -109,4 +109,14 @@ data class ChangeRoomDetailsRequest(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            givenName = givenName,
+            familyName = familyName,
+            smoking = smoking,
+            specialRequest = specialRequest,
+            loyaltyId = loyaltyId,
+            loyalty = loyalty
+        )
 }

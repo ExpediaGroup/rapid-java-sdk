@@ -82,4 +82,11 @@ data class CompletePaymentSession(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            itineraryId = itineraryId,
+            links = links,
+            traderInformation = traderInformation
+        )
 }

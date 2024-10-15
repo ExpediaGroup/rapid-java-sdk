@@ -109,4 +109,14 @@ data class ValueAdd(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            description = description,
+            category = category,
+            offerType = offerType,
+            frequency = frequency,
+            personCount = personCount
+        )
 }

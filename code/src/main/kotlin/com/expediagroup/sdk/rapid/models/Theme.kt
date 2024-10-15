@@ -73,4 +73,10 @@ data class Theme(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name
+        )
 }

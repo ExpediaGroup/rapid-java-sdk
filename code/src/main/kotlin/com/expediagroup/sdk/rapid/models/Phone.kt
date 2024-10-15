@@ -82,4 +82,11 @@ data class Phone(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            countryCode = countryCode,
+            areaCode = areaCode,
+            number = number
+        )
 }

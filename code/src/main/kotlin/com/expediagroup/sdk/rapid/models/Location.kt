@@ -81,4 +81,11 @@ data class Location(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates,
+            obfuscatedCoordinates = obfuscatedCoordinates,
+            obfuscationRequired = obfuscationRequired
+        )
 }

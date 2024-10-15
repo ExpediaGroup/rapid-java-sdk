@@ -82,4 +82,11 @@ data class NightCharge(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            `value` = `value`,
+            currency = currency
+        )
 }

@@ -64,4 +64,9 @@ data class AffiliateCollect(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name
+        )
 }

@@ -118,4 +118,15 @@ data class Notification(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            eventId = eventId,
+            eventType = eventType,
+            eventTime = eventTime,
+            itineraryId = itineraryId,
+            email = email,
+            message = message,
+            affiliateReferenceId = affiliateReferenceId
+        )
 }

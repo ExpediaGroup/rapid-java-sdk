@@ -146,4 +146,18 @@ data class Review(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            verificationSource = verificationSource,
+            title = title,
+            dateSubmitted = dateSubmitted,
+            rating = rating,
+            reviewerName = reviewerName,
+            stayDate = stayDate,
+            tripReason = tripReason,
+            travelCompanion = travelCompanion,
+            text = text,
+            managementResponses = managementResponses
+        )
 }

@@ -73,4 +73,10 @@ data class CardOption(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            processingCountry = processingCountry
+        )
 }

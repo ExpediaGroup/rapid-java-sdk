@@ -120,4 +120,14 @@ data class CreateItineraryRequestRoom(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            givenName = givenName!!,
+            familyName = familyName!!,
+            smoking = smoking,
+            specialRequest = specialRequest,
+            loyaltyId = loyaltyId,
+            loyalty = loyalty
+        )
 }

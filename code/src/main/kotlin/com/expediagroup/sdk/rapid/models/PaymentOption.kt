@@ -73,4 +73,10 @@ data class PaymentOption(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            affiliateCollect = affiliateCollect,
+            creditCard = creditCard
+        )
 }

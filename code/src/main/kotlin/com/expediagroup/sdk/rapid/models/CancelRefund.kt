@@ -73,4 +73,10 @@ data class CancelRefund(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            amount = amount,
+            currency = currency
+        )
 }

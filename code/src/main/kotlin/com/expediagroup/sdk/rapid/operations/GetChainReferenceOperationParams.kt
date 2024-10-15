@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -88,40 +90,37 @@ data class GetChainReferenceOperationParams(
         }
     }
 
-    override fun getHeaders(): Map<String, String> {
-        return buildMap {
-            customerSessionId?.also {
-                put("Customer-Session-Id", customerSessionId)
+    fun toBuilder() =
+        Builder(
+            customerSessionId = customerSessionId,
+            billingTerms = billingTerms,
+            partnerPointOfSale = partnerPointOfSale,
+            paymentTerms = paymentTerms,
+            platformName = platformName
+        )
+
+    override fun getHeaders(): Headers {
+        return Headers.build {
+            customerSessionId?.let {
+                append("Customer-Session-Id", it)
             }
-            put("Accept", "application/json")
+            append("Accept", "application/json")
         }
     }
 
-    override fun getQueryParams(): Map<String, Iterable<String>> {
-        return buildMap {
-            billingTerms?.also {
-                put(
-                    "billing_terms",
-                    listOf(billingTerms)
-                )
+    override fun getQueryParams(): Parameters {
+        return Parameters.build {
+            billingTerms?.let {
+                append("billing_terms", it)
             }
-            partnerPointOfSale?.also {
-                put(
-                    "partner_point_of_sale",
-                    listOf(partnerPointOfSale)
-                )
+            partnerPointOfSale?.let {
+                append("partner_point_of_sale", it)
             }
-            paymentTerms?.also {
-                put(
-                    "payment_terms",
-                    listOf(paymentTerms)
-                )
+            paymentTerms?.let {
+                append("payment_terms", it)
             }
-            platformName?.also {
-                put(
-                    "platform_name",
-                    listOf(platformName)
-                )
+            platformName?.let {
+                append("platform_name", it)
             }
         }
     }

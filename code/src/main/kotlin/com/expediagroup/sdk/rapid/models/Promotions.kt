@@ -74,4 +74,10 @@ data class Promotions(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            valueAdds = valueAdds,
+            deal = deal
+        )
 }

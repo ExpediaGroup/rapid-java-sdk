@@ -91,4 +91,12 @@ data class SupplyContact(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            phone = phone,
+            email = email,
+            address = address
+        )
 }

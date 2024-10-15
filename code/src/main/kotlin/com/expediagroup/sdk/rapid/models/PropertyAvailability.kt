@@ -94,4 +94,12 @@ data class PropertyAvailability(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId,
+            score = score,
+            rooms = rooms,
+            links = links
+        )
 }

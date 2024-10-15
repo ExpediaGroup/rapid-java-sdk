@@ -209,4 +209,25 @@ data class Region(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            type = type,
+            name = name,
+            nameFull = nameFull,
+            descriptor = descriptor,
+            iataAirportCode = iataAirportCode,
+            iataAirportMetroCode = iataAirportMetroCode,
+            countryCode = countryCode,
+            countrySubdivisionCode = countrySubdivisionCode,
+            coordinates = coordinates,
+            associations = associations,
+            ancestors = ancestors,
+            descendants = descendants,
+            propertyIds = propertyIds,
+            propertyIdsExpanded = propertyIdsExpanded,
+            categories = categories,
+            tags = tags
+        )
 }

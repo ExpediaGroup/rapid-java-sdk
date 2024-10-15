@@ -109,4 +109,14 @@ data class Checkin(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `24hour` = `24hour`,
+            beginTime = beginTime,
+            endTime = endTime,
+            instructions = instructions,
+            specialInstructions = specialInstructions,
+            minAge = minAge
+        )
 }

@@ -93,4 +93,12 @@ data class Error(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            message = message,
+            fields = fields,
+            errors = errors
+        )
 }

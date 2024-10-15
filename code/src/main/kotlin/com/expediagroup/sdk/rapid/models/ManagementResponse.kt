@@ -73,4 +73,10 @@ data class ManagementResponse(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            text = text,
+            date = date
+        )
 }

@@ -99,4 +99,13 @@ data class Day(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            date = date,
+            available = available,
+            checkin = checkin,
+            checkout = checkout,
+            stayConstraints = stayConstraints
+        )
 }

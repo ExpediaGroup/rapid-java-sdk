@@ -92,4 +92,12 @@ data class Essential(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            instructions = instructions,
+            additionalInfo = additionalInfo,
+            images = images
+        )
 }

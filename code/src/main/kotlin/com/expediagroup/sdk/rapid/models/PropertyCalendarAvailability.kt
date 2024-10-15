@@ -73,4 +73,10 @@ data class PropertyCalendarAvailability(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId,
+            days = days
+        )
 }

@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -318,82 +320,70 @@ data class GetAdditionalAvailabilityOperationParams
             }
         }
 
-        override fun getHeaders(): Map<String, String> {
-            return buildMap {
-                customerIp?.also {
-                    put("Customer-Ip", customerIp)
+        fun toBuilder() =
+            Builder(
+                propertyId = propertyId,
+                customerIp = customerIp,
+                customerSessionId = customerSessionId,
+                test = test,
+                token = token,
+                checkin = checkin,
+                checkout = checkout,
+                exclusion = exclusion,
+                filter = filter,
+                include = include,
+                occupancy = occupancy,
+                rateOption = rateOption,
+                salesChannel = salesChannel,
+                currency = currency
+            )
+
+        override fun getHeaders(): Headers {
+            return Headers.build {
+                customerIp?.let {
+                    append("Customer-Ip", it)
                 }
-                customerSessionId?.also {
-                    put("Customer-Session-Id", customerSessionId)
+                customerSessionId?.let {
+                    append("Customer-Session-Id", it)
                 }
-                test?.also {
-                    put("Test", test.value)
+                test?.let {
+                    append("Test", it.value)
                 }
-                put("Accept", "application/json")
+                append("Accept", "application/json")
             }
         }
 
-        override fun getQueryParams(): Map<String, Iterable<String>> {
-            return buildMap {
-                token?.also {
-                    put(
-                        "token",
-                        listOf(token)
-                    )
+        override fun getQueryParams(): Parameters {
+            return Parameters.build {
+                token?.let {
+                    append("token", it)
                 }
-                checkin?.also {
-                    put(
-                        "checkin",
-                        listOf(checkin)
-                    )
+                checkin?.let {
+                    append("checkin", it)
                 }
-                checkout?.also {
-                    put(
-                        "checkout",
-                        listOf(checkout)
-                    )
+                checkout?.let {
+                    append("checkout", it)
                 }
-                exclusion?.also {
-                    put(
-                        "exclusion",
-                        exclusion.map { it.value }
-                    )
+                exclusion?.let {
+                    appendAll("exclusion", it.map { it.value })
                 }
-                filter?.also {
-                    put(
-                        "filter",
-                        filter.map { it.value }
-                    )
+                filter?.let {
+                    appendAll("filter", it.map { it.value })
                 }
-                include?.also {
-                    put(
-                        "include",
-                        include.map { it.value }
-                    )
+                include?.let {
+                    appendAll("include", it.map { it.value })
                 }
-                occupancy?.also {
-                    put(
-                        "occupancy",
-                        occupancy
-                    )
+                occupancy?.let {
+                    appendAll("occupancy", it)
                 }
-                rateOption?.also {
-                    put(
-                        "rate_option",
-                        rateOption.map { it.value }
-                    )
+                rateOption?.let {
+                    appendAll("rate_option", it.map { it.value })
                 }
-                salesChannel?.also {
-                    put(
-                        "sales_channel",
-                        listOf(salesChannel)
-                    )
+                salesChannel?.let {
+                    append("sales_channel", it)
                 }
-                currency?.also {
-                    put(
-                        "currency",
-                        listOf(currency)
-                    )
+                currency?.let {
+                    append("currency", it)
                 }
             }
         }

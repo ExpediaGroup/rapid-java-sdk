@@ -87,4 +87,10 @@ data class PropertiesGeoJsonRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type!!,
+            coordinates = coordinates!!
+        )
 }

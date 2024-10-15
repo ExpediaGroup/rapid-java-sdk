@@ -73,4 +73,10 @@ data class Dates(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            added = added,
+            updated = updated
+        )
 }

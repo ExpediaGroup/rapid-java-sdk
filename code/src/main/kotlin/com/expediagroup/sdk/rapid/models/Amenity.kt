@@ -91,4 +91,12 @@ data class Amenity(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            `value` = `value`,
+            categories = categories
+        )
 }

@@ -64,4 +64,9 @@ data class Preferred(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            iataAirportCode = iataAirportCode
+        )
 }

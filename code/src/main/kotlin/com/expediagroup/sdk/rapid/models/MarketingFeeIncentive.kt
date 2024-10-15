@@ -82,4 +82,11 @@ data class MarketingFeeIncentive(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            source = source,
+            start = start,
+            end = end
+        )
 }

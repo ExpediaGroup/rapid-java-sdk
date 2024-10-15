@@ -82,4 +82,11 @@ data class Deposit(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `value` = `value`,
+            due = due,
+            currency = currency
+        )
 }

@@ -68,4 +68,9 @@ data class Polygon(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates
+        )
 }

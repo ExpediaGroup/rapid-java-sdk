@@ -71,4 +71,10 @@ data class StayConstraints(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            minStay = minStay,
+            maxStay = maxStay
+        )
 }

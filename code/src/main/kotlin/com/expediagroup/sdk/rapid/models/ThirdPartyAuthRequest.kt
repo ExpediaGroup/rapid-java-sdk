@@ -153,4 +153,17 @@ data class ThirdPartyAuthRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            cavv = cavv!!,
+            eci = eci!!,
+            threeDsVersion = threeDsVersion!!,
+            dsTransactionId = dsTransactionId!!,
+            paResStatus = paResStatus,
+            veResStatus = veResStatus,
+            xid = xid,
+            cavvAlgorithm = cavvAlgorithm,
+            ucafIndicator = ucafIndicator
+        )
 }

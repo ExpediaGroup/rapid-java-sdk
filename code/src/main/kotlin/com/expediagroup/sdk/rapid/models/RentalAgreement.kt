@@ -64,4 +64,9 @@ data class RentalAgreement(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links
+        )
 }

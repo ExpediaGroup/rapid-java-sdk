@@ -92,4 +92,12 @@ data class BedGroupAvailability(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links,
+            id = id,
+            description = description,
+            configuration = configuration
+        )
 }

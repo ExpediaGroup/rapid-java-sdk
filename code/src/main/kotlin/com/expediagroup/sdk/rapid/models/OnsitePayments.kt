@@ -74,4 +74,10 @@ data class OnsitePayments(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            currency = currency,
+            types = types
+        )
 }

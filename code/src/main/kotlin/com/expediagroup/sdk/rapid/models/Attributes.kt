@@ -74,4 +74,10 @@ data class Attributes(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            general = general,
+            pets = pets
+        )
 }

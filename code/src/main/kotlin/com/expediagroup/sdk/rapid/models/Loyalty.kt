@@ -73,4 +73,10 @@ data class Loyalty(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            memberId = memberId,
+            programId = programId
+        )
 }

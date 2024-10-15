@@ -147,6 +147,17 @@ data class PaymentSessionsRequest(
         }
     }
 
+    fun toBuilder() =
+        Builder(
+            version = version!!,
+            browserAcceptHeader = browserAcceptHeader!!,
+            encodedBrowserMetadata = encodedBrowserMetadata!!,
+            preferredChallengeWindowSize = preferredChallengeWindowSize!!,
+            merchantUrl = merchantUrl!!,
+            customerAccountDetails = customerAccountDetails!!,
+            payments = payments!!
+        )
+
     /**
      * The preferred window size that needs to be displayed to the customer. Following are the possible values of this field:   * `extra_small`: 250 x 400   * `small`: 390 x 400   * `medium`: 600 x 400   * `large`: 500 x 600   * `full_screen`: Full screen
      * Values: EXTRA_SMALL,SMALL,MEDIUM,LARGE,FULL_SCREEN

@@ -73,4 +73,10 @@ data class NonrefundableDateRange(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            start = start,
+            end = end
+        )
 }

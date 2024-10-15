@@ -145,4 +145,18 @@ data class Descriptions(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            amenities = amenities,
+            dining = dining,
+            renovations = renovations,
+            nationalRatings = nationalRatings,
+            businessAmenities = businessAmenities,
+            rooms = rooms,
+            attractions = attractions,
+            location = location,
+            headline = headline,
+            general = general
+        )
 }

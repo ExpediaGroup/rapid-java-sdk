@@ -73,4 +73,10 @@ data class Ratings(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `property` = `property`,
+            guest = guest
+        )
 }

@@ -109,4 +109,14 @@ data class CancelPenalty(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            currency = currency,
+            start = start,
+            end = end,
+            amount = amount,
+            nights = nights,
+            percent = percent
+        )
 }

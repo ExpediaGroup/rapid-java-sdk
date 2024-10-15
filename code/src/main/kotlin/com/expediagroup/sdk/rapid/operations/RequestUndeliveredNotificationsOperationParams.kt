@@ -18,6 +18,8 @@ package com.expediagroup.sdk.rapid.operations
 import com.expediagroup.sdk.core.model.OperationParams
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import io.ktor.http.Headers
+import io.ktor.http.Parameters
 
 /**
  * @property undeliverable Undeliverable notifications are returned when this parameter is set to `true`.
@@ -95,43 +97,37 @@ data class RequestUndeliveredNotificationsOperationParams(
         }
     }
 
-    override fun getHeaders(): Map<String, String> {
-        return buildMap {
-            put("Accept", "application/json")
+    fun toBuilder() =
+        Builder(
+            undeliverable = undeliverable,
+            billingTerms = billingTerms,
+            partnerPointOfSale = partnerPointOfSale,
+            paymentTerms = paymentTerms,
+            platformName = platformName
+        )
+
+    override fun getHeaders(): Headers {
+        return Headers.build {
+            append("Accept", "application/json")
         }
     }
 
-    override fun getQueryParams(): Map<String, Iterable<String>> {
-        return buildMap {
-            undeliverable?.also {
-                put(
-                    "undeliverable",
-                    listOf(undeliverable.toString())
-                )
+    override fun getQueryParams(): Parameters {
+        return Parameters.build {
+            undeliverable?.let {
+                append("undeliverable", it.toString())
             }
-            billingTerms?.also {
-                put(
-                    "billing_terms",
-                    listOf(billingTerms)
-                )
+            billingTerms?.let {
+                append("billing_terms", it)
             }
-            partnerPointOfSale?.also {
-                put(
-                    "partner_point_of_sale",
-                    listOf(partnerPointOfSale)
-                )
+            partnerPointOfSale?.let {
+                append("partner_point_of_sale", it)
             }
-            paymentTerms?.also {
-                put(
-                    "payment_terms",
-                    listOf(paymentTerms)
-                )
+            paymentTerms?.let {
+                append("payment_terms", it)
             }
-            platformName?.also {
-                put(
-                    "platform_name",
-                    listOf(platformName)
-                )
+            platformName?.let {
+                append("platform_name", it)
             }
         }
     }

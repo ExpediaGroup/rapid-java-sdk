@@ -84,4 +84,11 @@ data class PropertyUnavailability(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId,
+            score = score,
+            unavailableReason = unavailableReason
+        )
 }

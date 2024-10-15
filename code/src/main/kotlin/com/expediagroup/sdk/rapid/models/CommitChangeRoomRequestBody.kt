@@ -73,4 +73,10 @@ data class CommitChangeRoomRequestBody(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            changeReferenceId = changeReferenceId,
+            payments = payments
+        )
 }

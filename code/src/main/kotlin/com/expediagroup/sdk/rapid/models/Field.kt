@@ -82,4 +82,11 @@ data class Field(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            type = type,
+            `value` = `value`
+        )
 }

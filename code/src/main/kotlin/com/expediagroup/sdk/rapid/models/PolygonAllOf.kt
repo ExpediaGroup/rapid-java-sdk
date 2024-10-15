@@ -64,4 +64,9 @@ data class PolygonAllOf(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates
+        )
 }

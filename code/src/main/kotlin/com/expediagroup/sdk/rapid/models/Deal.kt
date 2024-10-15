@@ -73,4 +73,10 @@ data class Deal(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            description = description
+        )
 }

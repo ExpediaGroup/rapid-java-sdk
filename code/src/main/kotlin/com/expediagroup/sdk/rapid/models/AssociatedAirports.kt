@@ -64,4 +64,9 @@ data class AssociatedAirports(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            preferred = preferred
+        )
 }

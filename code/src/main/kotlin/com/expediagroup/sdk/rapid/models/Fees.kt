@@ -73,4 +73,10 @@ data class Fees(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            mandatory = mandatory,
+            optional = optional
+        )
 }

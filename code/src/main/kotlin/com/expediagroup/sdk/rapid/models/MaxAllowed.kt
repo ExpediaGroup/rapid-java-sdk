@@ -82,4 +82,11 @@ data class MaxAllowed(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            total = total,
+            children = children,
+            adults = adults
+        )
 }

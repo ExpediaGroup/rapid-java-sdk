@@ -17,7 +17,6 @@ package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.Operation
 import com.expediagroup.sdk.rapid.models.CommitChangeRoomRequestBody
-import com.expediagroup.sdk.rapid.models.Link
 import org.apache.commons.text.StringSubstitutor
 
 /**
@@ -28,7 +27,7 @@ import org.apache.commons.text.StringSubstitutor
 class CommitChangeOperation private constructor(
     params: CommitChangeOperationParams?,
     requestBody: CommitChangeRoomRequestBody?,
-    link: Link?
+    link: CommitChangeOperationLink?
 ) : Operation<
         CommitChangeRoomRequestBody
     >(
@@ -54,7 +53,7 @@ class CommitChangeOperation private constructor(
     )
 
     constructor(
-        link: Link,
+        link: CommitChangeOperationLink,
         context: CommitChangeOperationContext,
         requestBody: CommitChangeRoomRequestBody?
     ) : this(

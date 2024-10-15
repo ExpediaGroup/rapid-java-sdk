@@ -65,4 +65,9 @@ data class GuestReviewsVerified(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            recent = recent
+        )
 }

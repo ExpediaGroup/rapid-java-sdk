@@ -82,4 +82,11 @@ data class Image1(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            url = url,
+            width = width,
+            height = height
+        )
 }

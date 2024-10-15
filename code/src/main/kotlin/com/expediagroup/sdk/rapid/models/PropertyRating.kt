@@ -73,4 +73,10 @@ data class PropertyRating(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            rating = rating,
+            type = type
+        )
 }

@@ -73,4 +73,10 @@ data class PaymentType(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name
+        )
 }

@@ -72,4 +72,9 @@ data class TestNotificationRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            eventType = eventType!!
+        )
 }

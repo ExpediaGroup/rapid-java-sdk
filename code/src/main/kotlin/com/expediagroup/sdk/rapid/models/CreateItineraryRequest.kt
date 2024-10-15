@@ -163,4 +163,18 @@ data class CreateItineraryRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            email = email!!,
+            phone = phone!!,
+            rooms = rooms!!,
+            affiliateReferenceId = affiliateReferenceId,
+            hold = hold,
+            payments = payments,
+            affiliateMetadata = affiliateMetadata,
+            taxRegistrationNumber = taxRegistrationNumber,
+            travelerHandlingInstructions = travelerHandlingInstructions,
+            invoicing = invoicing
+        )
 }

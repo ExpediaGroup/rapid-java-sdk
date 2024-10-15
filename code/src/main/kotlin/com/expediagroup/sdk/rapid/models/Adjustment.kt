@@ -82,4 +82,11 @@ data class Adjustment(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `value` = `value`,
+            type = type,
+            currency = currency
+        )
 }

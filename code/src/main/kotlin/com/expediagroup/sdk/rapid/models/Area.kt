@@ -73,4 +73,10 @@ data class Area(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            squareMeters = squareMeters,
+            squareFeet = squareFeet
+        )
 }

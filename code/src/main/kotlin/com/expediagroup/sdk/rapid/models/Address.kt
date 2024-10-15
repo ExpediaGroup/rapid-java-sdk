@@ -136,4 +136,17 @@ data class Address(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            line1 = line1,
+            line2 = line2,
+            city = city,
+            stateProvinceCode = stateProvinceCode,
+            stateProvinceName = stateProvinceName,
+            postalCode = postalCode,
+            countryCode = countryCode,
+            obfuscationRequired = obfuscationRequired,
+            localized = localized
+        )
 }

@@ -80,4 +80,11 @@ data class FeesPricingInformation(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            mandatoryFee = mandatoryFee,
+            resortFee = resortFee,
+            mandatoryTax = mandatoryTax
+        )
 }

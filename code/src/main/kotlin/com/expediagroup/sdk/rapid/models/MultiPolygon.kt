@@ -69,4 +69,9 @@ data class MultiPolygon(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            coordinates = coordinates
+        )
 }

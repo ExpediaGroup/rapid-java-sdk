@@ -73,4 +73,10 @@ data class CategoryAge(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            minimumAge = minimumAge
+        )
 }

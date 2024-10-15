@@ -64,4 +64,9 @@ data class CreditCardMerchant(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name
+        )
 }

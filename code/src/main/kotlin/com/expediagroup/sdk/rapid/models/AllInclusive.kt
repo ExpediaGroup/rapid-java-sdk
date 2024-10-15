@@ -82,4 +82,11 @@ data class AllInclusive(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            allRatePlans = allRatePlans,
+            someRatePlans = someRatePlans,
+            details = details
+        )
 }

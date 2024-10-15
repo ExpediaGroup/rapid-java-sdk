@@ -83,4 +83,11 @@ data class RateContent(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            amenities = amenities,
+            specialOfferDescription = specialOfferDescription
+        )
 }

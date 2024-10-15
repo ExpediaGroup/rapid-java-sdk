@@ -73,4 +73,10 @@ data class PropertyManager(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            name = name,
+            links = links
+        )
 }

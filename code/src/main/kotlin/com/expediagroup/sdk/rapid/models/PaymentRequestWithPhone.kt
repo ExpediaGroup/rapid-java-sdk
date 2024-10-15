@@ -138,6 +138,18 @@ data class PaymentRequestWithPhone(
         }
     }
 
+    fun toBuilder() =
+        Builder(
+            type = type!!,
+            billingContact = billingContact!!,
+            number = number,
+            securityCode = securityCode,
+            expirationMonth = expirationMonth,
+            expirationYear = expirationYear,
+            thirdPartyAuthentication = thirdPartyAuthentication,
+            enrollmentDate = enrollmentDate
+        )
+
     /**
      * Identifier for the type of payment. If affiliate_collect, cardholder information is not required as EPS will not be processing the payment.
      * Values: CORPORATE_CARD,CUSTOMER_CARD,VIRTUAL_CARD,AFFILIATE_COLLECT

@@ -83,4 +83,11 @@ data class Chain(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            brands = brands
+        )
 }

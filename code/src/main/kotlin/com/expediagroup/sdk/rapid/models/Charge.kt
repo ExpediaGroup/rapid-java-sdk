@@ -72,4 +72,10 @@ data class Charge(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            billableCurrency = billableCurrency,
+            requestCurrency = requestCurrency
+        )
 }

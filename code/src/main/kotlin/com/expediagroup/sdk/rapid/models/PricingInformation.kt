@@ -93,4 +93,12 @@ data class PricingInformation(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            nightly = nightly,
+            stay = stay,
+            totals = totals,
+            fees = fees
+        )
 }

@@ -144,4 +144,18 @@ data class RoomPriceCheck(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            status = status,
+            occupancyPricing = occupancyPricing,
+            links = links,
+            cardOnFileLimit = cardOnFileLimit,
+            refundableDamageDeposit = refundableDamageDeposit,
+            deposits = deposits,
+            refund = refund,
+            amountOwed = amountOwed,
+            penalty = penalty,
+            traderInformation = traderInformation
+        )
 }

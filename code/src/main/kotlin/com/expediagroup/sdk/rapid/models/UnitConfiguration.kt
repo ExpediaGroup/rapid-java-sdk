@@ -82,4 +82,11 @@ data class UnitConfiguration(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            description = description,
+            quantity = quantity
+        )
 }

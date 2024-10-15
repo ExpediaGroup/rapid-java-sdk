@@ -73,4 +73,10 @@ data class ConfirmationId(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            expedia = expedia,
+            `property` = `property`
+        )
 }

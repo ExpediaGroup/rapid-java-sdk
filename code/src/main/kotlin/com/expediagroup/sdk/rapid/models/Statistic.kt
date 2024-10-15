@@ -82,4 +82,11 @@ data class Statistic(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            `value` = `value`
+        )
 }

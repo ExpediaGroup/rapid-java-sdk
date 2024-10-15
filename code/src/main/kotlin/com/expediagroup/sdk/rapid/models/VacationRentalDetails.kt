@@ -192,4 +192,23 @@ data class VacationRentalDetails(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            registryNumber = registryNumber,
+            privateHost = privateHost,
+            propertyManager = propertyManager,
+            rentalAgreement = rentalAgreement,
+            houseRules = houseRules,
+            enhancedHouseRules = enhancedHouseRules,
+            amenities = amenities,
+            vrboSrpId = vrboSrpId,
+            listingId = listingId,
+            listingNumber = listingNumber,
+            listingSource = listingSource,
+            listingUnit = listingUnit,
+            ipmName = ipmName,
+            unitConfigurations = unitConfigurations,
+            freeText = freeText
+        )
 }

@@ -147,4 +147,17 @@ data class TraderDetailsInner(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            contactMessage = contactMessage!!,
+            name = name,
+            address = address,
+            businessRegisterName = businessRegisterName,
+            businessRegisterNumber = businessRegisterNumber,
+            selfCertification = selfCertification,
+            rightToWithdrawMessage = rightToWithdrawMessage,
+            email = email,
+            phone = phone
+        )
 }

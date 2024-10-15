@@ -105,4 +105,12 @@ data class BillingContactRequestWithPhone(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            givenName = givenName!!,
+            familyName = familyName!!,
+            address = address!!,
+            phone = phone
+        )
 }

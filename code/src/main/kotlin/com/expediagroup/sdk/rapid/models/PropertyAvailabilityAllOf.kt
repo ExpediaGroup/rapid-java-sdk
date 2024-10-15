@@ -74,4 +74,10 @@ data class PropertyAvailabilityAllOf(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            rooms = rooms,
+            links = links
+        )
 }

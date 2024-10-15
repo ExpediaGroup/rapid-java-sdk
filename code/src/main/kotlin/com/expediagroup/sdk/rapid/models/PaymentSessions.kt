@@ -82,4 +82,11 @@ data class PaymentSessions(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            paymentSessionId = paymentSessionId,
+            encodedInitConfig = encodedInitConfig,
+            links = links
+        )
 }

@@ -82,4 +82,11 @@ data class CreditCard(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            cardOptions = cardOptions,
+            merchant = merchant,
+            name = name
+        )
 }

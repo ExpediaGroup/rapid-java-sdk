@@ -64,4 +64,9 @@ data class PropertyManagerLinks(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            image = image
+        )
 }

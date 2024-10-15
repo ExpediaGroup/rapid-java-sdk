@@ -82,4 +82,11 @@ data class Attribute(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            `value` = `value`
+        )
 }

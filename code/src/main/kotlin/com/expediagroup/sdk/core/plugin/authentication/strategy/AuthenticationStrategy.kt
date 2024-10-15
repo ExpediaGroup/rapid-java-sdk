@@ -17,6 +17,7 @@ package com.expediagroup.sdk.core.plugin.authentication.strategy
 
 import com.expediagroup.sdk.core.client.Client
 import com.expediagroup.sdk.core.plugin.authentication.AuthenticationConfiguration
+import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy.AuthenticationType.BASIC
 import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy.AuthenticationType.BEARER
 import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy.AuthenticationType.SIGNATURE
 import io.ktor.client.plugins.auth.Auth
@@ -39,12 +40,14 @@ internal interface AuthenticationStrategy {
             client: Client
         ): AuthenticationStrategy =
             when (configs.authType) {
+                BASIC -> BasicAuthenticationStrategy(configs)
                 BEARER -> ExpediaGroupAuthenticationStrategy(client, configs)
                 SIGNATURE -> RapidAuthenticationStrategy(configs)
             }
     }
 
     enum class AuthenticationType {
+        BASIC,
         BEARER,
         SIGNATURE
     }

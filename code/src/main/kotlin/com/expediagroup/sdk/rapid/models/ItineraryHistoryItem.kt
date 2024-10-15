@@ -99,6 +99,15 @@ data class ItineraryHistoryItem(
         }
     }
 
+    fun toBuilder() =
+        Builder(
+            historyId = historyId,
+            eventTimestamp = eventTimestamp,
+            eventType = eventType,
+            amount = amount,
+            agentId = agentId
+        )
+
     /**
      *
      * Values: ADJUSTMENT,COUPON

@@ -96,4 +96,11 @@ data class BillingContactRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            givenName = givenName!!,
+            familyName = familyName!!,
+            address = address!!
+        )
 }

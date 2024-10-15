@@ -223,4 +223,26 @@ data class Rate(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            status = status,
+            availableRooms = availableRooms,
+            refundable = refundable,
+            memberDealAvailable = memberDealAvailable,
+            saleScenario = saleScenario,
+            merchantOfRecord = merchantOfRecord,
+            amenities = amenities,
+            links = links,
+            bedGroups = bedGroups,
+            cancelPenalties = cancelPenalties,
+            nonrefundableDateRanges = nonrefundableDateRanges,
+            marketingFeeIncentives = marketingFeeIncentives,
+            occupancyPricing = occupancyPricing,
+            promotions = promotions,
+            cardOnFileLimit = cardOnFileLimit,
+            refundableDamageDeposit = refundableDamageDeposit,
+            deposits = deposits
+        )
 }

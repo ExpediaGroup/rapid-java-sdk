@@ -100,4 +100,13 @@ data class SaleScenario(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `package` = `package`,
+            member = member,
+            corporate = corporate,
+            distribution = distribution,
+            mobilePromotion = mobilePromotion
+        )
 }

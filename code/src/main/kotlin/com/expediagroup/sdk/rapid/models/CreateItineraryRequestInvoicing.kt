@@ -91,4 +91,12 @@ data class CreateItineraryRequestInvoicing(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            companyName = companyName,
+            companyAddress = companyAddress,
+            pointOfSaleDisplay = pointOfSaleDisplay,
+            email = email
+        )
 }

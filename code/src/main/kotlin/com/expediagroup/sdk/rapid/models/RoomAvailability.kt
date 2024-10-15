@@ -83,4 +83,11 @@ data class RoomAvailability(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            roomName = roomName,
+            rates = rates
+        )
 }

@@ -101,4 +101,13 @@ data class RateHistory(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            promotions = promotions,
+            cancelPenalties = cancelPenalties,
+            deposits = deposits,
+            pricing = pricing
+        )
 }

@@ -199,4 +199,24 @@ data class RoomItinerary(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            confirmationId = confirmationId,
+            bedGroupId = bedGroupId,
+            checkin = checkin,
+            checkout = checkout,
+            numberOfAdults = numberOfAdults,
+            childAges = childAges,
+            givenName = givenName,
+            familyName = familyName,
+            status = status,
+            specialRequest = specialRequest,
+            smoking = smoking,
+            loyaltyId = loyaltyId,
+            loyalty = loyalty,
+            rate = rate,
+            links = links
+        )
 }

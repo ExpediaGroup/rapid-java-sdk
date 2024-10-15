@@ -118,6 +118,17 @@ data class PaymentSessionsRequestCustomerAccountDetails(
         }
     }
 
+    fun toBuilder() =
+        Builder(
+            authenticationMethod = authenticationMethod,
+            authenticationTimestamp = authenticationTimestamp,
+            createDate = createDate,
+            changeDate = changeDate,
+            passwordChangeDate = passwordChangeDate,
+            addCardAttempts = addCardAttempts,
+            accountPurchases = accountPurchases
+        )
+
     /**
      * Mechanism used by the cardholder to authenticate to the merchant.
      * Values: GUEST,OWN_CREDENTIALS,FEDERATED_ID,ISSUER_CREDENTIALS,THIRD_PARTY_AUTHENTICATION,FIDO_AUTHENTICATION

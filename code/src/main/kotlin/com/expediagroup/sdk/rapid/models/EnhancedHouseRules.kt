@@ -73,4 +73,10 @@ data class EnhancedHouseRules(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            rule = rule,
+            additionalInformation = additionalInformation
+        )
 }

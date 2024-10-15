@@ -73,4 +73,10 @@ data class Amount(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            `value` = `value`,
+            currency = currency
+        )
 }

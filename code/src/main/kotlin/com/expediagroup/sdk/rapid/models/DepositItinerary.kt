@@ -82,4 +82,11 @@ data class DepositItinerary(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            currency = currency,
+            `value` = `value`,
+            due = due
+        )
 }

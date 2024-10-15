@@ -93,4 +93,11 @@ data class PhoneRequest(
             }
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            countryCode = countryCode!!,
+            number = number!!,
+            areaCode = areaCode
+        )
 }

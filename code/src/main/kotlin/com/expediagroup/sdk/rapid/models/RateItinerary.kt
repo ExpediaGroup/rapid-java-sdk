@@ -163,4 +163,20 @@ data class RateItinerary(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            merchantOfRecord = merchantOfRecord,
+            refundable = refundable,
+            cancelRefund = cancelRefund,
+            amenities = amenities,
+            promotions = promotions,
+            cancelPenalties = cancelPenalties,
+            nonrefundableDateRanges = nonrefundableDateRanges,
+            deposits = deposits,
+            cardOnFileLimit = cardOnFileLimit,
+            refundableDamageDeposit = refundableDamageDeposit,
+            pricing = pricing
+        )
 }

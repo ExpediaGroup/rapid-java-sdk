@@ -73,4 +73,10 @@ data class Coordinates(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            latitude = latitude,
+            longitude = longitude
+        )
 }

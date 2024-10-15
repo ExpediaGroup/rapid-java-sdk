@@ -64,4 +64,9 @@ data class DescriptionsRoom(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            overview = overview
+        )
 }

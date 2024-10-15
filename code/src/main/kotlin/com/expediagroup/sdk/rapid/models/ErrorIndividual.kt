@@ -83,4 +83,11 @@ data class ErrorIndividual(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            message = message,
+            fields = fields
+        )
 }

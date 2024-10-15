@@ -27,6 +27,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.HttpResponsePipeline
 import io.ktor.client.statement.request
 import io.ktor.http.HttpHeaders
+import io.ktor.http.contentType
 import io.ktor.util.AttributeKey
 import io.ktor.util.Encoder
 import io.ktor.util.GZip
@@ -47,8 +48,18 @@ class ResponseBodyLogger {
             scope.responsePipeline.intercept(HttpResponsePipeline.Receive) {
                 val response: HttpResponse = context.response
                 val byteReadChannel: ByteReadChannel = if (response.contentEncoding().equals(HeaderValue.GZIP)) scope.decode(response.content) else response.content
-                val body: String = byteReadChannel.readRemaining().readText()
-                plugin.log.debug(LoggingMessageProvider.getResponseBodyMessage(body, response.request.headers.getTransactionId()))
+
+                when {
+                    response.contentType() in LoggableContentTypes ->
+                        LoggingMessageProvider.getResponseBodyMessage(
+                            byteReadChannel.readRemaining().readText(),
+                            response.request.headers.getTransactionId()
+                        )
+                    else -> LoggingMessageProvider.getResponseBodyMessage("Body of type ${response.contentType()?.contentType} cannot be logged!", response.request.headers.getTransactionId())
+                }.let {
+                    plugin.log.debug(it)
+                }
+
                 proceed()
             }
         }

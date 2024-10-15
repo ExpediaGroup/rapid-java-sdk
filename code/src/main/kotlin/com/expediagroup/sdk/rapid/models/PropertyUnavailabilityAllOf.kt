@@ -64,4 +64,9 @@ data class PropertyUnavailabilityAllOf(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            unavailableReason = unavailableReason
+        )
 }

@@ -83,4 +83,11 @@ data class BedGroup(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            description = description,
+            configuration = configuration
+        )
 }

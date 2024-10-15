@@ -34,8 +34,10 @@ import com.expediagroup.sdk.core.model.exception.service.ExpediaGroupApiExceptio
 import com.expediagroup.sdk.core.model.exception.service.ExpediaGroupServiceDefaultErrorException
 import com.expediagroup.sdk.core.model.getTransactionId
 import com.expediagroup.sdk.rapid.models.*
-import io.ktor.client.call.*
-import io.ktor.client.statement.*
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.request
 import kotlinx.coroutines.runBlocking
 
 internal open class HttpStatusCodeRange(

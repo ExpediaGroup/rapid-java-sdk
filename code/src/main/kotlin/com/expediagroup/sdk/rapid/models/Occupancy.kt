@@ -74,4 +74,10 @@ data class Occupancy(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            maxAllowed = maxAllowed,
+            ageCategories = ageCategories
+        )
 }

@@ -209,6 +209,27 @@ data class Itinerary(
         }
     }
 
+    fun toBuilder() =
+        Builder(
+            itineraryId = itineraryId,
+            propertyId = propertyId,
+            links = links,
+            email = email,
+            phone = phone,
+            rooms = rooms,
+            billingContact = billingContact,
+            adjustment = adjustment,
+            creationDateTime = creationDateTime,
+            affiliateReferenceId = affiliateReferenceId,
+            affiliateMetadata = affiliateMetadata,
+            conversations = conversations,
+            traderInformation = traderInformation,
+            essentialInformation = essentialInformation,
+            travelPurpose = travelPurpose,
+            itineraryHistory = itineraryHistory,
+            roomHistory = roomHistory
+        )
+
     /**
      * Value potentially passed in during the availability request to indicate the purpose of the trip designated by the traveler.
      * Values: LEISURE,BUSINESS,UNSPECIFIED

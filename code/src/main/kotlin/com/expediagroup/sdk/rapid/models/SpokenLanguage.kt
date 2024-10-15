@@ -73,4 +73,10 @@ data class SpokenLanguage(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name
+        )
 }

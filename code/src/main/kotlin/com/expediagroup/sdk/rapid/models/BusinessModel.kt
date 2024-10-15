@@ -73,4 +73,10 @@ data class BusinessModel(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            expediaCollect = expediaCollect,
+            propertyCollect = propertyCollect
+        )
 }

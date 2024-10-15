@@ -73,4 +73,10 @@ data class CategoryProperty(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name
+        )
 }

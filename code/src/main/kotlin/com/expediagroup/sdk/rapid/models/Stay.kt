@@ -82,4 +82,11 @@ data class Stay(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            type = type,
+            `value` = `value`,
+            currency = currency
+        )
 }

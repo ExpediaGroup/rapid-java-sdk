@@ -136,4 +136,18 @@ data class Totals(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            inclusive = inclusive,
+            exclusive = exclusive,
+            propertyInclusive = propertyInclusive,
+            inclusiveStrikethrough = inclusiveStrikethrough,
+            strikethrough = strikethrough,
+            propertyInclusiveStrikethrough = propertyInclusiveStrikethrough,
+            marketingFee = marketingFee,
+            grossProfit = grossProfit,
+            minimumSellingPrice = minimumSellingPrice,
+            propertyFees = propertyFees
+        )
 }

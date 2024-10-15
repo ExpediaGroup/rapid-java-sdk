@@ -140,4 +140,17 @@ data class RoomContent(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            name = name,
+            descriptions = descriptions,
+            amenities = amenities,
+            images = images,
+            bedGroups = bedGroups,
+            area = area,
+            views = views,
+            occupancy = occupancy
+        )
 }

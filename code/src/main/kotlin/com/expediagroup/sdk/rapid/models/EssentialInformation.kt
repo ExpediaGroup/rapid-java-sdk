@@ -82,4 +82,11 @@ data class EssentialInformation(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            contact = contact,
+            essentials = essentials,
+            updateAvailableDate = updateAvailableDate
+        )
 }

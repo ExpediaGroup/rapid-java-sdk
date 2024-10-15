@@ -82,4 +82,11 @@ data class CoordinatesRegion(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            centerLongitude = centerLongitude,
+            centerLatitude = centerLatitude,
+            boundingPolygon = boundingPolygon
+        )
 }

@@ -64,4 +64,9 @@ data class PropertyInactive(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId
+        )
 }

@@ -73,4 +73,10 @@ data class Ancestors(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            id = id,
+            type = type
+        )
 }

@@ -64,4 +64,9 @@ data class PropertyGeography(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            propertyId = propertyId
+        )
 }

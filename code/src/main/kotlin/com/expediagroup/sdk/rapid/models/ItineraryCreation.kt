@@ -91,4 +91,12 @@ data class ItineraryCreation(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            itineraryId = itineraryId,
+            links = links,
+            encodedChallengeConfig = encodedChallengeConfig,
+            traderInformation = traderInformation
+        )
 }

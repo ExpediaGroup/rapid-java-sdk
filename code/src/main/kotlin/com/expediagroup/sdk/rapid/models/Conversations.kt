@@ -65,4 +65,9 @@ data class Conversations(
             )
         }
     }
+
+    fun toBuilder() =
+        Builder(
+            links = links
+        )
 }
