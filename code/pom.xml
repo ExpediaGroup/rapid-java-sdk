@@ -72,7 +72,7 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
-        <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
+        <ktlint-plugin.version>3.3.0</ktlint-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
