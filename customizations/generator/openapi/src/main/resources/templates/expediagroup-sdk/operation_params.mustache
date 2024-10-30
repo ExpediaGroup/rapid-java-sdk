@@ -82,6 +82,7 @@
                             ) {
                                 {{#allowableValues}}
                                     {{#enumVars}}
+                                        @JsonProperty({{{value}}})
                                         {{name}}({{{value}}})
                                         {{^-last}},{{/-last}}
                                     {{/enumVars}}
