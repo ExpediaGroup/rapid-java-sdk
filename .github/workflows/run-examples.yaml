@@ -2,61 +2,61 @@ name: Run Examples
 on:
   workflow_call:
     inputs:
-      source:
-        description: 'Source of SDK to Test'
-        required: true
-        type: string
-        default: 'specs'
-      sdk_version:
-        description: 'SDK version to run examples for'
-        required: false
-        type: string
-        default: 'LATEST'
       jdk:
         description: 'JDK version to use'
         required: true
         type: string
-        default: '21'
       distribution:
         description: 'JDK distribution to use'
         required: false
         type: string
         default: 'corretto'
-      sdk_key:
-        description: 'Generated SDK artifact key'
-        required: false
+      branch:
+        description: 'Branch to build SDK and run examples from'
+        required: true
         type: string
-        default: 'sdk'
-    secrets:
-      KEY:
-        description: 'API Key'
-        required: true
-      SECRET:
-        description: 'API Key'
-        required: true
 
 jobs:
   run-examples:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        if: ${{ inputs.sdk_key != '' }}
+      - name: Checkout repo
+        uses: actions/checkout@v4
         with:
           repository: 'ExpediaGroup/rapid-java-sdk'
-      - uses: actions/download-artifact@v4
-        if: ${{ inputs.source == 'specs' }}
-        with:
-          name: ${{ inputs.sdk_key }}
-          path: examples/sdk
+          ref: ${{ inputs.branch }}
+          path: sdk-repo
+
+      - name: Parse SDK version
+        id: parse-sdk-version
+        working-directory: sdk-repo/code
+        shell: python -u {0}
+        run: |
+          import os
+          import xml.etree.ElementTree as ET
+
+          tree = ET.parse("pom.xml")
+          root = tree.getroot()
+          version = root.find("{*}version").text
+
+          with open(os.getenv("GITHUB_OUTPUT"), "a") as GITHUB_OUTPUT:
+            print(f"version={version}", file=GITHUB_OUTPUT)
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: ${{ inputs.jdk }}
           distribution: ${{ inputs.distribution }}
-      - name: Install SDK into local repository
-        if: ${{ inputs.source == 'specs' }}
-        working-directory: examples/sdk
-        run: mvn install
+
+      - name: Install SDK
+        working-directory: sdk-repo/code
+        run: |
+          mvn clean install
+
       - name: Run Examples
-        working-directory: examples
-        run: mvn install exec:java -Drapid-java-sdk.sdk.version="${{ inputs.sdk_version }}" -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
+        working-directory: sdk-repo/examples
+        run: |
+          mvn install exec:java \
+            -Drapid-java-sdk.sdk.version="${{ steps.parse-sdk-version.outputs.version }}" \
+            -Dcom.expediagroup.rapidsdkjava.apikey="${{ secrets.KEY }}" \
+            -Dcom.expediagroup.rapidsdkjava.apisecret="${{ secrets.SECRET }}"
