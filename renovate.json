@@ -2,5 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>ExpediaGroup/renovate-config"
+  ],
+  "includePaths": [
+    "customizations/**",
+    "examples/**",
+    ".github/workflows/**"
+  ],
+  "enabledManagers": [
+    "maven",
+    "github-actions"
   ]
 }
