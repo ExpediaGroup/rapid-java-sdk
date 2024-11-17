@@ -15,7 +15,7 @@ updates:
       - Dependabot
 
   - package-ecosystem: maven
-    directory: "/"
+    directory: "/examples"
     schedule:
       interval: daily
       time: "11:30"
@@ -26,9 +26,3 @@ updates:
       - ExpediaGroup/openworld-committers
     labels:
       - Dependabot
-    ignore:
-      - dependency-name: "*"
-        versions: [ "*" ]
-        update-types: [ "all" ]
-        directories:
-          - "/code"
