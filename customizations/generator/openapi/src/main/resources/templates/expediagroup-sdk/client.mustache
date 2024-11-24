@@ -26,12 +26,27 @@ class {{clientClassname}}Client private constructor(clientConfiguration: RapidCl
 
     class Builder : BaseRapidClient.Builder<Builder>() {
         override fun build() = {{clientClassname}}Client(
-            RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields)
+            RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields, null)
         )
+    }
+
+    class BuilderWithHttpClient() : BaseRapidClient.BuilderWithHttpClient<BuilderWithHttpClient>() {
+        override fun build() : {{clientClassname}}Client {
+
+            if (okHttpClient == null) {
+                throw ExpediaGroupConfigurationException(getMissingRequiredConfigurationMessage(ConfigurationName.OKHTTP_CLIENT))
+            }
+
+            return {{clientClassname}}Client(
+                RapidClientConfiguration(key, secret, endpoint, null, null, null, maskedLoggingHeaders, maskedLoggingBodyFields, okHttpClient)
+            )
+        }
     }
 
     companion object {
         @JvmStatic fun builder() = Builder()
+
+        @JvmStatic fun builderWithHttpClient() = BuilderWithHttpClient()
     }
 
     override suspend fun throwServiceException(response: HttpResponse, operationId: String) {
