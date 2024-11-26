@@ -39,10 +39,7 @@ class OpenApiSdkGenerator {
             "pom.xml",
             "README.md",
             "ApiException.kt",
-            "LinkableOperation.kt",
-            "PropertyConstraintViolation.kt",
-            "PropertyConstraintsValidator.kt",
-            "PropertyConstraintViolationException.kt"
+            "LinkableOperation.kt"
         )
 
     companion object {
@@ -143,27 +140,6 @@ class OpenApiSdkGenerator {
                                     "models/apiException.mustache",
                                     "$packagePath/models/exception/",
                                     "ApiException.kt"
-                                )
-                            )
-                            add(
-                                SupportingFile(
-                                    "validation/propertyConstraintViolationException.mustache",
-                                    "$packagePath/models/exception/",
-                                    "PropertyConstraintViolationException.kt"
-                                )
-                            )
-                            add(
-                                SupportingFile(
-                                    "validation/propertyConstraintViolation.mustache",
-                                    "$packagePath/models/exception/",
-                                    "PropertyConstraintViolation.kt"
-                                )
-                            )
-                            add(
-                                SupportingFile(
-                                    "validation/propertyConstraintsValidator.mustache",
-                                    "$packagePath/validation/",
-                                    "PropertyConstraintsValidator.kt"
                                 )
                             )
 

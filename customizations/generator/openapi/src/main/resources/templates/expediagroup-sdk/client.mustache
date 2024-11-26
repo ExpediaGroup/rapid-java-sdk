@@ -56,7 +56,6 @@ class {{clientClassname}}Client private constructor(clientConfiguration: RapidCl
             }
 
             appendHeaders(extraHeaders)
-            validateConstraints(operation.requestBody)
             contentType(ContentType.Application.Json)
             setBody(operation.requestBody)
         }
