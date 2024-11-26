@@ -22,8 +22,7 @@ jobs:
       jdk: ${{ matrix.jdk }}
 
   release-sdk:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@v20241125
-    needs: [ run-examples ]
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@v20241126
     secrets: inherit
     with:
       branch: ${{ inputs.branch }}
