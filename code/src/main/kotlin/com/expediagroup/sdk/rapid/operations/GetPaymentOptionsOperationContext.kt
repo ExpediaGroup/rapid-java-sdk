@@ -27,7 +27,7 @@ data class GetPaymentOptionsOperationContext(
     val customerIp: kotlin.String? =
         null,
     val customerSessionId: kotlin.String? =
-        null,
+        null
 ) {
     companion object {
         @JvmStatic
@@ -36,7 +36,7 @@ data class GetPaymentOptionsOperationContext(
 
     class Builder(
         @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
-        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -53,7 +53,7 @@ data class GetPaymentOptionsOperationContext(
 
             return GetPaymentOptionsOperationContext(
                 customerIp = customerIp,
-                customerSessionId = customerSessionId,
+                customerSessionId = customerSessionId
             )
         }
 
@@ -61,8 +61,8 @@ data class GetPaymentOptionsOperationContext(
         }
     }
 
-    fun getHeaders(): Map<String, String> {
-        return buildMap {
+    fun getHeaders(): Map<String, String> =
+        buildMap {
             customerIp?.also {
                 put("Customer-Ip", customerIp)
             }
@@ -70,5 +70,4 @@ data class GetPaymentOptionsOperationContext(
                 put("Customer-Session-Id", customerSessionId)
             }
         }
-    }
 }

@@ -23,7 +23,7 @@ package com.expediagroup.sdk.core.configuration
  */
 internal data class Credentials(
     val key: String,
-    val secret: String,
+    val secret: String
 ) {
     /**
      * A factory of [Credentials].
@@ -39,7 +39,7 @@ internal data class Credentials(
         @JvmStatic
         fun from(
             key: String,
-            secret: String,
+            secret: String
         ): Credentials = Credentials(key, secret)
     }
 }

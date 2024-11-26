@@ -16,13 +16,18 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
- * @property test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
+ * @property test Shop calls have a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `unknown_internal_error`
  * @property propertyId The ID of the property you want to search for. You can provide 1 to 250 property_id parameters.
  * @property startDate The first day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD), up to 500 days in the future from the current date.
  * @property endDate The last day of availability information to be returned, in ISO 8601 format (YYYY-MM-DD). This must be 365 days or less from the start_date.
@@ -31,11 +36,17 @@ import io.ktor.http.Parameters
 data class GetCalendarAvailabilityOperationParams(
     val test: GetCalendarAvailabilityOperationParams.Test? =
         null,
+    @field:NotNull
+    @field:Valid
     val propertyId: kotlin.collections.List<
-        kotlin.String,
+        kotlin.String
     >,
+    @field:NotNull
+    @field:Valid
     val startDate: java.time.LocalDate,
-    val endDate: java.time.LocalDate,
+    @field:NotNull
+    @field:Valid
+    val endDate: java.time.LocalDate
 ) :
     OperationParams {
     companion object {
@@ -44,23 +55,23 @@ data class GetCalendarAvailabilityOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String,
+        val value: kotlin.String
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
+        UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
     }
 
     class Builder(
         @JsonProperty("Test") private var test: GetCalendarAvailabilityOperationParams.Test? = null,
         @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
-            kotlin.String,
+            kotlin.String
         >? = null,
         @JsonProperty("start_date") private var startDate: java.time.LocalDate? = null,
-        @JsonProperty("end_date") private var endDate: java.time.LocalDate? = null,
+        @JsonProperty("end_date") private var endDate: java.time.LocalDate? = null
     ) {
         /**
-         * @param test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
+         * @param test Shop calls have a test header that can be used to return set responses with the following keywords: * `standard` * `service_unavailable` * `unknown_internal_error`
          */
         fun test(test: GetCalendarAvailabilityOperationParams.Test) = apply { this.test = test }
 
@@ -69,8 +80,8 @@ data class GetCalendarAvailabilityOperationParams(
          */
         fun propertyId(
             propertyId: kotlin.collections.List<
-                kotlin.String,
-            >,
+                kotlin.String
+            >
         ) = apply { this.propertyId = propertyId }
 
         /**
@@ -84,25 +95,34 @@ data class GetCalendarAvailabilityOperationParams(
         fun endDate(endDate: java.time.LocalDate) = apply { this.endDate = endDate }
 
         fun build(): GetCalendarAvailabilityOperationParams {
-            validateNullity()
+            val params =
+                GetCalendarAvailabilityOperationParams(
+                    test = test,
+                    propertyId = propertyId!!,
+                    startDate = startDate!!,
+                    endDate = endDate!!
+                )
 
-            return GetCalendarAvailabilityOperationParams(
-                test = test,
-                propertyId = propertyId!!,
-                startDate = startDate!!,
-                endDate = endDate!!,
-            )
+            validate(params)
+
+            return params
         }
 
-        private fun validateNullity() {
-            if (propertyId == null) {
-                throw NullPointerException("Required parameter propertyId is missing")
-            }
-            if (startDate == null) {
-                throw NullPointerException("Required parameter startDate is missing")
-            }
-            if (endDate == null) {
-                throw NullPointerException("Required parameter endDate is missing")
+        private fun validate(params: GetCalendarAvailabilityOperationParams) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(params)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -112,20 +132,19 @@ data class GetCalendarAvailabilityOperationParams(
             test = test,
             propertyId = propertyId,
             startDate = startDate,
-            endDate = endDate,
+            endDate = endDate
         )
 
-    override fun getHeaders(): Headers {
-        return Headers.build {
+    override fun getHeaders(): Headers =
+        Headers.build {
             test?.let {
                 append("Test", it.value)
             }
             append("Accept", "application/json")
         }
-    }
 
-    override fun getQueryParams(): Parameters {
-        return Parameters.build {
+    override fun getQueryParams(): Parameters =
+        Parameters.build {
             propertyId?.let {
                 appendAll("property_id", it)
             }
@@ -136,10 +155,8 @@ data class GetCalendarAvailabilityOperationParams(
                 append("end_date", it.toString())
             }
         }
-    }
 
-    override fun getPathParams(): Map<String, String> {
-        return buildMap {
+    override fun getPathParams(): Map<String, String> =
+        buildMap {
         }
-    }
 }

@@ -25,22 +25,19 @@ import com.expediagroup.sdk.rapid.models.TestNotificationRequest
  */
 class RequestTestNotificationOperation(
     params: RequestTestNotificationOperationParams,
-    requestBody: TestNotificationRequest?,
+    requestBody: TestNotificationRequest?
 ) : Operation<
-        TestNotificationRequest,
+        TestNotificationRequest
     >(
         "/v3/notifications",
         "POST",
         "requestTestNotification",
         requestBody,
-        params,
+        params
     ) {
-    @Deprecated(
-        "Switch order of arguments",
-        ReplaceWith("Operation(params: RequestTestNotificationOperationParams, requestBody: TestNotificationRequest?)"),
-    )
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: RequestTestNotificationOperationParams, requestBody: TestNotificationRequest?)"))
     constructor(
         requestBody: TestNotificationRequest?,
-        params: RequestTestNotificationOperationParams,
+        params: RequestTestNotificationOperationParams
     ) : this(params, requestBody)
 }

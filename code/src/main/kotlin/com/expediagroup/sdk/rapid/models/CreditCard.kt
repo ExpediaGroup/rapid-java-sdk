@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.CardOption
 import com.expediagroup.sdk.rapid.models.CreditCardMerchant
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -56,7 +54,7 @@ data class CreditCard(
     // Display name of payment option.
     @JsonProperty("name")
     @field:Valid
-    val name: kotlin.String? = null,
+    val name: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class CreditCard(
     class Builder(
         private var cardOptions: kotlin.collections.List<CardOption>? = null,
         private var merchant: CreditCardMerchant? = null,
-        private var name: kotlin.String? = null,
+        private var name: kotlin.String? = null
     ) {
         fun cardOptions(cardOptions: kotlin.collections.List<CardOption>?) = apply { this.cardOptions = cardOptions }
 
@@ -75,11 +73,34 @@ data class CreditCard(
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun build(): CreditCard {
-            return CreditCard(
-                cardOptions = cardOptions,
-                merchant = merchant,
-                name = name,
-            )
+            val instance =
+                CreditCard(
+                    cardOptions = cardOptions,
+                    merchant = merchant,
+                    name = name
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CreditCard) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class CreditCard(
         Builder(
             cardOptions = cardOptions,
             merchant = merchant,
-            name = name,
+            name = name
         )
 }

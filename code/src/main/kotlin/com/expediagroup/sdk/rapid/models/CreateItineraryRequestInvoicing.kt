@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Address1
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * To be included if invoicing is requested.
@@ -61,7 +59,7 @@ data class CreateItineraryRequestInvoicing(
     // Email address to send invoices
     @JsonProperty("email")
     @field:Valid
-    val email: kotlin.String? = null,
+    val email: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -72,7 +70,7 @@ data class CreateItineraryRequestInvoicing(
         private var companyName: kotlin.String? = null,
         private var companyAddress: Address1? = null,
         private var pointOfSaleDisplay: kotlin.String? = null,
-        private var email: kotlin.String? = null,
+        private var email: kotlin.String? = null
     ) {
         fun companyName(companyName: kotlin.String?) = apply { this.companyName = companyName }
 
@@ -83,12 +81,35 @@ data class CreateItineraryRequestInvoicing(
         fun email(email: kotlin.String?) = apply { this.email = email }
 
         fun build(): CreateItineraryRequestInvoicing {
-            return CreateItineraryRequestInvoicing(
-                companyName = companyName,
-                companyAddress = companyAddress,
-                pointOfSaleDisplay = pointOfSaleDisplay,
-                email = email,
-            )
+            val instance =
+                CreateItineraryRequestInvoicing(
+                    companyName = companyName,
+                    companyAddress = companyAddress,
+                    pointOfSaleDisplay = pointOfSaleDisplay,
+                    email = email
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CreateItineraryRequestInvoicing) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -97,6 +118,6 @@ data class CreateItineraryRequestInvoicing(
             companyName = companyName,
             companyAddress = companyAddress,
             pointOfSaleDisplay = pointOfSaleDisplay,
-            email = email,
+            email = email
         )
 }

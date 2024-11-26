@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amount
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An itinerary history change event, representing a charge or refund made to the itinerary and not a specific room.
@@ -64,7 +62,7 @@ data class ItineraryHistoryItem(
     // An agent user id number associated with a modification.
     @JsonProperty("agent_id")
     @field:Valid
-    val agentId: kotlin.Int? = null,
+    val agentId: kotlin.Int? = null
 ) {
     companion object {
         @JvmStatic
@@ -76,7 +74,7 @@ data class ItineraryHistoryItem(
         private var eventTimestamp: kotlin.String? = null,
         private var eventType: ItineraryHistoryItem.EventType? = null,
         private var amount: Amount? = null,
-        private var agentId: kotlin.Int? = null,
+        private var agentId: kotlin.Int? = null
     ) {
         fun historyId(historyId: kotlin.String?) = apply { this.historyId = historyId }
 
@@ -89,13 +87,36 @@ data class ItineraryHistoryItem(
         fun agentId(agentId: kotlin.Int?) = apply { this.agentId = agentId }
 
         fun build(): ItineraryHistoryItem {
-            return ItineraryHistoryItem(
-                historyId = historyId,
-                eventTimestamp = eventTimestamp,
-                eventType = eventType,
-                amount = amount,
-                agentId = agentId,
-            )
+            val instance =
+                ItineraryHistoryItem(
+                    historyId = historyId,
+                    eventTimestamp = eventTimestamp,
+                    eventType = eventType,
+                    amount = amount,
+                    agentId = agentId
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ItineraryHistoryItem) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -105,7 +126,7 @@ data class ItineraryHistoryItem(
             eventTimestamp = eventTimestamp,
             eventType = eventType,
             amount = amount,
-            agentId = agentId,
+            agentId = agentId
         )
 
     /**
@@ -117,6 +138,6 @@ data class ItineraryHistoryItem(
         ADJUSTMENT("adjustment"),
 
         @JsonProperty("coupon")
-        COUPON("coupon"),
+        COUPON("coupon")
     }
 }

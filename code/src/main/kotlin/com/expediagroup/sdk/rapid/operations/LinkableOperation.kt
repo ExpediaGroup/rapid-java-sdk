@@ -26,7 +26,7 @@ interface LinkableOperation {
     fun url(
         params: OperationParams?,
         link: Link?,
-        url: String,
+        url: String
     ): String {
         val pathParams = params?.getPathParams()
 

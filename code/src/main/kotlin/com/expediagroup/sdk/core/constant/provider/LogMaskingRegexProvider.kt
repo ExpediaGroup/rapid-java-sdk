@@ -16,6 +16,5 @@
 package com.expediagroup.sdk.core.constant.provider
 
 internal object LogMaskingRegexProvider {
-    fun getMaskedFieldsRegex(maskedBodyFields: Set<String>) =
-        "(?<=[\"']?(${maskedBodyFields.joinToString("|")})[\"']?:\\s?[\"'])(\\s*[^\"']+\\s*)(?=[\"'])".toRegex()
+    fun getMaskedFieldsRegex(maskedBodyFields: Set<String>) = "(?<=[\"']?(${maskedBodyFields.joinToString("|")})[\"']?:\\s?[\"'])(\\s*[^\"']+\\s*)(?=[\"'])".toRegex()
 }

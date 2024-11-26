@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Information about the property's rating.
@@ -51,7 +49,7 @@ data class PropertyRating(
     // Returns a value of either \"Star\" or \"Alternate\". Star indicates the rating is provided by the property’s local star rating authority. Alternate indicates that the rating is an Expedia-assigned value; an official rating was not available.
     @JsonProperty("type")
     @field:Valid
-    val type: kotlin.String? = null,
+    val type: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class PropertyRating(
 
     class Builder(
         private var rating: kotlin.String? = null,
-        private var type: kotlin.String? = null,
+        private var type: kotlin.String? = null
     ) {
         fun rating(rating: kotlin.String?) = apply { this.rating = rating }
 
         fun type(type: kotlin.String?) = apply { this.type = type }
 
         fun build(): PropertyRating {
-            return PropertyRating(
-                rating = rating,
-                type = type,
-            )
+            val instance =
+                PropertyRating(
+                    rating = rating,
+                    type = type
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyRating) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             rating = rating,
-            type = type,
+            type = type
         )
 }

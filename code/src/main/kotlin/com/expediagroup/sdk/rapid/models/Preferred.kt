@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The preferred airport of the property.
@@ -46,7 +44,7 @@ data class Preferred(
     // The airport's IATA code.
     @JsonProperty("iata_airport_code")
     @field:Valid
-    val iataAirportCode: kotlin.String? = null,
+    val iataAirportCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,19 +52,42 @@ data class Preferred(
     }
 
     class Builder(
-        private var iataAirportCode: kotlin.String? = null,
+        private var iataAirportCode: kotlin.String? = null
     ) {
         fun iataAirportCode(iataAirportCode: kotlin.String?) = apply { this.iataAirportCode = iataAirportCode }
 
         fun build(): Preferred {
-            return Preferred(
-                iataAirportCode = iataAirportCode,
-            )
+            val instance =
+                Preferred(
+                    iataAirportCode = iataAirportCode
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Preferred) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            iataAirportCode = iataAirportCode,
+            iataAirportCode = iataAirportCode
         )
 }

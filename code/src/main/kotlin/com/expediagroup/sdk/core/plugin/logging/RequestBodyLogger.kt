@@ -37,7 +37,7 @@ internal class RequestBodyLogger {
 
         override fun install(
             plugin: RequestBodyLogger,
-            scope: HttpClient,
+            scope: HttpClient
         ) {
             scope.sendPipeline.intercept(HttpSendPipeline.Monitoring) {
                 val body: String = getBody()
@@ -63,9 +63,7 @@ internal class RequestBodyLogger {
             return body.toString()
         }
 
-        override fun prepare(block: RequestBodyLoggerConfig.() -> Unit): RequestBodyLogger {
-            return RequestBodyLogger()
-        }
+        override fun prepare(block: RequestBodyLoggerConfig.() -> Unit): RequestBodyLogger = RequestBodyLogger()
     }
 }
 

@@ -25,11 +25,12 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amount
 import com.expediagroup.sdk.rapid.models.CancelPenalty
 import com.expediagroup.sdk.rapid.models.CancelRefund
@@ -39,12 +40,9 @@ import com.expediagroup.sdk.rapid.models.NonrefundableDateRange
 import com.expediagroup.sdk.rapid.models.PricingInformation
 import com.expediagroup.sdk.rapid.models.PromotionsItinerary
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The rate information associated with the itinerary.
@@ -101,7 +99,7 @@ data class RateItinerary(
     val refundableDamageDeposit: Amount? = null,
     @JsonProperty("pricing")
     @field:Valid
-    val pricing: PricingInformation? = null,
+    val pricing: PricingInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -120,7 +118,7 @@ data class RateItinerary(
         private var deposits: kotlin.collections.List<DepositItinerary>? = null,
         private var cardOnFileLimit: Amount? = null,
         private var refundableDamageDeposit: Amount? = null,
-        private var pricing: PricingInformation? = null,
+        private var pricing: PricingInformation? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -136,10 +134,7 @@ data class RateItinerary(
 
         fun cancelPenalties(cancelPenalties: kotlin.collections.List<CancelPenalty>?) = apply { this.cancelPenalties = cancelPenalties }
 
-        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) =
-            apply {
-                this.nonrefundableDateRanges = nonrefundableDateRanges
-            }
+        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) = apply { this.nonrefundableDateRanges = nonrefundableDateRanges }
 
         fun deposits(deposits: kotlin.collections.List<DepositItinerary>?) = apply { this.deposits = deposits }
 
@@ -150,20 +145,43 @@ data class RateItinerary(
         fun pricing(pricing: PricingInformation?) = apply { this.pricing = pricing }
 
         fun build(): RateItinerary {
-            return RateItinerary(
-                id = id,
-                merchantOfRecord = merchantOfRecord,
-                refundable = refundable,
-                cancelRefund = cancelRefund,
-                amenities = amenities,
-                promotions = promotions,
-                cancelPenalties = cancelPenalties,
-                nonrefundableDateRanges = nonrefundableDateRanges,
-                deposits = deposits,
-                cardOnFileLimit = cardOnFileLimit,
-                refundableDamageDeposit = refundableDamageDeposit,
-                pricing = pricing,
-            )
+            val instance =
+                RateItinerary(
+                    id = id,
+                    merchantOfRecord = merchantOfRecord,
+                    refundable = refundable,
+                    cancelRefund = cancelRefund,
+                    amenities = amenities,
+                    promotions = promotions,
+                    cancelPenalties = cancelPenalties,
+                    nonrefundableDateRanges = nonrefundableDateRanges,
+                    deposits = deposits,
+                    cardOnFileLimit = cardOnFileLimit,
+                    refundableDamageDeposit = refundableDamageDeposit,
+                    pricing = pricing
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RateItinerary) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -180,6 +198,6 @@ data class RateItinerary(
             deposits = deposits,
             cardOnFileLimit = cardOnFileLimit,
             refundableDamageDeposit = refundableDamageDeposit,
-            pricing = pricing,
+            pricing = pricing
         )
 }

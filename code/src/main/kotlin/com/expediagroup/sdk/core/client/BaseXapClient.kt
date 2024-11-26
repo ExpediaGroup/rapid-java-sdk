@@ -22,6 +22,7 @@ import com.expediagroup.sdk.core.configuration.provider.XapConfigurationProvider
 import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.okhttp.OkHttp
 
 /**
  * The integration point between the SDK Core and the product SDKs.
@@ -32,15 +33,22 @@ import io.ktor.client.engine.HttpClientEngine
 abstract class BaseXapClient(
     namespace: String,
     clientConfiguration: XapClientConfiguration,
-    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE,
+    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE
 ) : Client(namespace) {
     private val _configurationProvider: ConfigurationProvider =
         ConfigurationCollector.create(
             clientConfiguration.toProvider(),
-            XapConfigurationProvider,
+            XapConfigurationProvider
         )
-    private val _httpClient: HttpClient =
-        buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BASIC, httpClientEngine)
+
+    private val engine: HttpClientEngine =
+        _configurationProvider.okHttpClient?.let {
+            OkHttp.create {
+                preconfigured = it
+            }
+        } ?: httpClientEngine
+
+    private val _httpClient: HttpClient = buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BASIC, engine)
 
     init {
         finalize()
@@ -54,5 +62,9 @@ abstract class BaseXapClient(
 
     /** A [BaseXapClient] builder. */
     @Suppress("unused", "UnnecessaryAbstractClass") // This is used by the generated SDK clients.
-    abstract class Builder<SELF : Builder<SELF>> : Client.Builder<SELF>()
+    abstract class Builder<SELF : Builder<SELF>> : HttpConfigurableBuilder<SELF>()
+
+    /** A [BaseXapClient] builder with ability to pass a custom okhttp client. */
+    @Suppress("unused", "UnnecessaryAbstractClass") // This is used by the generated SDK clients.
+    abstract class BuilderWithHttpClient<SELF : Client.BuilderWithHttpClient<SELF>> : Client.BuilderWithHttpClient<SELF>()
 }

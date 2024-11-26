@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An unavailable reason that suggests ways that the request could be modified to locate available rooms and rates.
@@ -50,7 +48,7 @@ data class UnavailableReason(
     // An associated value that provides helpful information for some codes. Not present for all codes.
     @JsonProperty("data")
     @field:Valid
-    val `data`: kotlin.String? = null,
+    val `data`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -59,24 +57,47 @@ data class UnavailableReason(
 
     class Builder(
         private var code: UnavailableReason.Code? = null,
-        private var `data`: kotlin.String? = null,
+        private var `data`: kotlin.String? = null
     ) {
         fun code(code: UnavailableReason.Code?) = apply { this.code = code }
 
         fun `data`(`data`: kotlin.String?) = apply { this.`data` = `data` }
 
         fun build(): UnavailableReason {
-            return UnavailableReason(
-                code = code,
-                `data` = `data`,
-            )
+            val instance =
+                UnavailableReason(
+                    code = code,
+                    `data` = `data`
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: UnavailableReason) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             code = code,
-            `data` = `data`,
+            `data` = `data`
         )
 
     /**
@@ -133,6 +154,6 @@ data class UnavailableReason(
         PARTIAL_INVENTORY_AVAILABLE("partial_inventory_available"),
 
         @JsonProperty("no_inventory_available")
-        NO_INVENTORY_AVAILABLE("no_inventory_available"),
+        NO_INVENTORY_AVAILABLE("no_inventory_available")
     }
 }

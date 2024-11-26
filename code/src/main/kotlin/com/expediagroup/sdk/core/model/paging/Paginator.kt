@@ -25,20 +25,19 @@ sealed class BasePaginator<R, T>(
     private val client: Client,
     firstResponse: Response<T>,
     private val fallbackBody: T,
-    private val getBody: suspend (HttpResponse) -> T,
+    private val getBody: suspend (HttpResponse) -> T
 ) : Iterator<R> {
     private var state: ResponseState<T> = DefaultResponseState(firstResponse)
     val paginationTotalResults: Long = firstResponse.headers[PAGINATION_TOTAL_RESULTS]?.getOrNull(0)?.toLongOrNull() ?: 0
 
     override fun hasNext(): Boolean = state.hasNext()
 
-    private fun extractLink(headers: Map<String, List<String>>): String? {
-        return headers[LINK]?.getOrNull(0)?.split(";")?.let {
+    private fun extractLink(headers: Map<String, List<String>>): String? =
+        headers[LINK]?.getOrNull(0)?.split(";")?.let {
             if (it.isNotEmpty()) it[0] else null
         }?.let {
             it.substring(it.indexOf("<") + 1, it.indexOf(">"))
         }
-    }
 
     protected fun nextResponse(): Response<T> {
         val response = state.getNextResponse()
@@ -58,7 +57,7 @@ class Paginator<T>(
     client: Client,
     firstResponse: Response<T>,
     fallbackBody: T,
-    getBody: suspend (HttpResponse) -> T,
+    getBody: suspend (HttpResponse) -> T
 ) : BasePaginator<T, T>(client, firstResponse, fallbackBody, getBody) {
     /**
      * Returns the body of the next response.
@@ -79,7 +78,7 @@ class ResponsePaginator<T>(
     client: Client,
     firstResponse: Response<T>,
     fallbackBody: T,
-    getBody: suspend (HttpResponse) -> T,
+    getBody: suspend (HttpResponse) -> T
 ) : BasePaginator<Response<T>, T>(client, firstResponse, fallbackBody, getBody) {
     /**
      * Returns the next response.

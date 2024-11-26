@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Provides the special scenarios that need to be taken into account when using this rate.
@@ -66,7 +64,7 @@ data class SaleScenario(
     // If true, this rate has an associated mobile promotion which can be advertised as a special mobile only deal. This will only be present when `include=sale_scenario.mobile_promotion` is passed as a request parameter.
     @JsonProperty("mobile_promotion")
     @field:Valid
-    val mobilePromotion: kotlin.Boolean? = null,
+    val mobilePromotion: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -78,7 +76,7 @@ data class SaleScenario(
         private var member: kotlin.Boolean? = null,
         private var corporate: kotlin.Boolean? = null,
         private var distribution: kotlin.Boolean? = null,
-        private var mobilePromotion: kotlin.Boolean? = null,
+        private var mobilePromotion: kotlin.Boolean? = null
     ) {
         fun `package`(`package`: kotlin.Boolean?) = apply { this.`package` = `package` }
 
@@ -91,13 +89,36 @@ data class SaleScenario(
         fun mobilePromotion(mobilePromotion: kotlin.Boolean?) = apply { this.mobilePromotion = mobilePromotion }
 
         fun build(): SaleScenario {
-            return SaleScenario(
-                `package` = `package`,
-                member = member,
-                corporate = corporate,
-                distribution = distribution,
-                mobilePromotion = mobilePromotion,
-            )
+            val instance =
+                SaleScenario(
+                    `package` = `package`,
+                    member = member,
+                    corporate = corporate,
+                    distribution = distribution,
+                    mobilePromotion = mobilePromotion
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: SaleScenario) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -107,6 +128,6 @@ data class SaleScenario(
             member = member,
             corporate = corporate,
             distribution = distribution,
-            mobilePromotion = mobilePromotion,
+            mobilePromotion = mobilePromotion
         )
 }

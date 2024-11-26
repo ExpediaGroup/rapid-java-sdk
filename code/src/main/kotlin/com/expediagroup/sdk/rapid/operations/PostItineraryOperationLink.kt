@@ -32,7 +32,7 @@ data class PostItineraryOperationLink(
     // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
     @JsonProperty("expires")
     @field:Valid
-    override val expires: kotlin.String? = null,
+    override val expires: kotlin.String? = null
 ) : Link(method, href, expires) {
     companion object {
         @JvmStatic
@@ -42,14 +42,13 @@ data class PostItineraryOperationLink(
     class Builder(
         private var method: kotlin.String? = null,
         private var href: kotlin.String? = null,
-        private var expires: kotlin.String? = null,
+        private var expires: kotlin.String? = null
     ) {
-        fun build(): PostItineraryOperationLink {
-            return PostItineraryOperationLink(
+        fun build(): PostItineraryOperationLink =
+            PostItineraryOperationLink(
                 method = method,
                 href = href,
-                expires = expires,
+                expires = expires
             )
-        }
     }
 }

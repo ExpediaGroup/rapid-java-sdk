@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.PriceCheckOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including links to confirm pricing and availability for the selected rate.
@@ -48,7 +46,7 @@ import javax.validation.constraints.Size
 data class BedGroupAvailabilityLinks(
     @JsonProperty("price_check")
     @field:Valid
-    val priceCheck: PriceCheckOperationLink? = null,
+    val priceCheck: PriceCheckOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,19 +54,42 @@ data class BedGroupAvailabilityLinks(
     }
 
     class Builder(
-        private var priceCheck: PriceCheckOperationLink? = null,
+        private var priceCheck: PriceCheckOperationLink? = null
     ) {
         fun priceCheck(priceCheck: PriceCheckOperationLink?) = apply { this.priceCheck = priceCheck }
 
         fun build(): BedGroupAvailabilityLinks {
-            return BedGroupAvailabilityLinks(
-                priceCheck = priceCheck,
-            )
+            val instance =
+                BedGroupAvailabilityLinks(
+                    priceCheck = priceCheck
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: BedGroupAvailabilityLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            priceCheck = priceCheck,
+            priceCheck = priceCheck
         )
 }

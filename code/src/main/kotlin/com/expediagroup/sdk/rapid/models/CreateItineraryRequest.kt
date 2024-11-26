@@ -25,22 +25,21 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequestInvoicing
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequestRoom
 import com.expediagroup.sdk.rapid.models.PaymentRequest
 import com.expediagroup.sdk.rapid.models.PhoneRequest
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -58,16 +57,19 @@ import javax.validation.constraints.Size
 data class CreateItineraryRequest(
     // Email address for the customer. Must adhere to standard RFC 822 email format. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("email")
+    @field:NotNull
     @field:Valid
     val email: kotlin.String,
     @JsonProperty("phone")
+    @field:NotNull
     @field:Valid
     val phone: PhoneRequest,
     @JsonProperty("rooms")
+    @field:NotNull
     @field:Valid
     val rooms: kotlin.collections
         .List<
-            CreateItineraryRequestRoom,
+            CreateItineraryRequestRoom
         >,
     // Your unique reference value. This field supports from 3 to a maximum of 28 characters and is required to be unique (if provided). Entering special characters (\"<\", \">\", \"(\", \")\", and \"&\") in this field will result in the request being rejected.
     @JsonProperty("affiliate_reference_id")
@@ -95,7 +97,7 @@ data class CreateItineraryRequest(
     val travelerHandlingInstructions: kotlin.String? = null,
     @JsonProperty("invoicing")
     @field:Valid
-    val invoicing: CreateItineraryRequestInvoicing? = null,
+    val invoicing: CreateItineraryRequestInvoicing? = null
 ) {
     companion object {
         @JvmStatic
@@ -112,7 +114,7 @@ data class CreateItineraryRequest(
         private var affiliateMetadata: kotlin.String? = null,
         private var taxRegistrationNumber: kotlin.String? = null,
         private var travelerHandlingInstructions: kotlin.String? = null,
-        private var invoicing: CreateItineraryRequestInvoicing? = null,
+        private var invoicing: CreateItineraryRequestInvoicing? = null
     ) {
         fun email(email: kotlin.String) = apply { this.email = email }
 
@@ -130,39 +132,45 @@ data class CreateItineraryRequest(
 
         fun taxRegistrationNumber(taxRegistrationNumber: kotlin.String?) = apply { this.taxRegistrationNumber = taxRegistrationNumber }
 
-        fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) =
-            apply {
-                this.travelerHandlingInstructions = travelerHandlingInstructions
-            }
+        fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) = apply { this.travelerHandlingInstructions = travelerHandlingInstructions }
 
         fun invoicing(invoicing: CreateItineraryRequestInvoicing?) = apply { this.invoicing = invoicing }
 
         fun build(): CreateItineraryRequest {
-            // Check required params
-            validateNullity()
-            return CreateItineraryRequest(
-                email = email!!,
-                phone = phone!!,
-                rooms = rooms!!,
-                affiliateReferenceId = affiliateReferenceId,
-                hold = hold,
-                payments = payments,
-                affiliateMetadata = affiliateMetadata,
-                taxRegistrationNumber = taxRegistrationNumber,
-                travelerHandlingInstructions = travelerHandlingInstructions,
-                invoicing = invoicing,
-            )
+            val instance =
+                CreateItineraryRequest(
+                    email = email!!,
+                    phone = phone!!,
+                    rooms = rooms!!,
+                    affiliateReferenceId = affiliateReferenceId,
+                    hold = hold,
+                    payments = payments,
+                    affiliateMetadata = affiliateMetadata,
+                    taxRegistrationNumber = taxRegistrationNumber,
+                    travelerHandlingInstructions = travelerHandlingInstructions,
+                    invoicing = invoicing
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (email == null) {
-                throw NullPointerException("Required parameter email is missing")
-            }
-            if (phone == null) {
-                throw NullPointerException("Required parameter phone is missing")
-            }
-            if (rooms == null) {
-                throw NullPointerException("Required parameter rooms is missing")
+        private fun validate(instance: CreateItineraryRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -178,6 +186,6 @@ data class CreateItineraryRequest(
             affiliateMetadata = affiliateMetadata,
             taxRegistrationNumber = taxRegistrationNumber,
             travelerHandlingInstructions = travelerHandlingInstructions,
-            invoicing = invoicing,
+            invoicing = invoicing
         )
 }

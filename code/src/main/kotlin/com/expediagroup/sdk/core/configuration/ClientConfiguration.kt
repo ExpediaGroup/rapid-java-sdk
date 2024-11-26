@@ -16,6 +16,7 @@
 package com.expediagroup.sdk.core.configuration
 
 import com.expediagroup.sdk.core.configuration.provider.RuntimeConfigurationProvider
+import okhttp3.OkHttpClient
 
 interface ClientConfiguration {
     val key: String?
@@ -26,6 +27,7 @@ interface ClientConfiguration {
     val socketTimeout: Long?
     val maskedLoggingHeaders: Set<String>?
     val maskedLoggingBodyFields: Set<String>?
+    val okHttpClient: OkHttpClient?
 
     /** Build a [RuntimeConfigurationProvider] from a [ClientConfiguration]. */
     fun toProvider(): RuntimeConfigurationProvider =
@@ -38,5 +40,6 @@ interface ClientConfiguration {
             socketTimeout = socketTimeout,
             maskedLoggingHeaders = maskedLoggingHeaders,
             maskedLoggingBodyFields = maskedLoggingBodyFields,
+            okHttpClient = okHttpClient
         )
 }

@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amenity
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual rate.
@@ -57,7 +55,7 @@ data class RateContent(
     // A text description of any special offers for this rate.
     @JsonProperty("special_offer_description")
     @field:Valid
-    val specialOfferDescription: kotlin.String? = null,
+    val specialOfferDescription: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,21 +65,43 @@ data class RateContent(
     class Builder(
         private var id: kotlin.String? = null,
         private var amenities: kotlin.collections.Map<kotlin.String, Amenity>? = null,
-        private var specialOfferDescription: kotlin.String? = null,
+        private var specialOfferDescription: kotlin.String? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
         fun amenities(amenities: kotlin.collections.Map<kotlin.String, Amenity>?) = apply { this.amenities = amenities }
 
-        fun specialOfferDescription(specialOfferDescription: kotlin.String?) =
-            apply { this.specialOfferDescription = specialOfferDescription }
+        fun specialOfferDescription(specialOfferDescription: kotlin.String?) = apply { this.specialOfferDescription = specialOfferDescription }
 
         fun build(): RateContent {
-            return RateContent(
-                id = id,
-                amenities = amenities,
-                specialOfferDescription = specialOfferDescription,
-            )
+            val instance =
+                RateContent(
+                    id = id,
+                    amenities = amenities,
+                    specialOfferDescription = specialOfferDescription
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RateContent) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -89,6 +109,6 @@ data class RateContent(
         Builder(
             id = id,
             amenities = amenities,
-            specialOfferDescription = specialOfferDescription,
+            specialOfferDescription = specialOfferDescription
         )
 }

@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.GuestRating
 import com.expediagroup.sdk.rapid.models.PropertyRating
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Various types of ratings for this property.
@@ -51,7 +49,7 @@ data class Ratings(
     val `property`: PropertyRating? = null,
     @JsonProperty("guest")
     @field:Valid
-    val guest: GuestRating? = null,
+    val guest: GuestRating? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class Ratings(
 
     class Builder(
         private var `property`: PropertyRating? = null,
-        private var guest: GuestRating? = null,
+        private var guest: GuestRating? = null
     ) {
         fun `property`(`property`: PropertyRating?) = apply { this.`property` = `property` }
 
         fun guest(guest: GuestRating?) = apply { this.guest = guest }
 
         fun build(): Ratings {
-            return Ratings(
-                `property` = `property`,
-                guest = guest,
-            )
+            val instance =
+                Ratings(
+                    `property` = `property`,
+                    guest = guest
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Ratings) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             `property` = `property`,
-            guest = guest,
+            guest = guest
         )
 }

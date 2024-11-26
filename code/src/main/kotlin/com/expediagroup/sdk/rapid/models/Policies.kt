@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Information about property policies that guests need to be aware of.
@@ -46,7 +44,7 @@ data class Policies(
     // Description of information that may be helpful when planning a trip to this property.
     @JsonProperty("know_before_you_go")
     @field:Valid
-    val knowBeforeYouGo: kotlin.String? = null,
+    val knowBeforeYouGo: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,19 +52,42 @@ data class Policies(
     }
 
     class Builder(
-        private var knowBeforeYouGo: kotlin.String? = null,
+        private var knowBeforeYouGo: kotlin.String? = null
     ) {
         fun knowBeforeYouGo(knowBeforeYouGo: kotlin.String?) = apply { this.knowBeforeYouGo = knowBeforeYouGo }
 
         fun build(): Policies {
-            return Policies(
-                knowBeforeYouGo = knowBeforeYouGo,
-            )
+            val instance =
+                Policies(
+                    knowBeforeYouGo = knowBeforeYouGo
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Policies) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            knowBeforeYouGo = knowBeforeYouGo,
+            knowBeforeYouGo = knowBeforeYouGo
         )
 }

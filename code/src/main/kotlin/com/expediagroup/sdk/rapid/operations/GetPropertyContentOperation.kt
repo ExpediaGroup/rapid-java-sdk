@@ -24,34 +24,32 @@ import com.expediagroup.sdk.core.model.Operation
  */
 class GetPropertyContentOperation private constructor(
     params: GetPropertyContentOperationParams?,
-    link: GetPropertyContentOperationLink?,
+    link: GetPropertyContentOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(null, link, "/v3/properties/content"),
         "GET",
         "getPropertyContent",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: GetPropertyContentOperationParams,
+        params: GetPropertyContentOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: GetPropertyContentOperationLink,
-        context: GetPropertyContentOperationContext?,
+        context: GetPropertyContentOperationContext?
     ) : this(
         GetPropertyContentOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {
-        override fun pathPattern(): String {
-            return "/v3/properties/content"
-        }
+        override fun pathPattern(): String = "/v3/properties/content"
     }
 }

@@ -29,7 +29,7 @@ data class PostItineraryOperationContext(
     val customerSessionId: kotlin.String? =
         null,
     val test: PostItineraryOperationParams.Test? =
-        null,
+        null
 ) {
     companion object {
         @JvmStatic
@@ -39,7 +39,7 @@ data class PostItineraryOperationContext(
     class Builder(
         @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
-        @JsonProperty("Test") private var test: PostItineraryOperationParams.Test? = null,
+        @JsonProperty("Test") private var test: PostItineraryOperationParams.Test? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -62,7 +62,7 @@ data class PostItineraryOperationContext(
             return PostItineraryOperationContext(
                 customerIp = customerIp!!,
                 customerSessionId = customerSessionId,
-                test = test,
+                test = test
             )
         }
 
@@ -73,8 +73,8 @@ data class PostItineraryOperationContext(
         }
     }
 
-    fun getHeaders(): Map<String, String> {
-        return buildMap {
+    fun getHeaders(): Map<String, String> =
+        buildMap {
             customerIp.also {
                 put("Customer-Ip", customerIp)
             }
@@ -85,5 +85,4 @@ data class PostItineraryOperationContext(
                 put("Test", test.value)
             }
         }
-    }
 }

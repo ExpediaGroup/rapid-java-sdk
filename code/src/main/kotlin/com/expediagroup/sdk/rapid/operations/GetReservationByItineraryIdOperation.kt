@@ -25,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class GetReservationByItineraryIdOperation private constructor(
     params: GetReservationByItineraryIdOperationParams?,
-    link: GetReservationByItineraryIdOperationLink?,
+    link: GetReservationByItineraryIdOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}"),
         "GET",
         "getReservationByItineraryId",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: GetReservationByItineraryIdOperationParams,
+        params: GetReservationByItineraryIdOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: GetReservationByItineraryIdOperationLink,
-        context: GetReservationByItineraryIdOperationContext,
+        context: GetReservationByItineraryIdOperationContext
     ) : this(
         GetReservationByItineraryIdOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {

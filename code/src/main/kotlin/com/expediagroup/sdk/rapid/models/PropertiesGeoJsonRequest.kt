@@ -25,18 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * GeoJSON geometry
@@ -46,15 +45,17 @@ import javax.validation.constraints.Size
 data class PropertiesGeoJsonRequest(
     // The geometry type. The only supported type is `Polygon`
     @JsonProperty("type")
+    @field:NotNull
     @field:Valid
     val type: kotlin.String,
     // An array of linear ring coordinate arrays that combine to make up a single [Polygon](https://www.rfc-editor.org/rfc/rfc7946#section-3.1.6) in geojson format. If there is more than one linear ring at this level, the first is the outer boundary and the remaining linear rings are interior rings or holes.
     @JsonProperty("coordinates")
+    @field:NotNull
     @field:Valid
     val coordinates: kotlin.collections
         .List<
-            kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>,
-        >,
+            kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>
+        >
 ) {
     companion object {
         @JvmStatic
@@ -63,30 +64,39 @@ data class PropertiesGeoJsonRequest(
 
     class Builder(
         private var type: kotlin.String? = null,
-        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null,
+        private var coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>? = null
     ) {
         fun type(type: kotlin.String) = apply { this.type = type }
 
-        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>) =
-            apply {
-                this.coordinates = coordinates
-            }
+        fun coordinates(coordinates: kotlin.collections.List<kotlin.collections.List<kotlin.collections.List<java.math.BigDecimal>>>) = apply { this.coordinates = coordinates }
 
         fun build(): PropertiesGeoJsonRequest {
-            // Check required params
-            validateNullity()
-            return PropertiesGeoJsonRequest(
-                type = type!!,
-                coordinates = coordinates!!,
-            )
+            val instance =
+                PropertiesGeoJsonRequest(
+                    type = type!!,
+                    coordinates = coordinates!!
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (type == null) {
-                throw NullPointerException("Required parameter type is missing")
-            }
-            if (coordinates == null) {
-                throw NullPointerException("Required parameter coordinates is missing")
+        private fun validate(instance: PropertiesGeoJsonRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -94,6 +104,6 @@ data class PropertiesGeoJsonRequest(
     fun toBuilder() =
         Builder(
             type = type!!,
-            coordinates = coordinates!!,
+            coordinates = coordinates!!
         )
 }

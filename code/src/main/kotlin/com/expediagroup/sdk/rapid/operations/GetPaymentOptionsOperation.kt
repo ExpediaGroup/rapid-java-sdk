@@ -25,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class GetPaymentOptionsOperation private constructor(
     params: GetPaymentOptionsOperationParams?,
-    link: GetPaymentOptionsOperationLink?,
+    link: GetPaymentOptionsOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params, link, "/v3/properties/{property_id}/payment-options"),
         "GET",
         "getPaymentOptions",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: GetPaymentOptionsOperationParams,
+        params: GetPaymentOptionsOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: GetPaymentOptionsOperationLink,
-        context: GetPaymentOptionsOperationContext?,
+        context: GetPaymentOptionsOperationContext?
     ) : this(
         GetPaymentOptionsOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {

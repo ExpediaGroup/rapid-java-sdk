@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.BedGroupConfiguration
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual bed group.
@@ -57,7 +55,7 @@ data class BedGroup(
     // An array of bed configurations for this room.
     @JsonProperty("configuration")
     @field:Valid
-    val configuration: kotlin.collections.List<BedGroupConfiguration>? = null,
+    val configuration: kotlin.collections.List<BedGroupConfiguration>? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +65,7 @@ data class BedGroup(
     class Builder(
         private var id: kotlin.String? = null,
         private var description: kotlin.String? = null,
-        private var configuration: kotlin.collections.List<BedGroupConfiguration>? = null,
+        private var configuration: kotlin.collections.List<BedGroupConfiguration>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -76,11 +74,34 @@ data class BedGroup(
         fun configuration(configuration: kotlin.collections.List<BedGroupConfiguration>?) = apply { this.configuration = configuration }
 
         fun build(): BedGroup {
-            return BedGroup(
-                id = id,
-                description = description,
-                configuration = configuration,
-            )
+            val instance =
+                BedGroup(
+                    id = id,
+                    description = description,
+                    configuration = configuration
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: BedGroup) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -88,6 +109,6 @@ data class BedGroup(
         Builder(
             id = id,
             description = description,
-            configuration = configuration,
+            configuration = configuration
         )
 }

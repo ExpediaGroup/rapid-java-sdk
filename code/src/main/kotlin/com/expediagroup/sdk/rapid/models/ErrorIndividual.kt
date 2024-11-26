@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Field
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual error.
@@ -57,7 +55,7 @@ data class ErrorIndividual(
     // Details about the specific fields that had an error.
     @JsonProperty("fields")
     @field:Valid
-    val fields: kotlin.collections.List<Field>? = null,
+    val fields: kotlin.collections.List<Field>? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +65,7 @@ data class ErrorIndividual(
     class Builder(
         private var type: kotlin.String? = null,
         private var message: kotlin.String? = null,
-        private var fields: kotlin.collections.List<Field>? = null,
+        private var fields: kotlin.collections.List<Field>? = null
     ) {
         fun type(type: kotlin.String?) = apply { this.type = type }
 
@@ -76,11 +74,34 @@ data class ErrorIndividual(
         fun fields(fields: kotlin.collections.List<Field>?) = apply { this.fields = fields }
 
         fun build(): ErrorIndividual {
-            return ErrorIndividual(
-                type = type,
-                message = message,
-                fields = fields,
-            )
+            val instance =
+                ErrorIndividual(
+                    type = type,
+                    message = message,
+                    fields = fields
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ErrorIndividual) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -88,6 +109,6 @@ data class ErrorIndividual(
         Builder(
             type = type,
             message = message,
-            fields = fields,
+            fields = fields
         )
 }

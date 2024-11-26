@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 @JsonDeserialize(builder = GetPropertyContentOperationParams.Builder::class)
 data class GetPropertyContentOperationContext(
     val customerSessionId: kotlin.String? =
-        null,
+        null
 ) {
     companion object {
         @JvmStatic
@@ -32,7 +32,7 @@ data class GetPropertyContentOperationContext(
     }
 
     class Builder(
-        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
+        @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null
     ) {
         /**
          * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -43,7 +43,7 @@ data class GetPropertyContentOperationContext(
             validateNullity()
 
             return GetPropertyContentOperationContext(
-                customerSessionId = customerSessionId,
+                customerSessionId = customerSessionId
             )
         }
 
@@ -51,11 +51,10 @@ data class GetPropertyContentOperationContext(
         }
     }
 
-    fun getHeaders(): Map<String, String> {
-        return buildMap {
+    fun getHeaders(): Map<String, String> =
+        buildMap {
             customerSessionId?.also {
                 put("Customer-Session-Id", customerSessionId)
             }
         }
-    }
 }

@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Rate
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The room information.
@@ -57,7 +55,7 @@ data class RoomAvailability(
     // Array of objects containing rate information.
     @JsonProperty("rates")
     @field:Valid
-    val rates: kotlin.collections.List<Rate>? = null,
+    val rates: kotlin.collections.List<Rate>? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +65,7 @@ data class RoomAvailability(
     class Builder(
         private var id: kotlin.String? = null,
         private var roomName: kotlin.String? = null,
-        private var rates: kotlin.collections.List<Rate>? = null,
+        private var rates: kotlin.collections.List<Rate>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -76,11 +74,34 @@ data class RoomAvailability(
         fun rates(rates: kotlin.collections.List<Rate>?) = apply { this.rates = rates }
 
         fun build(): RoomAvailability {
-            return RoomAvailability(
-                id = id,
-                roomName = roomName,
-                rates = rates,
-            )
+            val instance =
+                RoomAvailability(
+                    id = id,
+                    roomName = roomName,
+                    rates = rates
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RoomAvailability) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -88,6 +109,6 @@ data class RoomAvailability(
         Builder(
             id = id,
             roomName = roomName,
-            rates = rates,
+            rates = rates
         )
 }

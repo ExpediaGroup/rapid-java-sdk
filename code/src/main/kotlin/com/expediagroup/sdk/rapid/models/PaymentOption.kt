@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.AffiliateCollect
 import com.expediagroup.sdk.rapid.models.CreditCard
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The payment option response.
@@ -51,7 +49,7 @@ data class PaymentOption(
     val affiliateCollect: AffiliateCollect? = null,
     @JsonProperty("credit_card")
     @field:Valid
-    val creditCard: CreditCard? = null,
+    val creditCard: CreditCard? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class PaymentOption(
 
     class Builder(
         private var affiliateCollect: AffiliateCollect? = null,
-        private var creditCard: CreditCard? = null,
+        private var creditCard: CreditCard? = null
     ) {
         fun affiliateCollect(affiliateCollect: AffiliateCollect?) = apply { this.affiliateCollect = affiliateCollect }
 
         fun creditCard(creditCard: CreditCard?) = apply { this.creditCard = creditCard }
 
         fun build(): PaymentOption {
-            return PaymentOption(
-                affiliateCollect = affiliateCollect,
-                creditCard = creditCard,
-            )
+            val instance =
+                PaymentOption(
+                    affiliateCollect = affiliateCollect,
+                    creditCard = creditCard
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PaymentOption) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             affiliateCollect = affiliateCollect,
-            creditCard = creditCard,
+            creditCard = creditCard
         )
 }

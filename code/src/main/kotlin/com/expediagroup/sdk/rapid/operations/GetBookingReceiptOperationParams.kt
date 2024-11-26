@@ -16,10 +16,15 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
@@ -31,15 +36,22 @@ import io.ktor.http.Parameters
  */
 @JsonDeserialize(builder = GetBookingReceiptOperationParams.Builder::class)
 data class GetBookingReceiptOperationParams(
+    @field:NotNull
+    @field:Valid
     val itineraryId: kotlin.String,
+    @field:NotNull
+    @field:Valid
     val customerIp: kotlin.String,
+    @field:Valid
     val customerSessionId: kotlin.String? =
         null,
     val test: GetBookingReceiptOperationParams.Test? =
         null,
+    @field:NotNull
+    @field:Valid
     val token: kotlin.String,
     val branding: GetBookingReceiptOperationParams.Branding? =
-        null,
+        null
 ) :
     OperationParams {
     companion object {
@@ -48,18 +60,18 @@ data class GetBookingReceiptOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String,
+        val value: kotlin.String
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        INTERNAL_SERVER_ERROR("internal_server_error"),
+        INTERNAL_SERVER_ERROR("internal_server_error")
     }
 
     enum class Branding(
-        val value: kotlin.String,
+        val value: kotlin.String
     ) {
         EXPEDIA_GROUP("expedia_group"),
-        UNBRANDED("unbranded"),
+        UNBRANDED("unbranded")
     }
 
     class Builder(
@@ -68,7 +80,7 @@ data class GetBookingReceiptOperationParams(
         @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
         @JsonProperty("Test") private var test: GetBookingReceiptOperationParams.Test? = null,
         @JsonProperty("token") private var token: kotlin.String? = null,
-        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null,
+        @JsonProperty("branding") private var branding: GetBookingReceiptOperationParams.Branding? = null
     ) {
         /**
          * @param itineraryId This path variable will be provided as part of the link. This specifies which itinerary the booking receipt request pertains to.
@@ -101,27 +113,36 @@ data class GetBookingReceiptOperationParams(
         fun branding(branding: GetBookingReceiptOperationParams.Branding) = apply { this.branding = branding }
 
         fun build(): GetBookingReceiptOperationParams {
-            validateNullity()
+            val params =
+                GetBookingReceiptOperationParams(
+                    itineraryId = itineraryId!!,
+                    customerIp = customerIp!!,
+                    customerSessionId = customerSessionId,
+                    test = test,
+                    token = token!!,
+                    branding = branding
+                )
 
-            return GetBookingReceiptOperationParams(
-                itineraryId = itineraryId!!,
-                customerIp = customerIp!!,
-                customerSessionId = customerSessionId,
-                test = test,
-                token = token!!,
-                branding = branding,
-            )
+            validate(params)
+
+            return params
         }
 
-        private fun validateNullity() {
-            if (itineraryId == null) {
-                throw NullPointerException("Required parameter itineraryId is missing")
-            }
-            if (customerIp == null) {
-                throw NullPointerException("Required parameter customerIp is missing")
-            }
-            if (token == null) {
-                throw NullPointerException("Required parameter token is missing")
+        private fun validate(params: GetBookingReceiptOperationParams) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(params)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -133,11 +154,11 @@ data class GetBookingReceiptOperationParams(
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            branding = branding,
+            branding = branding
         )
 
-    override fun getHeaders(): Headers {
-        return Headers.build {
+    override fun getHeaders(): Headers =
+        Headers.build {
             customerIp?.let {
                 append("Customer-Ip", it)
             }
@@ -149,10 +170,9 @@ data class GetBookingReceiptOperationParams(
             }
             append("Accept", "application/pdf")
         }
-    }
 
-    override fun getQueryParams(): Parameters {
-        return Parameters.build {
+    override fun getQueryParams(): Parameters =
+        Parameters.build {
             token?.let {
                 append("token", it)
             }
@@ -160,13 +180,11 @@ data class GetBookingReceiptOperationParams(
                 append("branding", it.value)
             }
         }
-    }
 
-    override fun getPathParams(): Map<String, String> {
-        return buildMap {
+    override fun getPathParams(): Map<String, String> =
+        buildMap {
             itineraryId?.also {
                 put("itinerary_id", itineraryId)
             }
         }
-    }
 }

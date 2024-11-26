@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A notification.
@@ -76,7 +74,7 @@ data class Notification(
     // The Affiliate Reference ID of the affected booking
     @JsonProperty("affiliate_reference_id")
     @field:Valid
-    val affiliateReferenceId: kotlin.String? = null,
+    val affiliateReferenceId: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -90,7 +88,7 @@ data class Notification(
         private var itineraryId: kotlin.String? = null,
         private var email: kotlin.String? = null,
         private var message: kotlin.String? = null,
-        private var affiliateReferenceId: kotlin.String? = null,
+        private var affiliateReferenceId: kotlin.String? = null
     ) {
         fun eventId(eventId: kotlin.String?) = apply { this.eventId = eventId }
 
@@ -107,15 +105,38 @@ data class Notification(
         fun affiliateReferenceId(affiliateReferenceId: kotlin.String?) = apply { this.affiliateReferenceId = affiliateReferenceId }
 
         fun build(): Notification {
-            return Notification(
-                eventId = eventId,
-                eventType = eventType,
-                eventTime = eventTime,
-                itineraryId = itineraryId,
-                email = email,
-                message = message,
-                affiliateReferenceId = affiliateReferenceId,
-            )
+            val instance =
+                Notification(
+                    eventId = eventId,
+                    eventType = eventType,
+                    eventTime = eventTime,
+                    itineraryId = itineraryId,
+                    email = email,
+                    message = message,
+                    affiliateReferenceId = affiliateReferenceId
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Notification) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -127,6 +148,6 @@ data class Notification(
             itineraryId = itineraryId,
             email = email,
             message = message,
-            affiliateReferenceId = affiliateReferenceId,
+            affiliateReferenceId = affiliateReferenceId
         )
 }

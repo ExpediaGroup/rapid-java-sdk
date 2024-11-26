@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Essential
 import com.expediagroup.sdk.rapid.models.SupplyContact
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Essential information, including the supply contact information and any other essential information.
@@ -56,7 +54,7 @@ data class EssentialInformation(
     // The date and time when new essential information is available for retrieval, in extended ISO 8601 format, with ±hh:mm timezone offset.
     @JsonProperty("update_available_date")
     @field:Valid
-    val updateAvailableDate: kotlin.String? = null,
+    val updateAvailableDate: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class EssentialInformation(
     class Builder(
         private var contact: SupplyContact? = null,
         private var essentials: kotlin.collections.List<Essential>? = null,
-        private var updateAvailableDate: kotlin.String? = null,
+        private var updateAvailableDate: kotlin.String? = null
     ) {
         fun contact(contact: SupplyContact?) = apply { this.contact = contact }
 
@@ -75,11 +73,34 @@ data class EssentialInformation(
         fun updateAvailableDate(updateAvailableDate: kotlin.String?) = apply { this.updateAvailableDate = updateAvailableDate }
 
         fun build(): EssentialInformation {
-            return EssentialInformation(
-                contact = contact,
-                essentials = essentials,
-                updateAvailableDate = updateAvailableDate,
-            )
+            val instance =
+                EssentialInformation(
+                    contact = contact,
+                    essentials = essentials,
+                    updateAvailableDate = updateAvailableDate
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: EssentialInformation) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class EssentialInformation(
         Builder(
             contact = contact,
             essentials = essentials,
-            updateAvailableDate = updateAvailableDate,
+            updateAvailableDate = updateAvailableDate
         )
 }

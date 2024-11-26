@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual field that had an error.
@@ -56,7 +54,7 @@ data class Field(
     // The value of the field that had an error.
     @JsonProperty("value")
     @field:Valid
-    val `value`: kotlin.String? = null,
+    val `value`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class Field(
     class Builder(
         private var name: kotlin.String? = null,
         private var type: kotlin.String? = null,
-        private var `value`: kotlin.String? = null,
+        private var `value`: kotlin.String? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -75,11 +73,34 @@ data class Field(
         fun `value`(`value`: kotlin.String?) = apply { this.`value` = `value` }
 
         fun build(): Field {
-            return Field(
-                name = name,
-                type = type,
-                `value` = `value`,
-            )
+            val instance =
+                Field(
+                    name = name,
+                    type = type,
+                    `value` = `value`
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Field) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class Field(
         Builder(
             name = name,
             type = type,
-            `value` = `value`,
+            `value` = `value`
         )
 }

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -44,5 +44,5 @@ enum class StatusPriceCheck(val value: kotlin.String) {
     PRICE_CHANGED("price_changed"),
 
     @JsonProperty("sold_out")
-    SOLD_OUT("sold_out"),
+    SOLD_OUT("sold_out")
 }

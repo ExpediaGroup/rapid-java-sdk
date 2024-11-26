@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [GetReservationOperationParams]
  */
 class GetReservationOperation(
-    params: GetReservationOperationParams,
+    params: GetReservationOperationParams
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         "/v3/itineraries",
         "GET",
         "getReservation",
         null,
-        params,
+        params
     )

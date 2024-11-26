@@ -25,21 +25,20 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.TraderAddress
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * Information of the professional entity that sells the property inventory or related services.
@@ -57,6 +56,7 @@ data class TraderDetailsInner(
     // The trader contact message.
     @JsonProperty("contact_message")
     @JsonSetter(nulls = Nulls.AS_EMPTY)
+    @field:NotNull
     @field:Valid
     val contactMessage: kotlin.String? = "",
     // The trader name.
@@ -89,7 +89,7 @@ data class TraderDetailsInner(
     // The trader phone number.
     @JsonProperty("phone")
     @field:Valid
-    val phone: kotlin.String? = null,
+    val phone: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -105,7 +105,7 @@ data class TraderDetailsInner(
         private var selfCertification: kotlin.Boolean? = null,
         private var rightToWithdrawMessage: kotlin.String? = null,
         private var email: kotlin.String? = null,
-        private var phone: kotlin.String? = null,
+        private var phone: kotlin.String? = null
     ) {
         fun contactMessage(contactMessage: kotlin.String) = apply { this.contactMessage = contactMessage }
 
@@ -126,24 +126,39 @@ data class TraderDetailsInner(
         fun phone(phone: kotlin.String?) = apply { this.phone = phone }
 
         fun build(): TraderDetailsInner {
-            // Check required params
-            validateNullity()
-            return TraderDetailsInner(
-                contactMessage = contactMessage!!,
-                name = name,
-                address = address,
-                businessRegisterName = businessRegisterName,
-                businessRegisterNumber = businessRegisterNumber,
-                selfCertification = selfCertification,
-                rightToWithdrawMessage = rightToWithdrawMessage,
-                email = email,
-                phone = phone,
-            )
+            val instance =
+                TraderDetailsInner(
+                    contactMessage = contactMessage!!,
+                    name = name,
+                    address = address,
+                    businessRegisterName = businessRegisterName,
+                    businessRegisterNumber = businessRegisterNumber,
+                    selfCertification = selfCertification,
+                    rightToWithdrawMessage = rightToWithdrawMessage,
+                    email = email,
+                    phone = phone
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (contactMessage == null) {
-                throw NullPointerException("Required parameter contactMessage is missing")
+        private fun validate(instance: TraderDetailsInner) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -158,6 +173,6 @@ data class TraderDetailsInner(
             selfCertification = selfCertification,
             rightToWithdrawMessage = rightToWithdrawMessage,
             email = email,
-            phone = phone,
+            phone = phone
         )
 }

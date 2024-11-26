@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A loyalty object for a loyalty program.
@@ -51,7 +49,7 @@ data class Loyalty(
     // The identifier for the loyalty program.
     @JsonProperty("program_id")
     @field:Valid
-    val programId: kotlin.String? = null,
+    val programId: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class Loyalty(
 
     class Builder(
         private var memberId: kotlin.String? = null,
-        private var programId: kotlin.String? = null,
+        private var programId: kotlin.String? = null
     ) {
         fun memberId(memberId: kotlin.String?) = apply { this.memberId = memberId }
 
         fun programId(programId: kotlin.String?) = apply { this.programId = programId }
 
         fun build(): Loyalty {
-            return Loyalty(
-                memberId = memberId,
-                programId = programId,
-            )
+            val instance =
+                Loyalty(
+                    memberId = memberId,
+                    programId = programId
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Loyalty) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             memberId = memberId,
-            programId = programId,
+            programId = programId
         )
 }

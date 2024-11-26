@@ -25,21 +25,19 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.CategoryValueAdd
 import com.expediagroup.sdk.rapid.models.Frequency
 import com.expediagroup.sdk.rapid.models.OfferType
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual value add.
@@ -71,7 +69,7 @@ data class ValueAdd(
     // Indicates how many guests the value add promotion applies to.
     @JsonProperty("person_count")
     @field:Valid
-    val personCount: java.math.BigDecimal? = null,
+    val personCount: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +82,7 @@ data class ValueAdd(
         private var category: CategoryValueAdd? = null,
         private var offerType: OfferType? = null,
         private var frequency: Frequency? = null,
-        private var personCount: java.math.BigDecimal? = null,
+        private var personCount: java.math.BigDecimal? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -99,14 +97,37 @@ data class ValueAdd(
         fun personCount(personCount: java.math.BigDecimal?) = apply { this.personCount = personCount }
 
         fun build(): ValueAdd {
-            return ValueAdd(
-                id = id,
-                description = description,
-                category = category,
-                offerType = offerType,
-                frequency = frequency,
-                personCount = personCount,
-            )
+            val instance =
+                ValueAdd(
+                    id = id,
+                    description = description,
+                    category = category,
+                    offerType = offerType,
+                    frequency = frequency,
+                    personCount = personCount
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ValueAdd) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -117,6 +138,6 @@ data class ValueAdd(
             category = category,
             offerType = offerType,
             frequency = frequency,
-            personCount = personCount,
+            personCount = personCount
         )
 }

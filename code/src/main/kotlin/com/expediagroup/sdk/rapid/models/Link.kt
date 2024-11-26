@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual link.
@@ -56,7 +54,7 @@ open class Link(
     // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
     @JsonProperty("expires")
     @field:Valid
-    open val expires: kotlin.String? = null,
+    open val expires: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ open class Link(
     class Builder(
         private var method: kotlin.String? = null,
         private var href: kotlin.String? = null,
-        private var expires: kotlin.String? = null,
+        private var expires: kotlin.String? = null
     ) {
         fun method(method: kotlin.String?) = apply { this.method = method }
 
@@ -75,11 +73,34 @@ open class Link(
         fun expires(expires: kotlin.String?) = apply { this.expires = expires }
 
         fun build(): Link {
-            return Link(
-                method = method,
-                href = href,
-                expires = expires,
-            )
+            val instance =
+                Link(
+                    method = method,
+                    href = href,
+                    expires = expires
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Link) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ open class Link(
         Builder(
             method = method,
             href = href,
-            expires = expires,
+            expires = expires
         )
 }

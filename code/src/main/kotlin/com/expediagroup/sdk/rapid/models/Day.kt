@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.StayConstraints
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -65,7 +63,7 @@ data class Day(
     val checkout: kotlin.String? = null,
     @JsonProperty("stay_constraints")
     @field:Valid
-    val stayConstraints: StayConstraints? = null,
+    val stayConstraints: StayConstraints? = null
 ) {
     companion object {
         @JvmStatic
@@ -77,7 +75,7 @@ data class Day(
         private var available: kotlin.Boolean? = null,
         private var checkin: kotlin.String? = null,
         private var checkout: kotlin.String? = null,
-        private var stayConstraints: StayConstraints? = null,
+        private var stayConstraints: StayConstraints? = null
     ) {
         fun date(date: java.time.LocalDate?) = apply { this.date = date }
 
@@ -90,13 +88,36 @@ data class Day(
         fun stayConstraints(stayConstraints: StayConstraints?) = apply { this.stayConstraints = stayConstraints }
 
         fun build(): Day {
-            return Day(
-                date = date,
-                available = available,
-                checkin = checkin,
-                checkout = checkout,
-                stayConstraints = stayConstraints,
-            )
+            val instance =
+                Day(
+                    date = date,
+                    available = available,
+                    checkin = checkin,
+                    checkout = checkout,
+                    stayConstraints = stayConstraints
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Day) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -106,6 +127,6 @@ data class Day(
             available = available,
             checkin = checkin,
             checkout = checkout,
-            stayConstraints = stayConstraints,
+            stayConstraints = stayConstraints
         )
 }

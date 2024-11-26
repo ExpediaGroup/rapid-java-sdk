@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Brand
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual chain.
@@ -57,7 +55,7 @@ data class Chain(
     // Map of the chain's brands.
     @JsonProperty("brands")
     @field:Valid
-    val brands: kotlin.collections.Map<kotlin.String, Brand>? = null,
+    val brands: kotlin.collections.Map<kotlin.String, Brand>? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +65,7 @@ data class Chain(
     class Builder(
         private var id: kotlin.String? = null,
         private var name: kotlin.String? = null,
-        private var brands: kotlin.collections.Map<kotlin.String, Brand>? = null,
+        private var brands: kotlin.collections.Map<kotlin.String, Brand>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -76,11 +74,34 @@ data class Chain(
         fun brands(brands: kotlin.collections.Map<kotlin.String, Brand>?) = apply { this.brands = brands }
 
         fun build(): Chain {
-            return Chain(
-                id = id,
-                name = name,
-                brands = brands,
-            )
+            val instance =
+                Chain(
+                    id = id,
+                    name = name,
+                    brands = brands
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Chain) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -88,6 +109,6 @@ data class Chain(
         Builder(
             id = id,
             name = name,
-            brands = brands,
+            brands = brands
         )
 }

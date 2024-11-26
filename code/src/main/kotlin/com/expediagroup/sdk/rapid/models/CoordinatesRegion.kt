@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.BoundingPolygon
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -56,7 +54,7 @@ data class CoordinatesRegion(
     val centerLatitude: java.math.BigDecimal? = null,
     @JsonProperty("bounding_polygon")
     @field:Valid
-    val boundingPolygon: BoundingPolygon? = null,
+    val boundingPolygon: BoundingPolygon? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class CoordinatesRegion(
     class Builder(
         private var centerLongitude: java.math.BigDecimal? = null,
         private var centerLatitude: java.math.BigDecimal? = null,
-        private var boundingPolygon: BoundingPolygon? = null,
+        private var boundingPolygon: BoundingPolygon? = null
     ) {
         fun centerLongitude(centerLongitude: java.math.BigDecimal?) = apply { this.centerLongitude = centerLongitude }
 
@@ -75,11 +73,34 @@ data class CoordinatesRegion(
         fun boundingPolygon(boundingPolygon: BoundingPolygon?) = apply { this.boundingPolygon = boundingPolygon }
 
         fun build(): CoordinatesRegion {
-            return CoordinatesRegion(
-                centerLongitude = centerLongitude,
-                centerLatitude = centerLatitude,
-                boundingPolygon = boundingPolygon,
-            )
+            val instance =
+                CoordinatesRegion(
+                    centerLongitude = centerLongitude,
+                    centerLatitude = centerLatitude,
+                    boundingPolygon = boundingPolygon
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CoordinatesRegion) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class CoordinatesRegion(
         Builder(
             centerLongitude = centerLongitude,
             centerLatitude = centerLatitude,
-            boundingPolygon = boundingPolygon,
+            boundingPolygon = boundingPolygon
         )
 }

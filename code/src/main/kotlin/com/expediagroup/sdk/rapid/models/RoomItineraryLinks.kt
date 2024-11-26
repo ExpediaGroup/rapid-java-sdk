@@ -25,22 +25,20 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.ChangeRoomDetailsOperationLink
 import com.expediagroup.sdk.rapid.operations.DeleteRoomOperationLink
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links - * `cancel` - Cancel the booking for this room * `change` - A PUT call to modify the details of the booking for this room (soft change) * `shop_for_change` - Shop for rates to evaluate for possible rebooking. This shop call will show the estimated financial impact of the change.<br>   Current parameters supported in shop for change: `checkin`, `checkout`, `occupancy` See: [additional rates](#get-/properties/-property_id-/availability)
@@ -58,7 +56,7 @@ data class RoomItineraryLinks(
     val change: ChangeRoomDetailsOperationLink? = null,
     @JsonProperty("shop_for_change")
     @field:Valid
-    val shopForChange: GetAdditionalAvailabilityOperationLink? = null,
+    val shopForChange: GetAdditionalAvailabilityOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -68,7 +66,7 @@ data class RoomItineraryLinks(
     class Builder(
         private var cancel: DeleteRoomOperationLink? = null,
         private var change: ChangeRoomDetailsOperationLink? = null,
-        private var shopForChange: GetAdditionalAvailabilityOperationLink? = null,
+        private var shopForChange: GetAdditionalAvailabilityOperationLink? = null
     ) {
         fun cancel(cancel: DeleteRoomOperationLink?) = apply { this.cancel = cancel }
 
@@ -77,11 +75,34 @@ data class RoomItineraryLinks(
         fun shopForChange(shopForChange: GetAdditionalAvailabilityOperationLink?) = apply { this.shopForChange = shopForChange }
 
         fun build(): RoomItineraryLinks {
-            return RoomItineraryLinks(
-                cancel = cancel,
-                change = change,
-                shopForChange = shopForChange,
-            )
+            val instance =
+                RoomItineraryLinks(
+                    cancel = cancel,
+                    change = change,
+                    shopForChange = shopForChange
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RoomItineraryLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -89,6 +110,6 @@ data class RoomItineraryLinks(
         Builder(
             cancel = cancel,
             change = change,
-            shopForChange = shopForChange,
+            shopForChange = shopForChange
         )
 }

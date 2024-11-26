@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.GetPropertyContentOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Container for localized address information.
@@ -49,7 +47,7 @@ data class Localized(
     // Keyed by the language, a map of links to the property’s localized address(es) based on the primary language(s) spoken in the property’s country. Only languages supported by the Rapid API are provided.
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null,
+    val links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null
 ) {
     companion object {
         @JvmStatic
@@ -57,19 +55,42 @@ data class Localized(
     }
 
     class Builder(
-        private var links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null,
+        private var links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>? = null
     ) {
         fun links(links: kotlin.collections.Map<kotlin.String, GetPropertyContentOperationLink>?) = apply { this.links = links }
 
         fun build(): Localized {
-            return Localized(
-                links = links,
-            )
+            val instance =
+                Localized(
+                    links = links
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Localized) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            links = links,
+            links = links
         )
 }

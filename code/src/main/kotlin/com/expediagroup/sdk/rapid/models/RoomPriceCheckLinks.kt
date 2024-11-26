@@ -25,23 +25,21 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.CommitChangeOperationLink
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationLink
 import com.expediagroup.sdk.rapid.operations.PostItineraryOperationLink
 import com.expediagroup.sdk.rapid.operations.PostPaymentSessionsOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including links to continue booking this rate or to shop for additional rates.  If this rate is still available for booking then a book link will be present if PSD2 is not a requirement for you or a payment_session link will be present if PSD2 is a requirement for you.
@@ -63,7 +61,7 @@ data class RoomPriceCheckLinks(
     val paymentSession: PostPaymentSessionsOperationLink? = null,
     @JsonProperty("additional_rates")
     @field:Valid
-    val additionalRates: GetAdditionalAvailabilityOperationLink? = null,
+    val additionalRates: GetAdditionalAvailabilityOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -74,7 +72,7 @@ data class RoomPriceCheckLinks(
         private var book: PostItineraryOperationLink? = null,
         private var commit: CommitChangeOperationLink? = null,
         private var paymentSession: PostPaymentSessionsOperationLink? = null,
-        private var additionalRates: GetAdditionalAvailabilityOperationLink? = null,
+        private var additionalRates: GetAdditionalAvailabilityOperationLink? = null
     ) {
         fun book(book: PostItineraryOperationLink?) = apply { this.book = book }
 
@@ -85,12 +83,35 @@ data class RoomPriceCheckLinks(
         fun additionalRates(additionalRates: GetAdditionalAvailabilityOperationLink?) = apply { this.additionalRates = additionalRates }
 
         fun build(): RoomPriceCheckLinks {
-            return RoomPriceCheckLinks(
-                book = book,
-                commit = commit,
-                paymentSession = paymentSession,
-                additionalRates = additionalRates,
-            )
+            val instance =
+                RoomPriceCheckLinks(
+                    book = book,
+                    commit = commit,
+                    paymentSession = paymentSession,
+                    additionalRates = additionalRates
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RoomPriceCheckLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -99,6 +120,6 @@ data class RoomPriceCheckLinks(
             book = book,
             commit = commit,
             paymentSession = paymentSession,
-            additionalRates = additionalRates,
+            additionalRates = additionalRates
         )
 }
