@@ -167,7 +167,6 @@ public class BookService extends RapidService {
                 ChangeRoomDetailsRequest.builder()
                         .givenName("Jane")
                         .familyName("Doe")
-                        .smoking(true)
                         .build());
 
         return rapidClient.execute(changeRoomDetailsOperation);
