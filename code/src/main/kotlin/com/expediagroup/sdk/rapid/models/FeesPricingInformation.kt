@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.ChargeCalculated
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The fees collected by the property. The values for each type of fee are the total for that type.  Mandatory fees are collected by the property at check-in or check-out. Resort fees are charged for amenities and extras and collected by the property at check-in or check-out. Mandatory taxes are taxes collected by the property at check-in or check-out.
@@ -54,7 +52,7 @@ data class FeesPricingInformation(
     val resortFee: ChargeCalculated? = null,
     @JsonProperty("mandatory_tax")
     @field:Valid
-    val mandatoryTax: ChargeCalculated? = null,
+    val mandatoryTax: ChargeCalculated? = null
 ) {
     companion object {
         @JvmStatic
@@ -64,7 +62,7 @@ data class FeesPricingInformation(
     class Builder(
         private var mandatoryFee: ChargeCalculated? = null,
         private var resortFee: ChargeCalculated? = null,
-        private var mandatoryTax: ChargeCalculated? = null,
+        private var mandatoryTax: ChargeCalculated? = null
     ) {
         fun mandatoryFee(mandatoryFee: ChargeCalculated?) = apply { this.mandatoryFee = mandatoryFee }
 
@@ -73,11 +71,34 @@ data class FeesPricingInformation(
         fun mandatoryTax(mandatoryTax: ChargeCalculated?) = apply { this.mandatoryTax = mandatoryTax }
 
         fun build(): FeesPricingInformation {
-            return FeesPricingInformation(
-                mandatoryFee = mandatoryFee,
-                resortFee = resortFee,
-                mandatoryTax = mandatoryTax,
-            )
+            val instance =
+                FeesPricingInformation(
+                    mandatoryFee = mandatoryFee,
+                    resortFee = resortFee,
+                    mandatoryTax = mandatoryTax
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: FeesPricingInformation) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -85,6 +106,6 @@ data class FeesPricingInformation(
         Builder(
             mandatoryFee = mandatoryFee,
             resortFee = resortFee,
-            mandatoryTax = mandatoryTax,
+            mandatoryTax = mandatoryTax
         )
 }

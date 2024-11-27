@@ -25,19 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.TraderDetailsInner
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * The professional entity or entities that sells the property inventory or related services.
@@ -47,12 +46,13 @@ import javax.validation.constraints.Size
 data class TraderInformation(
     // The url linking to the full text terms and conditions.
     @JsonProperty("terms_and_conditions")
+    @field:NotNull
     @field:Valid
     val termsAndConditions: kotlin.String,
     // An array of traders.
     @JsonProperty("traders")
     @field:Valid
-    val traders: kotlin.collections.List<TraderDetailsInner>? = null,
+    val traders: kotlin.collections.List<TraderDetailsInner>? = null
 ) {
     companion object {
         @JvmStatic
@@ -61,24 +61,39 @@ data class TraderInformation(
 
     class Builder(
         private var termsAndConditions: kotlin.String? = null,
-        private var traders: kotlin.collections.List<TraderDetailsInner>? = null,
+        private var traders: kotlin.collections.List<TraderDetailsInner>? = null
     ) {
         fun termsAndConditions(termsAndConditions: kotlin.String) = apply { this.termsAndConditions = termsAndConditions }
 
         fun traders(traders: kotlin.collections.List<TraderDetailsInner>?) = apply { this.traders = traders }
 
         fun build(): TraderInformation {
-            // Check required params
-            validateNullity()
-            return TraderInformation(
-                termsAndConditions = termsAndConditions!!,
-                traders = traders,
-            )
+            val instance =
+                TraderInformation(
+                    termsAndConditions = termsAndConditions!!,
+                    traders = traders
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (termsAndConditions == null) {
-                throw NullPointerException("Required parameter termsAndConditions is missing")
+        private fun validate(instance: TraderInformation) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -86,6 +101,6 @@ data class TraderInformation(
     fun toBuilder() =
         Builder(
             termsAndConditions = termsAndConditions!!,
-            traders = traders,
+            traders = traders
         )
 }

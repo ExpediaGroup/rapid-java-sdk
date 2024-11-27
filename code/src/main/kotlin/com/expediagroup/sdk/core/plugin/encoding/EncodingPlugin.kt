@@ -22,7 +22,7 @@ import io.ktor.client.plugins.compression.ContentEncoding
 internal object EncodingPlugin : Plugin<EncodingConfiguration> {
     override fun install(
         client: Client,
-        configurations: EncodingConfiguration,
+        configurations: EncodingConfiguration
     ) {
         configurations.httpClientConfiguration.install(ContentEncoding) {
             gzip()

@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -47,5 +47,5 @@ enum class TripReason(val value: kotlin.String) {
     FRIENDS_AND_FAMILY("friends_and_family"),
 
     @JsonProperty("business_and_leisure")
-    BUSINESS_AND_LEISURE("business_and_leisure"),
+    BUSINESS_AND_LEISURE("business_and_leisure")
 }

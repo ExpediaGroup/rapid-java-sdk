@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -75,7 +73,7 @@ data class PaymentSessionsRequestCustomerAccountDetails(
     // Number of purchases with this cardholder's account during the previous six months.
     @JsonProperty("account_purchases")
     @field:Valid
-    val accountPurchases: java.math.BigDecimal? = null,
+    val accountPurchases: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -89,13 +87,11 @@ data class PaymentSessionsRequestCustomerAccountDetails(
         private var changeDate: kotlin.String? = null,
         private var passwordChangeDate: kotlin.String? = null,
         private var addCardAttempts: java.math.BigDecimal? = null,
-        private var accountPurchases: java.math.BigDecimal? = null,
+        private var accountPurchases: java.math.BigDecimal? = null
     ) {
-        fun authenticationMethod(authenticationMethod: PaymentSessionsRequestCustomerAccountDetails.AuthenticationMethod?) =
-            apply { this.authenticationMethod = authenticationMethod }
+        fun authenticationMethod(authenticationMethod: PaymentSessionsRequestCustomerAccountDetails.AuthenticationMethod?) = apply { this.authenticationMethod = authenticationMethod }
 
-        fun authenticationTimestamp(authenticationTimestamp: kotlin.String?) =
-            apply { this.authenticationTimestamp = authenticationTimestamp }
+        fun authenticationTimestamp(authenticationTimestamp: kotlin.String?) = apply { this.authenticationTimestamp = authenticationTimestamp }
 
         fun createDate(createDate: kotlin.String?) = apply { this.createDate = createDate }
 
@@ -108,15 +104,38 @@ data class PaymentSessionsRequestCustomerAccountDetails(
         fun accountPurchases(accountPurchases: java.math.BigDecimal?) = apply { this.accountPurchases = accountPurchases }
 
         fun build(): PaymentSessionsRequestCustomerAccountDetails {
-            return PaymentSessionsRequestCustomerAccountDetails(
-                authenticationMethod = authenticationMethod,
-                authenticationTimestamp = authenticationTimestamp,
-                createDate = createDate,
-                changeDate = changeDate,
-                passwordChangeDate = passwordChangeDate,
-                addCardAttempts = addCardAttempts,
-                accountPurchases = accountPurchases,
-            )
+            val instance =
+                PaymentSessionsRequestCustomerAccountDetails(
+                    authenticationMethod = authenticationMethod,
+                    authenticationTimestamp = authenticationTimestamp,
+                    createDate = createDate,
+                    changeDate = changeDate,
+                    passwordChangeDate = passwordChangeDate,
+                    addCardAttempts = addCardAttempts,
+                    accountPurchases = accountPurchases
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PaymentSessionsRequestCustomerAccountDetails) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -128,7 +147,7 @@ data class PaymentSessionsRequestCustomerAccountDetails(
             changeDate = changeDate,
             passwordChangeDate = passwordChangeDate,
             addCardAttempts = addCardAttempts,
-            accountPurchases = accountPurchases,
+            accountPurchases = accountPurchases
         )
 
     /**
@@ -152,6 +171,6 @@ data class PaymentSessionsRequestCustomerAccountDetails(
         THIRD_PARTY_AUTHENTICATION("third_party_authentication"),
 
         @JsonProperty("fido_authentication")
-        FIDO_AUTHENTICATION("fido_authentication"),
+        FIDO_AUTHENTICATION("fido_authentication")
     }
 }

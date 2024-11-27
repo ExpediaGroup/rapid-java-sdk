@@ -25,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class DeleteHeldBookingOperation private constructor(
     params: DeleteHeldBookingOperationParams?,
-    link: DeleteHeldBookingOperationLink?,
+    link: DeleteHeldBookingOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}"),
         "DELETE",
         "deleteHeldBooking",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: DeleteHeldBookingOperationParams,
+        params: DeleteHeldBookingOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: DeleteHeldBookingOperationLink,
-        context: DeleteHeldBookingOperationContext,
+        context: DeleteHeldBookingOperationContext
     ) : this(
         DeleteHeldBookingOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {

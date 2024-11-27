@@ -34,7 +34,7 @@ fun Throwable.handleWith(transactionId: String?): Nothing {
         else -> throw ExpediaGroupServiceException(
             ExceptionMessageProvider.getExceptionOccurredWithTransactionIdMessage(transactionId, message),
             this,
-            transactionId,
+            transactionId
         )
     }
 }

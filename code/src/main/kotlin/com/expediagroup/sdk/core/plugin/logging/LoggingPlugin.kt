@@ -27,12 +27,12 @@ internal object LoggingPlugin : Plugin<LoggingConfiguration> {
 
     override fun install(
         client: Client,
-        configurations: LoggingConfiguration,
+        configurations: LoggingConfiguration
     ) {
         clientLoggingMaskedFieldsProviders[client] =
             LoggingMaskedFieldsProvider(
                 configurations.maskedLoggingHeaders,
-                configurations.maskedLoggingBodyFields,
+                configurations.maskedLoggingBodyFields
             )
         configurations.httpClientConfiguration.install(Logging) {
             logger = configurations.getLogger(client)
@@ -47,6 +47,4 @@ internal object LoggingPlugin : Plugin<LoggingConfiguration> {
 }
 
 internal fun Client.getLoggingMaskedFieldsProvider(): LoggingMaskedFieldsProvider =
-    LoggingPlugin.clientLoggingMaskedFieldsProviders[this] ?: throw ExpediaGroupClientException(
-        ExceptionMessage.LOGGING_MASKED_FIELDS_NOT_CONFIGURED_FOR_CLIENT,
-    )
+    LoggingPlugin.clientLoggingMaskedFieldsProviders[this] ?: throw ExpediaGroupClientException(ExceptionMessage.LOGGING_MASKED_FIELDS_NOT_CONFIGURED_FOR_CLIENT)

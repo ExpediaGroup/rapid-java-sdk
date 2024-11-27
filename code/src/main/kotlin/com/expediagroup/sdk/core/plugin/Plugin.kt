@@ -21,7 +21,7 @@ internal interface Plugin<in C : PluginConfiguration> {
     /** Install a plugin. */
     fun install(
         client: Client,
-        configurations: C,
+        configurations: C
     )
 }
 

@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.CompletePaymentSessionLinks
 import com.expediagroup.sdk.rapid.models.TraderInformation
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The payment session response.
@@ -56,7 +54,7 @@ data class CompletePaymentSession(
     val links: CompletePaymentSessionLinks? = null,
     @JsonProperty("trader_information")
     @field:Valid
-    val traderInformation: TraderInformation? = null,
+    val traderInformation: TraderInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class CompletePaymentSession(
     class Builder(
         private var itineraryId: kotlin.String? = null,
         private var links: CompletePaymentSessionLinks? = null,
-        private var traderInformation: TraderInformation? = null,
+        private var traderInformation: TraderInformation? = null
     ) {
         fun itineraryId(itineraryId: kotlin.String?) = apply { this.itineraryId = itineraryId }
 
@@ -75,11 +73,34 @@ data class CompletePaymentSession(
         fun traderInformation(traderInformation: TraderInformation?) = apply { this.traderInformation = traderInformation }
 
         fun build(): CompletePaymentSession {
-            return CompletePaymentSession(
-                itineraryId = itineraryId,
-                links = links,
-                traderInformation = traderInformation,
-            )
+            val instance =
+                CompletePaymentSession(
+                    itineraryId = itineraryId,
+                    links = links,
+                    traderInformation = traderInformation
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CompletePaymentSession) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class CompletePaymentSession(
         Builder(
             itineraryId = itineraryId,
             links = links,
-            traderInformation = traderInformation,
+            traderInformation = traderInformation
         )
 }

@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Address1
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -56,7 +54,7 @@ data class BillingContact(
     val familyName: kotlin.String? = null,
     @JsonProperty("address")
     @field:Valid
-    val address: Address1? = null,
+    val address: Address1? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class BillingContact(
     class Builder(
         private var givenName: kotlin.String? = null,
         private var familyName: kotlin.String? = null,
-        private var address: Address1? = null,
+        private var address: Address1? = null
     ) {
         fun givenName(givenName: kotlin.String?) = apply { this.givenName = givenName }
 
@@ -75,11 +73,34 @@ data class BillingContact(
         fun address(address: Address1?) = apply { this.address = address }
 
         fun build(): BillingContact {
-            return BillingContact(
-                givenName = givenName,
-                familyName = familyName,
-                address = address,
-            )
+            val instance =
+                BillingContact(
+                    givenName = givenName,
+                    familyName = familyName,
+                    address = address
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: BillingContact) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class BillingContact(
         Builder(
             givenName = givenName,
             familyName = familyName,
-            address = address,
+            address = address
         )
 }

@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Loyalty
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -71,7 +69,7 @@ data class ChangeRoomDetailsRequest(
     val loyaltyId: kotlin.String? = null,
     @JsonProperty("loyalty")
     @field:Valid
-    val loyalty: Loyalty? = null,
+    val loyalty: Loyalty? = null
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +82,7 @@ data class ChangeRoomDetailsRequest(
         private var smoking: kotlin.Boolean? = null,
         private var specialRequest: kotlin.String? = null,
         private var loyaltyId: kotlin.String? = null,
-        private var loyalty: Loyalty? = null,
+        private var loyalty: Loyalty? = null
     ) {
         fun givenName(givenName: kotlin.String?) = apply { this.givenName = givenName }
 
@@ -99,14 +97,37 @@ data class ChangeRoomDetailsRequest(
         fun loyalty(loyalty: Loyalty?) = apply { this.loyalty = loyalty }
 
         fun build(): ChangeRoomDetailsRequest {
-            return ChangeRoomDetailsRequest(
-                givenName = givenName,
-                familyName = familyName,
-                smoking = smoking,
-                specialRequest = specialRequest,
-                loyaltyId = loyaltyId,
-                loyalty = loyalty,
-            )
+            val instance =
+                ChangeRoomDetailsRequest(
+                    givenName = givenName,
+                    familyName = familyName,
+                    smoking = smoking,
+                    specialRequest = specialRequest,
+                    loyaltyId = loyaltyId,
+                    loyalty = loyalty
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ChangeRoomDetailsRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -117,6 +138,6 @@ data class ChangeRoomDetailsRequest(
             smoking = smoking,
             specialRequest = specialRequest,
             loyaltyId = loyaltyId,
-            loyalty = loyalty,
+            loyalty = loyalty
         )
 }

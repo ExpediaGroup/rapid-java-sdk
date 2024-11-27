@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Property
 import com.expediagroup.sdk.rapid.models.UnavailableReason
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -55,7 +53,7 @@ data class PropertyUnavailability(
     override val score: java.math.BigDecimal? = null,
     @JsonProperty("unavailable_reason")
     @field:Valid
-    val unavailableReason: UnavailableReason? = null,
+    val unavailableReason: UnavailableReason? = null
 ) : Property {
     @JsonProperty("status")
     override val status: Property.Status = Property.Status.PARTIALLY_UNAVAILABLE
@@ -68,7 +66,7 @@ data class PropertyUnavailability(
     class Builder(
         private var propertyId: kotlin.String? = null,
         private var score: java.math.BigDecimal? = null,
-        private var unavailableReason: UnavailableReason? = null,
+        private var unavailableReason: UnavailableReason? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -77,11 +75,34 @@ data class PropertyUnavailability(
         fun unavailableReason(unavailableReason: UnavailableReason?) = apply { this.unavailableReason = unavailableReason }
 
         fun build(): PropertyUnavailability {
-            return PropertyUnavailability(
-                propertyId = propertyId,
-                score = score,
-                unavailableReason = unavailableReason,
-            )
+            val instance =
+                PropertyUnavailability(
+                    propertyId = propertyId,
+                    score = score,
+                    unavailableReason = unavailableReason
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyUnavailability) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -89,6 +110,6 @@ data class PropertyUnavailability(
         Builder(
             propertyId = propertyId,
             score = score,
-            unavailableReason = unavailableReason,
+            unavailableReason = unavailableReason
         )
 }

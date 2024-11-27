@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [GetInactivePropertiesOperationParams]
  */
 class GetInactivePropertiesOperation(
-    params: GetInactivePropertiesOperationParams,
+    params: GetInactivePropertiesOperationParams
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         "/v3/properties/inactive",
         "GET",
         "getInactiveProperties",
         null,
-        params,
+        params
     )

@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amount
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An object representing a charge. Information about the charge is provided in both the billable currency and the request currency.
@@ -50,7 +48,7 @@ data class Charge(
     val billableCurrency: Amount? = null,
     @JsonProperty("request_currency")
     @field:Valid
-    val requestCurrency: Amount? = null,
+    val requestCurrency: Amount? = null
 ) {
     companion object {
         @JvmStatic
@@ -59,23 +57,46 @@ data class Charge(
 
     class Builder(
         private var billableCurrency: Amount? = null,
-        private var requestCurrency: Amount? = null,
+        private var requestCurrency: Amount? = null
     ) {
         fun billableCurrency(billableCurrency: Amount?) = apply { this.billableCurrency = billableCurrency }
 
         fun requestCurrency(requestCurrency: Amount?) = apply { this.requestCurrency = requestCurrency }
 
         fun build(): Charge {
-            return Charge(
-                billableCurrency = billableCurrency,
-                requestCurrency = requestCurrency,
-            )
+            val instance =
+                Charge(
+                    billableCurrency = billableCurrency,
+                    requestCurrency = requestCurrency
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Charge) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             billableCurrency = billableCurrency,
-            requestCurrency = requestCurrency,
+            requestCurrency = requestCurrency
         )
 }

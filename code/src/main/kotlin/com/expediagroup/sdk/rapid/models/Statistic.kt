@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual statistic.
@@ -56,7 +54,7 @@ data class Statistic(
     // Statistic value.
     @JsonProperty("value")
     @field:Valid
-    val `value`: kotlin.String? = null,
+    val `value`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class Statistic(
     class Builder(
         private var id: kotlin.String? = null,
         private var name: kotlin.String? = null,
-        private var `value`: kotlin.String? = null,
+        private var `value`: kotlin.String? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -75,11 +73,34 @@ data class Statistic(
         fun `value`(`value`: kotlin.String?) = apply { this.`value` = `value` }
 
         fun build(): Statistic {
-            return Statistic(
-                id = id,
-                name = name,
-                `value` = `value`,
-            )
+            val instance =
+                Statistic(
+                    id = id,
+                    name = name,
+                    `value` = `value`
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Statistic) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class Statistic(
         Builder(
             id = id,
             name = name,
-            `value` = `value`,
+            `value` = `value`
         )
 }

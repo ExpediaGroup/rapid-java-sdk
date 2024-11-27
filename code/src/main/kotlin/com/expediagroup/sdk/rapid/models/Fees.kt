@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Information related to a property's fees.
@@ -51,7 +49,7 @@ data class Fees(
     // Describes additional optional fees for items such as breakfast, wifi, parking, pets etc.
     @JsonProperty("optional")
     @field:Valid
-    val optional: kotlin.String? = null,
+    val optional: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class Fees(
 
     class Builder(
         private var mandatory: kotlin.String? = null,
-        private var optional: kotlin.String? = null,
+        private var optional: kotlin.String? = null
     ) {
         fun mandatory(mandatory: kotlin.String?) = apply { this.mandatory = mandatory }
 
         fun optional(optional: kotlin.String?) = apply { this.optional = optional }
 
         fun build(): Fees {
-            return Fees(
-                mandatory = mandatory,
-                optional = optional,
-            )
+            val instance =
+                Fees(
+                    mandatory = mandatory,
+                    optional = optional
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Fees) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             mandatory = mandatory,
-            optional = optional,
+            optional = optional
         )
 }

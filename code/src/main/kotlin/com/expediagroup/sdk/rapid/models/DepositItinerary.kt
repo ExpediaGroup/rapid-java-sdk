@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The deposit policy associated with the itinerary.
@@ -56,7 +54,7 @@ data class DepositItinerary(
     // The due date/time of the deposit.
     @JsonProperty("due")
     @field:Valid
-    val due: kotlin.String? = null,
+    val due: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class DepositItinerary(
     class Builder(
         private var currency: kotlin.String? = null,
         private var `value`: kotlin.String? = null,
-        private var due: kotlin.String? = null,
+        private var due: kotlin.String? = null
     ) {
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
@@ -75,11 +73,34 @@ data class DepositItinerary(
         fun due(due: kotlin.String?) = apply { this.due = due }
 
         fun build(): DepositItinerary {
-            return DepositItinerary(
-                currency = currency,
-                `value` = `value`,
-                due = due,
-            )
+            val instance =
+                DepositItinerary(
+                    currency = currency,
+                    `value` = `value`,
+                    due = due
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: DepositItinerary) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class DepositItinerary(
         Builder(
             currency = currency,
             `value` = `value`,
-            due = due,
+            due = due
         )
 }

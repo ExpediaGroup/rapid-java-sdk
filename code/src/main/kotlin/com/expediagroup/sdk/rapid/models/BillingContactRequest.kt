@@ -25,19 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.BillingContactRequestAddress
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -48,15 +47,18 @@ import javax.validation.constraints.Size
 data class BillingContactRequest(
     // First/given name of the payment type account holder. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("given_name")
+    @field:NotNull
     @field:Valid
     val givenName: kotlin.String,
     // Last/family name of the payment type account holder. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("family_name")
+    @field:NotNull
     @field:Valid
     val familyName: kotlin.String,
     @JsonProperty("address")
+    @field:NotNull
     @field:Valid
-    val address: BillingContactRequestAddress,
+    val address: BillingContactRequestAddress
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +68,7 @@ data class BillingContactRequest(
     class Builder(
         private var givenName: kotlin.String? = null,
         private var familyName: kotlin.String? = null,
-        private var address: BillingContactRequestAddress? = null,
+        private var address: BillingContactRequestAddress? = null
     ) {
         fun givenName(givenName: kotlin.String) = apply { this.givenName = givenName }
 
@@ -75,24 +77,33 @@ data class BillingContactRequest(
         fun address(address: BillingContactRequestAddress) = apply { this.address = address }
 
         fun build(): BillingContactRequest {
-            // Check required params
-            validateNullity()
-            return BillingContactRequest(
-                givenName = givenName!!,
-                familyName = familyName!!,
-                address = address!!,
-            )
+            val instance =
+                BillingContactRequest(
+                    givenName = givenName!!,
+                    familyName = familyName!!,
+                    address = address!!
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (givenName == null) {
-                throw NullPointerException("Required parameter givenName is missing")
-            }
-            if (familyName == null) {
-                throw NullPointerException("Required parameter familyName is missing")
-            }
-            if (address == null) {
-                throw NullPointerException("Required parameter address is missing")
+        private fun validate(instance: BillingContactRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -101,6 +112,6 @@ data class BillingContactRequest(
         Builder(
             givenName = givenName!!,
             familyName = familyName!!,
-            address = address!!,
+            address = address!!
         )
 }

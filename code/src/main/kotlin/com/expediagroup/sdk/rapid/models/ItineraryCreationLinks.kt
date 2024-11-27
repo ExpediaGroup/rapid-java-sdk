@@ -25,23 +25,21 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationLink
 import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationLink
 import com.expediagroup.sdk.rapid.operations.PutCompletePaymentSessionOperationLink
 import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including links to retrieve a booking, resume a held booking, cancel a held booking, or complete a payment session if a challenge is used.
@@ -63,7 +61,7 @@ data class ItineraryCreationLinks(
     val completePaymentSession: PutCompletePaymentSessionOperationLink? = null,
     @JsonProperty("cancel")
     @field:Valid
-    val cancel: DeleteHeldBookingOperationLink? = null,
+    val cancel: DeleteHeldBookingOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -74,26 +72,46 @@ data class ItineraryCreationLinks(
         private var retrieve: GetReservationByItineraryIdOperationLink? = null,
         private var resume: PutResumeBookingOperationLink? = null,
         private var completePaymentSession: PutCompletePaymentSessionOperationLink? = null,
-        private var cancel: DeleteHeldBookingOperationLink? = null,
+        private var cancel: DeleteHeldBookingOperationLink? = null
     ) {
         fun retrieve(retrieve: GetReservationByItineraryIdOperationLink?) = apply { this.retrieve = retrieve }
 
         fun resume(resume: PutResumeBookingOperationLink?) = apply { this.resume = resume }
 
-        fun completePaymentSession(completePaymentSession: PutCompletePaymentSessionOperationLink?) =
-            apply {
-                this.completePaymentSession = completePaymentSession
-            }
+        fun completePaymentSession(completePaymentSession: PutCompletePaymentSessionOperationLink?) = apply { this.completePaymentSession = completePaymentSession }
 
         fun cancel(cancel: DeleteHeldBookingOperationLink?) = apply { this.cancel = cancel }
 
         fun build(): ItineraryCreationLinks {
-            return ItineraryCreationLinks(
-                retrieve = retrieve,
-                resume = resume,
-                completePaymentSession = completePaymentSession,
-                cancel = cancel,
-            )
+            val instance =
+                ItineraryCreationLinks(
+                    retrieve = retrieve,
+                    resume = resume,
+                    completePaymentSession = completePaymentSession,
+                    cancel = cancel
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ItineraryCreationLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -102,6 +120,6 @@ data class ItineraryCreationLinks(
             retrieve = retrieve,
             resume = resume,
             completePaymentSession = completePaymentSession,
-            cancel = cancel,
+            cancel = cancel
         )
 }

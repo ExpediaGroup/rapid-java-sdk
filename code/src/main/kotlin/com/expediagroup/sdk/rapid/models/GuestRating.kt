@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Rating information provided by guests who stayed at this property.
@@ -101,7 +99,7 @@ data class GuestRating(
     // The percent of guests who recommend staying at this property.
     @JsonProperty("recommendation_percent")
     @field:Valid
-    val recommendationPercent: kotlin.String? = null,
+    val recommendationPercent: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -120,7 +118,7 @@ data class GuestRating(
         private var quality: kotlin.String? = null,
         private var `value`: kotlin.String? = null,
         private var amenities: kotlin.String? = null,
-        private var recommendationPercent: kotlin.String? = null,
+        private var recommendationPercent: kotlin.String? = null
     ) {
         fun count(count: java.math.BigDecimal?) = apply { this.count = count }
 
@@ -147,20 +145,43 @@ data class GuestRating(
         fun recommendationPercent(recommendationPercent: kotlin.String?) = apply { this.recommendationPercent = recommendationPercent }
 
         fun build(): GuestRating {
-            return GuestRating(
-                count = count,
-                overall = overall,
-                cleanliness = cleanliness,
-                service = service,
-                comfort = comfort,
-                condition = condition,
-                location = location,
-                neighborhood = neighborhood,
-                quality = quality,
-                `value` = `value`,
-                amenities = amenities,
-                recommendationPercent = recommendationPercent,
-            )
+            val instance =
+                GuestRating(
+                    count = count,
+                    overall = overall,
+                    cleanliness = cleanliness,
+                    service = service,
+                    comfort = comfort,
+                    condition = condition,
+                    location = location,
+                    neighborhood = neighborhood,
+                    quality = quality,
+                    `value` = `value`,
+                    amenities = amenities,
+                    recommendationPercent = recommendationPercent
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: GuestRating) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -177,6 +198,6 @@ data class GuestRating(
             quality = quality,
             `value` = `value`,
             amenities = amenities,
-            recommendationPercent = recommendationPercent,
+            recommendationPercent = recommendationPercent
         )
 }

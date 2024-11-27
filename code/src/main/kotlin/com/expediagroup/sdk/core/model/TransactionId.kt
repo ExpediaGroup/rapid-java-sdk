@@ -20,11 +20,7 @@ import java.util.UUID
 class TransactionId {
     private var transactionId: UUID = UUID.randomUUID()
 
-    fun peek(): UUID {
-        return transactionId
-    }
+    fun peek(): UUID = transactionId
 
-    fun dequeue(): UUID {
-        return transactionId.also { transactionId = UUID.randomUUID() }
-    }
+    fun dequeue(): UUID = transactionId.also { transactionId = UUID.randomUUID() }
 }

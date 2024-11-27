@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -46,7 +44,7 @@ data class CreditCardMerchant(
     // Name of the merchant to use during 3rd party authorization for PSD2.
     @JsonProperty("name")
     @field:Valid
-    val name: kotlin.String? = null,
+    val name: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,19 +52,42 @@ data class CreditCardMerchant(
     }
 
     class Builder(
-        private var name: kotlin.String? = null,
+        private var name: kotlin.String? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun build(): CreditCardMerchant {
-            return CreditCardMerchant(
-                name = name,
-            )
+            val instance =
+                CreditCardMerchant(
+                    name = name
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CreditCardMerchant) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            name = name,
+            name = name
         )
 }

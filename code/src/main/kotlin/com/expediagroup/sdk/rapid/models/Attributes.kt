@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Attribute
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Attributes about the property. See our [attributes reference](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for current known attribute ID and name values.
@@ -52,7 +50,7 @@ data class Attributes(
     // Lists all of the pet attributes about the property.
     @JsonProperty("pets")
     @field:Valid
-    val pets: kotlin.collections.Map<kotlin.String, Attribute>? = null,
+    val pets: kotlin.collections.Map<kotlin.String, Attribute>? = null
 ) {
     companion object {
         @JvmStatic
@@ -61,23 +59,46 @@ data class Attributes(
 
     class Builder(
         private var general: kotlin.collections.Map<kotlin.String, Attribute>? = null,
-        private var pets: kotlin.collections.Map<kotlin.String, Attribute>? = null,
+        private var pets: kotlin.collections.Map<kotlin.String, Attribute>? = null
     ) {
         fun general(general: kotlin.collections.Map<kotlin.String, Attribute>?) = apply { this.general = general }
 
         fun pets(pets: kotlin.collections.Map<kotlin.String, Attribute>?) = apply { this.pets = pets }
 
         fun build(): Attributes {
-            return Attributes(
-                general = general,
-                pets = pets,
-            )
+            val instance =
+                Attributes(
+                    general = general,
+                    pets = pets
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Attributes) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             general = general,
-            pets = pets,
+            pets = pets
         )
 }

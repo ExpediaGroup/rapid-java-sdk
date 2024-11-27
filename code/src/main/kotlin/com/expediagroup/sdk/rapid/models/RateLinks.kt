@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.GetPaymentOptionsOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including a link to request payment options.
@@ -48,7 +46,7 @@ import javax.validation.constraints.Size
 data class RateLinks(
     @JsonProperty("payment_options")
     @field:Valid
-    val paymentOptions: GetPaymentOptionsOperationLink? = null,
+    val paymentOptions: GetPaymentOptionsOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,19 +54,42 @@ data class RateLinks(
     }
 
     class Builder(
-        private var paymentOptions: GetPaymentOptionsOperationLink? = null,
+        private var paymentOptions: GetPaymentOptionsOperationLink? = null
     ) {
         fun paymentOptions(paymentOptions: GetPaymentOptionsOperationLink?) = apply { this.paymentOptions = paymentOptions }
 
         fun build(): RateLinks {
-            return RateLinks(
-                paymentOptions = paymentOptions,
-            )
+            val instance =
+                RateLinks(
+                    paymentOptions = paymentOptions
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RateLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            paymentOptions = paymentOptions,
+            paymentOptions = paymentOptions
         )
 }

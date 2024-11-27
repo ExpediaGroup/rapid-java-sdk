@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual image. See our [image categories reference](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for current known caption and category values.
@@ -62,7 +60,7 @@ data class Image(
     // Contains urls for all of the image sizes available. Sizes may include: 70 px, 200px, 350 px, and 1,000 px
     @JsonProperty("links")
     @field:Valid
-    val links: kotlin.collections.Map<kotlin.String, Link>? = null,
+    val links: kotlin.collections.Map<kotlin.String, Link>? = null
 ) {
     companion object {
         @JvmStatic
@@ -73,7 +71,7 @@ data class Image(
         private var heroImage: kotlin.Boolean? = null,
         private var category: java.math.BigDecimal? = null,
         private var caption: kotlin.String? = null,
-        private var links: kotlin.collections.Map<kotlin.String, Link>? = null,
+        private var links: kotlin.collections.Map<kotlin.String, Link>? = null
     ) {
         fun heroImage(heroImage: kotlin.Boolean?) = apply { this.heroImage = heroImage }
 
@@ -84,12 +82,35 @@ data class Image(
         fun links(links: kotlin.collections.Map<kotlin.String, Link>?) = apply { this.links = links }
 
         fun build(): Image {
-            return Image(
-                heroImage = heroImage,
-                category = category,
-                caption = caption,
-                links = links,
-            )
+            val instance =
+                Image(
+                    heroImage = heroImage,
+                    category = category,
+                    caption = caption,
+                    links = links
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Image) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -98,6 +119,6 @@ data class Image(
             heroImage = heroImage,
             category = category,
             caption = caption,
-            links = links,
+            links = links
         )
 }

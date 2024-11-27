@@ -32,15 +32,14 @@ import io.ktor.client.engine.HttpClientEngine
 abstract class ExpediaGroupClient(
     namespace: String,
     clientConfiguration: ExpediaGroupClientConfiguration,
-    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE,
+    httpClientEngine: HttpClientEngine = DEFAULT_HTTP_CLIENT_ENGINE
 ) : Client(namespace) {
     private val _configurationProvider: ConfigurationProvider =
         ConfigurationCollector.create(
             clientConfiguration.toProvider(),
-            ExpediaGroupConfigurationProvider,
+            ExpediaGroupConfigurationProvider
         )
-    private val _httpClient: HttpClient =
-        buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BEARER, httpClientEngine)
+    private val _httpClient: HttpClient = buildHttpClient(_configurationProvider, AuthenticationStrategy.AuthenticationType.BEARER, httpClientEngine)
 
     init {
         finalize()
@@ -54,7 +53,7 @@ abstract class ExpediaGroupClient(
 
     /** An [ExpediaGroupClient] builder. */
     @Suppress("unused") // This is used by the generated SDK clients.
-    abstract class Builder<SELF : Builder<SELF>> : Client.Builder<SELF>() {
+    abstract class Builder<SELF : Builder<SELF>> : HttpConfigurableBuilder<SELF>() {
         /** Sets the API auth endpoint to use for requests. */
         protected var authEndpoint: String? = null
 

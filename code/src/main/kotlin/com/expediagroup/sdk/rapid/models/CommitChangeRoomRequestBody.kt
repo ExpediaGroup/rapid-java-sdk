@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.PaymentRequestWithPhone
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -51,7 +49,7 @@ data class CommitChangeRoomRequestBody(
     val changeReferenceId: kotlin.String? = null,
     @JsonProperty("payments")
     @field:Valid
-    val payments: kotlin.collections.List<PaymentRequestWithPhone>? = null,
+    val payments: kotlin.collections.List<PaymentRequestWithPhone>? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class CommitChangeRoomRequestBody(
 
     class Builder(
         private var changeReferenceId: kotlin.String? = null,
-        private var payments: kotlin.collections.List<PaymentRequestWithPhone>? = null,
+        private var payments: kotlin.collections.List<PaymentRequestWithPhone>? = null
     ) {
         fun changeReferenceId(changeReferenceId: kotlin.String?) = apply { this.changeReferenceId = changeReferenceId }
 
         fun payments(payments: kotlin.collections.List<PaymentRequestWithPhone>?) = apply { this.payments = payments }
 
         fun build(): CommitChangeRoomRequestBody {
-            return CommitChangeRoomRequestBody(
-                changeReferenceId = changeReferenceId,
-                payments = payments,
-            )
+            val instance =
+                CommitChangeRoomRequestBody(
+                    changeReferenceId = changeReferenceId,
+                    payments = payments
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CommitChangeRoomRequestBody) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             changeReferenceId = changeReferenceId,
-            payments = payments,
+            payments = payments
         )
 }

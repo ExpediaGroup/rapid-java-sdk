@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Review
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A property's verified guest reviews.
@@ -47,7 +45,7 @@ data class GuestReviewsVerified(
     // A collection of the guest reviews which have been verified, in order, starting with the newest.
     @JsonProperty("recent")
     @field:Valid
-    val recent: kotlin.collections.List<Review>? = null,
+    val recent: kotlin.collections.List<Review>? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,19 +53,42 @@ data class GuestReviewsVerified(
     }
 
     class Builder(
-        private var recent: kotlin.collections.List<Review>? = null,
+        private var recent: kotlin.collections.List<Review>? = null
     ) {
         fun recent(recent: kotlin.collections.List<Review>?) = apply { this.recent = recent }
 
         fun build(): GuestReviewsVerified {
-            return GuestReviewsVerified(
-                recent = recent,
-            )
+            val instance =
+                GuestReviewsVerified(
+                    recent = recent
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: GuestReviewsVerified) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            recent = recent,
+            recent = recent
         )
 }

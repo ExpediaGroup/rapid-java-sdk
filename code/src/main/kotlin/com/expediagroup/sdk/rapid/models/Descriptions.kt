@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Descriptions of a property.
@@ -91,7 +89,7 @@ data class Descriptions(
     // A general description of a vacation rental property.
     @JsonProperty("general")
     @field:Valid
-    val general: kotlin.String? = null,
+    val general: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -108,7 +106,7 @@ data class Descriptions(
         private var attractions: kotlin.String? = null,
         private var location: kotlin.String? = null,
         private var headline: kotlin.String? = null,
-        private var general: kotlin.String? = null,
+        private var general: kotlin.String? = null
     ) {
         fun amenities(amenities: kotlin.String?) = apply { this.amenities = amenities }
 
@@ -131,18 +129,41 @@ data class Descriptions(
         fun general(general: kotlin.String?) = apply { this.general = general }
 
         fun build(): Descriptions {
-            return Descriptions(
-                amenities = amenities,
-                dining = dining,
-                renovations = renovations,
-                nationalRatings = nationalRatings,
-                businessAmenities = businessAmenities,
-                rooms = rooms,
-                attractions = attractions,
-                location = location,
-                headline = headline,
-                general = general,
-            )
+            val instance =
+                Descriptions(
+                    amenities = amenities,
+                    dining = dining,
+                    renovations = renovations,
+                    nationalRatings = nationalRatings,
+                    businessAmenities = businessAmenities,
+                    rooms = rooms,
+                    attractions = attractions,
+                    location = location,
+                    headline = headline,
+                    general = general
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Descriptions) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -157,6 +178,6 @@ data class Descriptions(
             attractions = attractions,
             location = location,
             headline = headline,
-            general = general,
+            general = general
         )
 }

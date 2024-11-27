@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The property's check-in information.
@@ -71,7 +69,7 @@ data class Checkin(
     // The minimum age for a customer to be able to check-in at a property.
     @JsonProperty("min_age")
     @field:Valid
-    val minAge: java.math.BigDecimal? = null,
+    val minAge: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +82,7 @@ data class Checkin(
         private var endTime: kotlin.String? = null,
         private var instructions: kotlin.String? = null,
         private var specialInstructions: kotlin.String? = null,
-        private var minAge: java.math.BigDecimal? = null,
+        private var minAge: java.math.BigDecimal? = null
     ) {
         fun `24hour`(`24hour`: kotlin.String?) = apply { this.`24hour` = `24hour` }
 
@@ -99,14 +97,37 @@ data class Checkin(
         fun minAge(minAge: java.math.BigDecimal?) = apply { this.minAge = minAge }
 
         fun build(): Checkin {
-            return Checkin(
-                `24hour` = `24hour`,
-                beginTime = beginTime,
-                endTime = endTime,
-                instructions = instructions,
-                specialInstructions = specialInstructions,
-                minAge = minAge,
-            )
+            val instance =
+                Checkin(
+                    `24hour` = `24hour`,
+                    beginTime = beginTime,
+                    endTime = endTime,
+                    instructions = instructions,
+                    specialInstructions = specialInstructions,
+                    minAge = minAge
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Checkin) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -117,6 +138,6 @@ data class Checkin(
             endTime = endTime,
             instructions = instructions,
             specialInstructions = specialInstructions,
-            minAge = minAge,
+            minAge = minAge
         )
 }

@@ -35,60 +35,39 @@ internal interface ResponseState<T> {
 }
 
 internal class DefaultResponseState<T>(
-    private val response: Response<T>,
+    private val response: Response<T>
 ) : ResponseState<T> {
-    override fun getNextResponse(): Response<T> {
-        return response
-    }
+    override fun getNextResponse(): Response<T> = response
 
-    override fun hasNext(): Boolean {
-        return true
-    }
+    override fun hasNext(): Boolean = true
 }
 
 internal class LastResponseState<T> : ResponseState<T> {
-    override fun getNextResponse(): Response<T> {
-        throw NoSuchElementException()
-    }
+    override fun getNextResponse(): Response<T> = throw NoSuchElementException()
 
-    override fun hasNext(): Boolean {
-        return false
-    }
+    override fun hasNext(): Boolean = false
 }
 
 internal class FetchLinkState<T>(
     private val link: String,
     private val client: Client,
     private val fallbackBody: T,
-    private val getBody: suspend (HttpResponse) -> T,
+    private val getBody: suspend (HttpResponse) -> T
 ) : ResponseState<T> {
-    override fun getNextResponse(): Response<T> {
-        return runBlocking {
+    override fun getNextResponse(): Response<T> =
+        runBlocking {
             val response = client.performGet(link)
             val body = parseBody(response)
             Response(response.status.value, body, response.headers.entries())
         }
-    }
 
-    override fun hasNext(): Boolean {
-        return true
-    }
+    override fun hasNext(): Boolean = true
 
-    private suspend fun parseBody(response: HttpResponse): T {
-        return if (decodeBody(response).isEmpty()) fallbackBody else getBody(response)
-    }
+    private suspend fun parseBody(response: HttpResponse): T = if (decodeBody(response).isEmpty()) fallbackBody else getBody(response)
 
     private suspend fun decodeBody(response: HttpResponse): String {
         val byteReadChannel = prepareByteReadChannel(response)
-        val decodedByteReadChannel =
-            if (response.contentEncoding().equals(
-                    HeaderValue.GZIP,
-                )
-            ) {
-                client.httpClient.decode(byteReadChannel)
-            } else {
-                byteReadChannel
-            }
+        val decodedByteReadChannel = if (response.contentEncoding().equals(HeaderValue.GZIP)) client.httpClient.decode(byteReadChannel) else byteReadChannel
         val bodyString: String = decodedByteReadChannel.readRemaining().readText()
         return bodyString
     }
@@ -109,9 +88,7 @@ internal class ResponseStateFactory {
             link: String?,
             client: Client,
             fallbackBody: T,
-            getBody: suspend (HttpResponse) -> T,
-        ): ResponseState<T> {
-            return link?.let { FetchLinkState(it, client, fallbackBody, getBody) } ?: LastResponseState()
-        }
+            getBody: suspend (HttpResponse) -> T
+        ): ResponseState<T> = link?.let { FetchLinkState(it, client, fallbackBody, getBody) } ?: LastResponseState()
     }
 }

@@ -25,20 +25,19 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.PaymentRequest
 import com.expediagroup.sdk.rapid.models.PaymentSessionsRequestCustomerAccountDetails
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -53,32 +52,39 @@ import javax.validation.constraints.Size
 data class PaymentSessionsRequest(
     // The version of the EgPayments.js library.
     @JsonProperty("version")
+    @field:NotNull
     @field:Valid
     val version: kotlin.String,
     // The customer's browser accept header that was used in the booking request.
     @JsonProperty("browser_accept_header")
+    @field:NotNull
     @field:Valid
     val browserAcceptHeader: kotlin.String,
     // Encoded browser metadata, provided by the EgPayments.js library.
     @JsonProperty("encoded_browser_metadata")
+    @field:NotNull
     @field:Valid
     val encodedBrowserMetadata: kotlin.String,
     // The preferred window size that needs to be displayed to the customer. Following are the possible values of this field:   * `extra_small`: 250 x 400   * `small`: 390 x 400   * `medium`: 600 x 400   * `large`: 500 x 600   * `full_screen`: Full screen
     @JsonProperty("preferred_challenge_window_size")
+    @field:NotNull
     val preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize,
     // Fully qualified URL of merchant website or customer care site.
     @JsonProperty("merchant_url")
+    @field:NotNull
     @field:Valid
     val merchantUrl: kotlin.String,
     @JsonProperty("customer_account_details")
+    @field:NotNull
     @field:Valid
     val customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails,
     @JsonProperty("payments")
+    @field:NotNull
     @field:Valid
     val payments: kotlin.collections
         .List<
-            PaymentRequest,
-        >,
+            PaymentRequest
+        >
 ) {
     companion object {
         @JvmStatic
@@ -92,7 +98,7 @@ data class PaymentSessionsRequest(
         private var preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize? = null,
         private var merchantUrl: kotlin.String? = null,
         private var customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails? = null,
-        private var payments: kotlin.collections.List<PaymentRequest>? = null,
+        private var payments: kotlin.collections.List<PaymentRequest>? = null
     ) {
         fun version(version: kotlin.String) = apply { this.version = version }
 
@@ -102,53 +108,48 @@ data class PaymentSessionsRequest(
 
         fun preferredChallengeWindowSize(preferredChallengeWindowSize: PaymentSessionsRequest.PreferredChallengeWindowSize) =
             apply {
-                this.preferredChallengeWindowSize = preferredChallengeWindowSize
+                this.preferredChallengeWindowSize =
+                    preferredChallengeWindowSize
             }
 
         fun merchantUrl(merchantUrl: kotlin.String) = apply { this.merchantUrl = merchantUrl }
 
-        fun customerAccountDetails(customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails) =
-            apply {
-                this.customerAccountDetails = customerAccountDetails
-            }
+        fun customerAccountDetails(customerAccountDetails: PaymentSessionsRequestCustomerAccountDetails) = apply { this.customerAccountDetails = customerAccountDetails }
 
         fun payments(payments: kotlin.collections.List<PaymentRequest>) = apply { this.payments = payments }
 
         fun build(): PaymentSessionsRequest {
-            // Check required params
-            validateNullity()
-            return PaymentSessionsRequest(
-                version = version!!,
-                browserAcceptHeader = browserAcceptHeader!!,
-                encodedBrowserMetadata = encodedBrowserMetadata!!,
-                preferredChallengeWindowSize = preferredChallengeWindowSize!!,
-                merchantUrl = merchantUrl!!,
-                customerAccountDetails = customerAccountDetails!!,
-                payments = payments!!,
-            )
+            val instance =
+                PaymentSessionsRequest(
+                    version = version!!,
+                    browserAcceptHeader = browserAcceptHeader!!,
+                    encodedBrowserMetadata = encodedBrowserMetadata!!,
+                    preferredChallengeWindowSize = preferredChallengeWindowSize!!,
+                    merchantUrl = merchantUrl!!,
+                    customerAccountDetails = customerAccountDetails!!,
+                    payments = payments!!
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (version == null) {
-                throw NullPointerException("Required parameter version is missing")
-            }
-            if (browserAcceptHeader == null) {
-                throw NullPointerException("Required parameter browserAcceptHeader is missing")
-            }
-            if (encodedBrowserMetadata == null) {
-                throw NullPointerException("Required parameter encodedBrowserMetadata is missing")
-            }
-            if (preferredChallengeWindowSize == null) {
-                throw NullPointerException("Required parameter preferredChallengeWindowSize is missing")
-            }
-            if (merchantUrl == null) {
-                throw NullPointerException("Required parameter merchantUrl is missing")
-            }
-            if (customerAccountDetails == null) {
-                throw NullPointerException("Required parameter customerAccountDetails is missing")
-            }
-            if (payments == null) {
-                throw NullPointerException("Required parameter payments is missing")
+        private fun validate(instance: PaymentSessionsRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -161,7 +162,7 @@ data class PaymentSessionsRequest(
             preferredChallengeWindowSize = preferredChallengeWindowSize!!,
             merchantUrl = merchantUrl!!,
             customerAccountDetails = customerAccountDetails!!,
-            payments = payments!!,
+            payments = payments!!
         )
 
     /**
@@ -182,6 +183,6 @@ data class PaymentSessionsRequest(
         LARGE("large"),
 
         @JsonProperty("full_screen")
-        FULL_SCREEN("full_screen"),
+        FULL_SCREEN("full_screen")
     }
 }

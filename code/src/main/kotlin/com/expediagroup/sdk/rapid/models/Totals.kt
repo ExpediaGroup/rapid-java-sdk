@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Charge
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The total price of charges, given various criteria. * `inclusive` - provides the total price including taxes and fees. This does not include property collected fees such as resort, mandatory taxes, and mandatory fees. * `exclusive` - provides the total price excluding taxes and fees. * `property_inclusive` - provides the total price including taxes, fees, and property collected fees such as resort, mandatory taxes, and mandatory fees. * `inclusive_strikethrough` - provides the tax `inclusive` total price with any property funded discounts added back. Can be used to merchandise the savings due to a discount. * `strikethrough` - provides the tax `exclusive` total price with any property funded discounts added back. Can be used to merchandise the savings due to a discount. * `property_inclusive_strikethrough` - provides the tax, fees, and property collected fees `inclusive` total price with any property funded discounts added back. Can be used to merchandise the savings due to a discount. * `marketing_fee` - provides the potential owed earnings per transaction. * `gross_profit` - provides the estimated gross profit per transaction. * `minimum_selling_price` - provides the minimum selling price. * `property_fees` - provides the total of the fees collected by the property.
@@ -82,7 +80,7 @@ data class Totals(
     val minimumSellingPrice: Charge? = null,
     @JsonProperty("property_fees")
     @field:Valid
-    val propertyFees: Charge? = null,
+    val propertyFees: Charge? = null
 ) {
     companion object {
         @JvmStatic
@@ -99,7 +97,7 @@ data class Totals(
         private var marketingFee: Charge? = null,
         private var grossProfit: Charge? = null,
         private var minimumSellingPrice: Charge? = null,
-        private var propertyFees: Charge? = null,
+        private var propertyFees: Charge? = null
     ) {
         fun inclusive(inclusive: Charge?) = apply { this.inclusive = inclusive }
 
@@ -111,10 +109,7 @@ data class Totals(
 
         fun strikethrough(strikethrough: Charge?) = apply { this.strikethrough = strikethrough }
 
-        fun propertyInclusiveStrikethrough(propertyInclusiveStrikethrough: Charge?) =
-            apply {
-                this.propertyInclusiveStrikethrough = propertyInclusiveStrikethrough
-            }
+        fun propertyInclusiveStrikethrough(propertyInclusiveStrikethrough: Charge?) = apply { this.propertyInclusiveStrikethrough = propertyInclusiveStrikethrough }
 
         fun marketingFee(marketingFee: Charge?) = apply { this.marketingFee = marketingFee }
 
@@ -125,18 +120,41 @@ data class Totals(
         fun propertyFees(propertyFees: Charge?) = apply { this.propertyFees = propertyFees }
 
         fun build(): Totals {
-            return Totals(
-                inclusive = inclusive,
-                exclusive = exclusive,
-                propertyInclusive = propertyInclusive,
-                inclusiveStrikethrough = inclusiveStrikethrough,
-                strikethrough = strikethrough,
-                propertyInclusiveStrikethrough = propertyInclusiveStrikethrough,
-                marketingFee = marketingFee,
-                grossProfit = grossProfit,
-                minimumSellingPrice = minimumSellingPrice,
-                propertyFees = propertyFees,
-            )
+            val instance =
+                Totals(
+                    inclusive = inclusive,
+                    exclusive = exclusive,
+                    propertyInclusive = propertyInclusive,
+                    inclusiveStrikethrough = inclusiveStrikethrough,
+                    strikethrough = strikethrough,
+                    propertyInclusiveStrikethrough = propertyInclusiveStrikethrough,
+                    marketingFee = marketingFee,
+                    grossProfit = grossProfit,
+                    minimumSellingPrice = minimumSellingPrice,
+                    propertyFees = propertyFees
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Totals) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -151,6 +169,6 @@ data class Totals(
             marketingFee = marketingFee,
             grossProfit = grossProfit,
             minimumSellingPrice = minimumSellingPrice,
-            propertyFees = propertyFees,
+            propertyFees = propertyFees
         )
 }

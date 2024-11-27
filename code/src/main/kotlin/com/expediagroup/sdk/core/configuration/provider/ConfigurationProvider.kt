@@ -16,6 +16,7 @@
 package com.expediagroup.sdk.core.configuration.provider
 
 import com.expediagroup.sdk.core.constant.Constant
+import okhttp3.OkHttpClient
 
 /**
  * A configuration provider that can be used to provide configuration values.
@@ -55,4 +56,8 @@ interface ConfigurationProvider {
     /** The body fields to be masked in logging.*/
     val maskedLoggingBodyFields: Set<String>?
         get() = setOf()
+
+    /** The okhttp client to be used by the sdk.*/
+    val okHttpClient: OkHttpClient?
+        get() = null
 }

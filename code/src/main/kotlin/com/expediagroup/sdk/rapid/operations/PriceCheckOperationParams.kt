@@ -16,10 +16,15 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -33,14 +38,24 @@ import io.ktor.http.Parameters
 @JsonDeserialize(builder = PriceCheckOperationParams.Builder::class)
 data class PriceCheckOperationParams
     internal constructor(
+        @field:NotNull
+        @field:Valid
         val propertyId: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val roomId: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val rateId: kotlin.String? = null,
+        @field:Valid
         val customerIp: kotlin.String? = null,
+        @field:Valid
         val customerSessionId: kotlin.String? = null,
         val test: PriceCheckOperationParams.Test? = null,
+        @field:NotNull
+        @field:Valid
         val token: kotlin.String? = null,
-        private val dummy: Unit,
+        private val dummy: Unit
     ) :
     OperationParams {
         companion object {
@@ -58,7 +73,7 @@ data class PriceCheckOperationParams
                 null,
             test: PriceCheckOperationParams.Test? =
                 null,
-            token: kotlin.String,
+            token: kotlin.String
         ) : this(
             propertyId = propertyId,
             roomId = roomId,
@@ -67,24 +82,24 @@ data class PriceCheckOperationParams
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            dummy = Unit,
+            dummy = Unit
         )
 
         constructor(context: PriceCheckOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit,
+            dummy = Unit
         )
 
         enum class Test(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             AVAILABLE("available"),
             PRICE_CHANGED("price_changed"),
             SOLD_OUT("sold_out"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
         }
 
         class Builder(
@@ -94,7 +109,7 @@ data class PriceCheckOperationParams
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: PriceCheckOperationParams.Test? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -132,31 +147,37 @@ data class PriceCheckOperationParams
             fun token(token: kotlin.String) = apply { this.token = token }
 
             fun build(): PriceCheckOperationParams {
-                validateNullity()
+                val params =
+                    PriceCheckOperationParams(
+                        propertyId = propertyId!!,
+                        roomId = roomId!!,
+                        rateId = rateId!!,
+                        customerIp = customerIp,
+                        customerSessionId = customerSessionId,
+                        test = test,
+                        token = token!!
+                    )
 
-                return PriceCheckOperationParams(
-                    propertyId = propertyId!!,
-                    roomId = roomId!!,
-                    rateId = rateId!!,
-                    customerIp = customerIp,
-                    customerSessionId = customerSessionId,
-                    test = test,
-                    token = token!!,
-                )
+                validate(params)
+
+                return params
             }
 
-            private fun validateNullity() {
-                if (propertyId == null) {
-                    throw NullPointerException("Required parameter propertyId is missing")
-                }
-                if (roomId == null) {
-                    throw NullPointerException("Required parameter roomId is missing")
-                }
-                if (rateId == null) {
-                    throw NullPointerException("Required parameter rateId is missing")
-                }
-                if (token == null) {
-                    throw NullPointerException("Required parameter token is missing")
+            private fun validate(params: PriceCheckOperationParams) {
+                val validator =
+                    Validation
+                        .byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(ParameterMessageInterpolator())
+                        .buildValidatorFactory()
+                        .validator
+
+                val violations = validator.validate(params)
+
+                if (violations.isNotEmpty()) {
+                    throw PropertyConstraintViolationException(
+                        constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                    )
                 }
             }
         }
@@ -169,11 +190,11 @@ data class PriceCheckOperationParams
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token,
+                token = token
             )
 
-        override fun getHeaders(): Headers {
-            return Headers.build {
+        override fun getHeaders(): Headers =
+            Headers.build {
                 customerIp?.let {
                     append("Customer-Ip", it)
                 }
@@ -185,18 +206,16 @@ data class PriceCheckOperationParams
                 }
                 append("Accept", "application/json")
             }
-        }
 
-        override fun getQueryParams(): Parameters {
-            return Parameters.build {
+        override fun getQueryParams(): Parameters =
+            Parameters.build {
                 token?.let {
                     append("token", it)
                 }
             }
-        }
 
-        override fun getPathParams(): Map<String, String> {
-            return buildMap {
+        override fun getPathParams(): Map<String, String> =
+            buildMap {
                 propertyId?.also {
                     put("property_id", propertyId)
                 }
@@ -207,5 +226,4 @@ data class PriceCheckOperationParams
                     put("rate_id", rateId)
                 }
             }
-        }
     }

@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The monetary amount.
@@ -51,7 +49,7 @@ data class Amount(
     // Currency of the amount object.
     @JsonProperty("currency")
     @field:Valid
-    val currency: kotlin.String? = null,
+    val currency: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class Amount(
 
     class Builder(
         private var `value`: kotlin.String? = null,
-        private var currency: kotlin.String? = null,
+        private var currency: kotlin.String? = null
     ) {
         fun `value`(`value`: kotlin.String?) = apply { this.`value` = `value` }
 
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
         fun build(): Amount {
-            return Amount(
-                `value` = `value`,
-                currency = currency,
-            )
+            val instance =
+                Amount(
+                    `value` = `value`,
+                    currency = currency
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Amount) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             `value` = `value`,
-            currency = currency,
+            currency = currency
         )
 }

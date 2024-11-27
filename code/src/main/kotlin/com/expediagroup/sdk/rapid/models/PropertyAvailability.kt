@@ -25,21 +25,19 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Property
 import com.expediagroup.sdk.rapid.models.PropertyAvailabilityLinks
 import com.expediagroup.sdk.rapid.models.RoomAvailability
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -61,7 +59,7 @@ data class PropertyAvailability(
     val rooms: kotlin.collections.List<RoomAvailability>? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyAvailabilityLinks? = null,
+    val links: PropertyAvailabilityLinks? = null
 ) : Property {
     @JsonProperty("status")
     override val status: Property.Status = Property.Status.AVAILABLE
@@ -75,7 +73,7 @@ data class PropertyAvailability(
         private var propertyId: kotlin.String? = null,
         private var score: java.math.BigDecimal? = null,
         private var rooms: kotlin.collections.List<RoomAvailability>? = null,
-        private var links: PropertyAvailabilityLinks? = null,
+        private var links: PropertyAvailabilityLinks? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -86,12 +84,35 @@ data class PropertyAvailability(
         fun links(links: PropertyAvailabilityLinks?) = apply { this.links = links }
 
         fun build(): PropertyAvailability {
-            return PropertyAvailability(
-                propertyId = propertyId,
-                score = score,
-                rooms = rooms,
-                links = links,
-            )
+            val instance =
+                PropertyAvailability(
+                    propertyId = propertyId,
+                    score = score,
+                    rooms = rooms,
+                    links = links
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyAvailability) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -100,6 +121,6 @@ data class PropertyAvailability(
             propertyId = propertyId,
             score = score,
             rooms = rooms,
-            links = links,
+            links = links
         )
 }

@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [GetPropertyContentFileOperationParams]
  */
 class GetPropertyContentFileOperation(
-    params: GetPropertyContentFileOperationParams,
+    params: GetPropertyContentFileOperationParams
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         "/v3/files/properties/content",
         "GET",
         "getPropertyContentFile",
         null,
-        params,
+        params
     )

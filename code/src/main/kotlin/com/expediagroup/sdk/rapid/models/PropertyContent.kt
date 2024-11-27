@@ -25,11 +25,12 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Address
 import com.expediagroup.sdk.rapid.models.AllInclusive
 import com.expediagroup.sdk.rapid.models.Amenity
@@ -56,12 +57,9 @@ import com.expediagroup.sdk.rapid.models.Statistic
 import com.expediagroup.sdk.rapid.models.Theme
 import com.expediagroup.sdk.rapid.models.VacationRentalDetails
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual property object in the map of property objects.
@@ -99,6 +97,7 @@ import javax.validation.constraints.Size
  * @param paymentRegistrationRecommended Boolean value indicating if a property may require payment registration to process payments, even when using the property_collect Business Model. If true, then a property may not be successfully bookable without registering payments first.
  * @param vacationRentalDetails
  * @param supplySource The supply source of the property.
+ * @param registryNumber The property's registry number required by some jurisdictions.
  */
 data class PropertyContent(
     // Unique Expedia property ID.
@@ -219,6 +218,10 @@ data class PropertyContent(
     @JsonProperty("supply_source")
     @field:Valid
     val supplySource: kotlin.String? = null,
+    // The property's registry number required by some jurisdictions.
+    @JsonProperty("registry_number")
+    @field:Valid
+    val registryNumber: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -260,6 +263,7 @@ data class PropertyContent(
         private var paymentRegistrationRecommended: kotlin.Boolean? = null,
         private var vacationRentalDetails: VacationRentalDetails? = null,
         private var supplySource: kotlin.String? = null,
+        private var registryNumber: kotlin.String? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
@@ -319,60 +323,79 @@ data class PropertyContent(
 
         fun brand(brand: Brand?) = apply { this.brand = brand }
 
-        fun spokenLanguages(spokenLanguages: kotlin.collections.Map<kotlin.String, SpokenLanguage>?) =
-            apply {
-                this.spokenLanguages = spokenLanguages
-            }
+        fun spokenLanguages(spokenLanguages: kotlin.collections.Map<kotlin.String, SpokenLanguage>?) = apply { this.spokenLanguages = spokenLanguages }
 
         fun multiUnit(multiUnit: kotlin.Boolean?) = apply { this.multiUnit = multiUnit }
 
-        fun paymentRegistrationRecommended(paymentRegistrationRecommended: kotlin.Boolean?) =
-            apply {
-                this.paymentRegistrationRecommended = paymentRegistrationRecommended
-            }
+        fun paymentRegistrationRecommended(paymentRegistrationRecommended: kotlin.Boolean?) = apply { this.paymentRegistrationRecommended = paymentRegistrationRecommended }
 
-        fun vacationRentalDetails(vacationRentalDetails: VacationRentalDetails?) =
-            apply { this.vacationRentalDetails = vacationRentalDetails }
+        fun vacationRentalDetails(vacationRentalDetails: VacationRentalDetails?) = apply { this.vacationRentalDetails = vacationRentalDetails }
 
         fun supplySource(supplySource: kotlin.String?) = apply { this.supplySource = supplySource }
 
+        fun registryNumber(registryNumber: kotlin.String?) = apply { this.registryNumber = registryNumber }
+
         fun build(): PropertyContent {
-            return PropertyContent(
-                propertyId = propertyId,
-                name = name,
-                address = address,
-                ratings = ratings,
-                location = location,
-                phone = phone,
-                fax = fax,
-                category = category,
-                businessModel = businessModel,
-                rank = rank,
-                checkin = checkin,
-                checkout = checkout,
-                fees = fees,
-                policies = policies,
-                attributes = attributes,
-                amenities = amenities,
-                images = images,
-                onsitePayments = onsitePayments,
-                rooms = rooms,
-                rates = rates,
-                dates = dates,
-                descriptions = descriptions,
-                statistics = statistics,
-                airports = airports,
-                themes = themes,
-                allInclusive = allInclusive,
-                taxId = taxId,
-                chain = chain,
-                brand = brand,
-                spokenLanguages = spokenLanguages,
-                multiUnit = multiUnit,
-                paymentRegistrationRecommended = paymentRegistrationRecommended,
-                vacationRentalDetails = vacationRentalDetails,
-                supplySource = supplySource,
-            )
+            val instance =
+                PropertyContent(
+                    propertyId = propertyId,
+                    name = name,
+                    address = address,
+                    ratings = ratings,
+                    location = location,
+                    phone = phone,
+                    fax = fax,
+                    category = category,
+                    businessModel = businessModel,
+                    rank = rank,
+                    checkin = checkin,
+                    checkout = checkout,
+                    fees = fees,
+                    policies = policies,
+                    attributes = attributes,
+                    amenities = amenities,
+                    images = images,
+                    onsitePayments = onsitePayments,
+                    rooms = rooms,
+                    rates = rates,
+                    dates = dates,
+                    descriptions = descriptions,
+                    statistics = statistics,
+                    airports = airports,
+                    themes = themes,
+                    allInclusive = allInclusive,
+                    taxId = taxId,
+                    chain = chain,
+                    brand = brand,
+                    spokenLanguages = spokenLanguages,
+                    multiUnit = multiUnit,
+                    paymentRegistrationRecommended = paymentRegistrationRecommended,
+                    vacationRentalDetails = vacationRentalDetails,
+                    supplySource = supplySource,
+                    registryNumber = registryNumber
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyContent) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -412,5 +435,6 @@ data class PropertyContent(
             paymentRegistrationRecommended = paymentRegistrationRecommended,
             vacationRentalDetails = vacationRentalDetails,
             supplySource = supplySource,
+            registryNumber = registryNumber
         )
 }

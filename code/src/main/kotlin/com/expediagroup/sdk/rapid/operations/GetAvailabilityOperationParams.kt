@@ -16,10 +16,15 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -42,51 +47,78 @@ import io.ktor.http.Parameters
  * @property rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.
  * @property travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`
  * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
- * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
  * @property partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
+ * @property paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
  * @property platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
  */
 @JsonDeserialize(builder = GetAvailabilityOperationParams.Builder::class)
 data class GetAvailabilityOperationParams
     internal constructor(
+        @field:Valid
         val customerIp: kotlin.String? = null,
+        @field:Valid
         val customerSessionId: kotlin.String? = null,
         val test: GetAvailabilityOperationParams.Test? = null,
+        @field:NotNull
+        @field:Valid
         val checkin: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val checkout: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val currency: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val countryCode: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val language: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val occupancy: kotlin.collections.List<
-            kotlin.String,
+            kotlin.String
         >? = null,
+        @field:NotNull
+        @field:Valid
         val propertyId: kotlin.collections.List<
-            kotlin.String,
+            kotlin.String
         >? = null,
+        @field:NotNull
+        @field:Valid
         val ratePlanCount: java.math.BigDecimal? = null,
+        @field:NotNull
+        @field:Valid
         val salesChannel: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val salesEnvironment: kotlin.String? = null,
+        @field:Valid
         val amenityCategory: kotlin.collections.List<
-            kotlin.String,
+            kotlin.String
         >? = null,
         val exclusion: kotlin.collections.List<
-            GetAvailabilityOperationParams.Exclusion,
+            GetAvailabilityOperationParams.Exclusion
         >? = null,
         val filter: kotlin.collections.List<
-            GetAvailabilityOperationParams.Filter,
+            GetAvailabilityOperationParams.Filter
         >? = null,
         val include: kotlin.collections.List<
-            GetAvailabilityOperationParams.Include,
+            GetAvailabilityOperationParams.Include
         >? = null,
         val rateOption: kotlin.collections.List<
-            GetAvailabilityOperationParams.RateOption,
+            GetAvailabilityOperationParams.RateOption
         >? = null,
         val travelPurpose: GetAvailabilityOperationParams.TravelPurpose? = null,
+        @field:Valid
         val billingTerms: kotlin.String? = null,
-        val paymentTerms: kotlin.String? = null,
+        @field:Valid
         val partnerPointOfSale: kotlin.String? = null,
+        @field:Valid
+        val paymentTerms: kotlin.String? = null,
+        @field:Valid
         val platformName: kotlin.String? = null,
-        private val dummy: Unit,
+        private val dummy: Unit
     ) :
     OperationParams {
         companion object {
@@ -107,44 +139,44 @@ data class GetAvailabilityOperationParams
             countryCode: kotlin.String,
             language: kotlin.String,
             occupancy: kotlin.collections.List<
-                kotlin.String,
+                kotlin.String
             >,
             propertyId: kotlin.collections.List<
-                kotlin.String,
+                kotlin.String
             >,
             ratePlanCount: java.math.BigDecimal,
             salesChannel: kotlin.String,
             salesEnvironment: kotlin.String,
             amenityCategory: kotlin.collections.List<
-                kotlin.String,
+                kotlin.String
             >? =
                 null,
             exclusion: kotlin.collections.List<
-                GetAvailabilityOperationParams.Exclusion,
+                GetAvailabilityOperationParams.Exclusion
             >? =
                 null,
             filter: kotlin.collections.List<
-                GetAvailabilityOperationParams.Filter,
+                GetAvailabilityOperationParams.Filter
             >? =
                 null,
             include: kotlin.collections.List<
-                GetAvailabilityOperationParams.Include,
+                GetAvailabilityOperationParams.Include
             >? =
                 null,
             rateOption: kotlin.collections.List<
-                GetAvailabilityOperationParams.RateOption,
+                GetAvailabilityOperationParams.RateOption
             >? =
                 null,
             travelPurpose: GetAvailabilityOperationParams.TravelPurpose? =
                 null,
             billingTerms: kotlin.String? =
                 null,
-            paymentTerms: kotlin.String? =
-                null,
             partnerPointOfSale: kotlin.String? =
                 null,
-            platformName: kotlin.String? =
+            paymentTerms: kotlin.String? =
                 null,
+            platformName: kotlin.String? =
+                null
         ) : this(
             customerIp = customerIp,
             customerSessionId = customerSessionId,
@@ -166,63 +198,63 @@ data class GetAvailabilityOperationParams
             rateOption = rateOption,
             travelPurpose = travelPurpose,
             billingTerms = billingTerms,
-            paymentTerms = paymentTerms,
             partnerPointOfSale = partnerPointOfSale,
+            paymentTerms = paymentTerms,
             platformName = platformName,
-            dummy = Unit,
+            dummy = Unit
         )
 
         constructor(context: GetAvailabilityOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit,
+            dummy = Unit
         )
 
         enum class Test(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
         }
 
         enum class Exclusion(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             REFUNDABLE_DAMAGE_DEPOSIT("refundable_damage_deposit"),
-            CARD_ON_FILE("card_on_file"),
+            CARD_ON_FILE("card_on_file")
         }
 
         enum class Filter(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             REFUNDABLE("refundable"),
             EXPEDIA_COLLECT("expedia_collect"),
-            PROPERTY_COLLECT("property_collect"),
+            PROPERTY_COLLECT("property_collect")
         }
 
         enum class Include(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             UNAVAILABLE_REASON("unavailable_reason"),
             SALE_SCENARIO_PERIOD_MOBILE_PROMOTION("sale_scenario.mobile_promotion"),
-            ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_INCENTIVES("rooms.rates.marketing_fee_incentives"),
+            ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_INCENTIVES("rooms.rates.marketing_fee_incentives")
         }
 
         enum class RateOption(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             MEMBER("member"),
             NET_RATES("net_rates"),
-            CROSS_SELL("cross_sell"),
+            CROSS_SELL("cross_sell")
         }
 
         enum class TravelPurpose(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             LEISURE("leisure"),
-            BUSINESS("business"),
+            BUSINESS("business")
         }
 
         class Builder(
@@ -235,34 +267,34 @@ data class GetAvailabilityOperationParams
             @JsonProperty("country_code") private var countryCode: kotlin.String? = null,
             @JsonProperty("language") private var language: kotlin.String? = null,
             @JsonProperty("occupancy") private var occupancy: kotlin.collections.List<
-                kotlin.String,
+                kotlin.String
             >? = null,
             @JsonProperty("property_id") private var propertyId: kotlin.collections.List<
-                kotlin.String,
+                kotlin.String
             >? = null,
             @JsonProperty("rate_plan_count") private var ratePlanCount: java.math.BigDecimal? = null,
             @JsonProperty("sales_channel") private var salesChannel: kotlin.String? = null,
             @JsonProperty("sales_environment") private var salesEnvironment: kotlin.String? = null,
             @JsonProperty("amenity_category") private var amenityCategory: kotlin.collections.List<
-                kotlin.String,
+                kotlin.String
             >? = null,
             @JsonProperty("exclusion") private var exclusion: kotlin.collections.List<
-                GetAvailabilityOperationParams.Exclusion,
+                GetAvailabilityOperationParams.Exclusion
             >? = null,
             @JsonProperty("filter") private var filter: kotlin.collections.List<
-                GetAvailabilityOperationParams.Filter,
+                GetAvailabilityOperationParams.Filter
             >? = null,
             @JsonProperty("include") private var include: kotlin.collections.List<
-                GetAvailabilityOperationParams.Include,
+                GetAvailabilityOperationParams.Include
             >? = null,
             @JsonProperty("rate_option") private var rateOption: kotlin.collections.List<
-                GetAvailabilityOperationParams.RateOption,
+                GetAvailabilityOperationParams.RateOption
             >? = null,
             @JsonProperty("travel_purpose") private var travelPurpose: GetAvailabilityOperationParams.TravelPurpose? = null,
             @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
-            @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
             @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
-            @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
+            @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
+            @JsonProperty("platform_name") private var platformName: kotlin.String? = null
         ) {
             /**
              * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -309,8 +341,8 @@ data class GetAvailabilityOperationParams
              */
             fun occupancy(
                 occupancy: kotlin.collections.List<
-                    kotlin.String,
-                >,
+                    kotlin.String
+                >
             ) = apply { this.occupancy = occupancy }
 
             /**
@@ -318,8 +350,8 @@ data class GetAvailabilityOperationParams
              */
             fun propertyId(
                 propertyId: kotlin.collections.List<
-                    kotlin.String,
-                >,
+                    kotlin.String
+                >
             ) = apply { this.propertyId = propertyId }
 
             /**
@@ -342,8 +374,8 @@ data class GetAvailabilityOperationParams
              */
             fun amenityCategory(
                 amenityCategory: kotlin.collections.List<
-                    kotlin.String,
-                >,
+                    kotlin.String
+                >
             ) = apply { this.amenityCategory = amenityCategory }
 
             /**
@@ -351,8 +383,8 @@ data class GetAvailabilityOperationParams
              */
             fun exclusion(
                 exclusion: kotlin.collections.List<
-                    GetAvailabilityOperationParams.Exclusion,
-                >,
+                    GetAvailabilityOperationParams.Exclusion
+                >
             ) = apply { this.exclusion = exclusion }
 
             /**
@@ -360,8 +392,8 @@ data class GetAvailabilityOperationParams
              */
             fun filter(
                 filter: kotlin.collections.List<
-                    GetAvailabilityOperationParams.Filter,
-                >,
+                    GetAvailabilityOperationParams.Filter
+                >
             ) = apply { this.filter = filter }
 
             /**
@@ -369,8 +401,8 @@ data class GetAvailabilityOperationParams
              */
             fun include(
                 include: kotlin.collections.List<
-                    GetAvailabilityOperationParams.Include,
-                >,
+                    GetAvailabilityOperationParams.Include
+                >
             ) = apply { this.include = include }
 
             /**
@@ -378,8 +410,8 @@ data class GetAvailabilityOperationParams
              */
             fun rateOption(
                 rateOption: kotlin.collections.List<
-                    GetAvailabilityOperationParams.RateOption,
-                >,
+                    GetAvailabilityOperationParams.RateOption
+                >
             ) = apply { this.rateOption = rateOption }
 
             /**
@@ -393,14 +425,14 @@ data class GetAvailabilityOperationParams
             fun billingTerms(billingTerms: kotlin.String) = apply { this.billingTerms = billingTerms }
 
             /**
-             * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
-             */
-            fun paymentTerms(paymentTerms: kotlin.String) = apply { this.paymentTerms = paymentTerms }
-
-            /**
              * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
              */
             fun partnerPointOfSale(partnerPointOfSale: kotlin.String) = apply { this.partnerPointOfSale = partnerPointOfSale }
+
+            /**
+             * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.
+             */
+            fun paymentTerms(paymentTerms: kotlin.String) = apply { this.paymentTerms = paymentTerms }
 
             /**
              * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
@@ -408,65 +440,53 @@ data class GetAvailabilityOperationParams
             fun platformName(platformName: kotlin.String) = apply { this.platformName = platformName }
 
             fun build(): GetAvailabilityOperationParams {
-                validateNullity()
+                val params =
+                    GetAvailabilityOperationParams(
+                        customerIp = customerIp,
+                        customerSessionId = customerSessionId,
+                        test = test,
+                        checkin = checkin!!,
+                        checkout = checkout!!,
+                        currency = currency!!,
+                        countryCode = countryCode!!,
+                        language = language!!,
+                        occupancy = occupancy!!,
+                        propertyId = propertyId!!,
+                        ratePlanCount = ratePlanCount!!,
+                        salesChannel = salesChannel!!,
+                        salesEnvironment = salesEnvironment!!,
+                        amenityCategory = amenityCategory,
+                        exclusion = exclusion,
+                        filter = filter,
+                        include = include,
+                        rateOption = rateOption,
+                        travelPurpose = travelPurpose,
+                        billingTerms = billingTerms,
+                        partnerPointOfSale = partnerPointOfSale,
+                        paymentTerms = paymentTerms,
+                        platformName = platformName
+                    )
 
-                return GetAvailabilityOperationParams(
-                    customerIp = customerIp,
-                    customerSessionId = customerSessionId,
-                    test = test,
-                    checkin = checkin!!,
-                    checkout = checkout!!,
-                    currency = currency!!,
-                    countryCode = countryCode!!,
-                    language = language!!,
-                    occupancy = occupancy!!,
-                    propertyId = propertyId!!,
-                    ratePlanCount = ratePlanCount!!,
-                    salesChannel = salesChannel!!,
-                    salesEnvironment = salesEnvironment!!,
-                    amenityCategory = amenityCategory,
-                    exclusion = exclusion,
-                    filter = filter,
-                    include = include,
-                    rateOption = rateOption,
-                    travelPurpose = travelPurpose,
-                    billingTerms = billingTerms,
-                    paymentTerms = paymentTerms,
-                    partnerPointOfSale = partnerPointOfSale,
-                    platformName = platformName,
-                )
+                validate(params)
+
+                return params
             }
 
-            private fun validateNullity() {
-                if (checkin == null) {
-                    throw NullPointerException("Required parameter checkin is missing")
-                }
-                if (checkout == null) {
-                    throw NullPointerException("Required parameter checkout is missing")
-                }
-                if (currency == null) {
-                    throw NullPointerException("Required parameter currency is missing")
-                }
-                if (countryCode == null) {
-                    throw NullPointerException("Required parameter countryCode is missing")
-                }
-                if (language == null) {
-                    throw NullPointerException("Required parameter language is missing")
-                }
-                if (occupancy == null) {
-                    throw NullPointerException("Required parameter occupancy is missing")
-                }
-                if (propertyId == null) {
-                    throw NullPointerException("Required parameter propertyId is missing")
-                }
-                if (ratePlanCount == null) {
-                    throw NullPointerException("Required parameter ratePlanCount is missing")
-                }
-                if (salesChannel == null) {
-                    throw NullPointerException("Required parameter salesChannel is missing")
-                }
-                if (salesEnvironment == null) {
-                    throw NullPointerException("Required parameter salesEnvironment is missing")
+            private fun validate(params: GetAvailabilityOperationParams) {
+                val validator =
+                    Validation
+                        .byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(ParameterMessageInterpolator())
+                        .buildValidatorFactory()
+                        .validator
+
+                val violations = validator.validate(params)
+
+                if (violations.isNotEmpty()) {
+                    throw PropertyConstraintViolationException(
+                        constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                    )
                 }
             }
         }
@@ -493,13 +513,13 @@ data class GetAvailabilityOperationParams
                 rateOption = rateOption,
                 travelPurpose = travelPurpose,
                 billingTerms = billingTerms,
-                paymentTerms = paymentTerms,
                 partnerPointOfSale = partnerPointOfSale,
-                platformName = platformName,
+                paymentTerms = paymentTerms,
+                platformName = platformName
             )
 
-        override fun getHeaders(): Headers {
-            return Headers.build {
+        override fun getHeaders(): Headers =
+            Headers.build {
                 customerIp?.let {
                     append("Customer-Ip", it)
                 }
@@ -511,10 +531,9 @@ data class GetAvailabilityOperationParams
                 }
                 append("Accept", "application/json")
             }
-        }
 
-        override fun getQueryParams(): Parameters {
-            return Parameters.build {
+        override fun getQueryParams(): Parameters =
+            Parameters.build {
                 checkin?.let {
                     append("checkin", it)
                 }
@@ -566,20 +585,18 @@ data class GetAvailabilityOperationParams
                 billingTerms?.let {
                     append("billing_terms", it)
                 }
-                paymentTerms?.let {
-                    append("payment_terms", it)
-                }
                 partnerPointOfSale?.let {
                     append("partner_point_of_sale", it)
+                }
+                paymentTerms?.let {
+                    append("payment_terms", it)
                 }
                 platformName?.let {
                     append("platform_name", it)
                 }
             }
-        }
 
-        override fun getPathParams(): Map<String, String> {
-            return buildMap {
+        override fun getPathParams(): Map<String, String> =
+            buildMap {
             }
-        }
     }

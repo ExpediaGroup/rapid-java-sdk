@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * How and when the payment can be taken.
@@ -51,7 +49,7 @@ data class BusinessModel(
     // Whether or not a payment for this property can be taken by the property upon arrival.
     @JsonProperty("property_collect")
     @field:Valid
-    val propertyCollect: kotlin.Boolean? = null,
+    val propertyCollect: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class BusinessModel(
 
     class Builder(
         private var expediaCollect: kotlin.Boolean? = null,
-        private var propertyCollect: kotlin.Boolean? = null,
+        private var propertyCollect: kotlin.Boolean? = null
     ) {
         fun expediaCollect(expediaCollect: kotlin.Boolean?) = apply { this.expediaCollect = expediaCollect }
 
         fun propertyCollect(propertyCollect: kotlin.Boolean?) = apply { this.propertyCollect = propertyCollect }
 
         fun build(): BusinessModel {
-            return BusinessModel(
-                expediaCollect = expediaCollect,
-                propertyCollect = propertyCollect,
-            )
+            val instance =
+                BusinessModel(
+                    expediaCollect = expediaCollect,
+                    propertyCollect = propertyCollect
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: BusinessModel) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             expediaCollect = expediaCollect,
-            propertyCollect = propertyCollect,
+            propertyCollect = propertyCollect
         )
 }

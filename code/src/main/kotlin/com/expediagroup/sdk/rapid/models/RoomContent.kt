@@ -25,11 +25,12 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amenity
 import com.expediagroup.sdk.rapid.models.Area
 import com.expediagroup.sdk.rapid.models.BedGroup
@@ -38,12 +39,9 @@ import com.expediagroup.sdk.rapid.models.Image
 import com.expediagroup.sdk.rapid.models.Occupancy
 import com.expediagroup.sdk.rapid.models.View
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An individual room.
@@ -90,7 +88,7 @@ data class RoomContent(
     val views: kotlin.collections.Map<kotlin.String, View>? = null,
     @JsonProperty("occupancy")
     @field:Valid
-    val occupancy: Occupancy? = null,
+    val occupancy: Occupancy? = null
 ) {
     companion object {
         @JvmStatic
@@ -106,7 +104,7 @@ data class RoomContent(
         private var bedGroups: kotlin.collections.Map<kotlin.String, BedGroup>? = null,
         private var area: Area? = null,
         private var views: kotlin.collections.Map<kotlin.String, View>? = null,
-        private var occupancy: Occupancy? = null,
+        private var occupancy: Occupancy? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -127,17 +125,40 @@ data class RoomContent(
         fun occupancy(occupancy: Occupancy?) = apply { this.occupancy = occupancy }
 
         fun build(): RoomContent {
-            return RoomContent(
-                id = id,
-                name = name,
-                descriptions = descriptions,
-                amenities = amenities,
-                images = images,
-                bedGroups = bedGroups,
-                area = area,
-                views = views,
-                occupancy = occupancy,
-            )
+            val instance =
+                RoomContent(
+                    id = id,
+                    name = name,
+                    descriptions = descriptions,
+                    amenities = amenities,
+                    images = images,
+                    bedGroups = bedGroups,
+                    area = area,
+                    views = views,
+                    occupancy = occupancy
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RoomContent) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -151,6 +172,6 @@ data class RoomContent(
             bedGroups = bedGroups,
             area = area,
             views = views,
-            occupancy = occupancy,
+            occupancy = occupancy
         )
 }

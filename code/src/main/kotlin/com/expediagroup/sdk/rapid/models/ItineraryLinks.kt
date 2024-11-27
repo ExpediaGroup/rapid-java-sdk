@@ -25,21 +25,19 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.DeleteHeldBookingOperationLink
 import com.expediagroup.sdk.rapid.operations.PutResumeBookingOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including links to resume or cancel a held booking. This is only included for held bookings.
@@ -57,7 +55,7 @@ data class ItineraryLinks(
     val cancel: DeleteHeldBookingOperationLink? = null,
     @JsonProperty("non_vat_expedia_invoice")
     @field:Valid
-    val nonVatExpediaInvoice: Link? = null,
+    val nonVatExpediaInvoice: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,7 +65,7 @@ data class ItineraryLinks(
     class Builder(
         private var resume: PutResumeBookingOperationLink? = null,
         private var cancel: DeleteHeldBookingOperationLink? = null,
-        private var nonVatExpediaInvoice: Link? = null,
+        private var nonVatExpediaInvoice: Link? = null
     ) {
         fun resume(resume: PutResumeBookingOperationLink?) = apply { this.resume = resume }
 
@@ -76,11 +74,34 @@ data class ItineraryLinks(
         fun nonVatExpediaInvoice(nonVatExpediaInvoice: Link?) = apply { this.nonVatExpediaInvoice = nonVatExpediaInvoice }
 
         fun build(): ItineraryLinks {
-            return ItineraryLinks(
-                resume = resume,
-                cancel = cancel,
-                nonVatExpediaInvoice = nonVatExpediaInvoice,
-            )
+            val instance =
+                ItineraryLinks(
+                    resume = resume,
+                    cancel = cancel,
+                    nonVatExpediaInvoice = nonVatExpediaInvoice
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ItineraryLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -88,6 +109,6 @@ data class ItineraryLinks(
         Builder(
             resume = resume,
             cancel = cancel,
-            nonVatExpediaInvoice = nonVatExpediaInvoice,
+            nonVatExpediaInvoice = nonVatExpediaInvoice
         )
 }

@@ -37,7 +37,7 @@ internal interface AuthenticationStrategy {
     companion object {
         fun from(
             configs: AuthenticationConfiguration,
-            client: Client,
+            client: Client
         ): AuthenticationStrategy =
             when (configs.authType) {
                 BASIC -> BasicAuthenticationStrategy(configs)
@@ -49,6 +49,6 @@ internal interface AuthenticationStrategy {
     enum class AuthenticationType {
         BASIC,
         BEARER,
-        SIGNATURE,
+        SIGNATURE
     }
 }

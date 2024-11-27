@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The confirmation ids.
@@ -51,7 +49,7 @@ data class ConfirmationId(
     // The property confirmation id.
     @JsonProperty("property")
     @field:Valid
-    val `property`: kotlin.String? = null,
+    val `property`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class ConfirmationId(
 
     class Builder(
         private var expedia: kotlin.String? = null,
-        private var `property`: kotlin.String? = null,
+        private var `property`: kotlin.String? = null
     ) {
         fun expedia(expedia: kotlin.String?) = apply { this.expedia = expedia }
 
         fun `property`(`property`: kotlin.String?) = apply { this.`property` = `property` }
 
         fun build(): ConfirmationId {
-            return ConfirmationId(
-                expedia = expedia,
-                `property` = `property`,
-            )
+            val instance =
+                ConfirmationId(
+                    expedia = expedia,
+                    `property` = `property`
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ConfirmationId) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             expedia = expedia,
-            `property` = `property`,
+            `property` = `property`
         )
 }

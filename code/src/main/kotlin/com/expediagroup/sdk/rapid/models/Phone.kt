@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The entire phone number must be represented across the three fields in this object.
@@ -56,7 +54,7 @@ data class Phone(
     // The remaining digits of the phone number.
     @JsonProperty("number")
     @field:Valid
-    val number: kotlin.String? = null,
+    val number: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class Phone(
     class Builder(
         private var countryCode: kotlin.String? = null,
         private var areaCode: kotlin.String? = null,
-        private var number: kotlin.String? = null,
+        private var number: kotlin.String? = null
     ) {
         fun countryCode(countryCode: kotlin.String?) = apply { this.countryCode = countryCode }
 
@@ -75,11 +73,34 @@ data class Phone(
         fun number(number: kotlin.String?) = apply { this.number = number }
 
         fun build(): Phone {
-            return Phone(
-                countryCode = countryCode,
-                areaCode = areaCode,
-                number = number,
-            )
+            val instance =
+                Phone(
+                    countryCode = countryCode,
+                    areaCode = areaCode,
+                    number = number
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Phone) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class Phone(
         Builder(
             countryCode = countryCode,
             areaCode = areaCode,
-            number = number,
+            number = number
         )
 }

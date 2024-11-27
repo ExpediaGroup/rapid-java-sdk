@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A reply from the property management to the review left by the traveler.
@@ -51,7 +49,7 @@ data class ManagementResponse(
     // When this management response was made, in ISO 8601 format.
     @JsonProperty("date")
     @field:Valid
-    val date: kotlin.String? = null,
+    val date: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class ManagementResponse(
 
     class Builder(
         private var text: kotlin.String? = null,
-        private var date: kotlin.String? = null,
+        private var date: kotlin.String? = null
     ) {
         fun text(text: kotlin.String?) = apply { this.text = text }
 
         fun date(date: kotlin.String?) = apply { this.date = date }
 
         fun build(): ManagementResponse {
-            return ManagementResponse(
-                text = text,
-                date = date,
-            )
+            val instance =
+                ManagementResponse(
+                    text = text,
+                    date = date
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: ManagementResponse) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             text = text,
-            date = date,
+            date = date
         )
 }

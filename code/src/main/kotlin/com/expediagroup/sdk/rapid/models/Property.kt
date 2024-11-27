@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -35,12 +35,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import org.hibernate.validator.constraints.Length
-import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
 
 /**
  *
@@ -52,7 +46,7 @@ import javax.validation.constraints.Size
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "status", visible = true)
 @JsonSubTypes(
     Type(value = PropertyAvailability::class, name = "available"),
-    Type(value = PropertyUnavailability::class, name = "partially_unavailable"),
+    Type(value = PropertyUnavailability::class, name = "partially_unavailable")
 )
 interface Property {
     // Expedia property ID.
@@ -73,6 +67,6 @@ interface Property {
         AVAILABLE("available"),
 
         @JsonProperty("partially_unavailable")
-        PARTIALLY_UNAVAILABLE("partially_unavailable"),
+        PARTIALLY_UNAVAILABLE("partially_unavailable")
     }
 }

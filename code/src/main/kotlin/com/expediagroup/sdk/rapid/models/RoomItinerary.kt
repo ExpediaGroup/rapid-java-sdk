@@ -25,23 +25,21 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.ConfirmationId
 import com.expediagroup.sdk.rapid.models.Loyalty
 import com.expediagroup.sdk.rapid.models.RateItinerary
 import com.expediagroup.sdk.rapid.models.RoomItineraryLinks
 import com.expediagroup.sdk.rapid.models.StatusItinerary
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The room information.
@@ -121,7 +119,7 @@ data class RoomItinerary(
     val rate: RateItinerary? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: RoomItineraryLinks? = null,
+    val links: RoomItineraryLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -144,7 +142,7 @@ data class RoomItinerary(
         private var loyaltyId: kotlin.String? = null,
         private var loyalty: Loyalty? = null,
         private var rate: RateItinerary? = null,
-        private var links: RoomItineraryLinks? = null,
+        private var links: RoomItineraryLinks? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -179,24 +177,47 @@ data class RoomItinerary(
         fun links(links: RoomItineraryLinks?) = apply { this.links = links }
 
         fun build(): RoomItinerary {
-            return RoomItinerary(
-                id = id,
-                confirmationId = confirmationId,
-                bedGroupId = bedGroupId,
-                checkin = checkin,
-                checkout = checkout,
-                numberOfAdults = numberOfAdults,
-                childAges = childAges,
-                givenName = givenName,
-                familyName = familyName,
-                status = status,
-                specialRequest = specialRequest,
-                smoking = smoking,
-                loyaltyId = loyaltyId,
-                loyalty = loyalty,
-                rate = rate,
-                links = links,
-            )
+            val instance =
+                RoomItinerary(
+                    id = id,
+                    confirmationId = confirmationId,
+                    bedGroupId = bedGroupId,
+                    checkin = checkin,
+                    checkout = checkout,
+                    numberOfAdults = numberOfAdults,
+                    childAges = childAges,
+                    givenName = givenName,
+                    familyName = familyName,
+                    status = status,
+                    specialRequest = specialRequest,
+                    smoking = smoking,
+                    loyaltyId = loyaltyId,
+                    loyalty = loyalty,
+                    rate = rate,
+                    links = links
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RoomItinerary) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -217,6 +238,6 @@ data class RoomItinerary(
             loyaltyId = loyaltyId,
             loyalty = loyalty,
             rate = rate,
-            links = links,
+            links = links
         )
 }

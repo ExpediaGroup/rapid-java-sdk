@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.PaymentSessionsLinks
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The payment registration response.
@@ -56,7 +54,7 @@ data class PaymentSessions(
     val encodedInitConfig: kotlin.String? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PaymentSessionsLinks? = null,
+    val links: PaymentSessionsLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class PaymentSessions(
     class Builder(
         private var paymentSessionId: kotlin.String? = null,
         private var encodedInitConfig: kotlin.String? = null,
-        private var links: PaymentSessionsLinks? = null,
+        private var links: PaymentSessionsLinks? = null
     ) {
         fun paymentSessionId(paymentSessionId: kotlin.String?) = apply { this.paymentSessionId = paymentSessionId }
 
@@ -75,11 +73,34 @@ data class PaymentSessions(
         fun links(links: PaymentSessionsLinks?) = apply { this.links = links }
 
         fun build(): PaymentSessions {
-            return PaymentSessions(
-                paymentSessionId = paymentSessionId,
-                encodedInitConfig = encodedInitConfig,
-                links = links,
-            )
+            val instance =
+                PaymentSessions(
+                    paymentSessionId = paymentSessionId,
+                    encodedInitConfig = encodedInitConfig,
+                    links = links
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PaymentSessions) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class PaymentSessions(
         Builder(
             paymentSessionId = paymentSessionId,
             encodedInitConfig = encodedInitConfig,
-            links = links,
+            links = links
         )
 }

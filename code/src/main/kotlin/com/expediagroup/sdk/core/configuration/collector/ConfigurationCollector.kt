@@ -28,6 +28,7 @@ import com.expediagroup.sdk.core.constant.ConfigurationName.SECRET
 import com.expediagroup.sdk.core.constant.ConfigurationName.SOCKET_TIMEOUT_MILLIS
 import com.expediagroup.sdk.core.constant.provider.LoggingMessageProvider
 import com.expediagroup.sdk.core.plugin.logging.ExpediaGroupLoggerFactory
+import okhttp3.OkHttpClient
 
 /**
  * Configuration collector that collects configuration from all available providers.
@@ -54,8 +55,7 @@ internal class ConfigurationCollector private constructor(providers: Configurati
          * @param providers the [ConfigurationProvider]s to use.
          * @return a new [ConfigurationCollector] with the given [providers].
          */
-        fun create(vararg providers: ConfigurationProvider): ConfigurationCollector =
-            create(ConfigurationProviderQueue.from(providers.asList()))
+        fun create(vararg providers: ConfigurationProvider): ConfigurationCollector = create(ConfigurationProviderQueue.from(providers.asList()))
     }
 
     override val key: String? = providers.firstWith { it.key }.also { it?.log(KEY) }?.retrieve()
@@ -63,21 +63,11 @@ internal class ConfigurationCollector private constructor(providers: Configurati
     override val endpoint: String? = providers.firstWith { it.endpoint }.also { it?.log(ENDPOINT) }?.retrieve()
     override val authEndpoint: String? = providers.firstWith { it.authEndpoint }.also { it?.log(AUTH_ENDPOINT) }?.retrieve()
     override val requestTimeout: Long? = providers.firstWith { it.requestTimeout }.also { it?.log(REQUEST_TIMEOUT_MILLIS) }?.retrieve()
-    override val connectionTimeout: Long? =
-        providers.firstWith { it.connectionTimeout }.also {
-            it?.log(
-                CONNECTION_TIMEOUT_MILLIS,
-            )
-        }?.retrieve()
+    override val connectionTimeout: Long? = providers.firstWith { it.connectionTimeout }.also { it?.log(CONNECTION_TIMEOUT_MILLIS) }?.retrieve()
     override val socketTimeout: Long? = providers.firstWith { it.socketTimeout }.also { it?.log(SOCKET_TIMEOUT_MILLIS) }?.retrieve()
-    override val maskedLoggingHeaders: Set<String>? =
-        providers.firstWith {
-            it.maskedLoggingHeaders
-        }.also { it?.log(MASKED_LOGGING_HEADERS) }?.retrieve()
-    override val maskedLoggingBodyFields: Set<String>? =
-        providers.firstWith {
-            it.maskedLoggingBodyFields
-        }.also { it?.log(MASKED_LOGGING_BODY_FIELDS) }?.retrieve()
+    override val maskedLoggingHeaders: Set<String>? = providers.firstWith { it.maskedLoggingHeaders }.also { it?.log(MASKED_LOGGING_HEADERS) }?.retrieve()
+    override val maskedLoggingBodyFields: Set<String>? = providers.firstWith { it.maskedLoggingBodyFields }.also { it?.log(MASKED_LOGGING_BODY_FIELDS) }?.retrieve()
+    override val okHttpClient: OkHttpClient? = providers.firstWith { it.okHttpClient }?.retrieve()
 
     private fun <T> ProvidedConfiguration<T>.log(configurationName: String) {
         log.info(LoggingMessageProvider.getChosenProviderMessage(configurationName, providerName))
