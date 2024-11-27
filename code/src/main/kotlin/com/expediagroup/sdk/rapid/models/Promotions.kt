@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Deal
 import com.expediagroup.sdk.rapid.models.ValueAdd
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Available promotions that apply to this rate.
@@ -52,7 +50,7 @@ data class Promotions(
     val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
     @JsonProperty("deal")
     @field:Valid
-    val deal: Deal? = null,
+    val deal: Deal? = null
 ) {
     companion object {
         @JvmStatic
@@ -61,23 +59,46 @@ data class Promotions(
 
     class Builder(
         private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
-        private var deal: Deal? = null,
+        private var deal: Deal? = null
     ) {
         fun valueAdds(valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>?) = apply { this.valueAdds = valueAdds }
 
         fun deal(deal: Deal?) = apply { this.deal = deal }
 
         fun build(): Promotions {
-            return Promotions(
-                valueAdds = valueAdds,
-                deal = deal,
-            )
+            val instance =
+                Promotions(
+                    valueAdds = valueAdds,
+                    deal = deal
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Promotions) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             valueAdds = valueAdds,
-            deal = deal,
+            deal = deal
         )
 }

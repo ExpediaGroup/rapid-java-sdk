@@ -16,10 +16,14 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
 
 /**
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -30,16 +34,21 @@ import io.ktor.http.Parameters
  */
 @JsonDeserialize(builder = GetChainReferenceOperationParams.Builder::class)
 data class GetChainReferenceOperationParams(
+    @field:Valid
     val customerSessionId: kotlin.String? =
         null,
+    @field:Valid
     val billingTerms: kotlin.String? =
         null,
+    @field:Valid
     val partnerPointOfSale: kotlin.String? =
         null,
+    @field:Valid
     val paymentTerms: kotlin.String? =
         null,
+    @field:Valid
     val platformName: kotlin.String? =
-        null,
+        null
 ) :
     OperationParams {
     companion object {
@@ -52,7 +61,7 @@ data class GetChainReferenceOperationParams(
         @JsonProperty("billing_terms") private var billingTerms: kotlin.String? = null,
         @JsonProperty("partner_point_of_sale") private var partnerPointOfSale: kotlin.String? = null,
         @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
-        @JsonProperty("platform_name") private var platformName: kotlin.String? = null,
+        @JsonProperty("platform_name") private var platformName: kotlin.String? = null
     ) {
         /**
          * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
@@ -80,13 +89,36 @@ data class GetChainReferenceOperationParams(
         fun platformName(platformName: kotlin.String) = apply { this.platformName = platformName }
 
         fun build(): GetChainReferenceOperationParams {
-            return GetChainReferenceOperationParams(
-                customerSessionId = customerSessionId,
-                billingTerms = billingTerms,
-                partnerPointOfSale = partnerPointOfSale,
-                paymentTerms = paymentTerms,
-                platformName = platformName,
-            )
+            val params =
+                GetChainReferenceOperationParams(
+                    customerSessionId = customerSessionId,
+                    billingTerms = billingTerms,
+                    partnerPointOfSale = partnerPointOfSale,
+                    paymentTerms = paymentTerms,
+                    platformName = platformName
+                )
+
+            validate(params)
+
+            return params
+        }
+
+        private fun validate(params: GetChainReferenceOperationParams) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(params)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -96,20 +128,19 @@ data class GetChainReferenceOperationParams(
             billingTerms = billingTerms,
             partnerPointOfSale = partnerPointOfSale,
             paymentTerms = paymentTerms,
-            platformName = platformName,
+            platformName = platformName
         )
 
-    override fun getHeaders(): Headers {
-        return Headers.build {
+    override fun getHeaders(): Headers =
+        Headers.build {
             customerSessionId?.let {
                 append("Customer-Session-Id", it)
             }
             append("Accept", "application/json")
         }
-    }
 
-    override fun getQueryParams(): Parameters {
-        return Parameters.build {
+    override fun getQueryParams(): Parameters =
+        Parameters.build {
             billingTerms?.let {
                 append("billing_terms", it)
             }
@@ -123,10 +154,8 @@ data class GetChainReferenceOperationParams(
                 append("platform_name", it)
             }
         }
-    }
 
-    override fun getPathParams(): Map<String, String> {
-        return buildMap {
+    override fun getPathParams(): Map<String, String> =
+        buildMap {
         }
-    }
 }

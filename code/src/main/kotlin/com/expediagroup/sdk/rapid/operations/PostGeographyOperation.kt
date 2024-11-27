@@ -25,22 +25,19 @@ import com.expediagroup.sdk.rapid.models.PropertiesGeoJsonRequest
  */
 class PostGeographyOperation(
     params: PostGeographyOperationParams,
-    requestBody: PropertiesGeoJsonRequest?,
+    requestBody: PropertiesGeoJsonRequest?
 ) : Operation<
-        PropertiesGeoJsonRequest,
+        PropertiesGeoJsonRequest
     >(
         "/v3/properties/geography",
         "POST",
         "postGeography",
         requestBody,
-        params,
+        params
     ) {
-    @Deprecated(
-        "Switch order of arguments",
-        ReplaceWith("Operation(params: PostGeographyOperationParams, requestBody: PropertiesGeoJsonRequest?)"),
-    )
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: PostGeographyOperationParams, requestBody: PropertiesGeoJsonRequest?)"))
     constructor(
         requestBody: PropertiesGeoJsonRequest?,
-        params: PostGeographyOperationParams,
+        params: PostGeographyOperationParams
     ) : this(params, requestBody)
 }

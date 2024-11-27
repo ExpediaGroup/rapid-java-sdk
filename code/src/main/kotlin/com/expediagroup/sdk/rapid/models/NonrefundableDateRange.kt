@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -51,7 +49,7 @@ data class NonrefundableDateRange(
     // End date of nonrefundable date range in ISO 8601 format.
     @JsonProperty("end")
     @field:Valid
-    val end: kotlin.String? = null,
+    val end: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class NonrefundableDateRange(
 
     class Builder(
         private var start: kotlin.String? = null,
-        private var end: kotlin.String? = null,
+        private var end: kotlin.String? = null
     ) {
         fun start(start: kotlin.String?) = apply { this.start = start }
 
         fun end(end: kotlin.String?) = apply { this.end = end }
 
         fun build(): NonrefundableDateRange {
-            return NonrefundableDateRange(
-                start = start,
-                end = end,
-            )
+            val instance =
+                NonrefundableDateRange(
+                    start = start,
+                    end = end
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: NonrefundableDateRange) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             start = start,
-            end = end,
+            end = end
         )
 }

@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -76,7 +74,7 @@ data class Address1(
     // Country code, in two-letter ISO 3166-1 alpha-2 format.
     @JsonProperty("country_code")
     @field:Valid
-    val countryCode: kotlin.String? = null,
+    val countryCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -90,7 +88,7 @@ data class Address1(
         private var city: kotlin.String? = null,
         private var stateProvinceCode: kotlin.String? = null,
         private var postalCode: kotlin.String? = null,
-        private var countryCode: kotlin.String? = null,
+        private var countryCode: kotlin.String? = null
     ) {
         fun line1(line1: kotlin.String?) = apply { this.line1 = line1 }
 
@@ -107,15 +105,38 @@ data class Address1(
         fun countryCode(countryCode: kotlin.String?) = apply { this.countryCode = countryCode }
 
         fun build(): Address1 {
-            return Address1(
-                line1 = line1,
-                line2 = line2,
-                line3 = line3,
-                city = city,
-                stateProvinceCode = stateProvinceCode,
-                postalCode = postalCode,
-                countryCode = countryCode,
-            )
+            val instance =
+                Address1(
+                    line1 = line1,
+                    line2 = line2,
+                    line3 = line3,
+                    city = city,
+                    stateProvinceCode = stateProvinceCode,
+                    postalCode = postalCode,
+                    countryCode = countryCode
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Address1) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -127,6 +148,6 @@ data class Address1(
             city = city,
             stateProvinceCode = stateProvinceCode,
             postalCode = postalCode,
-            countryCode = countryCode,
+            countryCode = countryCode
         )
 }

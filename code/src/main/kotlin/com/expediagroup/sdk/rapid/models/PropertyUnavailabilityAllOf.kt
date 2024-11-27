@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.UnavailableReason
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Response with a property that has no available rates for the given request parameters, but `include=unavailable_reason` was requested.
@@ -46,7 +44,7 @@ import javax.validation.constraints.Size
 data class PropertyUnavailabilityAllOf(
     @JsonProperty("unavailable_reason")
     @field:Valid
-    val unavailableReason: UnavailableReason? = null,
+    val unavailableReason: UnavailableReason? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,19 +52,42 @@ data class PropertyUnavailabilityAllOf(
     }
 
     class Builder(
-        private var unavailableReason: UnavailableReason? = null,
+        private var unavailableReason: UnavailableReason? = null
     ) {
         fun unavailableReason(unavailableReason: UnavailableReason?) = apply { this.unavailableReason = unavailableReason }
 
         fun build(): PropertyUnavailabilityAllOf {
-            return PropertyUnavailabilityAllOf(
-                unavailableReason = unavailableReason,
-            )
+            val instance =
+                PropertyUnavailabilityAllOf(
+                    unavailableReason = unavailableReason
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyUnavailabilityAllOf) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            unavailableReason = unavailableReason,
+            unavailableReason = unavailableReason
         )
 }

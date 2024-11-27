@@ -25,18 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -51,6 +50,7 @@ import javax.validation.constraints.Size
 data class BillingContactRequestAddress(
     // Customer's country code, in two-letter ISO 3166-1 alpha-2 format. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded. Only ISO-8859-1 compliant characters are allowed.
     @JsonProperty("country_code")
+    @field:NotNull
     @field:Valid
     val countryCode: kotlin.String,
     // First line of customer's street address. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded. Only ISO-8859-1 compliant characters are allowed.
@@ -76,7 +76,7 @@ data class BillingContactRequestAddress(
     // Customer's postal code. Mandatory for CA, GB, and US. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded. Only ISO-8859-1 compliant characters are allowed.
     @JsonProperty("postal_code")
     @field:Valid
-    val postalCode: kotlin.String? = null,
+    val postalCode: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -90,7 +90,7 @@ data class BillingContactRequestAddress(
         private var line3: kotlin.String? = null,
         private var city: kotlin.String? = null,
         private var stateProvinceCode: kotlin.String? = null,
-        private var postalCode: kotlin.String? = null,
+        private var postalCode: kotlin.String? = null
     ) {
         fun countryCode(countryCode: kotlin.String) = apply { this.countryCode = countryCode }
 
@@ -107,22 +107,37 @@ data class BillingContactRequestAddress(
         fun postalCode(postalCode: kotlin.String?) = apply { this.postalCode = postalCode }
 
         fun build(): BillingContactRequestAddress {
-            // Check required params
-            validateNullity()
-            return BillingContactRequestAddress(
-                countryCode = countryCode!!,
-                line1 = line1,
-                line2 = line2,
-                line3 = line3,
-                city = city,
-                stateProvinceCode = stateProvinceCode,
-                postalCode = postalCode,
-            )
+            val instance =
+                BillingContactRequestAddress(
+                    countryCode = countryCode!!,
+                    line1 = line1,
+                    line2 = line2,
+                    line3 = line3,
+                    city = city,
+                    stateProvinceCode = stateProvinceCode,
+                    postalCode = postalCode
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (countryCode == null) {
-                throw NullPointerException("Required parameter countryCode is missing")
+        private fun validate(instance: BillingContactRequestAddress) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -135,6 +150,6 @@ data class BillingContactRequestAddress(
             line3 = line3,
             city = city,
             stateProvinceCode = stateProvinceCode,
-            postalCode = postalCode,
+            postalCode = postalCode
         )
 }

@@ -25,22 +25,20 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.CancelPenalty
 import com.expediagroup.sdk.rapid.models.DepositItinerary
 import com.expediagroup.sdk.rapid.models.PricingInformation
 import com.expediagroup.sdk.rapid.models.PromotionsItinerary
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The rate information associated with the itinerary.
@@ -67,7 +65,7 @@ data class RateHistory(
     val deposits: kotlin.collections.List<DepositItinerary>? = null,
     @JsonProperty("pricing")
     @field:Valid
-    val pricing: PricingInformation? = null,
+    val pricing: PricingInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -79,7 +77,7 @@ data class RateHistory(
         private var promotions: PromotionsItinerary? = null,
         private var cancelPenalties: kotlin.collections.List<CancelPenalty>? = null,
         private var deposits: kotlin.collections.List<DepositItinerary>? = null,
-        private var pricing: PricingInformation? = null,
+        private var pricing: PricingInformation? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -92,13 +90,36 @@ data class RateHistory(
         fun pricing(pricing: PricingInformation?) = apply { this.pricing = pricing }
 
         fun build(): RateHistory {
-            return RateHistory(
-                id = id,
-                promotions = promotions,
-                cancelPenalties = cancelPenalties,
-                deposits = deposits,
-                pricing = pricing,
-            )
+            val instance =
+                RateHistory(
+                    id = id,
+                    promotions = promotions,
+                    cancelPenalties = cancelPenalties,
+                    deposits = deposits,
+                    pricing = pricing
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RateHistory) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -108,6 +129,6 @@ data class RateHistory(
             promotions = promotions,
             cancelPenalties = cancelPenalties,
             deposits = deposits,
-            pricing = pricing,
+            pricing = pricing
         )
 }

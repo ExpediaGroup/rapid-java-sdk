@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>5.1.0</version>
+    <version>5.2.0</version>
     <name>EG rapid-sdk for Java</name>
-    <description>EG rapid-sdk v5.1.0</description>
+    <description>EG rapid-sdk v5.2.0</description>
     <url>https://github.com/ExpediaGroup/test-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
@@ -64,28 +64,28 @@
 
         <!-- Plugin Versions -->
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>3.7.1</maven-dependency-plugin.version>
+        <maven-dependency-plugin.version>3.8.1</maven-dependency-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-surefire-plugin.version>3.3.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
-        <ktlint-plugin.version>3.2.0</ktlint-plugin.version>
+        <ktlint-plugin.version>3.4.0</ktlint-plugin.version>
         <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
         <dokka-plugin.version>1.9.20</dokka-plugin.version>
         <dokka-old-versions.location/> <!-- passed as a property when running dokka:dokka-->
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
-        <maven.licence.plugin.version>4.5</maven.licence.plugin.version>
+        <maven.licence.plugin.version>4.6</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
-        <kotlin.version>2.0.0</kotlin.version>
-        <kotlinx.coroutines.version>1.8.1</kotlinx.coroutines.version>
-        <ktor.version>2.3.12</ktor.version>
-        <kotlin-atomic.version>0.25.0</kotlin-atomic.version>
-        <slf4j.version>2.0.13</slf4j.version>
+        <kotlin.version>2.0.21</kotlin.version>
+        <kotlinx.coroutines.version>1.9.0</kotlinx.coroutines.version>
+        <ktor.version>2.3.13</ktor.version>
+        <kotlin-atomic.version>0.26.0</kotlin-atomic.version>
+        <slf4j.version>2.0.16</slf4j.version>
         <maven.nexus-staging.plugin.version>1.7.0</maven.nexus-staging.plugin.version>
-        <maven.gpg.plugin.version>3.2.5</maven.gpg.plugin.version>
+        <maven.gpg.plugin.version>3.2.7</maven.gpg.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -131,19 +131,19 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.17.2</version>
+                <version>2.18.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
                 <groupId>com.squareup.okio</groupId>
                 <artifactId>okio-jvm</artifactId>
-                <version>3.9.0</version>
+                <version>3.9.1</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
-                <version>24.1.0</version>
+                <version>26.0.1</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
@@ -153,7 +153,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.17.2</version>
+                <version>2.18.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

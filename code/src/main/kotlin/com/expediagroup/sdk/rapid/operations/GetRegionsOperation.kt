@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [GetRegionsOperationParams]
  */
 class GetRegionsOperation(
-    params: GetRegionsOperationParams,
+    params: GetRegionsOperationParams
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         "/v3/regions",
         "GET",
         "getRegions",
         null,
-        params,
+        params
     )

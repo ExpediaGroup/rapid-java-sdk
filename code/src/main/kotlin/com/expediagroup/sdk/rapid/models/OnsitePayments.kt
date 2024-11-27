@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.PaymentType
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The property’s accepted forms of payments when onsite. See our [onsite payment types reference](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for current known payment type ID and name values.
@@ -52,7 +50,7 @@ data class OnsitePayments(
     // The types of payments accepted at the property.
     @JsonProperty("types")
     @field:Valid
-    val types: kotlin.collections.Map<kotlin.String, PaymentType>? = null,
+    val types: kotlin.collections.Map<kotlin.String, PaymentType>? = null
 ) {
     companion object {
         @JvmStatic
@@ -61,23 +59,46 @@ data class OnsitePayments(
 
     class Builder(
         private var currency: kotlin.String? = null,
-        private var types: kotlin.collections.Map<kotlin.String, PaymentType>? = null,
+        private var types: kotlin.collections.Map<kotlin.String, PaymentType>? = null
     ) {
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
         fun types(types: kotlin.collections.Map<kotlin.String, PaymentType>?) = apply { this.types = types }
 
         fun build(): OnsitePayments {
-            return OnsitePayments(
-                currency = currency,
-                types = types,
-            )
+            val instance =
+                OnsitePayments(
+                    currency = currency,
+                    types = types
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: OnsitePayments) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             currency = currency,
-            types = types,
+            types = types
         )
 }

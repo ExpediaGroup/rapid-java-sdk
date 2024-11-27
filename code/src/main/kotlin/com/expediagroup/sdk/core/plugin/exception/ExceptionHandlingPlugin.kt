@@ -24,7 +24,7 @@ import io.ktor.client.plugins.HttpResponseValidator
 internal object ExceptionHandlingPlugin : Plugin<ExceptionHandlingConfiguration> {
     override fun install(
         client: Client,
-        configurations: ExceptionHandlingConfiguration,
+        configurations: ExceptionHandlingConfiguration
     ) {
         with(configurations.httpClientConfiguration) {
             HttpResponseValidator {

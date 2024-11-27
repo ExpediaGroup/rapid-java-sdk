@@ -25,20 +25,19 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.BillingContactRequestWithPhone
 import com.expediagroup.sdk.rapid.models.ThirdPartyAuthRequest
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -54,8 +53,10 @@ import javax.validation.constraints.Size
 data class PaymentRequestWithPhone(
     // Identifier for the type of payment. If affiliate_collect, cardholder information is not required as EPS will not be processing the payment.
     @JsonProperty("type")
+    @field:NotNull
     val type: PaymentRequestWithPhone.Type,
     @JsonProperty("billing_contact")
+    @field:NotNull
     @field:Valid
     val billingContact: BillingContactRequestWithPhone,
     // Card number. Required for credit card transactions.
@@ -80,7 +81,7 @@ data class PaymentRequestWithPhone(
     // Date the payment account was enrolled in the cardholder's account with the merchant, in ISO 8601 format (YYYY-MM-DD).
     @JsonProperty("enrollment_date")
     @field:Valid
-    val enrollmentDate: kotlin.String? = null,
+    val enrollmentDate: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -95,7 +96,7 @@ data class PaymentRequestWithPhone(
         private var expirationMonth: kotlin.String? = null,
         private var expirationYear: kotlin.String? = null,
         private var thirdPartyAuthentication: ThirdPartyAuthRequest? = null,
-        private var enrollmentDate: kotlin.String? = null,
+        private var enrollmentDate: kotlin.String? = null
     ) {
         fun type(type: PaymentRequestWithPhone.Type) = apply { this.type = type }
 
@@ -109,34 +110,43 @@ data class PaymentRequestWithPhone(
 
         fun expirationYear(expirationYear: kotlin.String?) = apply { this.expirationYear = expirationYear }
 
-        fun thirdPartyAuthentication(thirdPartyAuthentication: ThirdPartyAuthRequest?) =
-            apply {
-                this.thirdPartyAuthentication = thirdPartyAuthentication
-            }
+        fun thirdPartyAuthentication(thirdPartyAuthentication: ThirdPartyAuthRequest?) = apply { this.thirdPartyAuthentication = thirdPartyAuthentication }
 
         fun enrollmentDate(enrollmentDate: kotlin.String?) = apply { this.enrollmentDate = enrollmentDate }
 
         fun build(): PaymentRequestWithPhone {
-            // Check required params
-            validateNullity()
-            return PaymentRequestWithPhone(
-                type = type!!,
-                billingContact = billingContact!!,
-                number = number,
-                securityCode = securityCode,
-                expirationMonth = expirationMonth,
-                expirationYear = expirationYear,
-                thirdPartyAuthentication = thirdPartyAuthentication,
-                enrollmentDate = enrollmentDate,
-            )
+            val instance =
+                PaymentRequestWithPhone(
+                    type = type!!,
+                    billingContact = billingContact!!,
+                    number = number,
+                    securityCode = securityCode,
+                    expirationMonth = expirationMonth,
+                    expirationYear = expirationYear,
+                    thirdPartyAuthentication = thirdPartyAuthentication,
+                    enrollmentDate = enrollmentDate
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (type == null) {
-                throw NullPointerException("Required parameter type is missing")
-            }
-            if (billingContact == null) {
-                throw NullPointerException("Required parameter billingContact is missing")
+        private fun validate(instance: PaymentRequestWithPhone) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -150,7 +160,7 @@ data class PaymentRequestWithPhone(
             expirationMonth = expirationMonth,
             expirationYear = expirationYear,
             thirdPartyAuthentication = thirdPartyAuthentication,
-            enrollmentDate = enrollmentDate,
+            enrollmentDate = enrollmentDate
         )
 
     /**
@@ -168,6 +178,6 @@ data class PaymentRequestWithPhone(
         VIRTUAL_CARD("virtual_card"),
 
         @JsonProperty("affiliate_collect")
-        AFFILIATE_COLLECT("affiliate_collect"),
+        AFFILIATE_COLLECT("affiliate_collect")
     }
 }

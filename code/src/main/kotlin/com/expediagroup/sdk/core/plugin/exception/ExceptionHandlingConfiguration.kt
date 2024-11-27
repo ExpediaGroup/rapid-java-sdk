@@ -20,7 +20,7 @@ import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineConfig
 
 internal data class ExceptionHandlingConfiguration(
-    override val httpClientConfiguration: HttpClientConfig<out HttpClientEngineConfig>,
+    override val httpClientConfiguration: HttpClientConfig<out HttpClientEngineConfig>
 ) : KtorPluginConfiguration(httpClientConfiguration) {
     companion object {
         fun from(httpClientConfig: HttpClientConfig<out HttpClientEngineConfig>) = ExceptionHandlingConfiguration(httpClientConfig)

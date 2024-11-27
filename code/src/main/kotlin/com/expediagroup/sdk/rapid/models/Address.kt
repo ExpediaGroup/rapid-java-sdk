@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Localized
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Container for the property's address information.
@@ -86,7 +84,7 @@ data class Address(
     val obfuscationRequired: kotlin.Boolean? = null,
     @JsonProperty("localized")
     @field:Valid
-    val localized: Localized? = null,
+    val localized: Localized? = null
 ) {
     companion object {
         @JvmStatic
@@ -102,7 +100,7 @@ data class Address(
         private var postalCode: kotlin.String? = null,
         private var countryCode: kotlin.String? = null,
         private var obfuscationRequired: kotlin.Boolean? = null,
-        private var localized: Localized? = null,
+        private var localized: Localized? = null
     ) {
         fun line1(line1: kotlin.String?) = apply { this.line1 = line1 }
 
@@ -123,17 +121,40 @@ data class Address(
         fun localized(localized: Localized?) = apply { this.localized = localized }
 
         fun build(): Address {
-            return Address(
-                line1 = line1,
-                line2 = line2,
-                city = city,
-                stateProvinceCode = stateProvinceCode,
-                stateProvinceName = stateProvinceName,
-                postalCode = postalCode,
-                countryCode = countryCode,
-                obfuscationRequired = obfuscationRequired,
-                localized = localized,
-            )
+            val instance =
+                Address(
+                    line1 = line1,
+                    line2 = line2,
+                    city = city,
+                    stateProvinceCode = stateProvinceCode,
+                    stateProvinceName = stateProvinceName,
+                    postalCode = postalCode,
+                    countryCode = countryCode,
+                    obfuscationRequired = obfuscationRequired,
+                    localized = localized
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Address) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -147,6 +168,6 @@ data class Address(
             postalCode = postalCode,
             countryCode = countryCode,
             obfuscationRequired = obfuscationRequired,
-            localized = localized,
+            localized = localized
         )
 }

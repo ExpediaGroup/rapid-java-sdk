@@ -25,21 +25,19 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationLink
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including links to request additional rates. Note that the recommendations feature has been retired and will return an error if the link is followed.
@@ -53,7 +51,7 @@ data class PropertyAvailabilityLinks(
     val additionalRates: GetAdditionalAvailabilityOperationLink? = null,
     @JsonProperty("recommendations")
     @field:Valid
-    val recommendations: GetAvailabilityOperationLink? = null,
+    val recommendations: GetAvailabilityOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -62,23 +60,46 @@ data class PropertyAvailabilityLinks(
 
     class Builder(
         private var additionalRates: GetAdditionalAvailabilityOperationLink? = null,
-        private var recommendations: GetAvailabilityOperationLink? = null,
+        private var recommendations: GetAvailabilityOperationLink? = null
     ) {
         fun additionalRates(additionalRates: GetAdditionalAvailabilityOperationLink?) = apply { this.additionalRates = additionalRates }
 
         fun recommendations(recommendations: GetAvailabilityOperationLink?) = apply { this.recommendations = recommendations }
 
         fun build(): PropertyAvailabilityLinks {
-            return PropertyAvailabilityLinks(
-                additionalRates = additionalRates,
-                recommendations = recommendations,
-            )
+            val instance =
+                PropertyAvailabilityLinks(
+                    additionalRates = additionalRates,
+                    recommendations = recommendations
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyAvailabilityLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             additionalRates = additionalRates,
-            recommendations = recommendations,
+            recommendations = recommendations
         )
 }

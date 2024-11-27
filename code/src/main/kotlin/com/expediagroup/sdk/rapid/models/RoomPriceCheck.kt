@@ -25,11 +25,12 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amount
 import com.expediagroup.sdk.rapid.models.Charge
 import com.expediagroup.sdk.rapid.models.Deposit
@@ -38,12 +39,9 @@ import com.expediagroup.sdk.rapid.models.RoomPriceCheckLinks
 import com.expediagroup.sdk.rapid.models.StatusPriceCheck
 import com.expediagroup.sdk.rapid.models.TraderInformation
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The price check response.
@@ -90,7 +88,7 @@ data class RoomPriceCheck(
     val penalty: Charge? = null,
     @JsonProperty("trader_information")
     @field:Valid
-    val traderInformation: TraderInformation? = null,
+    val traderInformation: TraderInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -107,14 +105,11 @@ data class RoomPriceCheck(
         private var refund: Charge? = null,
         private var amountOwed: Charge? = null,
         private var penalty: Charge? = null,
-        private var traderInformation: TraderInformation? = null,
+        private var traderInformation: TraderInformation? = null
     ) {
         fun status(status: StatusPriceCheck?) = apply { this.status = status }
 
-        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) =
-            apply {
-                this.occupancyPricing = occupancyPricing
-            }
+        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) = apply { this.occupancyPricing = occupancyPricing }
 
         fun links(links: RoomPriceCheckLinks?) = apply { this.links = links }
 
@@ -133,18 +128,41 @@ data class RoomPriceCheck(
         fun traderInformation(traderInformation: TraderInformation?) = apply { this.traderInformation = traderInformation }
 
         fun build(): RoomPriceCheck {
-            return RoomPriceCheck(
-                status = status,
-                occupancyPricing = occupancyPricing,
-                links = links,
-                cardOnFileLimit = cardOnFileLimit,
-                refundableDamageDeposit = refundableDamageDeposit,
-                deposits = deposits,
-                refund = refund,
-                amountOwed = amountOwed,
-                penalty = penalty,
-                traderInformation = traderInformation,
-            )
+            val instance =
+                RoomPriceCheck(
+                    status = status,
+                    occupancyPricing = occupancyPricing,
+                    links = links,
+                    cardOnFileLimit = cardOnFileLimit,
+                    refundableDamageDeposit = refundableDamageDeposit,
+                    deposits = deposits,
+                    refund = refund,
+                    amountOwed = amountOwed,
+                    penalty = penalty,
+                    traderInformation = traderInformation
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RoomPriceCheck) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -159,6 +177,6 @@ data class RoomPriceCheck(
             refund = refund,
             amountOwed = amountOwed,
             penalty = penalty,
-            traderInformation = traderInformation,
+            traderInformation = traderInformation
         )
 }

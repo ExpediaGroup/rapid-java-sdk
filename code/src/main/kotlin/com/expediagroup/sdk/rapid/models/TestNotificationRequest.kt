@@ -25,18 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -45,8 +44,9 @@ import javax.validation.constraints.Size
 data class TestNotificationRequest(
     // The event type for which the test notification is requested.
     @JsonProperty("event_type")
+    @field:NotNull
     @field:Valid
-    val eventType: kotlin.String,
+    val eventType: kotlin.String
 ) {
     companion object {
         @JvmStatic
@@ -54,27 +54,42 @@ data class TestNotificationRequest(
     }
 
     class Builder(
-        private var eventType: kotlin.String? = null,
+        private var eventType: kotlin.String? = null
     ) {
         fun eventType(eventType: kotlin.String) = apply { this.eventType = eventType }
 
         fun build(): TestNotificationRequest {
-            // Check required params
-            validateNullity()
-            return TestNotificationRequest(
-                eventType = eventType!!,
-            )
+            val instance =
+                TestNotificationRequest(
+                    eventType = eventType!!
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (eventType == null) {
-                throw NullPointerException("Required parameter eventType is missing")
+        private fun validate(instance: TestNotificationRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
 
     fun toBuilder() =
         Builder(
-            eventType = eventType!!,
+            eventType = eventType!!
         )
 }

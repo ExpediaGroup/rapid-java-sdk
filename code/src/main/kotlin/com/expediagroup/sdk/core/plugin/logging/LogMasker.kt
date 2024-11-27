@@ -21,7 +21,7 @@ import com.ebay.ejmask.core.EJMaskInitializer
 import com.ebay.ejmask.core.util.LoggerUtil
 
 internal class LogMasker(
-    filters: Iterable<BaseFilter>,
+    filters: Iterable<BaseFilter>
 ) : (String) -> String {
     init {
         LoggerUtil.register { _, _, _ -> /* disable logging */ }

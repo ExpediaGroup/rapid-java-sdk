@@ -22,7 +22,7 @@ import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.request.HttpRequestBuilder
 
 internal class BasicAuthenticationStrategy(
-    private val configs: AuthenticationConfiguration,
+    private val configs: AuthenticationConfiguration
 ) : AuthenticationStrategy {
     override fun loadAuth(auth: Auth) {
         auth.basic {

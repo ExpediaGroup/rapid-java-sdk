@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Any price adjustments associated with this itinerary.
@@ -56,7 +54,7 @@ data class Adjustment(
     // The currency of the adjustment.
     @JsonProperty("currency")
     @field:Valid
-    val currency: kotlin.String? = null,
+    val currency: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class Adjustment(
     class Builder(
         private var `value`: kotlin.String? = null,
         private var type: kotlin.String? = null,
-        private var currency: kotlin.String? = null,
+        private var currency: kotlin.String? = null
     ) {
         fun `value`(`value`: kotlin.String?) = apply { this.`value` = `value` }
 
@@ -75,11 +73,34 @@ data class Adjustment(
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
         fun build(): Adjustment {
-            return Adjustment(
-                `value` = `value`,
-                type = type,
-                currency = currency,
-            )
+            val instance =
+                Adjustment(
+                    `value` = `value`,
+                    type = type,
+                    currency = currency
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Adjustment) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class Adjustment(
         Builder(
             `value` = `value`,
             type = type,
-            currency = currency,
+            currency = currency
         )
 }

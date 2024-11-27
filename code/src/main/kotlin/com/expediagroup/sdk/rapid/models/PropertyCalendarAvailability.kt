@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Day
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -51,7 +49,7 @@ data class PropertyCalendarAvailability(
     val propertyId: kotlin.String? = null,
     @JsonProperty("days")
     @field:Valid
-    val days: kotlin.collections.List<Day>? = null,
+    val days: kotlin.collections.List<Day>? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class PropertyCalendarAvailability(
 
     class Builder(
         private var propertyId: kotlin.String? = null,
-        private var days: kotlin.collections.List<Day>? = null,
+        private var days: kotlin.collections.List<Day>? = null
     ) {
         fun propertyId(propertyId: kotlin.String?) = apply { this.propertyId = propertyId }
 
         fun days(days: kotlin.collections.List<Day>?) = apply { this.days = days }
 
         fun build(): PropertyCalendarAvailability {
-            return PropertyCalendarAvailability(
-                propertyId = propertyId,
-                days = days,
-            )
+            val instance =
+                PropertyCalendarAvailability(
+                    propertyId = propertyId,
+                    days = days
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyCalendarAvailability) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             propertyId = propertyId,
-            days = days,
+            days = days
         )
 }

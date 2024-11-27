@@ -48,7 +48,7 @@ import java.time.LocalDateTime
 
 internal class ExpediaGroupAuthenticationStrategy(
     private val client: Client,
-    private val configs: AuthenticationConfiguration,
+    private val configs: AuthenticationConfiguration
 ) : AuthenticationStrategy {
     private val log = ExpediaGroupLoggerFactory.getLogger(javaClass)
     private var bearerTokenStorage = BearerTokensInfo.emptyBearerTokenInfo
@@ -61,8 +61,7 @@ internal class ExpediaGroupAuthenticationStrategy(
         }
     }
 
-    override fun isTokenAboutToExpire(): Boolean =
-        bearerTokenStorage.isAboutToExpire().also { if (it) log.info(LoggingMessage.TOKEN_EXPIRED) }
+    override fun isTokenAboutToExpire(): Boolean = bearerTokenStorage.isAboutToExpire().also { if (it) log.info(LoggingMessage.TOKEN_EXPIRED) }
 
     override fun renewToken() {
         val httpClient = client.httpClient
@@ -80,11 +79,7 @@ internal class ExpediaGroupAuthenticationStrategy(
                 }
             }
         if (renewTokenResponse.status.value !in Constant.SUCCESSFUL_STATUS_CODES_RANGE) {
-            throw ExpediaGroupAuthException(
-                renewTokenResponse.status,
-                ExceptionMessage.AUTHENTICATION_FAILURE,
-                renewTokenResponse.headers.getTransactionId(),
-            )
+            throw ExpediaGroupAuthException(renewTokenResponse.status, ExceptionMessage.AUTHENTICATION_FAILURE, renewTokenResponse.headers.getTransactionId())
         }
         val renewedTokenInfo: TokenResponse = runBlocking { renewTokenResponse.body() }
         log.info(LoggingMessage.TOKEN_RENEWAL_SUCCESSFUL)
@@ -92,7 +87,7 @@ internal class ExpediaGroupAuthenticationStrategy(
         bearerTokenStorage =
             BearerTokensInfo(
                 BearerTokens(renewedTokenInfo.accessToken, renewedTokenInfo.accessToken),
-                renewedTokenInfo.expiresIn,
+                renewedTokenInfo.expiresIn
             )
         bearerTokenStorage
     }
@@ -109,14 +104,11 @@ internal class ExpediaGroupAuthenticationStrategy(
     private fun HttpRequestBuilder.basicAuth(credentials: Credentials) {
         basicAuth(
             credentials.key,
-            credentials.secret,
+            credentials.secret
         )
     }
 
-    override fun isIdentityRequest(request: HttpRequestBuilder): Boolean =
-        request.url.clone().apply {
-            encodedParameters = ParametersBuilder()
-        }.buildString() == configs.authUrl
+    override fun isIdentityRequest(request: HttpRequestBuilder): Boolean = request.url.clone().apply { encodedParameters = ParametersBuilder() }.buildString() == configs.authUrl
 
     override fun getAuthorizationHeader() = "${Authentication.BEARER} ${getTokens().accessToken}"
 
@@ -141,6 +133,6 @@ internal class ExpediaGroupAuthenticationStrategy(
 
     internal data class TokenResponse(
         val accessToken: String,
-        val expiresIn: Int,
+        val expiresIn: Int
     )
 }

@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.expediagroup.sdk.rapid.operations.PostItineraryOperationLink
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including links to create a booking.
@@ -48,7 +46,7 @@ import javax.validation.constraints.Size
 data class PaymentSessionsLinks(
     @JsonProperty("book")
     @field:Valid
-    val book: PostItineraryOperationLink? = null,
+    val book: PostItineraryOperationLink? = null
 ) {
     companion object {
         @JvmStatic
@@ -56,19 +54,42 @@ data class PaymentSessionsLinks(
     }
 
     class Builder(
-        private var book: PostItineraryOperationLink? = null,
+        private var book: PostItineraryOperationLink? = null
     ) {
         fun book(book: PostItineraryOperationLink?) = apply { this.book = book }
 
         fun build(): PaymentSessionsLinks {
-            return PaymentSessionsLinks(
-                book = book,
-            )
+            val instance =
+                PaymentSessionsLinks(
+                    book = book
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PaymentSessionsLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            book = book,
+            book = book
         )
 }

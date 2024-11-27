@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Ancestors
 import com.expediagroup.sdk.rapid.models.CoordinatesRegion
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -127,7 +125,7 @@ data class Region(
     // A list of regional tags.
     @JsonProperty("tags")
     @field:Valid
-    val tags: kotlin.collections.List<kotlin.String>? = null,
+    val tags: kotlin.collections.List<kotlin.String>? = null
 ) {
     companion object {
         @JvmStatic
@@ -151,7 +149,7 @@ data class Region(
         private var propertyIds: kotlin.collections.List<kotlin.String>? = null,
         private var propertyIdsExpanded: kotlin.collections.List<kotlin.String>? = null,
         private var categories: kotlin.collections.List<kotlin.String>? = null,
-        private var tags: kotlin.collections.List<kotlin.String>? = null,
+        private var tags: kotlin.collections.List<kotlin.String>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -173,49 +171,63 @@ data class Region(
 
         fun coordinates(coordinates: CoordinatesRegion?) = apply { this.coordinates = coordinates }
 
-        fun associations(associations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) =
-            apply {
-                this.associations = associations
-            }
+        fun associations(associations: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) = apply { this.associations = associations }
 
         fun ancestors(ancestors: kotlin.collections.List<Ancestors>?) = apply { this.ancestors = ancestors }
 
-        fun descendants(descendants: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) =
-            apply {
-                this.descendants = descendants
-            }
+        fun descendants(descendants: kotlin.collections.Map<kotlin.String, kotlin.collections.List<kotlin.String>>?) = apply { this.descendants = descendants }
 
         fun propertyIds(propertyIds: kotlin.collections.List<kotlin.String>?) = apply { this.propertyIds = propertyIds }
 
-        fun propertyIdsExpanded(propertyIdsExpanded: kotlin.collections.List<kotlin.String>?) =
-            apply {
-                this.propertyIdsExpanded = propertyIdsExpanded
-            }
+        fun propertyIdsExpanded(propertyIdsExpanded: kotlin.collections.List<kotlin.String>?) = apply { this.propertyIdsExpanded = propertyIdsExpanded }
 
         fun categories(categories: kotlin.collections.List<kotlin.String>?) = apply { this.categories = categories }
 
         fun tags(tags: kotlin.collections.List<kotlin.String>?) = apply { this.tags = tags }
 
         fun build(): Region {
-            return Region(
-                id = id,
-                type = type,
-                name = name,
-                nameFull = nameFull,
-                descriptor = descriptor,
-                iataAirportCode = iataAirportCode,
-                iataAirportMetroCode = iataAirportMetroCode,
-                countryCode = countryCode,
-                countrySubdivisionCode = countrySubdivisionCode,
-                coordinates = coordinates,
-                associations = associations,
-                ancestors = ancestors,
-                descendants = descendants,
-                propertyIds = propertyIds,
-                propertyIdsExpanded = propertyIdsExpanded,
-                categories = categories,
-                tags = tags,
-            )
+            val instance =
+                Region(
+                    id = id,
+                    type = type,
+                    name = name,
+                    nameFull = nameFull,
+                    descriptor = descriptor,
+                    iataAirportCode = iataAirportCode,
+                    iataAirportMetroCode = iataAirportMetroCode,
+                    countryCode = countryCode,
+                    countrySubdivisionCode = countrySubdivisionCode,
+                    coordinates = coordinates,
+                    associations = associations,
+                    ancestors = ancestors,
+                    descendants = descendants,
+                    propertyIds = propertyIds,
+                    propertyIdsExpanded = propertyIdsExpanded,
+                    categories = categories,
+                    tags = tags
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Region) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -237,6 +249,6 @@ data class Region(
             propertyIds = propertyIds,
             propertyIdsExpanded = propertyIdsExpanded,
             categories = categories,
-            tags = tags,
+            tags = tags
         )
 }

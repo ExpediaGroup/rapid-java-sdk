@@ -37,4 +37,6 @@ internal object ConfigurationName {
     const val RUNTIME_CONFIGURATION_PROVIDER = "runtime configuration"
 
     const val CONFIGURATION_COLLECTOR = "configuration collector"
+
+    const val OKHTTP_CLIENT = "okhttp client"
 }

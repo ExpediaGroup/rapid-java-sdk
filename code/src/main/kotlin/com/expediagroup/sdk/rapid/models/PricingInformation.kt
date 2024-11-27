@@ -25,22 +25,20 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.FeesPricingInformation
 import com.expediagroup.sdk.rapid.models.NightCharge
 import com.expediagroup.sdk.rapid.models.Stay
 import com.expediagroup.sdk.rapid.models.Totals
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The pricing information object.
@@ -63,7 +61,7 @@ data class PricingInformation(
     val totals: Totals? = null,
     @JsonProperty("fees")
     @field:Valid
-    val fees: FeesPricingInformation? = null,
+    val fees: FeesPricingInformation? = null
 ) {
     companion object {
         @JvmStatic
@@ -74,7 +72,7 @@ data class PricingInformation(
         private var nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>? = null,
         private var stay: kotlin.collections.List<Stay>? = null,
         private var totals: Totals? = null,
-        private var fees: FeesPricingInformation? = null,
+        private var fees: FeesPricingInformation? = null
     ) {
         fun nightly(nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>?) = apply { this.nightly = nightly }
 
@@ -85,12 +83,35 @@ data class PricingInformation(
         fun fees(fees: FeesPricingInformation?) = apply { this.fees = fees }
 
         fun build(): PricingInformation {
-            return PricingInformation(
-                nightly = nightly,
-                stay = stay,
-                totals = totals,
-                fees = fees,
-            )
+            val instance =
+                PricingInformation(
+                    nightly = nightly,
+                    stay = stay,
+                    totals = totals,
+                    fees = fees
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PricingInformation) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -99,6 +120,6 @@ data class PricingInformation(
             nightly = nightly,
             stay = stay,
             totals = totals,
-            fees = fees,
+            fees = fees
         )
 }

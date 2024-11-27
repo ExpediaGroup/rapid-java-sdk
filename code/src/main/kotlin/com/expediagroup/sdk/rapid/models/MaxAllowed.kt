@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Maximum occupancy counts.
@@ -56,7 +54,7 @@ data class MaxAllowed(
     // Maximum number of adults allowed.
     @JsonProperty("adults")
     @field:Valid
-    val adults: java.math.BigDecimal? = null,
+    val adults: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class MaxAllowed(
     class Builder(
         private var total: java.math.BigDecimal? = null,
         private var children: java.math.BigDecimal? = null,
-        private var adults: java.math.BigDecimal? = null,
+        private var adults: java.math.BigDecimal? = null
     ) {
         fun total(total: java.math.BigDecimal?) = apply { this.total = total }
 
@@ -75,11 +73,34 @@ data class MaxAllowed(
         fun adults(adults: java.math.BigDecimal?) = apply { this.adults = adults }
 
         fun build(): MaxAllowed {
-            return MaxAllowed(
-                total = total,
-                children = children,
-                adults = adults,
-            )
+            val instance =
+                MaxAllowed(
+                    total = total,
+                    children = children,
+                    adults = adults
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: MaxAllowed) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class MaxAllowed(
         Builder(
             total = total,
             children = children,
-            adults = adults,
+            adults = adults
         )
 }

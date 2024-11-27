@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -71,7 +69,7 @@ data class CancelPenalty(
     // Percentage of total booking charged for as penalty. A thirty percent penalty would be returned as 30%
     @JsonProperty("percent")
     @field:Valid
-    val percent: kotlin.String? = null,
+    val percent: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -84,7 +82,7 @@ data class CancelPenalty(
         private var end: kotlin.String? = null,
         private var amount: kotlin.String? = null,
         private var nights: kotlin.String? = null,
-        private var percent: kotlin.String? = null,
+        private var percent: kotlin.String? = null
     ) {
         fun currency(currency: kotlin.String?) = apply { this.currency = currency }
 
@@ -99,14 +97,37 @@ data class CancelPenalty(
         fun percent(percent: kotlin.String?) = apply { this.percent = percent }
 
         fun build(): CancelPenalty {
-            return CancelPenalty(
-                currency = currency,
-                start = start,
-                end = end,
-                amount = amount,
-                nights = nights,
-                percent = percent,
-            )
+            val instance =
+                CancelPenalty(
+                    currency = currency,
+                    start = start,
+                    end = end,
+                    amount = amount,
+                    nights = nights,
+                    percent = percent
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CancelPenalty) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -117,6 +138,6 @@ data class CancelPenalty(
             end = end,
             amount = amount,
             nights = nights,
-            percent = percent,
+            percent = percent
         )
 }

@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -51,7 +49,7 @@ data class EnhancedHouseRules(
     // List of strings detailing further information about the rule.
     @JsonProperty("additional_information")
     @field:Valid
-    val additionalInformation: kotlin.collections.List<kotlin.String>? = null,
+    val additionalInformation: kotlin.collections.List<kotlin.String>? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,26 +58,46 @@ data class EnhancedHouseRules(
 
     class Builder(
         private var rule: kotlin.String? = null,
-        private var additionalInformation: kotlin.collections.List<kotlin.String>? = null,
+        private var additionalInformation: kotlin.collections.List<kotlin.String>? = null
     ) {
         fun rule(rule: kotlin.String?) = apply { this.rule = rule }
 
-        fun additionalInformation(additionalInformation: kotlin.collections.List<kotlin.String>?) =
-            apply {
-                this.additionalInformation = additionalInformation
-            }
+        fun additionalInformation(additionalInformation: kotlin.collections.List<kotlin.String>?) = apply { this.additionalInformation = additionalInformation }
 
         fun build(): EnhancedHouseRules {
-            return EnhancedHouseRules(
-                rule = rule,
-                additionalInformation = additionalInformation,
-            )
+            val instance =
+                EnhancedHouseRules(
+                    rule = rule,
+                    additionalInformation = additionalInformation
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: EnhancedHouseRules) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             rule = rule,
-            additionalInformation = additionalInformation,
+            additionalInformation = additionalInformation
         )
 }

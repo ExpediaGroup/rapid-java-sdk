@@ -25,18 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  *
@@ -53,18 +52,22 @@ import javax.validation.constraints.Size
 data class ThirdPartyAuthRequest(
     // Cryptographic element used to indicate Authentication was successfully performed
     @JsonProperty("cavv")
+    @field:NotNull
     @field:Valid
     val cavv: kotlin.String,
     // Electronic Commerce Indicator. The ECI is used in payer authentication to indicate the level of security used when the cardholder provided payment information to the merchant. Its value corresponds to the authentication result and the characteristics of the merchant checkout process. Each card network, e.g., Visa, MasterCard, JCB, has specific rules around the appropriate values and use of the ECI.
     @JsonProperty("eci")
+    @field:NotNull
     @field:Valid
     val eci: kotlin.String,
     // Indicates what version of 3DS was used to authenticate the user.
     @JsonProperty("three_ds_version")
+    @field:NotNull
     @field:Valid
     val threeDsVersion: kotlin.String,
     // Directory Server Transaction Id. Returned during authentication and is used as an additional parameter to validate that transaction was authenticated.
     @JsonProperty("ds_transaction_id")
+    @field:NotNull
     @field:Valid
     val dsTransactionId: kotlin.String,
     // set only if PAResStatus value is received in the authentication response
@@ -86,7 +89,7 @@ data class ThirdPartyAuthRequest(
     // Only received for Mastercard transactions, else can be null. 0 - Non-SecureCode transaction, bypassed by the Merchant 1 - Merchant-Only SecureCode transaction 2 - Fully authenticated SecureCode transaction
     @JsonProperty("ucaf_indicator")
     @field:Valid
-    val ucafIndicator: kotlin.String? = null,
+    val ucafIndicator: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -102,7 +105,7 @@ data class ThirdPartyAuthRequest(
         private var veResStatus: kotlin.String? = null,
         private var xid: kotlin.String? = null,
         private var cavvAlgorithm: kotlin.String? = null,
-        private var ucafIndicator: kotlin.String? = null,
+        private var ucafIndicator: kotlin.String? = null
     ) {
         fun cavv(cavv: kotlin.String) = apply { this.cavv = cavv }
 
@@ -123,33 +126,39 @@ data class ThirdPartyAuthRequest(
         fun ucafIndicator(ucafIndicator: kotlin.String?) = apply { this.ucafIndicator = ucafIndicator }
 
         fun build(): ThirdPartyAuthRequest {
-            // Check required params
-            validateNullity()
-            return ThirdPartyAuthRequest(
-                cavv = cavv!!,
-                eci = eci!!,
-                threeDsVersion = threeDsVersion!!,
-                dsTransactionId = dsTransactionId!!,
-                paResStatus = paResStatus,
-                veResStatus = veResStatus,
-                xid = xid,
-                cavvAlgorithm = cavvAlgorithm,
-                ucafIndicator = ucafIndicator,
-            )
+            val instance =
+                ThirdPartyAuthRequest(
+                    cavv = cavv!!,
+                    eci = eci!!,
+                    threeDsVersion = threeDsVersion!!,
+                    dsTransactionId = dsTransactionId!!,
+                    paResStatus = paResStatus,
+                    veResStatus = veResStatus,
+                    xid = xid,
+                    cavvAlgorithm = cavvAlgorithm,
+                    ucafIndicator = ucafIndicator
+                )
+
+            validate(instance)
+
+            return instance
         }
 
-        private fun validateNullity() {
-            if (cavv == null) {
-                throw NullPointerException("Required parameter cavv is missing")
-            }
-            if (eci == null) {
-                throw NullPointerException("Required parameter eci is missing")
-            }
-            if (threeDsVersion == null) {
-                throw NullPointerException("Required parameter threeDsVersion is missing")
-            }
-            if (dsTransactionId == null) {
-                throw NullPointerException("Required parameter dsTransactionId is missing")
+        private fun validate(instance: ThirdPartyAuthRequest) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -164,6 +173,6 @@ data class ThirdPartyAuthRequest(
             veResStatus = veResStatus,
             xid = xid,
             cavvAlgorithm = cavvAlgorithm,
-            ucafIndicator = ucafIndicator,
+            ucafIndicator = ucafIndicator
         )
 }

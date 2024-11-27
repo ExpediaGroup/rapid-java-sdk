@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -56,5 +56,5 @@ enum class Frequency(val value: kotlin.String) {
     ROUND_TRIP("round_trip"),
 
     @JsonProperty("one_way")
-    ONE_WAY("one_way"),
+    ONE_WAY("one_way")
 }

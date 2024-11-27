@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Coordinates
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The property's location information.
@@ -55,7 +53,7 @@ data class Location(
     // When this field is true, the `obfuscated_coordinates` must be used to display approximate location instead of the precise location of `coordinates`.
     @JsonProperty("obfuscation_required")
     @field:Valid
-    val obfuscationRequired: kotlin.Boolean? = null,
+    val obfuscationRequired: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -65,7 +63,7 @@ data class Location(
     class Builder(
         private var coordinates: Coordinates? = null,
         private var obfuscatedCoordinates: Coordinates? = null,
-        private var obfuscationRequired: kotlin.Boolean? = null,
+        private var obfuscationRequired: kotlin.Boolean? = null
     ) {
         fun coordinates(coordinates: Coordinates?) = apply { this.coordinates = coordinates }
 
@@ -74,11 +72,34 @@ data class Location(
         fun obfuscationRequired(obfuscationRequired: kotlin.Boolean?) = apply { this.obfuscationRequired = obfuscationRequired }
 
         fun build(): Location {
-            return Location(
-                coordinates = coordinates,
-                obfuscatedCoordinates = obfuscatedCoordinates,
-                obfuscationRequired = obfuscationRequired,
-            )
+            val instance =
+                Location(
+                    coordinates = coordinates,
+                    obfuscatedCoordinates = obfuscatedCoordinates,
+                    obfuscationRequired = obfuscationRequired
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Location) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -86,6 +107,6 @@ data class Location(
         Builder(
             coordinates = coordinates,
             obfuscatedCoordinates = obfuscatedCoordinates,
-            obfuscationRequired = obfuscationRequired,
+            obfuscationRequired = obfuscationRequired
         )
 }

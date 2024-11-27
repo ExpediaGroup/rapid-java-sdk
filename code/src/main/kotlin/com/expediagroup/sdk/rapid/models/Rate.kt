@@ -25,11 +25,12 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Amenity
 import com.expediagroup.sdk.rapid.models.Amount
 import com.expediagroup.sdk.rapid.models.BedGroupAvailability
@@ -44,12 +45,9 @@ import com.expediagroup.sdk.rapid.models.RateLinks
 import com.expediagroup.sdk.rapid.models.SaleScenario
 import com.expediagroup.sdk.rapid.models.Status
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A rate.
@@ -137,7 +135,7 @@ data class Rate(
     // Array of deposits for the rate.
     @JsonProperty("deposits")
     @field:Valid
-    val deposits: kotlin.collections.List<Deposit>? = null,
+    val deposits: kotlin.collections.List<Deposit>? = null
 ) {
     companion object {
         @JvmStatic
@@ -162,7 +160,7 @@ data class Rate(
         private var promotions: Promotions? = null,
         private var cardOnFileLimit: Amount? = null,
         private var refundableDamageDeposit: Amount? = null,
-        private var deposits: kotlin.collections.List<Deposit>? = null,
+        private var deposits: kotlin.collections.List<Deposit>? = null
     ) {
         fun id(id: kotlin.String?) = apply { this.id = id }
 
@@ -186,20 +184,11 @@ data class Rate(
 
         fun cancelPenalties(cancelPenalties: kotlin.collections.List<CancelPenalty>?) = apply { this.cancelPenalties = cancelPenalties }
 
-        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) =
-            apply {
-                this.nonrefundableDateRanges = nonrefundableDateRanges
-            }
+        fun nonrefundableDateRanges(nonrefundableDateRanges: kotlin.collections.List<NonrefundableDateRange>?) = apply { this.nonrefundableDateRanges = nonrefundableDateRanges }
 
-        fun marketingFeeIncentives(marketingFeeIncentives: kotlin.collections.List<MarketingFeeIncentive>?) =
-            apply {
-                this.marketingFeeIncentives = marketingFeeIncentives
-            }
+        fun marketingFeeIncentives(marketingFeeIncentives: kotlin.collections.List<MarketingFeeIncentive>?) = apply { this.marketingFeeIncentives = marketingFeeIncentives }
 
-        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) =
-            apply {
-                this.occupancyPricing = occupancyPricing
-            }
+        fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) = apply { this.occupancyPricing = occupancyPricing }
 
         fun promotions(promotions: Promotions?) = apply { this.promotions = promotions }
 
@@ -210,26 +199,49 @@ data class Rate(
         fun deposits(deposits: kotlin.collections.List<Deposit>?) = apply { this.deposits = deposits }
 
         fun build(): Rate {
-            return Rate(
-                id = id,
-                status = status,
-                availableRooms = availableRooms,
-                refundable = refundable,
-                memberDealAvailable = memberDealAvailable,
-                saleScenario = saleScenario,
-                merchantOfRecord = merchantOfRecord,
-                amenities = amenities,
-                links = links,
-                bedGroups = bedGroups,
-                cancelPenalties = cancelPenalties,
-                nonrefundableDateRanges = nonrefundableDateRanges,
-                marketingFeeIncentives = marketingFeeIncentives,
-                occupancyPricing = occupancyPricing,
-                promotions = promotions,
-                cardOnFileLimit = cardOnFileLimit,
-                refundableDamageDeposit = refundableDamageDeposit,
-                deposits = deposits,
-            )
+            val instance =
+                Rate(
+                    id = id,
+                    status = status,
+                    availableRooms = availableRooms,
+                    refundable = refundable,
+                    memberDealAvailable = memberDealAvailable,
+                    saleScenario = saleScenario,
+                    merchantOfRecord = merchantOfRecord,
+                    amenities = amenities,
+                    links = links,
+                    bedGroups = bedGroups,
+                    cancelPenalties = cancelPenalties,
+                    nonrefundableDateRanges = nonrefundableDateRanges,
+                    marketingFeeIncentives = marketingFeeIncentives,
+                    occupancyPricing = occupancyPricing,
+                    promotions = promotions,
+                    cardOnFileLimit = cardOnFileLimit,
+                    refundableDamageDeposit = refundableDamageDeposit,
+                    deposits = deposits
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Rate) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -252,6 +264,6 @@ data class Rate(
             promotions = promotions,
             cardOnFileLimit = cardOnFileLimit,
             refundableDamageDeposit = refundableDamageDeposit,
-            deposits = deposits,
+            deposits = deposits
         )
 }

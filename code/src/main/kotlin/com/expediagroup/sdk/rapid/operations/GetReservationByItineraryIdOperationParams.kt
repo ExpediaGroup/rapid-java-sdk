@@ -16,10 +16,15 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -28,21 +33,28 @@ import io.ktor.http.Parameters
  * @property test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
  * @property email Email associated with the booking. Special characters in the local part or domain should be encoded. (Email is required if the token is not provided the request) <br>
- * @property include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary
+ * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
  */
 @JsonDeserialize(builder = GetReservationByItineraryIdOperationParams.Builder::class)
 data class GetReservationByItineraryIdOperationParams
     internal constructor(
+        @field:NotNull
+        @field:Valid
         val itineraryId: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val customerIp: kotlin.String? = null,
+        @field:Valid
         val customerSessionId: kotlin.String? = null,
         val test: GetReservationByItineraryIdOperationParams.Test? = null,
+        @field:Valid
         val token: kotlin.String? = null,
+        @field:Valid
         val email: kotlin.String? = null,
         val include: kotlin.collections.List<
-            GetReservationByItineraryIdOperationParams.Include,
+            GetReservationByItineraryIdOperationParams.Include
         >? = null,
-        private val dummy: Unit,
+        private val dummy: Unit
     ) :
     OperationParams {
         companion object {
@@ -62,9 +74,9 @@ data class GetReservationByItineraryIdOperationParams
             email: kotlin.String? =
                 null,
             include: kotlin.collections.List<
-                GetReservationByItineraryIdOperationParams.Include,
+                GetReservationByItineraryIdOperationParams.Include
             >? =
-                null,
+                null
         ) : this(
             itineraryId = itineraryId,
             customerIp = customerIp,
@@ -73,28 +85,28 @@ data class GetReservationByItineraryIdOperationParams
             token = token,
             email = email,
             include = include,
-            dummy = Unit,
+            dummy = Unit
         )
 
         constructor(context: GetReservationByItineraryIdOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit,
+            dummy = Unit
         )
 
         enum class Test(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            INTERNAL_SERVER_ERROR("internal_server_error"),
+            INTERNAL_SERVER_ERROR("internal_server_error")
         }
 
         enum class Include(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
-            HISTORY("history"),
+            HISTORY("history")
         }
 
         class Builder(
@@ -105,8 +117,8 @@ data class GetReservationByItineraryIdOperationParams
             @JsonProperty("token") private var token: kotlin.String? = null,
             @JsonProperty("email") private var email: kotlin.String? = null,
             @JsonProperty("include") private var include: kotlin.collections.List<
-                GetReservationByItineraryIdOperationParams.Include,
-            >? = null,
+                GetReservationByItineraryIdOperationParams.Include
+            >? = null
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -139,34 +151,46 @@ data class GetReservationByItineraryIdOperationParams
             fun email(email: kotlin.String) = apply { this.email = email }
 
             /**
-             * @param include Options for which information to return in the response. The value must be lower case.   * history - Include itinerary history, showing details of the changes made to this itinerary
+             * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
              */
             fun include(
                 include: kotlin.collections.List<
-                    GetReservationByItineraryIdOperationParams.Include,
-                >,
+                    GetReservationByItineraryIdOperationParams.Include
+                >
             ) = apply { this.include = include }
 
             fun build(): GetReservationByItineraryIdOperationParams {
-                validateNullity()
+                val params =
+                    GetReservationByItineraryIdOperationParams(
+                        itineraryId = itineraryId!!,
+                        customerIp = customerIp!!,
+                        customerSessionId = customerSessionId,
+                        test = test,
+                        token = token,
+                        email = email,
+                        include = include
+                    )
 
-                return GetReservationByItineraryIdOperationParams(
-                    itineraryId = itineraryId!!,
-                    customerIp = customerIp!!,
-                    customerSessionId = customerSessionId,
-                    test = test,
-                    token = token,
-                    email = email,
-                    include = include,
-                )
+                validate(params)
+
+                return params
             }
 
-            private fun validateNullity() {
-                if (itineraryId == null) {
-                    throw NullPointerException("Required parameter itineraryId is missing")
-                }
-                if (customerIp == null) {
-                    throw NullPointerException("Required parameter customerIp is missing")
+            private fun validate(params: GetReservationByItineraryIdOperationParams) {
+                val validator =
+                    Validation
+                        .byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(ParameterMessageInterpolator())
+                        .buildValidatorFactory()
+                        .validator
+
+                val violations = validator.validate(params)
+
+                if (violations.isNotEmpty()) {
+                    throw PropertyConstraintViolationException(
+                        constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                    )
                 }
             }
         }
@@ -179,11 +203,11 @@ data class GetReservationByItineraryIdOperationParams
                 test = test,
                 token = token,
                 email = email,
-                include = include,
+                include = include
             )
 
-        override fun getHeaders(): Headers {
-            return Headers.build {
+        override fun getHeaders(): Headers =
+            Headers.build {
                 customerIp?.let {
                     append("Customer-Ip", it)
                 }
@@ -195,10 +219,9 @@ data class GetReservationByItineraryIdOperationParams
                 }
                 append("Accept", "application/json")
             }
-        }
 
-        override fun getQueryParams(): Parameters {
-            return Parameters.build {
+        override fun getQueryParams(): Parameters =
+            Parameters.build {
                 token?.let {
                     append("token", it)
                 }
@@ -209,13 +232,11 @@ data class GetReservationByItineraryIdOperationParams
                     appendAll("include", it.map { it.value })
                 }
             }
-        }
 
-        override fun getPathParams(): Map<String, String> {
-            return buildMap {
+        override fun getPathParams(): Map<String, String> =
+            buildMap {
                 itineraryId?.also {
                     put("itinerary_id", itineraryId)
                 }
             }
-        }
     }

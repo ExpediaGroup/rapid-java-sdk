@@ -23,13 +23,13 @@ import com.expediagroup.sdk.core.model.Operation
  * @property params [GetCalendarAvailabilityOperationParams]
  */
 class GetCalendarAvailabilityOperation(
-    params: GetCalendarAvailabilityOperationParams,
+    params: GetCalendarAvailabilityOperationParams
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         "/v3/calendars/availability",
         "GET",
         "getCalendarAvailability",
         null,
-        params,
+        params
     )

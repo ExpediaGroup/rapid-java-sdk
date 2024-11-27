@@ -27,7 +27,7 @@ class Properties(private val data: Map<String, String>) {
             Properties(
                 java.util.Properties().apply {
                     load(BufferedReader(InputStreamReader(path.openStream())))
-                }.map { it.key.toString() to it.value.toString() }.toMap(),
+                }.map { it.key.toString() to it.value.toString() }.toMap()
             )
     }
 

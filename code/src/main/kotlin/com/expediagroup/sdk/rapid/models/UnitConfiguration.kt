@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A room configuration.
@@ -56,7 +54,7 @@ data class UnitConfiguration(
     // The number of beds of this size.
     @JsonProperty("quantity")
     @field:Valid
-    val quantity: kotlin.Int? = null,
+    val quantity: kotlin.Int? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class UnitConfiguration(
     class Builder(
         private var type: kotlin.String? = null,
         private var description: kotlin.String? = null,
-        private var quantity: kotlin.Int? = null,
+        private var quantity: kotlin.Int? = null
     ) {
         fun type(type: kotlin.String?) = apply { this.type = type }
 
@@ -75,11 +73,34 @@ data class UnitConfiguration(
         fun quantity(quantity: kotlin.Int?) = apply { this.quantity = quantity }
 
         fun build(): UnitConfiguration {
-            return UnitConfiguration(
-                type = type,
-                description = description,
-                quantity = quantity,
-            )
+            val instance =
+                UnitConfiguration(
+                    type = type,
+                    description = description,
+                    quantity = quantity
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: UnitConfiguration) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class UnitConfiguration(
         Builder(
             type = type,
             description = description,
-            quantity = quantity,
+            quantity = quantity
         )
 }

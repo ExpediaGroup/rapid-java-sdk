@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Link
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * A map of links, including link to get the rental agreement.
@@ -46,7 +44,7 @@ import javax.validation.constraints.Size
 data class RentalAgreementLinks(
     @JsonProperty("rental_agreement")
     @field:Valid
-    val rentalAgreement: Link? = null,
+    val rentalAgreement: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,19 +52,42 @@ data class RentalAgreementLinks(
     }
 
     class Builder(
-        private var rentalAgreement: Link? = null,
+        private var rentalAgreement: Link? = null
     ) {
         fun rentalAgreement(rentalAgreement: Link?) = apply { this.rentalAgreement = rentalAgreement }
 
         fun build(): RentalAgreementLinks {
-            return RentalAgreementLinks(
-                rentalAgreement = rentalAgreement,
-            )
+            val instance =
+                RentalAgreementLinks(
+                    rentalAgreement = rentalAgreement
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: RentalAgreementLinks) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            rentalAgreement = rentalAgreement,
+            rentalAgreement = rentalAgreement
         )
 }

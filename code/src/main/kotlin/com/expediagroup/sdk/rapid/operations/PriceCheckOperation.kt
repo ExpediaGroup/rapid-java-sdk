@@ -25,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class PriceCheckOperation private constructor(
     params: PriceCheckOperationParams?,
-    link: PriceCheckOperationLink?,
+    link: PriceCheckOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params, link, "/v3/properties/{property_id}/rooms/{room_id}/rates/{rate_id}"),
         "GET",
         "priceCheck",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: PriceCheckOperationParams,
+        params: PriceCheckOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: PriceCheckOperationLink,
-        context: PriceCheckOperationContext?,
+        context: PriceCheckOperationContext?
     ) : this(
         PriceCheckOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {

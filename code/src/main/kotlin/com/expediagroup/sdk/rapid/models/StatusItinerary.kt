@@ -25,7 +25,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -44,5 +44,5 @@ enum class StatusItinerary(val value: kotlin.String) {
     BOOKED("booked"),
 
     @JsonProperty("canceled")
-    CANCELED("canceled"),
+    CANCELED("canceled")
 }

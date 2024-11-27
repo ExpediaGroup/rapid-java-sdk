@@ -16,10 +16,15 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property propertyId Expedia Property ID.<br>
@@ -30,11 +35,17 @@ import io.ktor.http.Parameters
 @JsonDeserialize(builder = GetPaymentOptionsOperationParams.Builder::class)
 data class GetPaymentOptionsOperationParams
     internal constructor(
+        @field:NotNull
+        @field:Valid
         val propertyId: kotlin.String? = null,
+        @field:Valid
         val customerIp: kotlin.String? = null,
+        @field:Valid
         val customerSessionId: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val token: kotlin.String? = null,
-        private val dummy: Unit,
+        private val dummy: Unit
     ) :
     OperationParams {
         companion object {
@@ -48,26 +59,26 @@ data class GetPaymentOptionsOperationParams
                 null,
             customerSessionId: kotlin.String? =
                 null,
-            token: kotlin.String,
+            token: kotlin.String
         ) : this(
             propertyId = propertyId,
             customerIp = customerIp,
             customerSessionId = customerSessionId,
             token = token,
-            dummy = Unit,
+            dummy = Unit
         )
 
         constructor(context: GetPaymentOptionsOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
-            dummy = Unit,
+            dummy = Unit
         )
 
         class Builder(
             @JsonProperty("property_id") private var propertyId: kotlin.String? = null,
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param propertyId Expedia Property ID.<br>
@@ -90,22 +101,34 @@ data class GetPaymentOptionsOperationParams
             fun token(token: kotlin.String) = apply { this.token = token }
 
             fun build(): GetPaymentOptionsOperationParams {
-                validateNullity()
+                val params =
+                    GetPaymentOptionsOperationParams(
+                        propertyId = propertyId!!,
+                        customerIp = customerIp,
+                        customerSessionId = customerSessionId,
+                        token = token!!
+                    )
 
-                return GetPaymentOptionsOperationParams(
-                    propertyId = propertyId!!,
-                    customerIp = customerIp,
-                    customerSessionId = customerSessionId,
-                    token = token!!,
-                )
+                validate(params)
+
+                return params
             }
 
-            private fun validateNullity() {
-                if (propertyId == null) {
-                    throw NullPointerException("Required parameter propertyId is missing")
-                }
-                if (token == null) {
-                    throw NullPointerException("Required parameter token is missing")
+            private fun validate(params: GetPaymentOptionsOperationParams) {
+                val validator =
+                    Validation
+                        .byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(ParameterMessageInterpolator())
+                        .buildValidatorFactory()
+                        .validator
+
+                val violations = validator.validate(params)
+
+                if (violations.isNotEmpty()) {
+                    throw PropertyConstraintViolationException(
+                        constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                    )
                 }
             }
         }
@@ -115,11 +138,11 @@ data class GetPaymentOptionsOperationParams
                 propertyId = propertyId,
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
-                token = token,
+                token = token
             )
 
-        override fun getHeaders(): Headers {
-            return Headers.build {
+        override fun getHeaders(): Headers =
+            Headers.build {
                 customerIp?.let {
                     append("Customer-Ip", it)
                 }
@@ -128,21 +151,18 @@ data class GetPaymentOptionsOperationParams
                 }
                 append("Accept", "application/json")
             }
-        }
 
-        override fun getQueryParams(): Parameters {
-            return Parameters.build {
+        override fun getQueryParams(): Parameters =
+            Parameters.build {
                 token?.let {
                     append("token", it)
                 }
             }
-        }
 
-        override fun getPathParams(): Map<String, String> {
-            return buildMap {
+        override fun getPathParams(): Map<String, String> =
+            buildMap {
                 propertyId?.also {
                     put("property_id", propertyId)
                 }
             }
-        }
     }

@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.PropertyManagerLinks
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Information about the property manager.
@@ -51,7 +49,7 @@ data class PropertyManager(
     val name: kotlin.String? = null,
     @JsonProperty("links")
     @field:Valid
-    val links: PropertyManagerLinks? = null,
+    val links: PropertyManagerLinks? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class PropertyManager(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var links: PropertyManagerLinks? = null,
+        private var links: PropertyManagerLinks? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun links(links: PropertyManagerLinks?) = apply { this.links = links }
 
         fun build(): PropertyManager {
-            return PropertyManager(
-                name = name,
-                links = links,
-            )
+            val instance =
+                PropertyManager(
+                    name = name,
+                    links = links
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PropertyManager) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             name = name,
-            links = links,
+            links = links
         )
 }

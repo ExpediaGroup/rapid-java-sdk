@@ -16,15 +16,20 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
  * @property roomId Room ID of a property.<br>
- * @property customerIp IP address of the customer, as captured by your integration. Send IPV4 addresses only.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+ * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  * @property test The change call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `unknown_internal_error`
  * @property token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
@@ -32,13 +37,22 @@ import io.ktor.http.Parameters
 @JsonDeserialize(builder = CommitChangeOperationParams.Builder::class)
 data class CommitChangeOperationParams
     internal constructor(
+        @field:NotNull
+        @field:Valid
         val itineraryId: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val roomId: kotlin.String? = null,
+        @field:NotNull
+        @field:Valid
         val customerIp: kotlin.String? = null,
+        @field:Valid
         val customerSessionId: kotlin.String? = null,
         val test: CommitChangeOperationParams.Test? = null,
+        @field:NotNull
+        @field:Valid
         val token: kotlin.String? = null,
-        private val dummy: Unit,
+        private val dummy: Unit
     ) :
     OperationParams {
         companion object {
@@ -54,7 +68,7 @@ data class CommitChangeOperationParams
                 null,
             test: CommitChangeOperationParams.Test? =
                 null,
-            token: kotlin.String,
+            token: kotlin.String
         ) : this(
             itineraryId = itineraryId,
             roomId = roomId,
@@ -62,22 +76,22 @@ data class CommitChangeOperationParams
             customerSessionId = customerSessionId,
             test = test,
             token = token,
-            dummy = Unit,
+            dummy = Unit
         )
 
         constructor(context: CommitChangeOperationContext?) : this(
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
-            dummy = Unit,
+            dummy = Unit
         )
 
         enum class Test(
-            val value: kotlin.String,
+            val value: kotlin.String
         ) {
             STANDARD("standard"),
             SERVICE_UNAVAILABLE("service_unavailable"),
-            UNKNOWN_INTERNAL_ERROR("unknown_internal_error"),
+            UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
         }
 
         class Builder(
@@ -86,7 +100,7 @@ data class CommitChangeOperationParams
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: CommitChangeOperationParams.Test? = null,
-            @JsonProperty("token") private var token: kotlin.String? = null,
+            @JsonProperty("token") private var token: kotlin.String? = null
         ) {
             /**
              * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
@@ -99,7 +113,7 @@ data class CommitChangeOperationParams
             fun roomId(roomId: kotlin.String) = apply { this.roomId = roomId }
 
             /**
-             * @param customerIp IP address of the customer, as captured by your integration. Send IPV4 addresses only.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
+             * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
              */
             fun customerIp(customerIp: kotlin.String) = apply { this.customerIp = customerIp }
 
@@ -119,30 +133,36 @@ data class CommitChangeOperationParams
             fun token(token: kotlin.String) = apply { this.token = token }
 
             fun build(): CommitChangeOperationParams {
-                validateNullity()
+                val params =
+                    CommitChangeOperationParams(
+                        itineraryId = itineraryId!!,
+                        roomId = roomId!!,
+                        customerIp = customerIp!!,
+                        customerSessionId = customerSessionId,
+                        test = test,
+                        token = token!!
+                    )
 
-                return CommitChangeOperationParams(
-                    itineraryId = itineraryId!!,
-                    roomId = roomId!!,
-                    customerIp = customerIp!!,
-                    customerSessionId = customerSessionId,
-                    test = test,
-                    token = token!!,
-                )
+                validate(params)
+
+                return params
             }
 
-            private fun validateNullity() {
-                if (itineraryId == null) {
-                    throw NullPointerException("Required parameter itineraryId is missing")
-                }
-                if (roomId == null) {
-                    throw NullPointerException("Required parameter roomId is missing")
-                }
-                if (customerIp == null) {
-                    throw NullPointerException("Required parameter customerIp is missing")
-                }
-                if (token == null) {
-                    throw NullPointerException("Required parameter token is missing")
+            private fun validate(params: CommitChangeOperationParams) {
+                val validator =
+                    Validation
+                        .byDefaultProvider()
+                        .configure()
+                        .messageInterpolator(ParameterMessageInterpolator())
+                        .buildValidatorFactory()
+                        .validator
+
+                val violations = validator.validate(params)
+
+                if (violations.isNotEmpty()) {
+                    throw PropertyConstraintViolationException(
+                        constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                    )
                 }
             }
         }
@@ -154,11 +174,11 @@ data class CommitChangeOperationParams
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
-                token = token,
+                token = token
             )
 
-        override fun getHeaders(): Headers {
-            return Headers.build {
+        override fun getHeaders(): Headers =
+            Headers.build {
                 customerIp?.let {
                     append("Customer-Ip", it)
                 }
@@ -169,18 +189,16 @@ data class CommitChangeOperationParams
                     append("Test", it.value)
                 }
             }
-        }
 
-        override fun getQueryParams(): Parameters {
-            return Parameters.build {
+        override fun getQueryParams(): Parameters =
+            Parameters.build {
                 token?.let {
                     append("token", it)
                 }
             }
-        }
 
-        override fun getPathParams(): Map<String, String> {
-            return buildMap {
+        override fun getPathParams(): Map<String, String> =
+            buildMap {
                 itineraryId?.also {
                     put("itinerary_id", itineraryId)
                 }
@@ -188,5 +206,4 @@ data class CommitChangeOperationParams
                     put("room_id", roomId)
                 }
             }
-        }
     }

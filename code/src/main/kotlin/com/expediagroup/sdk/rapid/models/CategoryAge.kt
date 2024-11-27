@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An age category.
@@ -51,7 +49,7 @@ data class CategoryAge(
     // Age category minimum age.
     @JsonProperty("minimum_age")
     @field:Valid
-    val minimumAge: java.math.BigDecimal? = null,
+    val minimumAge: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class CategoryAge(
 
     class Builder(
         private var name: kotlin.String? = null,
-        private var minimumAge: java.math.BigDecimal? = null,
+        private var minimumAge: java.math.BigDecimal? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun minimumAge(minimumAge: java.math.BigDecimal?) = apply { this.minimumAge = minimumAge }
 
         fun build(): CategoryAge {
-            return CategoryAge(
-                name = name,
-                minimumAge = minimumAge,
-            )
+            val instance =
+                CategoryAge(
+                    name = name,
+                    minimumAge = minimumAge
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: CategoryAge) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             name = name,
-            minimumAge = minimumAge,
+            minimumAge = minimumAge
         )
 }

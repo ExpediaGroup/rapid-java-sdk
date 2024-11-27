@@ -24,15 +24,15 @@ import org.apache.commons.text.StringSubstitutor
  * @property params [GetPropertyGuestReviewsOperationParams]
  */
 class GetPropertyGuestReviewsOperation(
-    params: GetPropertyGuestReviewsOperationParams,
+    params: GetPropertyGuestReviewsOperationParams
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params),
         "GET",
         "getPropertyGuestReviews",
         null,
-        params,
+        params
     ) {
     companion object {
         fun url(params: GetPropertyGuestReviewsOperationParams): String {

@@ -25,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class PutResumeBookingOperation private constructor(
     params: PutResumeBookingOperationParams?,
-    link: PutResumeBookingOperationLink?,
+    link: PutResumeBookingOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params, link, "/v3/itineraries/{itinerary_id}"),
         "PUT",
         "putResumeBooking",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: PutResumeBookingOperationParams,
+        params: PutResumeBookingOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: PutResumeBookingOperationLink,
-        context: PutResumeBookingOperationContext,
+        context: PutResumeBookingOperationContext
     ) : this(
         PutResumeBookingOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {

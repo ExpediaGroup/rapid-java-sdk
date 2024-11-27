@@ -26,47 +26,42 @@ import com.expediagroup.sdk.rapid.models.CreateItineraryRequest
 class PostItineraryOperation private constructor(
     params: PostItineraryOperationParams?,
     requestBody: CreateItineraryRequest?,
-    link: PostItineraryOperationLink?,
+    link: PostItineraryOperationLink?
 ) : Operation<
-        CreateItineraryRequest,
+        CreateItineraryRequest
     >(
         url(null, link, "/v3/itineraries"),
         "POST",
         "postItinerary",
         requestBody,
-        params,
+        params
     ) {
-    @Deprecated(
-        "Switch order of arguments",
-        ReplaceWith("Operation(params: PostItineraryOperationParams, requestBody: CreateItineraryRequest?)"),
-    )
+    @Deprecated("Switch order of arguments", ReplaceWith("Operation(params: PostItineraryOperationParams, requestBody: CreateItineraryRequest?)"))
     constructor(
         requestBody: CreateItineraryRequest?,
-        params: PostItineraryOperationParams,
+        params: PostItineraryOperationParams
     ) : this(params, requestBody)
 
     constructor(
         params: PostItineraryOperationParams,
-        requestBody: CreateItineraryRequest?,
+        requestBody: CreateItineraryRequest?
     ) : this(
         params,
         requestBody,
-        null,
+        null
     )
 
     constructor(
         link: PostItineraryOperationLink,
         context: PostItineraryOperationContext,
-        requestBody: CreateItineraryRequest?,
+        requestBody: CreateItineraryRequest?
     ) : this(
         PostItineraryOperationParams(context),
         requestBody,
-        link,
+        link
     )
 
     companion object : LinkableOperation {
-        override fun pathPattern(): String {
-            return "/v3/itineraries"
-        }
+        override fun pathPattern(): String = "/v3/itineraries"
     }
 }

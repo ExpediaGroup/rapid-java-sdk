@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The coordinates of the property.
@@ -51,7 +49,7 @@ data class Coordinates(
     // The longitude of the property.
     @JsonProperty("longitude")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null,
+    val longitude: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -60,23 +58,46 @@ data class Coordinates(
 
     class Builder(
         private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null,
+        private var longitude: java.math.BigDecimal? = null
     ) {
         fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
 
         fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
 
         fun build(): Coordinates {
-            return Coordinates(
-                latitude = latitude,
-                longitude = longitude,
-            )
+            val instance =
+                Coordinates(
+                    latitude = latitude,
+                    longitude = longitude
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Coordinates) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
             latitude = latitude,
-            longitude = longitude,
+            longitude = longitude
         )
 }

@@ -16,10 +16,15 @@
 package com.expediagroup.sdk.rapid.operations
 
 import com.expediagroup.sdk.core.model.OperationParams
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import javax.validation.Valid
+import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -27,21 +32,28 @@ import io.ktor.http.Parameters
  * @property test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`
  * @property affiliateReferenceId The affilliate reference id value. This field supports a maximum of 28 characters.
  * @property email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
- * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary
+ * @property include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
  */
 @JsonDeserialize(builder = GetReservationOperationParams.Builder::class)
 data class GetReservationOperationParams(
+    @field:NotNull
+    @field:Valid
     val customerIp: kotlin.String,
+    @field:Valid
     val customerSessionId: kotlin.String? =
         null,
     val test: GetReservationOperationParams.Test? =
         null,
+    @field:NotNull
+    @field:Valid
     val affiliateReferenceId: kotlin.String,
+    @field:NotNull
+    @field:Valid
     val email: kotlin.String,
     val include: kotlin.collections.List<
-        GetReservationOperationParams.Include,
+        GetReservationOperationParams.Include
     >? =
-        null,
+        null
 ) :
     OperationParams {
     companion object {
@@ -50,17 +62,17 @@ data class GetReservationOperationParams(
     }
 
     enum class Test(
-        val value: kotlin.String,
+        val value: kotlin.String
     ) {
         STANDARD("standard"),
         SERVICE_UNAVAILABLE("service_unavailable"),
-        INTERNAL_SERVER_ERROR("internal_server_error"),
+        INTERNAL_SERVER_ERROR("internal_server_error")
     }
 
     enum class Include(
-        val value: kotlin.String,
+        val value: kotlin.String
     ) {
-        HISTORY("history"),
+        HISTORY("history")
     }
 
     class Builder(
@@ -70,8 +82,8 @@ data class GetReservationOperationParams(
         @JsonProperty("affiliate_reference_id") private var affiliateReferenceId: kotlin.String? = null,
         @JsonProperty("email") private var email: kotlin.String? = null,
         @JsonProperty("include") private var include: kotlin.collections.List<
-            GetReservationOperationParams.Include,
-        >? = null,
+            GetReservationOperationParams.Include
+        >? = null
     ) {
         /**
          * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
@@ -99,36 +111,45 @@ data class GetReservationOperationParams(
         fun email(email: kotlin.String) = apply { this.email = email }
 
         /**
-         * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary
+         * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.
          */
         fun include(
             include: kotlin.collections.List<
-                GetReservationOperationParams.Include,
-            >,
+                GetReservationOperationParams.Include
+            >
         ) = apply { this.include = include }
 
         fun build(): GetReservationOperationParams {
-            validateNullity()
+            val params =
+                GetReservationOperationParams(
+                    customerIp = customerIp!!,
+                    customerSessionId = customerSessionId,
+                    test = test,
+                    affiliateReferenceId = affiliateReferenceId!!,
+                    email = email!!,
+                    include = include
+                )
 
-            return GetReservationOperationParams(
-                customerIp = customerIp!!,
-                customerSessionId = customerSessionId,
-                test = test,
-                affiliateReferenceId = affiliateReferenceId!!,
-                email = email!!,
-                include = include,
-            )
+            validate(params)
+
+            return params
         }
 
-        private fun validateNullity() {
-            if (customerIp == null) {
-                throw NullPointerException("Required parameter customerIp is missing")
-            }
-            if (affiliateReferenceId == null) {
-                throw NullPointerException("Required parameter affiliateReferenceId is missing")
-            }
-            if (email == null) {
-                throw NullPointerException("Required parameter email is missing")
+        private fun validate(params: GetReservationOperationParams) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(params)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
             }
         }
     }
@@ -140,11 +161,11 @@ data class GetReservationOperationParams(
             test = test,
             affiliateReferenceId = affiliateReferenceId,
             email = email,
-            include = include,
+            include = include
         )
 
-    override fun getHeaders(): Headers {
-        return Headers.build {
+    override fun getHeaders(): Headers =
+        Headers.build {
             customerIp?.let {
                 append("Customer-Ip", it)
             }
@@ -156,10 +177,9 @@ data class GetReservationOperationParams(
             }
             append("Accept", "application/json")
         }
-    }
 
-    override fun getQueryParams(): Parameters {
-        return Parameters.build {
+    override fun getQueryParams(): Parameters =
+        Parameters.build {
             affiliateReferenceId?.let {
                 append("affiliate_reference_id", it)
             }
@@ -170,10 +190,8 @@ data class GetReservationOperationParams(
                 appendAll("include", it.map { it.value })
             }
         }
-    }
 
-    override fun getPathParams(): Map<String, String> {
-        return buildMap {
+    override fun getPathParams(): Map<String, String> =
+        buildMap {
         }
-    }
 }

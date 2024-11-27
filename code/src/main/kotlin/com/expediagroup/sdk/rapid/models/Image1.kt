@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -56,7 +54,7 @@ data class Image1(
     // The height of the image.
     @JsonProperty("height")
     @field:Valid
-    val height: kotlin.String? = null,
+    val height: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class Image1(
     class Builder(
         private var url: kotlin.String? = null,
         private var width: kotlin.String? = null,
-        private var height: kotlin.String? = null,
+        private var height: kotlin.String? = null
     ) {
         fun url(url: kotlin.String?) = apply { this.url = url }
 
@@ -75,11 +73,34 @@ data class Image1(
         fun height(height: kotlin.String?) = apply { this.height = height }
 
         fun build(): Image1 {
-            return Image1(
-                url = url,
-                width = width,
-                height = height,
-            )
+            val instance =
+                Image1(
+                    url = url,
+                    width = width,
+                    height = height
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Image1) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class Image1(
         Builder(
             url = url,
             width = width,
-            height = height,
+            height = height
         )
 }

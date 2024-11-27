@@ -25,29 +25,29 @@ import org.apache.commons.text.StringSubstitutor
  */
 class GetAdditionalAvailabilityOperation private constructor(
     params: GetAdditionalAvailabilityOperationParams?,
-    link: GetAdditionalAvailabilityOperationLink?,
+    link: GetAdditionalAvailabilityOperationLink?
 ) : Operation<
-        Nothing,
+        Nothing
     >(
         url(params, link, "/v3/properties/{property_id}/availability"),
         "GET",
         "getAdditionalAvailability",
         null,
-        params,
+        params
     ) {
     constructor(
-        params: GetAdditionalAvailabilityOperationParams,
+        params: GetAdditionalAvailabilityOperationParams
     ) : this(
         params,
-        null,
+        null
     )
 
     constructor(
         link: GetAdditionalAvailabilityOperationLink,
-        context: GetAdditionalAvailabilityOperationContext?,
+        context: GetAdditionalAvailabilityOperationContext?
     ) : this(
         GetAdditionalAvailabilityOperationParams(context),
-        link,
+        link
     )
 
     companion object : LinkableOperation {

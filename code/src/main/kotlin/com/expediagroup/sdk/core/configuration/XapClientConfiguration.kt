@@ -16,6 +16,7 @@
 package com.expediagroup.sdk.core.configuration
 
 import com.expediagroup.sdk.core.client.BaseXapClient
+import okhttp3.OkHttpClient
 
 /**
  * Configuration for the [BaseXapClient].
@@ -38,4 +39,5 @@ data class XapClientConfiguration(
     override val socketTimeout: Long? = null,
     override val maskedLoggingHeaders: Set<String>? = null,
     override val maskedLoggingBodyFields: Set<String>? = null,
+    override val okHttpClient: OkHttpClient? = null
 ) : ClientConfiguration

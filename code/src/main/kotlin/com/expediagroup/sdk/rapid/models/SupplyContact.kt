@@ -25,20 +25,18 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Address1
 import com.expediagroup.sdk.rapid.models.Phone
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The supply contact information. Note that full details may not be displayed until a short time prior to checkin.
@@ -61,7 +59,7 @@ data class SupplyContact(
     val email: kotlin.String? = null,
     @JsonProperty("address")
     @field:Valid
-    val address: Address1? = null,
+    val address: Address1? = null
 ) {
     companion object {
         @JvmStatic
@@ -72,7 +70,7 @@ data class SupplyContact(
         private var name: kotlin.String? = null,
         private var phone: Phone? = null,
         private var email: kotlin.String? = null,
-        private var address: Address1? = null,
+        private var address: Address1? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
@@ -83,12 +81,35 @@ data class SupplyContact(
         fun address(address: Address1?) = apply { this.address = address }
 
         fun build(): SupplyContact {
-            return SupplyContact(
-                name = name,
-                phone = phone,
-                email = email,
-                address = address,
-            )
+            val instance =
+                SupplyContact(
+                    name = name,
+                    phone = phone,
+                    email = email,
+                    address = address
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: SupplyContact) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -97,6 +118,6 @@ data class SupplyContact(
             name = name,
             phone = phone,
             email = email,
-            address = address,
+            address = address
         )
 }

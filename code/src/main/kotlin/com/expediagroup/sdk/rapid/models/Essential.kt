@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.Image1
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  *
@@ -62,7 +60,7 @@ data class Essential(
     // An array of images needed for the essential item.
     @JsonProperty("images")
     @field:Valid
-    val images: kotlin.collections.List<Image1>? = null,
+    val images: kotlin.collections.List<Image1>? = null
 ) {
     companion object {
         @JvmStatic
@@ -73,24 +71,46 @@ data class Essential(
         private var name: kotlin.String? = null,
         private var instructions: kotlin.String? = null,
         private var additionalInfo: kotlin.collections.Map<kotlin.String, kotlin.String>? = null,
-        private var images: kotlin.collections.List<Image1>? = null,
+        private var images: kotlin.collections.List<Image1>? = null
     ) {
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun instructions(instructions: kotlin.String?) = apply { this.instructions = instructions }
 
-        fun additionalInfo(additionalInfo: kotlin.collections.Map<kotlin.String, kotlin.String>?) =
-            apply { this.additionalInfo = additionalInfo }
+        fun additionalInfo(additionalInfo: kotlin.collections.Map<kotlin.String, kotlin.String>?) = apply { this.additionalInfo = additionalInfo }
 
         fun images(images: kotlin.collections.List<Image1>?) = apply { this.images = images }
 
         fun build(): Essential {
-            return Essential(
-                name = name,
-                instructions = instructions,
-                additionalInfo = additionalInfo,
-                images = images,
-            )
+            val instance =
+                Essential(
+                    name = name,
+                    instructions = instructions,
+                    additionalInfo = additionalInfo,
+                    images = images
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Essential) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -99,6 +119,6 @@ data class Essential(
             name = name,
             instructions = instructions,
             additionalInfo = additionalInfo,
-            images = images,
+            images = images
         )
 }

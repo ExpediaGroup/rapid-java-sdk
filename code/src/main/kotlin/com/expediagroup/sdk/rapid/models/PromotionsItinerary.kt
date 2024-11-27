@@ -25,19 +25,17 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.ValueAdd
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * Promotions that apply to the booked room.
@@ -47,7 +45,7 @@ data class PromotionsItinerary(
     // Promotions provided by the property that add value to the stay, but don’t affect the booking price (i.e., ski lift tickets or premium wifi).
     @JsonProperty("value_adds")
     @field:Valid
-    val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
+    val valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,19 +53,42 @@ data class PromotionsItinerary(
     }
 
     class Builder(
-        private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null,
+        private var valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>? = null
     ) {
         fun valueAdds(valueAdds: kotlin.collections.Map<kotlin.String, ValueAdd>?) = apply { this.valueAdds = valueAdds }
 
         fun build(): PromotionsItinerary {
-            return PromotionsItinerary(
-                valueAdds = valueAdds,
-            )
+            val instance =
+                PromotionsItinerary(
+                    valueAdds = valueAdds
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: PromotionsItinerary) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            valueAdds = valueAdds,
+            valueAdds = valueAdds
         )
 }

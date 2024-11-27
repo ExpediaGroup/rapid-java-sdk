@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * The property's check-out information.
@@ -46,7 +44,7 @@ data class Checkout(
     // The time by which a guest must check out.
     @JsonProperty("time")
     @field:Valid
-    val time: kotlin.String? = null,
+    val time: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -54,19 +52,42 @@ data class Checkout(
     }
 
     class Builder(
-        private var time: kotlin.String? = null,
+        private var time: kotlin.String? = null
     ) {
         fun time(time: kotlin.String?) = apply { this.time = time }
 
         fun build(): Checkout {
-            return Checkout(
-                time = time,
-            )
+            val instance =
+                Checkout(
+                    time = time
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: Checkout) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
     fun toBuilder() =
         Builder(
-            time = time,
+            time = time
         )
 }

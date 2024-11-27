@@ -25,18 +25,16 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
 
+import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.hibernate.validator.constraints.Length
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
-import javax.validation.constraints.Max
-import javax.validation.constraints.Min
-import javax.validation.constraints.Pattern
-import javax.validation.constraints.Size
+import javax.validation.Validation
 
 /**
  * An object representing one incentive source and the stay dates relevant to that particular incentive.
@@ -56,7 +54,7 @@ data class MarketingFeeIncentive(
     // The last stay date with the incentive applied in ISO 8601 format.
     @JsonProperty("end")
     @field:Valid
-    val end: kotlin.String? = null,
+    val end: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -66,7 +64,7 @@ data class MarketingFeeIncentive(
     class Builder(
         private var source: kotlin.String? = null,
         private var start: kotlin.String? = null,
-        private var end: kotlin.String? = null,
+        private var end: kotlin.String? = null
     ) {
         fun source(source: kotlin.String?) = apply { this.source = source }
 
@@ -75,11 +73,34 @@ data class MarketingFeeIncentive(
         fun end(end: kotlin.String?) = apply { this.end = end }
 
         fun build(): MarketingFeeIncentive {
-            return MarketingFeeIncentive(
-                source = source,
-                start = start,
-                end = end,
-            )
+            val instance =
+                MarketingFeeIncentive(
+                    source = source,
+                    start = start,
+                    end = end
+                )
+
+            validate(instance)
+
+            return instance
+        }
+
+        private fun validate(instance: MarketingFeeIncentive) {
+            val validator =
+                Validation
+                    .byDefaultProvider()
+                    .configure()
+                    .messageInterpolator(ParameterMessageInterpolator())
+                    .buildValidatorFactory()
+                    .validator
+
+            val violations = validator.validate(instance)
+
+            if (violations.isNotEmpty()) {
+                throw PropertyConstraintViolationException(
+                    constraintViolations = violations.map { "${it.propertyPath}: ${it.message}" }
+                )
+            }
         }
     }
 
@@ -87,6 +108,6 @@ data class MarketingFeeIncentive(
         Builder(
             source = source,
             start = start,
-            end = end,
+            end = end
         )
 }
