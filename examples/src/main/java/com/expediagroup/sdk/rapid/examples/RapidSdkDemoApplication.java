@@ -16,7 +16,6 @@ import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionDescen
 import com.expediagroup.sdk.rapid.examples.scenarios.geography.ParseRegionWithMultiPolygonCoordinatesScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.CancelHeldBookingScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.ChangeRoomDetailsScenario;
-import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.CommitHardChangeScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.managebooking.DeleteRoomScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetAdditionalAvailabilityOfPropertyScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.shopping.GetPaymentOptionsOfRoomScenario;
@@ -136,20 +135,6 @@ public class RapidSdkDemoApplication {
         DeleteRoomScenario deleteRoomScenario = new DeleteRoomScenario();
         deleteRoomScenario.setProfile(new DefaultRapidPartnerProfile());
         deleteRoomScenario.run();
-
-        /*  Run Commit Change Room With Refund Scenario using the default profile
-            This scenario demonstrates the following:
-            1. Shopping for properties
-            2. Checking room prices for the property
-            3. Booking two rooms in the property
-            4. Retrieve itinerary by itinerary id
-            5. Check if booking is eligible for hard change
-            6. Delete first room in booking
-            7. Retrieve updated itinerary
-        */
-        CommitHardChangeScenario commitHardChangeScenario = new CommitHardChangeScenario();
-        commitHardChangeScenario.setProfile(new DefaultRapidPartnerProfile());
-        commitHardChangeScenario.run();
 
         logger.info("=============================== End of Manage Booking Scenarios ===========================");
 
