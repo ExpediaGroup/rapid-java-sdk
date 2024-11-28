@@ -1,0 +1,440 @@
+openapi: 3.0.0
+info:
+  title: Ad Serving API
+  version: v1
+  description: Retrieves relevant ads for a travel shopper visiting publisher’s website/app.
+  contact:
+    name: "Media Solutions"
+    email: "MediaSolutionsAPI1@expedia.com"
+    url: "https://go/SponsoredContent-APIFirst"
+  x-expediagroup-domain: "SponsoredContent"
+  x-eg-lifecycle: "PLANNED"
+  x-eg-tags: ["sponsored-content", "advertising"]
+tags:
+  - name: Ad Serving
+    description: APIs to retrieve sponsored content
+servers:
+  - url: https://api.expediagroup.com/v1
+paths:
+  /ad-serving:
+    post:
+      tags:
+        - Ad Serving
+      description: Returns relevant Sponsored Content to Publishers
+      operationId: retrieve
+      security:
+        - sponsoredContentOAuth:
+            - sponsored-content.publisher-ads.retrieve
+      parameters:
+        - name: Authorization
+          in: header
+          description: The custom generated authentication header
+          required: true
+          schema:
+            type: string
+        - name: Customer-Session-Id
+          in: header
+          description:
+            The customer session id which should be consistent for all calls- shopping through booking
+          required: true
+          schema:
+            type: string
+        - name: Trace-Id
+          in: header
+          description:
+            UUID for correlation of logs associated with servicing this specific request
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: User-Agent
+          in: header
+          description: the user agent to identify the client's platform. follows format as defined in RFC 7231 https://tools.ietf.org/html/rfc7231#section-5.5.3
+          required: true
+          schema:
+            type: string
+        - name: Sales-Channel
+          in: header
+          description: information about device used by client with values like in sales_channel parameter of Shopping Rapid API https://developers.expediagroup.com/docs/rapid/lodging/shopping#get-/properties/availability
+          required: false
+          schema:
+            $ref: '#/components/schemas/SalesChannel'
+        - name: Customer-Ip
+          in: header
+          description: the ip address of the originating client
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SponsoredContentRequest'
+      responses:
+        "200":
+          description: Sponsored Content Response object
+          headers:
+            Date:
+              schema:
+                type: string
+                example: 'Wed, 24 Feb 2021 15:13:24 GMT'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SponsoredContentResponse'
+        "424":
+          description: Sponsored Content error message indicating downstream errors occured
+          headers:
+            Date:
+              schema:
+                type: string
+                example: 'Wed, 24 Feb 2021 15:13:24 GMT'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SponsoredContentErrorResponse'
+        "500":
+          description: Sponsored Content Error message for internal server errors
+          headers:
+            Date:
+              schema:
+                type: string
+                example: 'Wed, 24 Feb 2021 15:13:24 GMT'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SponsoredContentErrorResponse'
+components:
+  schemas:
+    PageType:
+      type: string
+      enum:
+        - OTHER
+        - SEARCH_RESULTS
+        - DETAILS
+        - CONFIRMATION
+      example: SEARCH_RESULTS
+      description: The type of page that the sponsored content will appear on.
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          example: 37.774929
+          minimum: -90.0
+          maximum: 90.0
+        longitude:
+          type: number
+          example: -122.419418
+          minimum: -180.0
+          maximum: 180.0
+      additionalProperties: false
+    RequestCriteria:
+      type: object
+      properties:
+        user_location:
+          $ref: '#/components/schemas/Coordinates'
+        page_type:
+          $ref: '#/components/schemas/PageType'
+      example:
+        user_location:
+          latitude: 37.774929
+          longitude: -122.419418
+        page_type: SEARCH_RESULTS
+      additionalProperties: false
+    Context:
+      type: object
+      required:
+        - locale
+      properties:
+        locale:
+          type: string
+          example: en-US
+          pattern: "^[a-z]{2}-[A-Z]{2}$"
+          description: Locale as defined in IETF BCP 47 language tag.
+        domain_country_code:
+          type: string
+          example: US
+          pattern: "[A-Z]{2}$"
+          description: Defined in iso alpha-2 code format.
+      additionalProperties: false
+    ProductLine:
+      type: string
+      enum:
+        - ACTIVITY
+        - CAR
+        - CRUISE
+        - GROUND_TRANSFER
+        - FLIGHT
+        - LODGING
+        - RAIL
+        - INSURANCE
+      example: LODGING
+      description: The type of product that the sponsored content will appear on.
+    SalesChannel:
+      type: string
+      enum:
+        - WEBSITE
+        - AGENT_TOOL
+        - MOBILE_APP
+        - MOBILE_WEB
+        - CACHE
+        - META
+      example: MOBILE_APP
+      description: The sales channel for the request
+    GuestCounts:
+      type: object
+      required:
+        - adult_count
+      properties:
+        adult_count:
+          type: integer
+          format: int32
+          example: 2
+        child_count:
+          type: integer
+          format: int32
+          example: 1
+        infant_count:
+          type: integer
+          format: int32
+          example: 1
+        pet_count:
+          type: integer
+          format: int32
+          example: 1
+    Date:
+      type: object
+      required:
+        - day
+        - month
+        - year
+      properties:
+        day:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 31
+          example: 1
+        month:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 12
+          example: 12
+        year:
+          type: integer
+          format: int32
+          example: 2022
+      additionalProperties: false
+    PropertySearchCriteria:
+      type: object
+      required:
+        - rooms
+      properties:
+        checkin_date:
+          $ref: "#/components/schemas/Date"
+        checkout_date:
+          $ref: "#/components/schemas/Date"
+        rooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuestCounts'
+          description: each array item represents guests of one separate room.
+      example:
+        checkin_date:
+          day: 1
+          month: 1
+          year: 2022
+        checkout_date:
+          day: 5
+          month: 1
+          year: 2022
+        rooms:
+          - adult_count: 2
+            child_count: 1
+          - adult_count: 2
+      additionalProperties: false
+    SearchCriteria:
+      type: object
+      properties:
+        search_product_lines:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductLine'
+        property_search_criteria:
+          $ref: '#/components/schemas/PropertySearchCriteria'
+      additionalProperties: false
+    SponsoredContentRequest:
+      type: object
+      required:
+        - context
+        - search_criteria
+        - selected_products
+      properties:
+        request_criteria:
+          $ref: '#/components/schemas/RequestCriteria'
+        context:
+          $ref: '#/components/schemas/Context'
+        search_criteria:
+          $ref: '#/components/schemas/SearchCriteria'
+        selected_products:
+          type: array
+          items:
+            type: string
+          example: [ '2717582', '16159546', '2025453' ]
+          description: Identifier of the property selected for the travel shopper.
+      additionalProperties: false
+    AdvertisedItem:
+      type: object
+      properties:
+        property:
+          type: object
+          properties:
+            property_id:
+              type: string
+              example: '2717582'
+      description: The item that this creative is advertising.
+      additionalProperties: false
+    Copy:
+      type: object
+      required:
+        - standard
+      properties:
+        standard:
+          type: string
+          minLength: 1
+          example: Come see the glitter and glamour and feel the energy and excitement of VEGAS!
+          description: The copy to show at standard resolutions.
+        long:
+          type: string
+          example: Experience everything Las Vegas has to offer
+          description: The copy to show when there is more space for copy.
+      additionalProperties: false
+    SponsoredListingCopy:
+      type: object
+      properties:
+        heading:
+          $ref: "#/components/schemas/Copy"
+        description:
+          $ref: "#/components/schemas/Copy"
+      description: The text copy that this creative shows.
+      additionalProperties: false
+    Image:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          example: www.expedia.com/hotel.jpeg
+          description: Distributable URL of the image.
+        alt_text:
+          type: string
+          example: Localized text used to describe the image
+      additionalProperties: false
+    SponsoredListingImages:
+      type: object
+      properties:
+        feature:
+          $ref: "#/components/schemas/Image"
+      description: The feature image to show for the creative.
+      additionalProperties: false
+    Beacon:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          example: "https://advertising.expedia.com/sponsoredcontent/v1/Impr?position=[position]&data=AAAAAQAAAAEAAAAQbYGKrVGCvqkjX4P2eEGkGhsfYvwlWbu7P4luRn1sZZVufNR8Op5HbTRlU35MlJ86cIIcHDnQVcLAF8IOYAfgzAcpzxbazeJdcrbkrcy8DOqt3rRbkBlxQeOFo48klTYfPZpgpHPe-8ojuDIBsOVIBk6vUlnU4h61LTxsrIQKxPHfk4_UBaMWJYyBnBxa9mn5Xn1ibOUQGjoPCeEe0M8TFwcyMEjvg_rVuNvGMleCupYxi8x8DcFubt5PwN8PRq-UDexWBWEgnr-UF10N291QmWfi1I_R_2Yn3nFSNYvJMkfhVkauqApyv1FifUgGpRv89Ua3XZwawuyEzb7pLrnCeKUj00rsbXylFmc_gv8RQo9k61IGSP7cKke3Z_7NQgkGrLSxPPnkL-Hl-e-0L7FnttxVUxQCNj3cMG8CXvSjoQ6aPm7qOMJLRTxuAOK48JjDdbRA-PLuJpByu652svo1TmD3qNdG39SbOqbeEv00eKC6wXUAzbv0-2JERGruCrsa4CvpGTPDBpSNoBxuwcuj-2U366xM4zuzgFc5S6v5clQN5CxLrWS5RaRfrSEf7W5LODiuvnz5ywr85zmoqR55A05Qvr_QvMg9GnPUG3wYSMPohgDl61uf9Yylk9DONZ8rsmA_7N6X4BMszeuQteKoaOB0xeriMSU_UHZmRLfNwMdDHZ2f-nBg0hiUhreATQZUona84JsjHtSpTLQT8Auzm1LAHgQzpf9gCQ_bFiajaO1G6ebosWHBWUsgdK8RmdJUHXNVeMfCJu6UsI60FCJlRMwUQJbl_GtZYUSDtuYSV0nbpyCh2sFJ12zV7b6TcX8xa5Tosu7JW9b23NeXVZ7Njd_ZxhjhfUknRqLdu1hfcYYfC52rKAYPGn8kRG89K65joh8qVYXgPyYPSof7750vnTQfY9Fhq_G_nN-k98RC1Oh6Rj-1F2UYYNaQP-Q7B4Cl_C424bHjbpTKL00iRtjGtNtaWjHZEgMLhnq8p0LI6ElbiPp59pNnN7rmERyOvrU-X-8UFdtGtyYn8YqSEXI_LFChuEHigOH-x6oHkW_J54cFyOHiHkN_oAF9nDEOStxxvgyhVaFSHtqCeS70SViI6_cZ5vQd6afYr0OYKos4RYhongRWY1VSJIC2JllTAeJB"
+          minLength: 1
+          description: The URL to direct to.
+      description: A URL to request when a particular event takes place.
+      additionalProperties: false
+    SponsoredListingBeacons:
+      type: object
+      properties:
+        render:
+          $ref: "#/components/schemas/Beacon"
+        click:
+          $ref: "#/components/schemas/Beacon"
+      description: The beacons that this creative fires.
+      additionalProperties: false
+    SponsoredListingCreative:
+      type: object
+      properties:
+        advertised_item:
+          $ref: "#/components/schemas/AdvertisedItem"
+        copy:
+          $ref: "#/components/schemas/SponsoredListingCopy"
+        images:
+          $ref: "#/components/schemas/SponsoredListingImages"
+        beacons:
+          $ref: "#/components/schemas/SponsoredListingBeacons"
+      additionalProperties: false
+    SponsoredListing:
+      type: object
+      properties:
+        rank:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+          description: The sponsored content should adhere to the rank and not be re-ranked.
+        creative:
+          $ref: "#/components/schemas/SponsoredListingCreative"
+      additionalProperties: false
+    SponsoredListings:
+      type: object
+      properties:
+        sponsored_listings:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsoredListing'
+      additionalProperties: false
+    SponsoredContentResponse:
+      type: object
+      required:
+        - customer_session_id
+      properties:
+        customer_session_id:
+          type: string
+          example: '12345567777'
+        sponsored_listings:
+          $ref: "#/components/schemas/SponsoredListings"
+      additionalProperties: false
+    SponsoredContentErrorResponse:
+      type: object
+      required:
+        - customer_session_id
+        - type
+        - detaiil
+      properties:
+        customer_session_id:
+          type: string
+          example: '12345567777'
+        type:
+          description: >
+            A URI reference, compliant with the standard EG error type format, which identifies the error type.
+            It provides a machine-readable identifier for the error type.
+            The error type will be aligned with the HTTP status code of the response.
+            The URI can either be absolute or relative to the API's base URI.
+            When dereferenced, it can also provide human-readable documentation for the error type.
+          type: string
+          format: uri
+          example: "https://apis.expediagroup.com/errors/common/invalid-argument"
+        detail:
+          description: A human-readable explanation of the error, specific to this error occurrence.
+          type: string
+          example: "The request failed because one or many input values are invalid. Please see the causes for more details."
+      additionalProperties: false
+  securitySchemes:
+    sponsoredContentOAuth:
+      type: oauth2
+      description: This api uses oauth2 with client credentials flow.
+      flows:
+        clientCredentials:
+          tokenUrl: /oauth/token?grant_type=client_credentials
+          scopes:
+            sponsored-content.publisher-ads.retrieve: Retrieve sponsored-content for a publisher
