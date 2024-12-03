@@ -1,0 +1,15 @@
+path: products/rapid/sdk/java/index.md
+isSpace: true
+children:
+  - path: products/rapid/sdk/java/quick-start.md
+  - path: products/rapid/sdk/java/usage-examples/index.md
+    children:
+      - path: products/rapid/sdk/java/usage-examples/regions.md
+      - path: products/rapid/sdk/java/usage-examples/instant-booking.md
+      - path: products/rapid/sdk/java/usage-examples/hold-resume-booking.md
+      - path: products/rapid/sdk/java/usage-examples/psd2-booking.md
+  - path: products/rapid/sdk/java/logging.md
+  - path: products/rapid/sdk/java/exception-handling.md
+  - path: products/rapid/sdk/java/transitioning-to-v4-1-0.md
+  - path: products/rapid/sdk/java/links.md
+  - path: products/rapid/sdk/java/reference.md
