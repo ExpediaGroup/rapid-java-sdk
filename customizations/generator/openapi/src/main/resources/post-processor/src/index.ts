@@ -8,7 +8,6 @@ import {PaymentSessionsLinksProcessor} from './processors/payment-sessions-links
 import {PropertyAvailabilityLinksProcessor} from './processors/property-availability-links-processor';
 import {RateLinksProcessor} from './processors/rate-links-processor';
 import {RoomItineraryLinksProcessor} from './processors/room-itinerary-links-processor';
-import {TraderDetailsInnerProcessor} from './processors/trader-details-inner-processor';
 import {RoomPriceCheckLinksProcessor} from './processors/room-price-check-links-processor';
 
 import * as path from 'path';
@@ -18,9 +17,6 @@ const filePath = args[0];
 const fileName = path.parse(filePath).name;
 
 switch (fileName) {
-  case 'TraderDetailsInner':
-    new TraderDetailsInnerProcessor().process(filePath);
-    break;
   case 'RoomItineraryLinks':
     new RoomItineraryLinksProcessor().process(filePath);
     break;
