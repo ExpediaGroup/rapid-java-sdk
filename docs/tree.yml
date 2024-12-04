@@ -1,5 +1,4 @@
 path: products/rapid/sdk/java/index.md
-isSpace: true
 children:
   - path: products/rapid/sdk/java/quick-start.md
   - path: products/rapid/sdk/java/usage-examples/index.md
