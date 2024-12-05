@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import io.ktor.http.parseUrlEncodedParameters
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import java.net.URI
 import javax.validation.Valid
 import javax.validation.Validation
 import javax.validation.constraints.NotNull
@@ -99,6 +101,51 @@ data class GetPaymentOptionsOperationParams
              * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
              */
             fun token(token: kotlin.String) = apply { this.token = token }
+
+            companion object {
+                @JvmStatic
+                fun from(link: GetPaymentOptionsOperationLink): Builder {
+                    val uri = link.href?.let { URI(it) }
+                    val params = uri?.query?.parseUrlEncodedParameters()
+
+                    val builder = Builder()
+
+                    val propertyId =
+                        params?.get("propertyId")
+
+                    propertyId?.let {
+                        builder.propertyId(
+                            it
+                        )
+                    }
+                    val customerIp =
+                        params?.get("customerIp")
+
+                    customerIp?.let {
+                        builder.customerIp(
+                            it
+                        )
+                    }
+                    val customerSessionId =
+                        params?.get("customerSessionId")
+
+                    customerSessionId?.let {
+                        builder.customerSessionId(
+                            it
+                        )
+                    }
+                    val token =
+                        params?.get("token")
+
+                    token?.let {
+                        builder.token(
+                            it
+                        )
+                    }
+
+                    return builder
+                }
+            }
 
             fun build(): GetPaymentOptionsOperationParams {
                 val params =

@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import io.ktor.http.parseUrlEncodedParameters
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import java.net.URI
 import javax.validation.Valid
 import javax.validation.Validation
 import javax.validation.constraints.NotNull
@@ -256,7 +258,16 @@ data class GetPropertyContentOperationParams
             val value: kotlin.String
         ) {
             EXPEDIA_COLLECT("expedia_collect"),
+
             PROPERTY_COLLECT("property_collect")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         class Builder(
@@ -488,6 +499,242 @@ data class GetPropertyContentOperationParams
              * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
              */
             fun platformName(platformName: kotlin.String) = apply { this.platformName = platformName }
+
+            companion object {
+                @JvmStatic
+                fun from(link: GetPropertyContentOperationLink): Builder {
+                    val uri = link.href?.let { URI(it) }
+                    val params = uri?.query?.parseUrlEncodedParameters()
+
+                    val builder = Builder()
+
+                    val customerSessionId =
+                        params?.get("customerSessionId")
+
+                    customerSessionId?.let {
+                        builder.customerSessionId(
+                            it
+                        )
+                    }
+                    val language =
+                        params?.get("language")
+
+                    language?.let {
+                        builder.language(
+                            it
+                        )
+                    }
+                    val supplySource =
+                        params?.get("supplySource")
+
+                    supplySource?.let {
+                        builder.supplySource(
+                            it
+                        )
+                    }
+                    val allInclusive =
+                        params?.getAll("allInclusive")
+                    params?.get("allInclusive")
+
+                    allInclusive?.let {
+                        builder.allInclusive(
+                            it
+                        )
+                    }
+                    val amenityId =
+                        params?.getAll("amenityId")
+                    params?.get("amenityId")
+
+                    amenityId?.let {
+                        builder.amenityId(
+                            it
+                        )
+                    }
+                    val attributeId =
+                        params?.getAll("attributeId")
+                    params?.get("attributeId")
+
+                    attributeId?.let {
+                        builder.attributeId(
+                            it
+                        )
+                    }
+                    val brandId =
+                        params?.getAll("brandId")
+                    params?.get("brandId")
+
+                    brandId?.let {
+                        builder.brandId(
+                            it
+                        )
+                    }
+                    val businessModel =
+                        params?.getAll("businessModel")
+                            ?.mapNotNull { BusinessModel.from(it) }
+                    params?.get("businessModel")
+                        ?.let { BusinessModel.from(it) }
+
+                    businessModel?.let {
+                        builder.businessModel(
+                            it
+                        )
+                    }
+                    val categoryId =
+                        params?.getAll("categoryId")
+                    params?.get("categoryId")
+
+                    categoryId?.let {
+                        builder.categoryId(
+                            it
+                        )
+                    }
+                    val categoryIdExclude =
+                        params?.getAll("categoryIdExclude")
+                    params?.get("categoryIdExclude")
+
+                    categoryIdExclude?.let {
+                        builder.categoryIdExclude(
+                            it
+                        )
+                    }
+                    val chainId =
+                        params?.getAll("chainId")
+                    params?.get("chainId")
+
+                    chainId?.let {
+                        builder.chainId(
+                            it
+                        )
+                    }
+                    val countryCode =
+                        params?.getAll("countryCode")
+                    params?.get("countryCode")
+
+                    countryCode?.let {
+                        builder.countryCode(
+                            it
+                        )
+                    }
+                    val dateAddedEnd =
+                        params?.get("dateAddedEnd")
+
+                    dateAddedEnd?.let {
+                        builder.dateAddedEnd(
+                            it
+                        )
+                    }
+                    val dateAddedStart =
+                        params?.get("dateAddedStart")
+
+                    dateAddedStart?.let {
+                        builder.dateAddedStart(
+                            it
+                        )
+                    }
+                    val dateUpdatedEnd =
+                        params?.get("dateUpdatedEnd")
+
+                    dateUpdatedEnd?.let {
+                        builder.dateUpdatedEnd(
+                            it
+                        )
+                    }
+                    val dateUpdatedStart =
+                        params?.get("dateUpdatedStart")
+
+                    dateUpdatedStart?.let {
+                        builder.dateUpdatedStart(
+                            it
+                        )
+                    }
+                    val include =
+                        params?.getAll("include")
+                    params?.get("include")
+
+                    include?.let {
+                        builder.include(
+                            it
+                        )
+                    }
+                    val multiUnit =
+                        params?.get("multiUnit")
+
+                    multiUnit?.let {
+                        builder.multiUnit(
+                            it
+                                .toBoolean()
+                        )
+                    }
+                    val propertyId =
+                        params?.getAll("propertyId")
+                    params?.get("propertyId")
+
+                    propertyId?.let {
+                        builder.propertyId(
+                            it
+                        )
+                    }
+                    val propertyRatingMax =
+                        params?.get("propertyRatingMax")
+
+                    propertyRatingMax?.let {
+                        builder.propertyRatingMax(
+                            it
+                        )
+                    }
+                    val propertyRatingMin =
+                        params?.get("propertyRatingMin")
+
+                    propertyRatingMin?.let {
+                        builder.propertyRatingMin(
+                            it
+                        )
+                    }
+                    val spokenLanguageId =
+                        params?.getAll("spokenLanguageId")
+                    params?.get("spokenLanguageId")
+
+                    spokenLanguageId?.let {
+                        builder.spokenLanguageId(
+                            it
+                        )
+                    }
+                    val billingTerms =
+                        params?.get("billingTerms")
+
+                    billingTerms?.let {
+                        builder.billingTerms(
+                            it
+                        )
+                    }
+                    val partnerPointOfSale =
+                        params?.get("partnerPointOfSale")
+
+                    partnerPointOfSale?.let {
+                        builder.partnerPointOfSale(
+                            it
+                        )
+                    }
+                    val paymentTerms =
+                        params?.get("paymentTerms")
+
+                    paymentTerms?.let {
+                        builder.paymentTerms(
+                            it
+                        )
+                    }
+                    val platformName =
+                        params?.get("platformName")
+
+                    platformName?.let {
+                        builder.platformName(
+                            it
+                        )
+                    }
+
+                    return builder
+                }
+            }
 
             fun build(): GetPropertyContentOperationParams {
                 val params =

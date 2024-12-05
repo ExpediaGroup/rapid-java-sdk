@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import io.ktor.http.parseUrlEncodedParameters
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import java.net.URI
 import javax.validation.Valid
 import javax.validation.Validation
 import javax.validation.constraints.NotNull
@@ -215,46 +217,104 @@ data class GetAvailabilityOperationParams
             val value: kotlin.String
         ) {
             STANDARD("standard"),
+
             SERVICE_UNAVAILABLE("service_unavailable"),
+
             UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         enum class Exclusion(
             val value: kotlin.String
         ) {
             REFUNDABLE_DAMAGE_DEPOSIT("refundable_damage_deposit"),
+
             CARD_ON_FILE("card_on_file")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         enum class Filter(
             val value: kotlin.String
         ) {
             REFUNDABLE("refundable"),
+
             EXPEDIA_COLLECT("expedia_collect"),
+
             PROPERTY_COLLECT("property_collect")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         enum class Include(
             val value: kotlin.String
         ) {
             UNAVAILABLE_REASON("unavailable_reason"),
+
             SALE_SCENARIO_PERIOD_MOBILE_PROMOTION("sale_scenario.mobile_promotion"),
+
             ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_INCENTIVES("rooms.rates.marketing_fee_incentives")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         enum class RateOption(
             val value: kotlin.String
         ) {
             MEMBER("member"),
+
             NET_RATES("net_rates"),
+
             CROSS_SELL("cross_sell")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         enum class TravelPurpose(
             val value: kotlin.String
         ) {
             LEISURE("leisure"),
+
             BUSINESS("business")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         class Builder(
@@ -438,6 +498,221 @@ data class GetAvailabilityOperationParams
              * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.
              */
             fun platformName(platformName: kotlin.String) = apply { this.platformName = platformName }
+
+            companion object {
+                @JvmStatic
+                fun from(link: GetAvailabilityOperationLink): Builder {
+                    val uri = link.href?.let { URI(it) }
+                    val params = uri?.query?.parseUrlEncodedParameters()
+
+                    val builder = Builder()
+
+                    val customerIp =
+                        params?.get("customerIp")
+
+                    customerIp?.let {
+                        builder.customerIp(
+                            it
+                        )
+                    }
+                    val customerSessionId =
+                        params?.get("customerSessionId")
+
+                    customerSessionId?.let {
+                        builder.customerSessionId(
+                            it
+                        )
+                    }
+                    val test =
+                        params?.get("test")
+                            ?.let { Test.from(it) }
+
+                    test?.let {
+                        builder.test(
+                            it
+                        )
+                    }
+                    val checkin =
+                        params?.get("checkin")
+
+                    checkin?.let {
+                        builder.checkin(
+                            it
+                        )
+                    }
+                    val checkout =
+                        params?.get("checkout")
+
+                    checkout?.let {
+                        builder.checkout(
+                            it
+                        )
+                    }
+                    val currency =
+                        params?.get("currency")
+
+                    currency?.let {
+                        builder.currency(
+                            it
+                        )
+                    }
+                    val countryCode =
+                        params?.get("countryCode")
+
+                    countryCode?.let {
+                        builder.countryCode(
+                            it
+                        )
+                    }
+                    val language =
+                        params?.get("language")
+
+                    language?.let {
+                        builder.language(
+                            it
+                        )
+                    }
+                    val occupancy =
+                        params?.getAll("occupancy")
+                    params?.get("occupancy")
+
+                    occupancy?.let {
+                        builder.occupancy(
+                            it
+                        )
+                    }
+                    val propertyId =
+                        params?.getAll("propertyId")
+                    params?.get("propertyId")
+
+                    propertyId?.let {
+                        builder.propertyId(
+                            it
+                        )
+                    }
+                    val ratePlanCount =
+                        params?.get("ratePlanCount")
+
+                    ratePlanCount?.let {
+                        builder.ratePlanCount(
+                            it
+                                .toBigDecimal()
+                        )
+                    }
+                    val salesChannel =
+                        params?.get("salesChannel")
+
+                    salesChannel?.let {
+                        builder.salesChannel(
+                            it
+                        )
+                    }
+                    val salesEnvironment =
+                        params?.get("salesEnvironment")
+
+                    salesEnvironment?.let {
+                        builder.salesEnvironment(
+                            it
+                        )
+                    }
+                    val amenityCategory =
+                        params?.getAll("amenityCategory")
+                    params?.get("amenityCategory")
+
+                    amenityCategory?.let {
+                        builder.amenityCategory(
+                            it
+                        )
+                    }
+                    val exclusion =
+                        params?.getAll("exclusion")
+                            ?.mapNotNull { Exclusion.from(it) }
+                    params?.get("exclusion")
+                        ?.let { Exclusion.from(it) }
+
+                    exclusion?.let {
+                        builder.exclusion(
+                            it
+                        )
+                    }
+                    val filter =
+                        params?.getAll("filter")
+                            ?.mapNotNull { Filter.from(it) }
+                    params?.get("filter")
+                        ?.let { Filter.from(it) }
+
+                    filter?.let {
+                        builder.filter(
+                            it
+                        )
+                    }
+                    val include =
+                        params?.getAll("include")
+                            ?.mapNotNull { Include.from(it) }
+                    params?.get("include")
+                        ?.let { Include.from(it) }
+
+                    include?.let {
+                        builder.include(
+                            it
+                        )
+                    }
+                    val rateOption =
+                        params?.getAll("rateOption")
+                            ?.mapNotNull { RateOption.from(it) }
+                    params?.get("rateOption")
+                        ?.let { RateOption.from(it) }
+
+                    rateOption?.let {
+                        builder.rateOption(
+                            it
+                        )
+                    }
+                    val travelPurpose =
+                        params?.get("travelPurpose")
+                            ?.let { TravelPurpose.from(it) }
+
+                    travelPurpose?.let {
+                        builder.travelPurpose(
+                            it
+                        )
+                    }
+                    val billingTerms =
+                        params?.get("billingTerms")
+
+                    billingTerms?.let {
+                        builder.billingTerms(
+                            it
+                        )
+                    }
+                    val partnerPointOfSale =
+                        params?.get("partnerPointOfSale")
+
+                    partnerPointOfSale?.let {
+                        builder.partnerPointOfSale(
+                            it
+                        )
+                    }
+                    val paymentTerms =
+                        params?.get("paymentTerms")
+
+                    paymentTerms?.let {
+                        builder.paymentTerms(
+                            it
+                        )
+                    }
+                    val platformName =
+                        params?.get("platformName")
+
+                    platformName?.let {
+                        builder.platformName(
+                            it
+                        )
+                    }
+
+                    return builder
+                }
+            }
 
             fun build(): GetAvailabilityOperationParams {
                 val params =

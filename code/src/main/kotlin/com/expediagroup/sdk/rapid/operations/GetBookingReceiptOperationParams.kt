@@ -63,15 +63,34 @@ data class GetBookingReceiptOperationParams(
         val value: kotlin.String
     ) {
         STANDARD("standard"),
+
         SERVICE_UNAVAILABLE("service_unavailable"),
+
         INTERNAL_SERVER_ERROR("internal_server_error")
+
+        ;
+
+        companion object {
+            private val map = entries.associateBy { it.value }
+
+            infix fun from(value: kotlin.String) = map[value]
+        }
     }
 
     enum class Branding(
         val value: kotlin.String
     ) {
         EXPEDIA_GROUP("expedia_group"),
+
         UNBRANDED("unbranded")
+
+        ;
+
+        companion object {
+            private val map = entries.associateBy { it.value }
+
+            infix fun from(value: kotlin.String) = map[value]
+        }
     }
 
     class Builder(
