@@ -78,8 +78,18 @@ data class GetRegionOperationParams(
         val value: kotlin.String
     ) {
         DETAILS("details"),
+
         PROPERTY_IDS("property_ids"),
+
         PROPERTY_IDS_EXPANDED("property_ids_expanded")
+
+        ;
+
+        companion object {
+            private val map = entries.associateBy { it.value }
+
+            infix fun from(value: kotlin.String) = map[value]
+        }
     }
 
     class Builder(

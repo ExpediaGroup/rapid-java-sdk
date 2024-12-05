@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import io.ktor.http.parseUrlEncodedParameters
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import java.net.URI
 import javax.validation.Valid
 import javax.validation.Validation
 import javax.validation.constraints.NotNull
@@ -96,10 +98,22 @@ data class PriceCheckOperationParams
             val value: kotlin.String
         ) {
             AVAILABLE("available"),
+
             PRICE_CHANGED("price_changed"),
+
             SOLD_OUT("sold_out"),
+
             SERVICE_UNAVAILABLE("service_unavailable"),
+
             UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         class Builder(
@@ -145,6 +159,76 @@ data class PriceCheckOperationParams
              * @param token A hashed collection of query parameters. Used to maintain state across calls. This token is provided as part of the price check link from the shop response.
              */
             fun token(token: kotlin.String) = apply { this.token = token }
+
+            companion object {
+                @JvmStatic
+                fun from(link: PriceCheckOperationLink): Builder {
+                    val uri = link.href?.let { URI(it) }
+                    val params = uri?.query?.parseUrlEncodedParameters()
+
+                    val builder = Builder()
+
+                    val propertyId =
+                        params?.get("propertyId")
+
+                    propertyId?.let {
+                        builder.propertyId(
+                            it
+                        )
+                    }
+                    val roomId =
+                        params?.get("roomId")
+
+                    roomId?.let {
+                        builder.roomId(
+                            it
+                        )
+                    }
+                    val rateId =
+                        params?.get("rateId")
+
+                    rateId?.let {
+                        builder.rateId(
+                            it
+                        )
+                    }
+                    val customerIp =
+                        params?.get("customerIp")
+
+                    customerIp?.let {
+                        builder.customerIp(
+                            it
+                        )
+                    }
+                    val customerSessionId =
+                        params?.get("customerSessionId")
+
+                    customerSessionId?.let {
+                        builder.customerSessionId(
+                            it
+                        )
+                    }
+                    val test =
+                        params?.get("test")
+                            ?.let { Test.from(it) }
+
+                    test?.let {
+                        builder.test(
+                            it
+                        )
+                    }
+                    val token =
+                        params?.get("token")
+
+                    token?.let {
+                        builder.token(
+                            it
+                        )
+                    }
+
+                    return builder
+                }
+            }
 
             fun build(): PriceCheckOperationParams {
                 val params =

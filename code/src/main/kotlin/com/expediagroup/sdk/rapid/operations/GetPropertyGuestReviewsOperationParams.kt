@@ -79,15 +79,34 @@ data class GetPropertyGuestReviewsOperationParams(
         val value: kotlin.String
     ) {
         LANGUAGE("language")
+
+        ;
+
+        companion object {
+            private val map = entries.associateBy { it.value }
+
+            infix fun from(value: kotlin.String) = map[value]
+        }
     }
 
     enum class TripReason(
         val value: kotlin.String
     ) {
         BUSINESS("business"),
+
         LEISURE("leisure"),
+
         FRIENDS_AND_FAMILY("friends_and_family"),
+
         BUSINESS_AND_LEISURE("business_and_leisure")
+
+        ;
+
+        companion object {
+            private val map = entries.associateBy { it.value }
+
+            infix fun from(value: kotlin.String) = map[value]
+        }
     }
 
     class Builder(

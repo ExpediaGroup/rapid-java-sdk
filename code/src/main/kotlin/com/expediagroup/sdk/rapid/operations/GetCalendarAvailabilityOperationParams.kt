@@ -58,8 +58,18 @@ data class GetCalendarAvailabilityOperationParams(
         val value: kotlin.String
     ) {
         STANDARD("standard"),
+
         SERVICE_UNAVAILABLE("service_unavailable"),
+
         UNKNOWN_INTERNAL_ERROR("unknown_internal_error")
+
+        ;
+
+        companion object {
+            private val map = entries.associateBy { it.value }
+
+            infix fun from(value: kotlin.String) = map[value]
+        }
     }
 
     class Builder(

@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.ktor.http.Headers
 import io.ktor.http.Parameters
+import io.ktor.http.parseUrlEncodedParameters
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+import java.net.URI
 import javax.validation.Valid
 import javax.validation.Validation
 import javax.validation.constraints.NotNull
@@ -99,14 +101,32 @@ data class GetReservationByItineraryIdOperationParams
             val value: kotlin.String
         ) {
             STANDARD("standard"),
+
             SERVICE_UNAVAILABLE("service_unavailable"),
+
             INTERNAL_SERVER_ERROR("internal_server_error")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         enum class Include(
             val value: kotlin.String
         ) {
             HISTORY("history")
+
+            ;
+
+            companion object {
+                private val map = entries.associateBy { it.value }
+
+                infix fun from(value: kotlin.String) = map[value]
+            }
         }
 
         class Builder(
@@ -158,6 +178,79 @@ data class GetReservationByItineraryIdOperationParams
                     GetReservationByItineraryIdOperationParams.Include
                 >
             ) = apply { this.include = include }
+
+            companion object {
+                @JvmStatic
+                fun from(link: GetReservationByItineraryIdOperationLink): Builder {
+                    val uri = link.href?.let { URI(it) }
+                    val params = uri?.query?.parseUrlEncodedParameters()
+
+                    val builder = Builder()
+
+                    val itineraryId =
+                        params?.get("itineraryId")
+
+                    itineraryId?.let {
+                        builder.itineraryId(
+                            it
+                        )
+                    }
+                    val customerIp =
+                        params?.get("customerIp")
+
+                    customerIp?.let {
+                        builder.customerIp(
+                            it
+                        )
+                    }
+                    val customerSessionId =
+                        params?.get("customerSessionId")
+
+                    customerSessionId?.let {
+                        builder.customerSessionId(
+                            it
+                        )
+                    }
+                    val test =
+                        params?.get("test")
+                            ?.let { Test.from(it) }
+
+                    test?.let {
+                        builder.test(
+                            it
+                        )
+                    }
+                    val token =
+                        params?.get("token")
+
+                    token?.let {
+                        builder.token(
+                            it
+                        )
+                    }
+                    val email =
+                        params?.get("email")
+
+                    email?.let {
+                        builder.email(
+                            it
+                        )
+                    }
+                    val include =
+                        params?.getAll("include")
+                            ?.mapNotNull { Include.from(it) }
+                    params?.get("include")
+                        ?.let { Include.from(it) }
+
+                    include?.let {
+                        builder.include(
+                            it
+                        )
+                    }
+
+                    return builder
+                }
+            }
 
             fun build(): GetReservationByItineraryIdOperationParams {
                 val params =

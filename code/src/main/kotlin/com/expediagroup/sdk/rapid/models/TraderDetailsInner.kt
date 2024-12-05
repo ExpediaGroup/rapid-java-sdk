@@ -33,8 +33,6 @@ package com.expediagroup.sdk.rapid.models
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.TraderAddress
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonSetter
-import com.fasterxml.jackson.annotation.Nulls
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
@@ -55,10 +53,9 @@ import javax.validation.constraints.NotNull
 data class TraderDetailsInner(
     // The trader contact message.
     @JsonProperty("contact_message")
-    @JsonSetter(nulls = Nulls.AS_EMPTY)
     @field:NotNull
     @field:Valid
-    val contactMessage: kotlin.String? = "",
+    val contactMessage: kotlin.String,
     // The trader name.
     @JsonProperty("name")
     @field:Valid
