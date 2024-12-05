@@ -10,7 +10,9 @@
             import com.fasterxml.jackson.databind.annotation.JsonDeserialize
             import io.ktor.http.Headers
             import io.ktor.http.Parameters
+            import io.ktor.http.parseUrlEncodedParameters
 
+            import java.net.URI
             import javax.validation.constraints.Max
             import javax.validation.constraints.Min
             import javax.validation.constraints.NotNull
@@ -91,15 +93,25 @@
                         {{#isEnum}}
                             enum class {{enumName}}(
                                 val value:
-                                {{#isContainer}}{{{items.dataType}}}{{/isContainer}}
-                                {{^isContainer}}{{dataType}}{{/isContainer}}
+                                    {{#isContainer}}{{{items.dataType}}}{{/isContainer}}
+                                    {{^isContainer}}{{dataType}}{{/isContainer}}
                             ) {
                                 {{#allowableValues}}
                                     {{#enumVars}}
                                         {{name}}({{{value}}})
                                         {{^-last}},{{/-last}}
+                                        {{#-last}};{{/-last}}
                                     {{/enumVars}}
                                 {{/allowableValues}}
+
+                                companion object {
+                                    private val map = entries.associateBy { it.value }
+                                    infix fun from(
+                                        value:
+                                            {{#isContainer}}{{{items.dataType}}}{{/isContainer}}
+                                            {{^isContainer}}{{dataType}}{{/isContainer}}
+                                    ) = map[value]
+                                }
                             }
                         {{/isEnum}}
                     {{/params}}
@@ -121,6 +133,46 @@
                             fun {{{paramName}}}({{{paramName}}}: {{>partials/datatype}}) = apply { this.{{{paramName}}} = {{{paramName}}} }
                         {{/params}}
                     {{/nonBodyParams}}
+
+                    {{#isLinkable}}
+                        companion object {
+                            @JvmStatic
+                            fun from(link: {{classname}}Link) : Builder {
+                                val uri = link.href?.let { URI(it) }
+                                val params = uri?.query?.parseUrlEncodedParameters()
+
+                                val builder = Builder()
+
+                                {{#nonBodyParams}}
+                                    {{#params}}
+                                        val {{{paramName}}} =
+                                            {{#isContainer}}
+                                                params?.getAll("{{{paramName}}}")
+                                                {{#isEnum}}
+                                                    ?.mapNotNull { {{enumName}}.from(it) }
+                                                {{/isEnum}}
+                                            {{/isContainer}}
+                                            {{^isCollection}}
+                                                params?.get("{{{paramName}}}")
+                                                {{#isEnum}}
+                                                    ?.let { {{enumName}}.from(it) }
+                                                {{/isEnum}}
+                                            {{/isCollection}}
+
+                                        {{{paramName}}}?.let {
+                                            builder.{{{paramName}}}(
+                                                it
+                                                    {{#isNumber}}.toBigDecimal(){{/isNumber}}
+                                                    {{#isBoolean}}.toBoolean(){{/isBoolean}}
+                                            )
+                                        }
+                                    {{/params}}
+                                {{/nonBodyParams}}
+
+                                return builder
+                            }
+                        }
+                    {{/isLinkable}}
 
                     fun build(): {{classname}}Params {
                         val params = {{classname}}Params(
