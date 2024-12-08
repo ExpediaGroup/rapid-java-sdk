@@ -157,6 +157,13 @@ Example log messages at the DEBUG level:
 17:40:08.510 [OkHttp https://test.ean.com/...] DEBUG com.expediagroup.sdk.core.client.OkHttpEventListener - ExpediaSDK: Sending request headers end for transaction-id: [aff4c00d-6f79-4690-8f60-dd1aaccbfaee]
 ```
 
+{% messageCard type="info" %}
+{% messageCardHeader %}
+Note
+{% /messageCardHeader %}
+The debug level logs mentioned above are only available when using the SDK client with the built-in HTTP client. If you configure the SDK client with a custom HTTP client, you must implement this logging within your HTTP client instance.
+{% /messageCard %}
+
 ## Traceability
 
 The SDK generates a unique `transaction ID` for every API call, which is useful for troubleshooting issues by tracing requests end-to-end. The transactions IDs are added to the request and response headers, and they are logged in error messages in case of exceptions.
