@@ -142,6 +142,54 @@ RapidClient rapidClient =
 ```
 
 {% /expandoListItem %}
+
+{% expandoListItem %}
+{% expandoHeading %}
+(Optional) 2.3. Configure OkHttp client
+{% /expandoHeading %}
+
+The service client can be configured with a custom `OkHttpClient` instance. This allows you to fine-tune the HTTP client 
+for better performance, such as connection pooling, timeouts, and concurrency handling.
+{% br/ %}
+
+### 2.3.1. Add the OkHttpClient dependency to your project, for example, in Maven:
+
+```xml
+<dependency>
+    <groupId>com.squareup.okhttp3</groupId>
+    <artifactId>okhttp</artifactId>
+    <version>4.9.1</version> <!-- Use the latest version -->
+</dependency>
+```
+
+{% br/ %}
+
+### 2.3.2. Create and configure an OkHttpClient instance
+Create an instance of OkHttpClient with your custom configurations:
+
+```java
+OkHttpClient customClient = new OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .build();
+```
+
+For more information on configuring the `OkHttpClient`, refer to the [OkHttp documentation](https://square.github.io/okhttp/).
+
+{% br/ %}
+
+### 2.3.3. Pass the OkHttpClient instance to the RapidClient builder
+
+```java
+RapidClient rapidClient = RapidClient.builderWithHttpClient()
+        .key("YOUR_API_KEY")
+        .secret("YOUR_API_SECRET")
+        .okHttpClient(customClient)
+        .build();
+```
+
+{% /expandoListItem %}
 {% /expandoList %}
 
 ## 3. Make API calls
