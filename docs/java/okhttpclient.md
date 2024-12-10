@@ -8,14 +8,12 @@ tags:
 
 # Introducing Configurable HTTP Client
 
-## What is a Configurable HTTP Client?
-
 The RAPID SDK is built on top of an OkHttpClient that is not open for you to configure and tune. Lately, we've come to
 realize your need to tune and optimize the HTTP client to your needs. So in order to give developers using the RAPID SDK
 more control over the underlying HTTP client of the SDK, we're introducing a new builder which you can use to pass your
 own HTTP Client for the SDK to use internally.
 
-Using this builder, you can build an HTTP client with you own configurations and pass it to the SDK, or even pass a
+Using this builder, you can build an HTTP client with your own configurations and pass it to the SDK, or even pass a
 client you're already using in your application.
 
 {% messageCard type="info" %}
@@ -25,12 +23,16 @@ Note
 This feature is available in the `rapid-sdk` v5.2.0 and later.
 {% /messageCard %}
 
-## Why use a Configurable HTTP Client?
+## Choosing between configuring an HTTP Client and using the default client
 
-A configurable HTTP client will benefit you in the following ways:
+Using the default client provided by the SDK is the easiest way to get started with the SDK. However, configuring your
+own HTTP client will benefit you in the following ways:
 
 - **Optimization:** Fine-tune the client for better performance, such as connection pooling, timeouts, and retries.
 - **Integration:** Use an existing HTTP client that is already configured and tested within your application.
+
+So, if you're looking to optimize the SDK for better performance or integrate it with an existing HTTP client, configuring
+your own HTTP client is the way to go.
 
 ## How to configure your HTTP client?
 
