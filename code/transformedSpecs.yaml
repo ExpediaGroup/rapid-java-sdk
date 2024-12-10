@@ -5502,7 +5502,7 @@ paths:
           required: true
           schema:
             type: string
-          example: 2024-11-01
+          example: 2025-02-01
         - name: checkout
           in: query
           description: >
@@ -5512,7 +5512,7 @@ paths:
           required: true
           schema:
             type: string
-          example: 2024-11-03
+          example: 2025-02-03
         - name: currency
           in: query
           description: >
@@ -6747,7 +6747,7 @@ paths:
             If specified must also specify `checkout`.
           schema:
             type: string
-          example: 2024-11-01
+          example: 2025-02-01
         - name: checkout
           in: query
           description: >
@@ -6760,7 +6760,7 @@ paths:
             If specified must also specify `checkin`.<br>
           schema:
             type: string
-          example: 2024-11-03
+          example: 2025-02-03
         - name: exclusion
           in: query
           description: >
@@ -8407,7 +8407,7 @@ paths:
           schema:
             type: string
             format: date
-          example: 2024-11-15
+          example: 2025-02-15
         - name: end_date
           in: query
           description: >
@@ -8418,7 +8418,7 @@ paths:
           schema:
             type: string
             format: date
-          example: 2025-05-17
+          example: 2025-08-17
       responses:
         "200":
           description: OK
@@ -18530,8 +18530,6 @@ components:
       type: array
       description: An array of traders.
       items:
-        required:
-          - contact_message
         type: object
         properties:
           name:
