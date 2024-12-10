@@ -71,7 +71,7 @@ jobs:
         run: git checkout gh-pages
 
       - name: Cleanup Old Docs from the Repository's Root
-        run: rm -rf code images older rapid-sdk scripts styles index.html navigation.html not-found-version.html version.json
+        run: rm -rf code images older rapid-sdk scripts styles ui-kit index.html navigation.html not-found-version.html version.json
 
       - name: Move Newly Generated Docs to the Repository Root
         run: mv ${{ runner.temp }}/${{ env.NEW_DOCS_VERSION }}/* .
