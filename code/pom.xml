@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>5.3.0-SNAPSHOT</version>
+    <version>5.3.0</version>
     <name>EG rapid-sdk for Java</name>
-    <description>EG rapid-sdk v5.2.0</description>
+    <description>EG rapid-sdk v5.3.0</description>
     <url>https://github.com/ExpediaGroup/test-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
@@ -82,7 +82,7 @@
         <kotlin.version>2.0.21</kotlin.version>
         <kotlinx.coroutines.version>1.9.0</kotlinx.coroutines.version>
         <ktor.version>2.3.13</ktor.version>
-        <kotlin-atomic.version>0.26.0</kotlin-atomic.version>
+        <kotlin-atomic.version>0.26.1</kotlin-atomic.version>
         <slf4j.version>2.0.16</slf4j.version>
         <maven.nexus-staging.plugin.version>1.7.0</maven.nexus-staging.plugin.version>
         <maven.gpg.plugin.version>3.2.7</maven.gpg.plugin.version>
@@ -131,7 +131,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>2.18.1</version>
+                <version>2.18.2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -153,7 +153,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.18.1</version>
+                <version>2.18.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -744,13 +744,13 @@
         <dependency>
             <groupId>com.ebay.ejmask</groupId>
             <artifactId>ejmask-api</artifactId>
-            <version>1.0.3</version>
+            <version>1.2.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.ebay.ejmask</groupId>
             <artifactId>ejmask-extensions</artifactId>
-            <version>1.0.3</version>
+            <version>1.2.1</version>
         </dependency>
     </dependencies>
 

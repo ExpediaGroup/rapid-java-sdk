@@ -33,32 +33,23 @@ package com.expediagroup.sdk.rapid.models
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.TraderAddress
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.JsonSetter
-import com.fasterxml.jackson.annotation.Nulls
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
-import javax.validation.constraints.NotNull
 
 /**
  * Information of the professional entity that sells the property inventory or related services.
- * @param contactMessage The trader contact message.
  * @param name The trader name.
  * @param address
  * @param businessRegisterName Name of the register where the trader is registered, and is related to the `business_register_number`
  * @param businessRegisterNumber Business registration number
  * @param selfCertification Certification that the trader has confirmed their commitment to only offer products or services that comply with the applicable rules of Union law.
+ * @param contactMessage The trader contact message.
  * @param rightToWithdrawMessage The trader right to withdraw message.
  * @param email The trader email address.
  * @param phone The trader phone number.
  */
 data class TraderDetailsInner(
-    // The trader contact message.
-    @JsonProperty("contact_message")
-    @JsonSetter(nulls = Nulls.AS_EMPTY)
-    @field:NotNull
-    @field:Valid
-    val contactMessage: kotlin.String? = "",
     // The trader name.
     @JsonProperty("name")
     @field:Valid
@@ -78,6 +69,10 @@ data class TraderDetailsInner(
     @JsonProperty("self_certification")
     @field:Valid
     val selfCertification: kotlin.Boolean? = null,
+    // The trader contact message.
+    @JsonProperty("contact_message")
+    @field:Valid
+    val contactMessage: kotlin.String? = null,
     // The trader right to withdraw message.
     @JsonProperty("right_to_withdraw_message")
     @field:Valid
@@ -97,18 +92,16 @@ data class TraderDetailsInner(
     }
 
     class Builder(
-        private var contactMessage: kotlin.String? = null,
         private var name: kotlin.String? = null,
         private var address: TraderAddress? = null,
         private var businessRegisterName: kotlin.String? = null,
         private var businessRegisterNumber: kotlin.String? = null,
         private var selfCertification: kotlin.Boolean? = null,
+        private var contactMessage: kotlin.String? = null,
         private var rightToWithdrawMessage: kotlin.String? = null,
         private var email: kotlin.String? = null,
         private var phone: kotlin.String? = null
     ) {
-        fun contactMessage(contactMessage: kotlin.String) = apply { this.contactMessage = contactMessage }
-
         fun name(name: kotlin.String?) = apply { this.name = name }
 
         fun address(address: TraderAddress?) = apply { this.address = address }
@@ -119,6 +112,8 @@ data class TraderDetailsInner(
 
         fun selfCertification(selfCertification: kotlin.Boolean?) = apply { this.selfCertification = selfCertification }
 
+        fun contactMessage(contactMessage: kotlin.String?) = apply { this.contactMessage = contactMessage }
+
         fun rightToWithdrawMessage(rightToWithdrawMessage: kotlin.String?) = apply { this.rightToWithdrawMessage = rightToWithdrawMessage }
 
         fun email(email: kotlin.String?) = apply { this.email = email }
@@ -128,12 +123,12 @@ data class TraderDetailsInner(
         fun build(): TraderDetailsInner {
             val instance =
                 TraderDetailsInner(
-                    contactMessage = contactMessage!!,
                     name = name,
                     address = address,
                     businessRegisterName = businessRegisterName,
                     businessRegisterNumber = businessRegisterNumber,
                     selfCertification = selfCertification,
+                    contactMessage = contactMessage,
                     rightToWithdrawMessage = rightToWithdrawMessage,
                     email = email,
                     phone = phone
@@ -165,12 +160,12 @@ data class TraderDetailsInner(
 
     fun toBuilder() =
         Builder(
-            contactMessage = contactMessage!!,
             name = name,
             address = address,
             businessRegisterName = businessRegisterName,
             businessRegisterNumber = businessRegisterNumber,
             selfCertification = selfCertification,
+            contactMessage = contactMessage,
             rightToWithdrawMessage = rightToWithdrawMessage,
             email = email,
             phone = phone
