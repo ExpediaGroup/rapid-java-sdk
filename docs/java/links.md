@@ -1,6 +1,6 @@
 ---
 intro: Using Links
-shortTitle: Links
+shortTitle: Using Links
 title: Using Links
 tags:
   - new
