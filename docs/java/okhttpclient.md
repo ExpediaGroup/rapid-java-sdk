@@ -1,17 +1,16 @@
 ---
-intro: Introducing Configurable HTTP Client
-shortTitle: Introducing Configurable HTTP Client
-title: Introducing Configurable HTTP Client
+intro: Configurable HTTP Client
+shortTitle: Configurable HTTP Client
+title: Configurable HTTP Client
 tags:
   - new
 ---
 
-# Introducing Configurable HTTP Client
+# Configurable HTTP Client
 
-The RAPID SDK is built on top of an OkHttpClient that is not open for you to configure and tune. Lately, we've come to
-realize your need to tune and optimize the HTTP client to your needs. So in order to give developers using the Rapid SDK
-more control over the underlying HTTP client of the SDK, we're introducing a new builder which you can use to pass your
-own HTTP client for the SDK to use internally.
+The SDK uses an underlying HTTP client to execute API calls. In order to give developers using the Rapid SDK
+more control over the HTTP client of the SDK, a builder is provided which you can use to pass your
+own HTTP client for the SDK to use.
 
 Using this builder, you can build an HTTP client with your own configurations and pass it to the SDK, or even pass a
 client you're already using in your application.
@@ -51,9 +50,9 @@ For more information on configuring the `OkHttpClient`, refer to the [OkHttp doc
 #### 2. Pass the `OkHttpClient` instance to the `RapidClient` builder `builderWithHttpClient`
 ```java
 RapidClient rapidClient = RapidClient.builderWithHttpClient()
+        .okHttpClient(customClient)
         .key("YOUR_API_KEY")
         .secret("YOUR_API_SECRET")
-        .okHttpClient(customClient)
         .build();
 ```
 
