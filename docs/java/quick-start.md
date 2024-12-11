@@ -171,9 +171,9 @@ For more information on configuring the `OkHttpClient`, refer to the [OkHttp doc
 
 ```java
 RapidClient rapidClient = RapidClient.builderWithHttpClient()
+        .okHttpClient(customClient)
         .key("YOUR_API_KEY")
         .secret("YOUR_API_SECRET")
-        .okHttpClient(customClient)
         .build();
 ```
 

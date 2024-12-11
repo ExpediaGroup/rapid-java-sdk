@@ -42,9 +42,9 @@ if (!(property instanceof PropertyAvailability)) {
 }
 
 PropertyAvailability propertyAvailability = (PropertyAvailability) property;
-Link propertyAvailabilityLink = propertyAvailability.getRooms().get(0).getRates().get(0).getBedGroups().entrySet().stream().findFirst().get().getValue().getLinks().getPriceCheck(); // selecting the first rate for the first room
+PriceCheckOperationLink priceCheckOperationLink = propertyAvailability.getRooms().get(0).getRates().get(0).getBedGroups().entrySet().stream().findFirst().get().getValue().getLinks().getPriceCheck(); // selecting the first rate for the first room
 PriceCheckOperationContext priceCheckOperationContext = PriceCheckOperationContext.builder().customerIp("1.2.3.4").customerSessionId("12345").build(); // fill the context as needed
-PriceCheckOperation priceCheckOperation = new PriceCheckOperation(propertyAvailabilityLink, priceCheckOperationContext);
+PriceCheckOperation priceCheckOperation = new PriceCheckOperation(priceCheckOperationLink, priceCheckOperationContext);
 Response<RoomPriceCheck> response = rapidClient.execute(priceCheckOperation);
 RoomPriceCheck roomPriceCheck = response.getData();
 
@@ -130,9 +130,9 @@ CreateItineraryRequest createItineraryRequest(boolean hold) {
 The primary itinerary method of the Booking API creates a reservation for the selected property, room, rate, and occupancy. Payment information, including billing/cardholder contact information, is provided directly within the request. See [here](products/rapid/lodging/booking) for more details.
 
 ```java
-Link postItineraryLink = roomPriceCheck.getLinks().getBook(); // from the previous step
+PostItineraryOperationLink postItineraryOperationLink = roomPriceCheck.getLinks().getBook(); // from the previous step
 PostItineraryOperationContext postItineraryOperationContext = PostItineraryOperationContext.builder().customerIp("1.2.3.4").customerSessionId("12345").build(); // fill the context as needed
-PostItineraryOperation itineraryCreationOperation = new PostItineraryOperation(postItineraryLink, postItineraryOperationContext, createItineraryRequest(false));
+PostItineraryOperation itineraryCreationOperation = new PostItineraryOperation(postItineraryOperationLink, postItineraryOperationContext, createItineraryRequest(false));
 Response<ItineraryCreation> response = rapidClient.execute(itineraryCreationOperation);
 ItineraryCreation itineraryCreationResponse = response.getData();
 ```
