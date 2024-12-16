@@ -39,8 +39,8 @@ if (!(property instanceof PropertyAvailability)) {
 }
 
 PropertyAvailability propertyAvailability = (PropertyAvailability) property;
-Link propertyAvailabilityLink = propertyAvailability.getRooms().get(0).getRates().get(0).getBedGroups().entrySet().stream().findFirst().get().getValue().getLinks().getPriceCheck(); // selecting the first rate for the first room
-PriceCheckOperation priceCheckOperation = new PriceCheckOperation(propertyAvailabilityLink);
+PriceCheckOperationLink priceCheckOperationLink = propertyAvailability.getRooms().get(0).getRates().get(0).getBedGroups().entrySet().stream().findFirst().get().getValue().getLinks().getPriceCheck(); // selecting the first rate for the first room
+PriceCheckOperation priceCheckOperation = new PriceCheckOperation(priceCheckOperationLink);
 Response<RoomPriceCheck> response = rapidClient.execute(priceCheckOperation);
 RoomPriceCheck roomPriceCheck = response.getData();
 ```
@@ -113,9 +113,9 @@ PaymentSessionsRequest createPaymentSessionRequest() {
 
 #### Create payment session
 ```java
-Link paymentSessionLink = roomPriceCheck.getLinks().getPaymentSession();
+PostPaymentSessionsOperationLink postPaymentSessionsOperationLink = roomPriceCheck.getLinks().getPaymentSession();
 PostPaymentSessionsOperationContext postPaymentSessionsOperationContext = PostPaymentSessionsOperationContext.builder().customerIp("1.2.3.4").customerSessionId("12345").build(); // fill the context as needed
-PostPaymentSessionsOperation paymentSessionsOperation = new PostPaymentSessionsOperation(paymentSessionLink, postPaymentSessionsOperationContext, createPaymentSessionRequest());
+PostPaymentSessionsOperation paymentSessionsOperation = new PostPaymentSessionsOperation(postPaymentSessionsOperationLink, postPaymentSessionsOperationContext, createPaymentSessionRequest());
 Response<PaymentSessions> paymentSessionsResponse = rapidClient.execute(paymentSessionsOperation);
 PaymentSessions paymentSessions = paymentSessionsResponse.getData();
 ```
@@ -198,27 +198,27 @@ CreateItineraryRequest createItineraryRequest(boolean hold) {
 
 #### Create itinerary
 ```java
-Link postItineraryLink = roomPriceCheck.getLinks().getBook(); // from the first step
+PostItineraryOperationLink postItineraryOperationLink = roomPriceCheck.getLinks().getBook(); // from the first step
 PostItineraryOperationContext postItineraryOperationContext = PostItineraryOperationContext.builder().customerIp("1.2.3.4").customerSessionId("12345").build(); // fill the context as needed
-PostItineraryOperation itineraryCreationOperation = new PostItineraryOperation(postItineraryLink, postItineraryOperationContext, createItineraryRequest(true));
+PostItineraryOperation itineraryCreationOperation = new PostItineraryOperation(postItineraryOperationLink, postItineraryOperationContext, createItineraryRequest(true));
 Response<ItineraryCreation> response = rapidClient.execute(itineraryCreationOperation);
 ItineraryCreation itineraryCreation = response.getData();
 ```
 
 #### Complete payment session
 ```java
-Link completePaymentSessionLink = itineraryCreation.getLinks().getCompletePaymentSession();
+PutCompletePaymentSessionOperation putCompletePaymentSessionOperation = itineraryCreation.getLinks().getCompletePaymentSession();
 PutCompletePaymentSessionOperationContext putCompletePaymentSessionOperationContext = PutCompletePaymentSessionOperationContext.builder().customerIp("1.2.3.4").customerSessionId("12345").build(); // fill the context as needed
-PutCompletePaymentSessionOperation completePaymentSessionOperation = new PutCompletePaymentSessionOperation(completePaymentSessionLink, putCompletePaymentSessionOperationContext);
+PutCompletePaymentSessionOperation completePaymentSessionOperation = new PutCompletePaymentSessionOperation(putCompletePaymentSessionOperation, putCompletePaymentSessionOperationContext);
 Response<CompletePaymentSession> completePaymentSessionResponse = rapidClient.execute(completePaymentSessionOperation);
 CompletePaymentSession completePaymentSession = completePaymentSessionResponse.getData();
 ```
 
 #### Resume on-hold booking
 ```java
-Link resumeLink = itineraryCreation.getLinks().getResume();
+PutResumeBookingOperationLink putResumeBookingOperationLink = itineraryCreation.getLinks().getResume();
 PutResumeBookingOperationContext putResumeBookingOperationContext = PutResumeBookingOperationContext.builder().customerIp("1.2.3.4").customerSessionId("12345").build(); // fill the context as needed
-PutResumeBookingOperation putResumeBookingOperation = new PutResumeBookingOperation(resumeLink, putResumeBookingOperationContext);
+PutResumeBookingOperation putResumeBookingOperation = new PutResumeBookingOperation(putResumeBookingOperationLink, putResumeBookingOperationContext);
 rapidClient.execute(putResumeBookingOperation);
 ```
 

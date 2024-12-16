@@ -1,14 +1,12 @@
 ---
-intro: Introducing Links
-shortTitle: Introducing Links
-title: Introducing Links
+intro: Using Links
+shortTitle: Using Links
+title: Using Links
 tags:
   - new
 ---
 
-# Introducing Links
-
-## What is a Link?
+# Using Links
 
 RapidAPI consists of several API resources that enable you to create an end-to-end booking experience for your
 travelers.
@@ -27,10 +25,10 @@ operations, bypassing the typical setup process and significantly enhancing effi
 {% messageCardHeader %}
 Note
 {% /messageCardHeader %}
-This feature is available in the `rapid-sdk` v4.3.0 and later.
+This feature is available in the `rapid-sdk` v5.1.0 and later.
 {% /messageCard %}
 
-## Why to use a Link?
+## Benefits of using Links
 
 `Link` is a convenient way to navigate through the Rapid API operations, without having to manually create the next
 operation. You can extract a `Link` from the response of the previous operation and use it to create the next operation.
@@ -46,10 +44,10 @@ A link will benefit you in the following ways:
 
 ## How to use a Link?
 
-To get a `Link`, you need to extract it from the previous `Operation` response.
+In an operation response, look for the returned links, use the link to build the next suitable operation.
 Then, you can create the next `Operation` from the `Link` and execute it with the `RapidClient`.
 
-For example, you can create a `Link` from the response of a `GetAvailabilityOperation` and use it in creating
+For example, you can create a `PriceCheckOperationLink` from the response of a `GetAvailabilityOperation` and use it in creating
 a `PriceCheckOperation`:
 
 ```java
@@ -67,8 +65,8 @@ if (!(property instanceof PropertyAvailability)) {
 
 PropertyAvailability propertyAvailability = (PropertyAvailability) property;
 
-// 3a. Extract the priceCheck link from PropertyAvailability operation (Here, we select the first rate for the first room, then get the priceCheck link)
-Link priceCheckLink = propertyAvailability.getRooms().get(0).getRates().get(0).getBedGroups().entrySet().stream().findFirst().get().getValue().getLinks().getPriceCheck();
+// 3a. Extract the PriceCheckOperationLink from PropertyAvailability operation (Here, we select the first rate for the first room, then get the PriceCheckOperationLink)
+PriceCheckOperationLink priceCheckLink = propertyAvailability.getRooms().get(0).getRates().get(0).getBedGroups().entrySet().stream().findFirst().get().getValue().getLinks().getPriceCheck();
 
 // 3b. Create the needed context for the PriceCheckOperation
 PriceCheckOperationContext priceCheckOperationContext = PriceCheckOperationContext.builder().customerIp("1.2.3.4").build(); // fill the context as needed
@@ -79,7 +77,7 @@ Response<RoomPriceCheck> roomPriceCheckResponse = rapidClient.execute(priceCheck
 // ...
 ```
 
-Another example would be to create a `Link` from the response of a `PriceCheckOperation` and use it in creating a
+Another example would be to create a `PostItineraryOperationLink` from the response of a `PriceCheckOperation` and use it in creating a
 booking.
 
 ```java
@@ -87,7 +85,7 @@ booking.
 RoomPriceCheck roomPriceCheck = roomPriceCheckResponse.getData(); // from the previous step
 
 // 2a. Extract the Link from the RoomPriceCheck
-Link postItineraryLink = roomPriceCheck.getLinks().getBook();
+PostItineraryOperationLink postItineraryLink = roomPriceCheck.getLinks().getBook();
 
 // 2b. Create the needed context for the PostItineraryOperation
 PostItineraryOperationContext postItineraryOperationContext = PostItineraryOperationContext.builder().customerIp("1.2.3.4").build(); // fill the context as needed

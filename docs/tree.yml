@@ -9,7 +9,7 @@ children:
       - path: products/rapid/sdk/java/usage-examples/psd2-booking.md
   - path: products/rapid/sdk/java/logging.md
   - path: products/rapid/sdk/java/exception-handling.md
-  - path: products/rapid/sdk/java/transitioning-to-v4-1-0.md
   - path: products/rapid/sdk/java/links.md
   - path: products/rapid/sdk/java/okhttpclient.md
+  - path: products/rapid/sdk/java/transitioning-to-v4-1-0.md
   - path: products/rapid/sdk/java/reference.md
