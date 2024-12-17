@@ -44,7 +44,10 @@ abstract class BaseRapidClient(
     private val engine: HttpClientEngine =
         _configurationProvider.okHttpClient?.let {
             OkHttp.create {
-                preconfigured = it
+                config {
+                    preconfigured = it
+                    dispatcher(it.dispatcher)
+                }
             }
         } ?: httpClientEngine
 
