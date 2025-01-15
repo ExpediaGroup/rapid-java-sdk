@@ -11,19 +11,8 @@ on:
         default: ''
 
 jobs:
-  run-examples:
-    strategy:
-      matrix:
-        jdk: [ 8, 11, 17, 21 ]
-    uses: ./.github/workflows/run-examples.yaml
-    secrets: inherit
-    with:
-      branch: ${{ inputs.branch }}
-      jdk: ${{ matrix.jdk }}
-
   release-sdk:
     uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@v20241126
-    needs: [ run-examples ]
     secrets: inherit
     with:
       branch: ${{ inputs.branch }}
