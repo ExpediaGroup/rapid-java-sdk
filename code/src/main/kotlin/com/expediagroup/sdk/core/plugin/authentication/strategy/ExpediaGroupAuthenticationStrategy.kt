@@ -28,11 +28,11 @@ import com.expediagroup.sdk.core.plugin.authentication.AuthenticationConfigurati
 import com.expediagroup.sdk.core.plugin.logging.ExpediaGroupLoggerFactory
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.AuthConfig
+import io.ktor.client.plugins.auth.authProviders
 import io.ktor.client.plugins.auth.providers.BearerAuthProvider
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
-import io.ktor.client.plugins.plugin
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.basicAuth
 import io.ktor.client.request.parameter
@@ -53,8 +53,8 @@ internal class ExpediaGroupAuthenticationStrategy(
     private val log = ExpediaGroupLoggerFactory.getLogger(javaClass)
     private var bearerTokenStorage = BearerTokensInfo.emptyBearerTokenInfo
 
-    override fun loadAuth(auth: Auth) {
-        auth.bearer {
+    override fun loadAuth(authConfig: AuthConfig) {
+        authConfig.bearer {
             sendWithoutRequest { request ->
                 isIdentityRequest(request)
             }
@@ -94,7 +94,7 @@ internal class ExpediaGroupAuthenticationStrategy(
 
     private fun clearTokens(client: HttpClient) {
         log.info(LoggingMessage.TOKEN_CLEARING_IN_PROGRESS)
-        client.plugin(Auth).providers.filterIsInstance<BearerAuthProvider>().first().clearToken()
+        client.authProviders.filterIsInstance<BearerAuthProvider>().first().clearToken()
         bearerTokenStorage = BearerTokensInfo.emptyBearerTokenInfo
         log.info(LoggingMessage.TOKEN_CLEARING_SUCCESSFUL)
     }

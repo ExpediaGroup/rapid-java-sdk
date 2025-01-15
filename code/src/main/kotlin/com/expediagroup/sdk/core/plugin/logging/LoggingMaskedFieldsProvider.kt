@@ -20,15 +20,14 @@ import com.expediagroup.sdk.core.constant.LogMaskingFields.DEFAULT_MASKED_HEADER
 import com.expediagroup.sdk.core.constant.LogMaskingRegex.FIELD_REGEX
 import com.expediagroup.sdk.core.model.exception.client.ExpediaGroupInvalidFieldNameException
 
-class LoggingMaskedFieldsProvider(maskedLoggingHeaders: Set<String>, maskedLoggingBodyFields: Set<String>) {
+class LoggingMaskedFieldsProvider(maskedLoggingHeaders: Set<String>) {
     private val maskedHeaderFields: Set<String>
     private val maskedBodyFields: Set<String>
 
     init {
         maskedLoggingHeaders.filter(::isInvalid).takeIf { it.isNotEmpty() }?.let { throw ExpediaGroupInvalidFieldNameException(it) }
-        maskedLoggingBodyFields.filter(::isInvalid).takeIf { it.isNotEmpty() }?.let { throw ExpediaGroupInvalidFieldNameException(it) }
         maskedHeaderFields = DEFAULT_MASKED_HEADER_FIELDS.union(maskedLoggingHeaders)
-        maskedBodyFields = DEFAULT_MASKED_BODY_FIELDS.union(maskedLoggingBodyFields)
+        maskedBodyFields = DEFAULT_MASKED_BODY_FIELDS
     }
 
     /**

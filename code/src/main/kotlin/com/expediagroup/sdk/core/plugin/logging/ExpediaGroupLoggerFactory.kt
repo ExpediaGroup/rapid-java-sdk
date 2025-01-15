@@ -15,14 +15,8 @@
  */
 package com.expediagroup.sdk.core.plugin.logging
 
-import com.expediagroup.sdk.core.client.Client
 import org.slf4j.LoggerFactory
 
 internal object ExpediaGroupLoggerFactory {
     fun getLogger(clazz: Class<*>) = ExpediaGroupLogger(LoggerFactory.getLogger(clazz))
-
-    fun getLogger(
-        clazz: Class<*>,
-        client: Client
-    ) = ExpediaGroupLogger(LoggerFactory.getLogger(clazz), client)
 }

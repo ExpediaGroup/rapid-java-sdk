@@ -109,7 +109,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     class Builder : BaseRapidClient.Builder<Builder>() {
         override fun build() =
             RapidClient(
-                RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, maskedLoggingBodyFields, null)
+                RapidClientConfiguration(key, secret, endpoint, requestTimeout, connectionTimeout, socketTimeout, maskedLoggingHeaders, null)
             )
     }
 
@@ -120,7 +120,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             }
 
             return RapidClient(
-                RapidClientConfiguration(key, secret, endpoint, null, null, null, maskedLoggingHeaders, maskedLoggingBodyFields, okHttpClient)
+                RapidClientConfiguration(key, secret, endpoint, null, null, null, maskedLoggingHeaders, okHttpClient)
             )
         }
     }
@@ -1697,7 +1697,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @JvmOverloads
     fun getPaginator(operation: GetInactivePropertiesOperation): ResponsePaginator<kotlin.collections.List<PropertyInactive>> {
         val response = execute(operation)
-        return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
+        return ResponsePaginator(this, response) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
     @JvmOverloads
@@ -1719,7 +1719,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null
     ): Paginator<kotlin.collections.List<PropertyInactive>> {
         val response = getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, partnerPointOfSale, paymentTerms, platformName)
-        return Paginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
+        return Paginator(this, response) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
     @JvmOverloads
@@ -1741,7 +1741,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
             null
     ): ResponsePaginator<kotlin.collections.List<PropertyInactive>> {
         val response = getInactivePropertiesWithResponse(customerSessionId, since, token, billingTerms, partnerPointOfSale, paymentTerms, platformName)
-        return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<PropertyInactive>>() }
+        return ResponsePaginator(this, response) { it.body<kotlin.collections.List<PropertyInactive>>() }
     }
 
     /**
@@ -2395,7 +2395,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @JvmOverloads
     fun getPaginator(operation: GetPropertyContentOperation): ResponsePaginator<kotlin.collections.Map<kotlin.String, PropertyContent>> {
         val response = execute(operation)
-        return ResponsePaginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
+        return ResponsePaginator(this, response) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
 
     @JvmOverloads
@@ -2505,7 +2505,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 paymentTerms,
                 platformName
             )
-        return Paginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
+        return Paginator(this, response) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
 
     @JvmOverloads
@@ -2615,7 +2615,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 paymentTerms,
                 platformName
             )
-        return ResponsePaginator(this, response, emptyMap()) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
+        return ResponsePaginator(this, response) { it.body<kotlin.collections.Map<kotlin.String, PropertyContent>>() }
     }
 
     /**
@@ -3301,7 +3301,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     @JvmOverloads
     fun getPaginator(operation: GetRegionsOperation): ResponsePaginator<kotlin.collections.List<Region>> {
         val response = execute(operation)
-        return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
+        return ResponsePaginator(this, response) { it.body<kotlin.collections.List<Region>>() }
     }
 
     @JvmOverloads
@@ -3362,7 +3362,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 paymentTerms,
                 platformName
             )
-        return Paginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
+        return Paginator(this, response) { it.body<kotlin.collections.List<Region>>() }
     }
 
     @JvmOverloads
@@ -3423,7 +3423,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                 paymentTerms,
                 platformName
             )
-        return ResponsePaginator(this, response, emptyList()) { it.body<kotlin.collections.List<Region>>() }
+        return ResponsePaginator(this, response) { it.body<kotlin.collections.List<Region>>() }
     }
 
     /**

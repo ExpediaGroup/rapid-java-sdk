@@ -20,11 +20,11 @@ import com.expediagroup.sdk.core.plugin.authentication.AuthenticationConfigurati
 import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy.AuthenticationType.BASIC
 import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy.AuthenticationType.BEARER
 import com.expediagroup.sdk.core.plugin.authentication.strategy.AuthenticationStrategy.AuthenticationType.SIGNATURE
-import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.AuthConfig
 import io.ktor.client.request.HttpRequestBuilder
 
 internal interface AuthenticationStrategy {
-    fun loadAuth(auth: Auth) {}
+    fun loadAuth(auth: AuthConfig) {}
 
     fun isTokenAboutToExpire(): Boolean
 

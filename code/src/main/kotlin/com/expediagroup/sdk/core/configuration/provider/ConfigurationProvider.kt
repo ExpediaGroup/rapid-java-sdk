@@ -53,10 +53,6 @@ interface ConfigurationProvider {
     val maskedLoggingHeaders: Set<String>?
         get() = setOf()
 
-    /** The body fields to be masked in logging.*/
-    val maskedLoggingBodyFields: Set<String>?
-        get() = setOf()
-
     /** The okhttp client to be used by the sdk.*/
     val okHttpClient: OkHttpClient?
         get() = null

@@ -21,7 +21,6 @@ import com.expediagroup.sdk.core.constant.ConfigurationName.CONFIGURATION_COLLEC
 import com.expediagroup.sdk.core.constant.ConfigurationName.CONNECTION_TIMEOUT_MILLIS
 import com.expediagroup.sdk.core.constant.ConfigurationName.ENDPOINT
 import com.expediagroup.sdk.core.constant.ConfigurationName.KEY
-import com.expediagroup.sdk.core.constant.ConfigurationName.MASKED_LOGGING_BODY_FIELDS
 import com.expediagroup.sdk.core.constant.ConfigurationName.MASKED_LOGGING_HEADERS
 import com.expediagroup.sdk.core.constant.ConfigurationName.REQUEST_TIMEOUT_MILLIS
 import com.expediagroup.sdk.core.constant.ConfigurationName.SECRET
@@ -66,7 +65,6 @@ internal class ConfigurationCollector private constructor(providers: Configurati
     override val connectionTimeout: Long? = providers.firstWith { it.connectionTimeout }.also { it?.log(CONNECTION_TIMEOUT_MILLIS) }?.retrieve()
     override val socketTimeout: Long? = providers.firstWith { it.socketTimeout }.also { it?.log(SOCKET_TIMEOUT_MILLIS) }?.retrieve()
     override val maskedLoggingHeaders: Set<String>? = providers.firstWith { it.maskedLoggingHeaders }.also { it?.log(MASKED_LOGGING_HEADERS) }?.retrieve()
-    override val maskedLoggingBodyFields: Set<String>? = providers.firstWith { it.maskedLoggingBodyFields }.also { it?.log(MASKED_LOGGING_BODY_FIELDS) }?.retrieve()
     override val okHttpClient: OkHttpClient? = providers.firstWith { it.okHttpClient }?.retrieve()
 
     private fun <T> ProvidedConfiguration<T>.log(configurationName: String) {
