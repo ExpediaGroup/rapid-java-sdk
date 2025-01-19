@@ -18,11 +18,11 @@ on:
 
 jobs:
   generate-and-publish-sources:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@v20241126
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@v20241217
     secrets: inherit
     with:
       name: rapid
       version: ${{ inputs.version }}
       transformations: "-th -te /v3 --operationIdsToTags"
       repository: 'ExpediaGroup/rapid-java-sdk'
-      sdk_repo_ref: ${{ inputs.sdk_repo_ref || 'v20241126' }}
+      sdk_repo_ref: ${{ inputs.sdk_repo_ref || 'v20241217' }}
