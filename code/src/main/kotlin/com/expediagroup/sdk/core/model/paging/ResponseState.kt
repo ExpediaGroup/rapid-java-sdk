@@ -16,17 +16,9 @@
 package com.expediagroup.sdk.core.model.paging
 
 import com.expediagroup.sdk.core.client.Client
-import com.expediagroup.sdk.core.constant.HeaderValue
 import com.expediagroup.sdk.core.model.Response
-import com.expediagroup.sdk.core.plugin.logging.GZipEncoder.decode
-import com.expediagroup.sdk.core.plugin.logging.contentEncoding
 import io.ktor.client.statement.HttpResponse
-import io.ktor.util.InternalAPI
-import io.ktor.util.moveToByteArray
-import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.bits.Memory
 import kotlinx.coroutines.runBlocking
-import java.nio.ByteBuffer
 
 internal interface ResponseState<T> {
     fun getNextResponse(): Response<T>
@@ -51,7 +43,6 @@ internal class LastResponseState<T> : ResponseState<T> {
 internal class FetchLinkState<T>(
     private val link: String,
     private val client: Client,
-    private val fallbackBody: T,
     private val getBody: suspend (HttpResponse) -> T
 ) : ResponseState<T> {
     override fun getNextResponse(): Response<T> =
@@ -63,23 +54,7 @@ internal class FetchLinkState<T>(
 
     override fun hasNext(): Boolean = true
 
-    private suspend fun parseBody(response: HttpResponse): T = if (decodeBody(response).isEmpty()) fallbackBody else getBody(response)
-
-    private suspend fun decodeBody(response: HttpResponse): String {
-        val byteReadChannel = prepareByteReadChannel(response)
-        val decodedByteReadChannel = if (response.contentEncoding().equals(HeaderValue.GZIP)) client.httpClient.decode(byteReadChannel) else byteReadChannel
-        val bodyString: String = decodedByteReadChannel.readRemaining().readText()
-        return bodyString
-    }
-
-    @OptIn(InternalAPI::class)
-    private suspend fun prepareByteReadChannel(response: HttpResponse): ByteReadChannel {
-        val bufferSize = response.content.availableForRead
-        val buffer = ByteBuffer.allocate(bufferSize)
-        val numberOfBytesRead = response.content.peekTo(Memory(buffer), 0, 0, 0, bufferSize.toLong()).toInt()
-        val byteReadChannel = ByteReadChannel(buffer.moveToByteArray(), 0, numberOfBytesRead)
-        return byteReadChannel
-    }
+    private suspend fun parseBody(response: HttpResponse): T = getBody(response)
 }
 
 internal class ResponseStateFactory {
@@ -87,8 +62,7 @@ internal class ResponseStateFactory {
         fun <T> getState(
             link: String?,
             client: Client,
-            fallbackBody: T,
             getBody: suspend (HttpResponse) -> T
-        ): ResponseState<T> = link?.let { FetchLinkState(it, client, fallbackBody, getBody) } ?: LastResponseState()
+        ): ResponseState<T> = link?.let { FetchLinkState(it, client, getBody) } ?: LastResponseState()
     }
 }

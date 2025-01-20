@@ -29,4 +29,8 @@ internal object LoggingMessage {
     const val TOKEN_EXPIRED = "Token expired or is about to expire. Request will wait until token is renewed"
 
     const val OMITTED = "<-- omitted -->"
+
+    const val LOG_LIMIT = 4094
+
+    const val TRUNCATED = "<-- truncated -->"
 }

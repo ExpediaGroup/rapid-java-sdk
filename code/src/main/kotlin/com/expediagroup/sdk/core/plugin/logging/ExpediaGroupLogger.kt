@@ -18,11 +18,11 @@ package com.expediagroup.sdk.core.plugin.logging
 import com.expediagroup.sdk.core.client.Client
 import com.expediagroup.sdk.core.constant.LogMaskingFields
 import com.expediagroup.sdk.core.constant.LoggingMessage.LOGGING_PREFIX
+import com.expediagroup.sdk.core.constant.LoggingMessage.LOG_LIMIT
+import com.expediagroup.sdk.core.constant.LoggingMessage.TRUNCATED
 import org.slf4j.Logger
 
 internal class ExpediaGroupLogger(private val logger: Logger, private val client: Client? = null) : Logger by logger {
-    private val mask = LogMasker(getMaskedBodyFieldFilters())
-
     override fun info(msg: String) {
         if (logger.isInfoEnabled) {
             logger.info(decorate(msg))
@@ -41,12 +41,9 @@ internal class ExpediaGroupLogger(private val logger: Logger, private val client
         }
     }
 
-    private fun decorate(msg: String): String = "$LOGGING_PREFIX ${mask(msg)}"
+    private fun decorate(msg: String): String = "$LOGGING_PREFIX ${mask(truncate(msg), getMaskedBodyFields())}"
+
+    private fun truncate(msg: String): String = if (msg.length > LOG_LIMIT) "${msg.substring(0, LOG_LIMIT)}$TRUNCATED" else msg
 
     private fun getMaskedBodyFields(): Set<String> = client?.getLoggingMaskedFieldsProvider()?.getMaskedBodyFields() ?: LogMaskingFields.DEFAULT_MASKED_BODY_FIELDS
-
-    private fun getMaskedBodyFieldFilters(): Iterable<ExpediaGroupJsonFieldFilter> =
-        listOf(
-            ExpediaGroupJsonFieldFilter(getMaskedBodyFields().toTypedArray())
-        )
 }
