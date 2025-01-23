@@ -7,16 +7,27 @@ on:
         description: 'Branch or tag to deploy reference docs from. Defaults to current branch.'
         type: string
         required: false
-        default: ${{ github.ref_name }}
+        default: ''
 
 permissions:
   id-token: write
 
 jobs:
   deploy-reference-docs:
-    uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@OmarAlJarrah/reusable-generate-reference-docs-gh-action"
-    with:
-      buildsystem: 'maven'
-      ref: ${{ inputs.ref }}
-    secrets:
-      GITHUB_PAT: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Target Ref
+        shell: python -u {0}
+        run: |
+            ref = "${{ inputs.ref }}"
+          if ref == "":
+              ref = "${{ github.ref }}"
+          
+          with open("$GITHUB_ENV", "a") as env_file:
+            print(f"TARGET_REF={ref}", file=env_file)
+      - uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@OmarAlJarrah/reusable-generate-reference-docs-gh-action"
+        with:
+          buildsystem: 'maven'
+          ref: ${{ inputs.ref }}
+        secrets:
+          GITHUB_PAT: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
