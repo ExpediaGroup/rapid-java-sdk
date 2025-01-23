@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   deploy-reference-docs:
-    uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@OmarAlJarrah/reusable-generate-reference-docs-gh-action"
+    uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@main"
     with:
       buildsystem: 'maven'
       ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
