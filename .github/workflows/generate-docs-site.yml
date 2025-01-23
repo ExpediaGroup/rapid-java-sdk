@@ -19,12 +19,10 @@ jobs:
       - name: Set Target Ref
         shell: python -u {0}
         run: |
-            ref = "${{ inputs.ref }}"
-          if ref == "":
-              ref = "${{ github.ref }}"
-          
+          ref = "${{ inputs.ref }}" if "${{ inputs.ref }}" != "" else "${{ github.ref }}"
           with open("$GITHUB_ENV", "a") as env_file:
             print(f"TARGET_REF={ref}", file=env_file)
+
       - uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@OmarAlJarrah/reusable-generate-reference-docs-gh-action"
         with:
           buildsystem: 'maven'
