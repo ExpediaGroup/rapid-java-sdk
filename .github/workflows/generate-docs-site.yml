@@ -14,14 +14,9 @@ permissions:
 
 jobs:
   deploy-reference-docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get ref name
-        id: get_branch
-        run: echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
-      - uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@main"
-        with:
-          buildsystem: 'maven'
-          ref: ${{ inputs.ref }}
-        secrets:
-          GITHUB_PAT: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+    uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@main"
+    with:
+      buildsystem: 'maven'
+      ref: ${{ inputs.ref }}
+    secrets:
+      GITHUB_PAT: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
