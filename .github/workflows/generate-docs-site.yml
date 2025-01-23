@@ -14,7 +14,6 @@ permissions:
 
 jobs:
   deploy-reference-docs:
-    runs-on: ubuntu-latest
     uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@OmarAlJarrah/reusable-generate-reference-docs-gh-action"
     with:
       buildsystem: 'maven'
