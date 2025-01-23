@@ -26,6 +26,6 @@ jobs:
       - uses: "ExpediaGroup/expediagroup-java-sdk/.github/workflows/generate-ref-docs.yaml@OmarAlJarrah/reusable-generate-reference-docs-gh-action"
         with:
           buildsystem: 'maven'
-          ref: ${{ inputs.ref }}
+          ref: ${{ env.TARGET_REF }}
         secrets:
           GITHUB_PAT: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
