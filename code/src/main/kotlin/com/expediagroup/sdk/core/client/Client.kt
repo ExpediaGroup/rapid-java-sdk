@@ -54,7 +54,7 @@ import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 
 // Create a Dispatcher with limits
-val dispatcher =
+val configuredDispatcher =
     Dispatcher().apply {
         maxRequests = 10000 // Maximum number of concurrent requests
         maxRequestsPerHost = 1000
@@ -64,7 +64,7 @@ val DEFAULT_HTTP_CLIENT_ENGINE: HttpClientEngine =
     OkHttp.create {
         config {
             eventListenerFactory(OkHttpEventListener.FACTORY)
-            dispatcher(dispatcher)
+            dispatcher(configuredDispatcher)
         }
     }
 
