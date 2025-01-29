@@ -67,4 +67,20 @@ abstract class ExpediaGroupClient(
             return self()
         }
     }
+
+    @Suppress("unused", "UnnecessaryAbstractClass") // This is used by the generated SDK clients.
+    abstract class BuilderWithHttpClient<SELF : Client.BuilderWithHttpClient<SELF>> : Client.BuilderWithHttpClient<SELF>() {
+        /** Sets the API auth endpoint to use for requests. */
+        protected var authEndpoint: String? = null
+
+        /** Sets the API auth endpoint to use for requests.
+         *
+         * @param authEndpoint The API auth endpoint to use for requests.
+         * @return The [Builder] instance.
+         */
+        fun authEndpoint(authEndpoint: String): SELF {
+            this.authEndpoint = authEndpoint
+            return self()
+        }
+    }
 }

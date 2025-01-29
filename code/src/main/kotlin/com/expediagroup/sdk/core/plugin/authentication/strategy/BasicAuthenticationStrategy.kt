@@ -16,7 +16,7 @@
 package com.expediagroup.sdk.core.plugin.authentication.strategy
 
 import com.expediagroup.sdk.core.plugin.authentication.AuthenticationConfiguration
-import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.AuthConfig
 import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
 import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.request.HttpRequestBuilder
@@ -24,8 +24,8 @@ import io.ktor.client.request.HttpRequestBuilder
 internal class BasicAuthenticationStrategy(
     private val configs: AuthenticationConfiguration
 ) : AuthenticationStrategy {
-    override fun loadAuth(auth: Auth) {
-        auth.basic {
+    override fun loadAuth(authConfig: AuthConfig) {
+        authConfig.basic {
             sendWithoutRequest { true }
             credentials {
                 BasicAuthCredentials(username = configs.credentials.key, password = configs.credentials.secret)
