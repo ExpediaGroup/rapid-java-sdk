@@ -3,23 +3,7 @@
         {{#hasNonBodyParams}}
             package com.expediagroup.sdk.{{namespace}}.operations
 
-            import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-            import com.expediagroup.sdk.core.model.OperationParams
-
-            import com.fasterxml.jackson.annotation.JsonProperty
-            import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-            import io.ktor.http.Headers
-            import io.ktor.http.Parameters
-
-            import javax.validation.constraints.Max
-            import javax.validation.constraints.Min
-            import javax.validation.constraints.NotNull
-            import javax.validation.constraints.Pattern
-            import javax.validation.constraints.Size
-            import javax.validation.Valid
-            import javax.validation.Validation
-
-            import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
+            {{>imports/operation_params}}
 
             /**
             {{#nonBodyParams}}
@@ -167,7 +151,13 @@
                     return Headers.build {
                         {{#headerParams}}
                             {{paramName}}?.let {
-                                append("{{baseName}}", it{{#isEnum}}.value{{/isEnum}})
+                                append(
+                                    "{{baseName}}",
+                                    it
+                                        {{#isEnum}}.value{{/isEnum}}
+                                        {{^isEnum}}{{#isEnumRef}}.value{{/isEnumRef}}{{/isEnum}}
+                                        {{#isUuid}}.toString(){{/isUuid}}
+                                )
                             }
                         {{/headerParams}}
                         {{#responses}}

@@ -1,6 +1,7 @@
 package com.expediagroup.sdk.rapid.examples;
 
 import com.expediagroup.sdk.rapid.examples.salesprofiles.DefaultRapidPartnerProfile;
+import com.expediagroup.sdk.rapid.examples.scenarios.addelivery.GetSponsoredContentScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.AsyncSingleRoomBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.MultiRoomHoldAndResumeBookScenario;
 import com.expediagroup.sdk.rapid.examples.scenarios.booking.SingleRoomBookScenario;
@@ -235,6 +236,20 @@ public class RapidSdkDemoApplication {
         parseRegionCategoriesScenario.run();
 
         logger.info("=============================== End of Geography Scenarios ===========================");
+
+        logger.info("============================ Running Ad Delivery Scenarios =============================");
+
+        /* Run Get Sponsored Content Scenario using the default profile
+            This scenario demonstrates the following:
+            1. Shopping for properties
+            2. Getting property availability for test property
+            3. Getting sponsored content for the property
+        */
+        GetSponsoredContentScenario getSponsoredContentScenario = new GetSponsoredContentScenario();
+        getSponsoredContentScenario.setProfile(new DefaultRapidPartnerProfile());
+        getSponsoredContentScenario.run();
+
+        logger.info("=========================== End of Ad Delivery Scenarios ============================");
 
 
         logger.info("=======================================================================================");
