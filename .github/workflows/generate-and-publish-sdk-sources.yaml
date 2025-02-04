@@ -18,7 +18,7 @@ on:
 
 jobs:
   generate-and-publish-sources:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@v20250120
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@v20250203
     secrets: inherit
     with:
       name: rapid
