@@ -15,11 +15,6 @@
  */
 package com.expediagroup.sdk.core.configuration.provider
 
-import com.expediagroup.sdk.core.configuration.provider.RapidConfigurationProvider.connectionTimeout
-import com.expediagroup.sdk.core.configuration.provider.RapidConfigurationProvider.endpoint
-import com.expediagroup.sdk.core.configuration.provider.RapidConfigurationProvider.name
-import com.expediagroup.sdk.core.configuration.provider.RapidConfigurationProvider.requestTimeout
-import com.expediagroup.sdk.core.configuration.provider.RapidConfigurationProvider.socketTimeout
 import com.expediagroup.sdk.core.constant.Constant
 
 /**
