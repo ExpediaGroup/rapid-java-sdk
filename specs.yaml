@@ -14725,6 +14725,7 @@ paths:
       tags:
         - Content
       summary: Chain Reference ***DEPRECATED***
+      deprecated: true
       description: |
         ***DEPRECATED*** Please use `/references/chains`
         <br>Returns a complete collection of chains recognized by the Rapid API.
