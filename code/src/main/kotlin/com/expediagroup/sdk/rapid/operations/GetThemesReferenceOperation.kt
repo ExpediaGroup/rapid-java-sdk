@@ -19,17 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * Themes Reference
+ * @property params [GetThemesReferenceOperationParams]
  */
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetThemesReferenceOperation(
+    params: GetThemesReferenceOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/references/themes",
         "GET",
-        "getChainReference",
+        "getThemesReference",
         null,
         params
     )

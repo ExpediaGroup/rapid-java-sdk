@@ -13,23 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.expediagroup.sdk.rapid.operations
 
-import com.expediagroup.sdk.core.model.Nothing
-import com.expediagroup.sdk.core.model.Operation
-
-/**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
- */
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
-) : Operation<
-        Nothing
-    >(
-        "/v3/chains",
-        "GET",
-        "getChainReference",
-        null,
-        params
-    )

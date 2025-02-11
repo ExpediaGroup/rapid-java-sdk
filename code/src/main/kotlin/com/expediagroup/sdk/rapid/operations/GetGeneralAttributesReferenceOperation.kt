@@ -19,17 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * General Attributes Reference
+ * @property params [GetGeneralAttributesReferenceOperationParams]
  */
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetGeneralAttributesReferenceOperation(
+    params: GetGeneralAttributesReferenceOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/references/general-attributes",
         "GET",
-        "getChainReference",
+        "getGeneralAttributesReference",
         null,
         params
     )

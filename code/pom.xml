@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>5.3.2</version>
+    <version>5.4.0-SNAPSHOT</version>
     <name>EG rapid-sdk for Java</name>
-    <description>EG rapid-sdk v5.3.2</description>
+    <description>EG rapid-sdk v5.4.0-SNAPSHOT</description>
     <url>https://github.com/ExpediaGroup/test-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
@@ -79,7 +79,7 @@
         <properties.maven.plugin.version>1.2.1</properties.maven.plugin.version>
         <maven.licence.plugin.version>4.6</maven.licence.plugin.version>
         <flatten.maven.plugin.version>1.6.0</flatten.maven.plugin.version>
-        <kotlin.version>2.1.0</kotlin.version>
+        <kotlin.version>2.1.10</kotlin.version>
         <kotlinx.coroutines.version>1.10.1</kotlinx.coroutines.version>
         <ktor.version>3.0.3</ktor.version>
         <kotlin-atomic.version>0.27.0</kotlin-atomic.version>

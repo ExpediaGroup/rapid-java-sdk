@@ -19,17 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * Spoken Languages Reference
+ * @property params [GetSpokenLanguagesReferenceOperationParams]
  */
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetSpokenLanguagesReferenceOperation(
+    params: GetSpokenLanguagesReferenceOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/references/spoken-languages",
         "GET",
-        "getChainReference",
+        "getSpokenLanguagesReference",
         null,
         params
     )
