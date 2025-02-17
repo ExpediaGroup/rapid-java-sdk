@@ -42,6 +42,8 @@ import com.expediagroup.sdk.rapid.operations.DeleteRoomOperation
 import com.expediagroup.sdk.rapid.operations.DeleteRoomOperationParams
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetAdsOperation
+import com.expediagroup.sdk.rapid.operations.GetAdsOperationParams
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationParams
 import com.expediagroup.sdk.rapid.operations.GetBookingReceiptOperation
@@ -890,6 +892,92 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     salesChannel,
                     currency
                 )
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param operation [GetAdsOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type AdsResponse
+     */
+    fun execute(operation: GetAdsOperation): Response<AdsResponse> = execute<AdsRequest, AdsResponse>(operation)
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param operation [GetAdsOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type AdsResponse
+     */
+    fun executeAsync(operation: GetAdsOperation): CompletableFuture<Response<AdsResponse>> = executeAsync<AdsRequest, AdsResponse>(operation)
+
+    private suspend inline fun kgetAdsWithResponse(
+        customerIp: kotlin.String? =
+            null,
+        adsRequest: AdsRequest? =
+            null
+    ): Response<AdsResponse> {
+        val params =
+            GetAdsOperationParams(
+                customerIp = customerIp
+            )
+
+        val operation =
+            GetAdsOperation(
+                params,
+                adsRequest
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param customerIp IP address of the customer, as captured by your integration. Ensure your integration passes the customer's IP, not your own. This value helps determine their location for ad relevancy. Also used for fraud recovery and other important analytics. (optional)
+     * @param adsRequest  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return AdsResponse
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdsOperation)"))
+    fun getAds(
+        customerIp: kotlin.String? =
+            null,
+        adsRequest: AdsRequest? =
+            null
+    ): AdsResponse = getAdsWithResponse(customerIp, adsRequest).data
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param customerIp IP address of the customer, as captured by your integration. Ensure your integration passes the customer's IP, not your own. This value helps determine their location for ad relevancy. Also used for fraud recovery and other important analytics. (optional)
+     * @param adsRequest  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type AdsResponse
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdsOperation)"))
+    fun getAdsWithResponse(
+        customerIp: kotlin.String? =
+            null,
+        adsRequest: AdsRequest? =
+            null
+    ): Response<AdsResponse> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetAdsWithResponse(customerIp, adsRequest)
             }.get()
         } catch (exception: Exception) {
             exception.handle()

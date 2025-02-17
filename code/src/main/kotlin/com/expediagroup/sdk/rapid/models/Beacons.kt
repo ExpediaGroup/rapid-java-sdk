@@ -36,21 +36,32 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
+import javax.validation.constraints.NotNull
 
 /**
- * An individual image.
- * @param caption The image caption.
- * @param link The url to retrieve the image.
+ * The view, render, click, and conversion beacons associated with the ad.
+ * @param view
+ * @param render
+ * @param click
+ * @param conversion
  */
-data class Image1(
-    // The image caption.
-    @JsonProperty("caption")
+data class Beacons(
+    @JsonProperty("view")
+    @field:NotNull
     @field:Valid
-    val caption: kotlin.String? = null,
-    // The url to retrieve the image.
-    @JsonProperty("link")
+    val view: Link1,
+    @JsonProperty("render")
+    @field:NotNull
     @field:Valid
-    val link: kotlin.collections.Map<kotlin.String, Link1>? = null
+    val render: Link1,
+    @JsonProperty("click")
+    @field:NotNull
+    @field:Valid
+    val click: Link1,
+    @JsonProperty("conversion")
+    @field:NotNull
+    @field:Valid
+    val conversion: Link1
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +69,26 @@ data class Image1(
     }
 
     class Builder(
-        private var caption: kotlin.String? = null,
-        private var link: kotlin.collections.Map<kotlin.String, Link1>? = null
+        private var view: Link1? = null,
+        private var render: Link1? = null,
+        private var click: Link1? = null,
+        private var conversion: Link1? = null
     ) {
-        fun caption(caption: kotlin.String?) = apply { this.caption = caption }
+        fun view(view: Link1) = apply { this.view = view }
 
-        fun link(link: kotlin.collections.Map<kotlin.String, Link1>?) = apply { this.link = link }
+        fun render(render: Link1) = apply { this.render = render }
 
-        fun build(): Image1 {
+        fun click(click: Link1) = apply { this.click = click }
+
+        fun conversion(conversion: Link1) = apply { this.conversion = conversion }
+
+        fun build(): Beacons {
             val instance =
-                Image1(
-                    caption = caption,
-                    link = link
+                Beacons(
+                    view = view!!,
+                    render = render!!,
+                    click = click!!,
+                    conversion = conversion!!
                 )
 
             validate(instance)
@@ -77,7 +96,7 @@ data class Image1(
             return instance
         }
 
-        private fun validate(instance: Image1) {
+        private fun validate(instance: Beacons) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -98,7 +117,9 @@ data class Image1(
 
     fun toBuilder() =
         Builder(
-            caption = caption,
-            link = link
+            view = view!!,
+            render = render!!,
+            click = click!!,
+            conversion = conversion!!
         )
 }
