@@ -1,0 +1,497 @@
+openapi: 3.0.1
+info:
+  title: Ad Delivery API
+  version: v1
+  description: Retrieves ads.
+  contact:
+    name: 'Media Solutions'
+    email: 'MediaSolutionsAPI1@expedia.com'
+    url: 'https://test.developers.expediagroup.com/docs/'
+tags:
+  - name: Ad Delivery
+    description: API to retrieve ads
+servers:
+  - url: https://test.ean.com/v1
+  - url: https://api.ean.com/v1
+paths:
+  /ads:
+    post:
+      tags:
+        - Ad Delivery
+      description: Returns relevant ads.
+      operationId: getAds
+      parameters:
+        - name: Accept
+          in: header
+          description: Specifies the response format that the client would like to receive back. This must be application/json
+          required: true
+          schema:
+            type: string
+          example: 'application/json'
+        - name: Accept-Encoding
+          in: header
+          description: Specifies the response encoding that the client would like to receive back. This must be gzip.
+          required: true
+          schema:
+            type: string
+          example: 'gzip'
+        - name: User-Agent
+          in: header
+          description: The User-Agent header string from the customer's request, as captured by your integration.
+          required: true
+          schema:
+            type: string
+          example: 'Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36'
+        - name: Customer-Ip
+          in: header
+          description: IP address of the customer, as captured by your integration.
+            Ensure your integration passes the customer's IP, not your own. This value helps determine their location for ad relevancy.
+            Also used for fraud recovery and other important analytics.
+          required: false
+          schema:
+            type: string
+          example: '192.168.123.132'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdsRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdsResponse'
+        '400':
+          description: Bad Request
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'invalid_input'
+                message: 'An invalid request was sent in, please check the nested errors for details.'
+                errors:
+                  - type: 'language.required'
+                    message: 'A language is required. Supported languages are: 
+                      [ar-SA, cs-CZ, da-DK, de-DE, el-GR, en-US, es-ES, es-MX, fi-FI, fr-CA, fr-FR, hr-HR, hu-HU, id-ID, 
+                      is-IS, it-IT, ja-JP, lt-LT, ko-KR, ms-MY, nb-NO, nl-NL, pl-PL, pt-BR, pt-PT, ru-RU, sk-SK, sv-SE, 
+                      th-TH, tr-TR, uk-UA, vi-VN, zh-CN, zh-TW]'
+                    fields:
+                      - name: 'language'
+                        type: 'request'
+        '401':
+          description: Unauthorized
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'request_unauthenticated'
+                mesage: 'Data required to authenticate your request is missing or inaccurate. 
+                  Ensure that your request follows the guidelines in our documentation.'
+                fields:
+                  - name: 'apikey'
+                    type: 'header'
+                    value: 'jaj3982k239dka328e'
+                  - name: 'signature'
+                    type: 'header'
+                    value: '129d75332614a5bdbe0c7eb540e95a65f9d85a5b53dabb38d19b37fad6312a2bd25c12ee5a82831d55112087e1b'
+                  - name: 'timestamp'
+                    type: 'header'
+                    value: '198284729'
+                  - name: 'servertimestamp'
+                    type: 'server'
+                    value: '198284729'
+        '403':
+          description: Forbidden
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'request_unauthorized'
+                message: 'Your request could not be authorized.'
+        '426':
+          description: Upgrade Required
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'upgrade_required'
+                message: 'This service requires the use of TLS.'
+        '429':
+          description: Too Many Requests
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'too_many_requests'
+                message: 'You have reached your capacity for this type of request.'
+        '500':
+          description: Unknown Internal Error
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'unknown_internal_error'
+                message: 'An internal server error has occurred.'
+        '503':
+          description: Service Unavailable
+          headers:
+            Transaction-Id:
+              description: This is vital for deep dive investigations.
+              schema:
+                type: string
+                format: uuid
+                example: '8946d668-673c-4e98-95b4-258801ecf20c'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: 'service_unavailable'
+                message: 'This service is currently unavailable.'
+components:
+  schemas:
+    PageType:
+      type: string
+      enum:
+        - other
+        - search_results
+        - details
+        - confirmation
+      example: 'search_results'
+      description: The type of page the ads will be rendered on.
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+          example: 37.774929
+          minimum: -90.0
+          maximum: 90.0
+        longitude:
+          type: number
+          example: -122.419418
+          minimum: -180.0
+          maximum: 180.0
+      additionalProperties: false
+    SortType:
+      type: string
+      enum:
+        - default
+      example: default
+      description: The sort type selected for the organic results.
+    ProductLine:
+      type: string
+      enum:
+        - car
+        - flight
+        - lodging
+      example: lodging
+      description: The different types of travel product lines a traveler can search for.
+    SalesChannel:
+      type: string
+      enum:
+        - website
+        - mobile_app
+        - mobile_web
+      example: 'mobile_app'
+      description: The sales channel for the request.
+    GuestCounts:
+      type: object
+      required:
+        - adult_count
+      properties:
+        adult_count:
+          type: integer
+          format: int32
+          example: 2
+        child_count:
+          type: integer
+          format: int32
+          example: 1
+    AdsRequest:
+      type: object
+      required:
+        - sales_channel
+        - traveler_location
+        - language
+        - country_code
+        - page_type
+        - search_product_lines
+        - checkin
+        - checkout
+        - occupancies
+        - ad_candidates
+      properties:
+        country_code:
+          type: string
+          example: 'US'
+          pattern: '^[A-Z]{2}$'
+          description: "The country code of the traveler's point of sale, in ISO 3166-1 alpha-2 format. 
+            This should represent the country where the shopping transaction is taking place.
+            For more information see: https://www.iso.org/obp/ui/#search/code/"
+        language:
+          type: string
+          example: 'en-US'
+          pattern: '^[a-z]{2}-[A-Z]{2}$'
+          description: 'Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. 
+            Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. 
+            See https://www.w3.org/International/articles/language-tags/ 
+            Language Options: https://developers.expediagroup.com/docs/rapid/resources/reference/language-options'
+        sales_channel:
+          $ref: '#/components/schemas/SalesChannel'
+        page_type:
+          $ref: '#/components/schemas/PageType'
+        sort_type:
+          $ref: '#/components/schemas/SortType'
+        traveler_location:
+          $ref: '#/components/schemas/Coordinates'
+        search_product_lines:
+          example: [ 'lodging', 'flight' ]
+          description: The product lines the traveler is searching for. lodging indicates hotel_standalone. lodging and
+            flight would indicate a lodging_package.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductLine'
+        checkin:
+          type: string
+          description: Check-in date, in ISO 8601 format (YYYY-MM-DD).
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          example: '2025-01-01'
+        checkout:
+          type: string
+          description: Check-out date, in ISO 8601 format (YYYY-MM-DD).
+          pattern: '^\d{4}-\d{2}-\d{2}$'
+          example: '2025-01-05'
+        occupancies:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuestCounts'
+          description: Each array item represents guests of one room.
+        focused_property_id:
+          type: string
+          description: The property id the ranking of ads should be based on. Examples of a focused property are a
+            customer searching for a specific property and it being pinned to the top of a page or the property
+            recommendation carousel based on the currently or previously viewed property. The focused_property_id itself
+            will be excluded from the ranking.
+          example: '23433'
+        property_ids:
+          type: array
+          items:
+            type: string
+          example: [ '2717582', '16159546', '2025453' ]
+          description: The list of property ids eligible for returning sponsored listings. These are the potential
+            candidates that could be included in the auction.
+        experiment_ids:
+          description: A list of experiment ids that can be used for testing different behavior. The ids can be associated
+            with different tests ran by the publisher and are completely arbitrary. The experiment ids will
+            be included reports back to the publisher.
+          type: array
+          items:
+            type: string
+          example: [ '324324.1', '2423423.3', '3242343.5' ]
+      additionalProperties: false
+    Image:
+      type: object
+      properties:
+        caption:
+          type: string
+          description: The image caption.
+          example: 'Hotel Lobby'
+        link:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Link'
+          description: The url to retrieve the image.
+          example:
+            "70px":
+              method: GET
+              href: https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg
+      description: An individual image.
+    Creative:
+      type: object
+      properties:
+        headline:
+          type: string
+          description: The headline of the sponsored listing.
+          example: 'Come see our new pool!'
+        description:
+          type: string
+          description: The description of the sponsored listing.
+          example: 'Come see our new remodeled rooms and enjoy our free buffett!'
+        image:
+          $ref: '#/components/schemas/Image'
+      description: The headline, description, and image to be rendered for the sponsored listing.
+      additionalProperties: false
+    Link:
+      type: object
+      properties:
+        method:
+          type: string
+          description: The request method used to access the link.
+          example: 'GET'
+        href:
+          type: string
+          description: The URL for the link. This can be absolute or relative. Placeholders will be need to be populated by the client.
+          example: 'https://advertising.expedia.com/sponsoredcontent/v1/View?position=[position]&data=AAAAAQAAAAEAAA'
+        expires:
+          type: string
+          description: If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
+          example: '2025-07-10 15:00:00.000'
+      description: An individual link.
+    Beacons:
+      type: object
+      required:
+        - view
+        - render
+        - click
+        - conversion
+      properties:
+        view:
+          $ref: '#/components/schemas/Link'
+        render:
+          $ref: '#/components/schemas/Link'
+        click:
+          $ref: '#/components/schemas/Link'
+        conversion:
+          $ref: '#/components/schemas/Link'
+      description: The view, render, click, and conversion beacons associated with the ad.
+      additionalProperties: false
+    SponsoredListing:
+      description: The sponsored listing which advertisers a specific property.
+      type: object
+      required:
+        - rank
+        - property_id
+        - beacons
+      properties:
+        rank:
+          type: integer
+          pattern: int32
+          minimum: 0
+          example: 1
+          description: The sponsored listing should adhere to the rank and not be re-ranked. This field is 0-based.
+        property_id:
+          type: string
+          example: '13243534'
+        creative:
+          $ref: '#/components/schemas/Creative'
+        beacons:
+          $ref: '#/components/schemas/Beacons'
+        ad_transparency_url:
+          type: string
+          example: 'https://advertising.expedia.com/sponsoredcontent/dsa/id=123'
+          description: The url used to retrieve digital services act information regarding why the ad was selected.
+      additionalProperties: false
+    AdsResponse:
+      type: object
+      properties:
+        sponsored_listings:
+          type: array
+          items:
+            $ref: '#/components/schemas/SponsoredListing'
+      additionalProperties: false
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The error type.
+        message:
+          type: string
+          description: A human readable message giving details about this error.
+        fields:
+          type: array
+          description: Details about the specific fields that had an error.
+          items:
+            $ref: '#/components/schemas/Field'
+        errors:
+          type: array
+          description: An array of all the actual errors that occured.
+          items:
+            $ref: '#/components/schemas/ErrorIndividual'
+      description: The overall class of error that occured.
+    Field:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The field that had an error.
+        type:
+          type: string
+          description: The type of the field that had an error.
+        value:
+          type: string
+          description: The value of the field that had an error.
+      description: An individual field that had an error.
+    ErrorIndividual:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The error type.
+        message:
+          type: string
+          description: A human readable message giving details about this error.
+        fields:
+          type: array
+          description: Details about the specific fields that had an error.
+          items:
+            $ref: '#/components/schemas/Field'
+      description: An individual error.
