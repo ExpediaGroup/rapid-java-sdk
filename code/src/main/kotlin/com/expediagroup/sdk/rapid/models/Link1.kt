@@ -31,26 +31,30 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.Link1
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- * An individual image.
- * @param caption The image caption.
- * @param link The url to retrieve the image.
+ * An individual link.
+ * @param method The request method used to access the link.
+ * @param href The URL for the link. This can be absolute or relative. Placeholders will be need to be populated by the client.
+ * @param expires If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
  */
-data class Image1(
-    // The image caption.
-    @JsonProperty("caption")
+data class Link1(
+    // The request method used to access the link.
+    @JsonProperty("method")
     @field:Valid
-    val caption: kotlin.String? = null,
-    // The url to retrieve the image.
-    @JsonProperty("link")
+    val method: kotlin.String? = null,
+    // The URL for the link. This can be absolute or relative. Placeholders will be need to be populated by the client.
+    @JsonProperty("href")
     @field:Valid
-    val link: kotlin.collections.Map<kotlin.String, Link1>? = null
+    val href: kotlin.String? = null,
+    // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
+    @JsonProperty("expires")
+    @field:Valid
+    val expires: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +62,22 @@ data class Image1(
     }
 
     class Builder(
-        private var caption: kotlin.String? = null,
-        private var link: kotlin.collections.Map<kotlin.String, Link1>? = null
+        private var method: kotlin.String? = null,
+        private var href: kotlin.String? = null,
+        private var expires: kotlin.String? = null
     ) {
-        fun caption(caption: kotlin.String?) = apply { this.caption = caption }
+        fun method(method: kotlin.String?) = apply { this.method = method }
 
-        fun link(link: kotlin.collections.Map<kotlin.String, Link1>?) = apply { this.link = link }
+        fun href(href: kotlin.String?) = apply { this.href = href }
 
-        fun build(): Image1 {
+        fun expires(expires: kotlin.String?) = apply { this.expires = expires }
+
+        fun build(): Link1 {
             val instance =
-                Image1(
-                    caption = caption,
-                    link = link
+                Link1(
+                    method = method,
+                    href = href,
+                    expires = expires
                 )
 
             validate(instance)
@@ -77,7 +85,7 @@ data class Image1(
             return instance
         }
 
-        private fun validate(instance: Image1) {
+        private fun validate(instance: Link1) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -98,7 +106,8 @@ data class Image1(
 
     fun toBuilder() =
         Builder(
-            caption = caption,
-            link = link
+            method = method,
+            href = href,
+            expires = expires
         )
 }

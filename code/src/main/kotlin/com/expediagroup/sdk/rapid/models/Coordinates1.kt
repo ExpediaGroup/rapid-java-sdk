@@ -31,26 +31,29 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.Link1
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
 
 /**
- * An individual image.
- * @param caption The image caption.
- * @param link The url to retrieve the image.
+ *
+ * @param latitude
+ * @param longitude
  */
-data class Image1(
-    // The image caption.
-    @JsonProperty("caption")
+data class Coordinates1(
+    @JsonProperty("latitude")
+    @field:Min(-90)
+    @field:Max(90)
     @field:Valid
-    val caption: kotlin.String? = null,
-    // The url to retrieve the image.
-    @JsonProperty("link")
+    val latitude: java.math.BigDecimal? = null,
+    @JsonProperty("longitude")
+    @field:Min(-180)
+    @field:Max(180)
     @field:Valid
-    val link: kotlin.collections.Map<kotlin.String, Link1>? = null
+    val longitude: java.math.BigDecimal? = null
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +61,18 @@ data class Image1(
     }
 
     class Builder(
-        private var caption: kotlin.String? = null,
-        private var link: kotlin.collections.Map<kotlin.String, Link1>? = null
+        private var latitude: java.math.BigDecimal? = null,
+        private var longitude: java.math.BigDecimal? = null
     ) {
-        fun caption(caption: kotlin.String?) = apply { this.caption = caption }
+        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
 
-        fun link(link: kotlin.collections.Map<kotlin.String, Link1>?) = apply { this.link = link }
+        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
 
-        fun build(): Image1 {
+        fun build(): Coordinates1 {
             val instance =
-                Image1(
-                    caption = caption,
-                    link = link
+                Coordinates1(
+                    latitude = latitude,
+                    longitude = longitude
                 )
 
             validate(instance)
@@ -77,7 +80,7 @@ data class Image1(
             return instance
         }
 
-        private fun validate(instance: Image1) {
+        private fun validate(instance: Coordinates1) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -98,7 +101,7 @@ data class Image1(
 
     fun toBuilder() =
         Builder(
-            caption = caption,
-            link = link
+            latitude = latitude,
+            longitude = longitude
         )
 }

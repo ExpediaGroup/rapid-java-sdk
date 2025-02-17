@@ -31,26 +31,20 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.Link1
+import com.expediagroup.sdk.rapid.models.SponsoredListing
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- * An individual image.
- * @param caption The image caption.
- * @param link The url to retrieve the image.
+ *
+ * @param sponsoredListings
  */
-data class Image1(
-    // The image caption.
-    @JsonProperty("caption")
+data class AdsResponse(
+    @JsonProperty("sponsored_listings")
     @field:Valid
-    val caption: kotlin.String? = null,
-    // The url to retrieve the image.
-    @JsonProperty("link")
-    @field:Valid
-    val link: kotlin.collections.Map<kotlin.String, Link1>? = null
+    val sponsoredListings: kotlin.collections.List<SponsoredListing>? = null
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +52,14 @@ data class Image1(
     }
 
     class Builder(
-        private var caption: kotlin.String? = null,
-        private var link: kotlin.collections.Map<kotlin.String, Link1>? = null
+        private var sponsoredListings: kotlin.collections.List<SponsoredListing>? = null
     ) {
-        fun caption(caption: kotlin.String?) = apply { this.caption = caption }
+        fun sponsoredListings(sponsoredListings: kotlin.collections.List<SponsoredListing>?) = apply { this.sponsoredListings = sponsoredListings }
 
-        fun link(link: kotlin.collections.Map<kotlin.String, Link1>?) = apply { this.link = link }
-
-        fun build(): Image1 {
+        fun build(): AdsResponse {
             val instance =
-                Image1(
-                    caption = caption,
-                    link = link
+                AdsResponse(
+                    sponsoredListings = sponsoredListings
                 )
 
             validate(instance)
@@ -77,7 +67,7 @@ data class Image1(
             return instance
         }
 
-        private fun validate(instance: Image1) {
+        private fun validate(instance: AdsResponse) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -98,7 +88,6 @@ data class Image1(
 
     fun toBuilder() =
         Builder(
-            caption = caption,
-            link = link
+            sponsoredListings = sponsoredListings
         )
 }
