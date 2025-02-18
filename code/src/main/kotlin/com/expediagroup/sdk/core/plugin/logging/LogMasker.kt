@@ -15,18 +15,24 @@
  */
 package com.expediagroup.sdk.core.plugin.logging
 
-import com.ebay.ejmask.core.BaseFilter
-import com.ebay.ejmask.core.EJMask
-import com.ebay.ejmask.core.EJMaskInitializer
-import com.ebay.ejmask.core.util.LoggerUtil
+import com.expediagroup.sdk.core.constant.LogMaskingRegex.REPLACEMENT_TEMPLATE
+import com.expediagroup.sdk.core.constant.provider.LogMaskingRegexProvider
 
-internal class LogMasker(
-    filters: Iterable<BaseFilter>
-) : (String) -> String {
-    init {
-        LoggerUtil.register { _, _, _ -> /* disable logging */ }
-        filters.forEach { EJMaskInitializer.addFilter(it) }
-    }
+internal fun mask(
+    message: String,
+    maskedBodyFields: Set<String>
+): String {
+    val masks: List<Mask> =
+        listOf(
+            Mask { LogMaskingRegexProvider.getMaskedFieldsRegex(maskedBodyFields) },
+            Mask { LogMaskingRegexProvider.getMaskedFieldsRegex("number", "\\d{12,19}") }
+        )
 
-    override fun invoke(message: String): String = EJMask.mask(message)
+    return masks.fold(message) { acc, mask -> mask.mask(acc) }
+}
+
+internal fun interface Mask {
+    fun getRegex(): Regex
+
+    fun mask(string: String) = string.replace(this.getRegex(), REPLACEMENT_TEMPLATE)
 }

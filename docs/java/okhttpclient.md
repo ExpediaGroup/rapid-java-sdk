@@ -19,7 +19,7 @@ client you're already using in your application.
 {% messageCardHeader %}
 Note
 {% /messageCardHeader %}
-This feature is available in the `rapid-sdk` v5.2.0 and later.
+This feature is available in the `rapid-sdk` v5.3.1 and later.
 {% /messageCard %}
 
 ## Choosing between configuring an HTTP client and using the default client

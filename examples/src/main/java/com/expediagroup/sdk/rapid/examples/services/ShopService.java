@@ -42,8 +42,8 @@ public class ShopService extends RapidService {
   ) {
     GetAvailabilityOperationParams params = GetAvailabilityOperationParams.builder()
         .customerIp(Constants.CUSTOMER_IP)
-        .checkin(LocalDate.now().plusDays(14).toString())
-        .checkout(LocalDate.now().plusDays(15).toString())
+        .checkin(LocalDate.now().plusDays(20).toString())
+        .checkout(LocalDate.now().plusDays(21).toString())
         .currency("USD")
         .countryCode("US")
         .language("en-US")
