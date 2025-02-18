@@ -1,0 +1,33 @@
+name: Verify Examples
+on:
+  pull_request:
+    branches:
+      - 'main'
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      examples: ${{ steps.filter.outputs.examples }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            examples:
+              - 'examples/**'
+
+  verify-examples:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.examples == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: verify examples
+        working-directory: examples
+        run: mvn clean install
