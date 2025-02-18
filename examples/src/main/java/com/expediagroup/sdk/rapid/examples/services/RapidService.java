@@ -12,5 +12,4 @@ public abstract class RapidService {
             .endpoint(Constants.SANDBOX_URL) // remove to connect to the production environment
             .requestTimeout(10000)
             .build();
-
 }
