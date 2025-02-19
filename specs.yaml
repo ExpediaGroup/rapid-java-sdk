@@ -20574,6 +20574,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
         rate:
@@ -21148,6 +21149,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
     ItineraryCreation:
@@ -21233,6 +21235,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
       example:
