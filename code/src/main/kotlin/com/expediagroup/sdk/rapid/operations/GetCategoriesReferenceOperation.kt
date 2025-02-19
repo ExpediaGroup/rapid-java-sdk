@@ -13,4 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.expediagroup.sdk.rapid.operations
 
+import com.expediagroup.sdk.core.model.Nothing
+import com.expediagroup.sdk.core.model.Operation
+
+/**
+ * Categories Reference
+ * @property params [GetCategoriesReferenceOperationParams]
+ */
+class GetCategoriesReferenceOperation(
+    params: GetCategoriesReferenceOperationParams
+) : Operation<
+        Nothing
+    >(
+        "/v3/references/categories",
+        "GET",
+        "getCategoriesReference",
+        null,
+        params
+    )
