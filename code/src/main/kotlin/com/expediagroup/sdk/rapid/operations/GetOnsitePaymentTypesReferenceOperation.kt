@@ -19,18 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * Onsite Payment Types Reference
+ * @property params [GetOnsitePaymentTypesReferenceOperationParams]
  */
-@Deprecated("This operation is deprecated and will be removed in a future version.")
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetOnsitePaymentTypesReferenceOperation(
+    params: GetOnsitePaymentTypesReferenceOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/references/onsite-payment-types",
         "GET",
-        "getChainReference",
+        "getOnsitePaymentTypesReference",
         null,
         params
     )

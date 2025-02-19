@@ -19,18 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * Pet Attributes Reference
+ * @property params [GetPetAttributesReferenceOperationParams]
  */
-@Deprecated("This operation is deprecated and will be removed in a future version.")
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetPetAttributesReferenceOperation(
+    params: GetPetAttributesReferenceOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/references/pet-attributes",
         "GET",
-        "getChainReference",
+        "getPetAttributesReference",
         null,
         params
     )

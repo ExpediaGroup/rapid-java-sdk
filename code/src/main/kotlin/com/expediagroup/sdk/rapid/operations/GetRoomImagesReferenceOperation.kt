@@ -19,18 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * Room Images Reference
+ * @property params [GetRoomImagesReferenceOperationParams]
  */
-@Deprecated("This operation is deprecated and will be removed in a future version.")
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetRoomImagesReferenceOperation(
+    params: GetRoomImagesReferenceOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/references/room-images",
         "GET",
-        "getChainReference",
+        "getRoomImagesReference",
         null,
         params
     )
