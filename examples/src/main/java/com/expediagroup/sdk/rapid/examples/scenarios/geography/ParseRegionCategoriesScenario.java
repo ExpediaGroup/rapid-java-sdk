@@ -8,33 +8,54 @@ import com.expediagroup.sdk.rapid.models.Region;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Scenario for retrieving and logging the details of a region by region ID, including its
+ * categories.
+ */
 public class ParseRegionCategoriesScenario implements RapidScenario {
 
-    private static final Logger logger = LoggerFactory.getLogger(ParseRegionCategoriesScenario.class);
-    private GeographyService geographyService = new GeographyService();
-    private RapidPartnerSalesProfile rapidPartnerSalesProfile;
+  private static final Logger logger = LoggerFactory.getLogger(ParseRegionCategoriesScenario.class);
+  private GeographyService geographyService = new GeographyService();
+  private RapidPartnerSalesProfile rapidPartnerSalesProfile;
 
-    @Override
-    public void setProfile(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
-        this.rapidPartnerSalesProfile = rapidPartnerSalesProfile;
-    }
+  /**
+   * Sets the sales profile to be used for the scenario.
+   *
+   * @param rapidPartnerSalesProfile the sales profile to use
+   */
+  @Override
+  public void setProfile(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
+    this.rapidPartnerSalesProfile = rapidPartnerSalesProfile;
+  }
 
-    @Override
-    public void run() {
+  /**
+   * Runs the scenario to retrieve and log the details of a region by region ID, including its
+   * categories.
+   */
+  @Override
+  public void run() {
 
-        logger.info("Running Parse Region Categories Scenario...");
+    logger.info("Running Parse Region Categories Scenario...");
 
-        // Calling region API with details and property ids
-        logger.info("Calling GET /region API to get region details and property ids by region id: [{}]...", Constants.TEST_REGION_ID);
-        Region region = geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID, "en-US", this.rapidPartnerSalesProfile);
+    // Calling region API with details and property ids
+    logger.info(
+        "Calling GET /region API to get region details and property ids by region id: [{}]...",
+        Constants.TEST_REGION_ID);
+    Region region =
+        geographyService.getRegionDetailsAndPropertyIds(Constants.TEST_REGION_ID, "en-US",
+            this.rapidPartnerSalesProfile);
 
-        logger.info("Region full name: {}", region.getNameFull());
-        logger.info("Region type: {}", region.getType());
-        logger.info("Region country code: {}", region.getCountryCode());
+    logger.info("Region full name: {}", region.getNameFull());
+    logger.info("Region type: {}", region.getType());
+    logger.info("Region country code: {}", region.getCountryCode());
 
-        logger.info("Region categories:");
-        region.getCategories().forEach(category -> {
-            logger.info("Category key: [{}] value: [{}]", category.split(":")[0], category.split(":")[1]);
-        });
-    }
+    logger.info("Region categories:");
+    region.getCategories().forEach(category -> {
+      logger.info(
+          "Category key: [{}] value: [{}]",
+          category.split(":")[0],
+          category.split(":")[1]
+      );
+    });
+  }
 }

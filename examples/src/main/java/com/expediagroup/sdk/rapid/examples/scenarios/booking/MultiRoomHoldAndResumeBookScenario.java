@@ -12,78 +12,100 @@ import com.expediagroup.sdk.rapid.models.ItineraryCreation;
 import com.expediagroup.sdk.rapid.models.Property;
 import com.expediagroup.sdk.rapid.models.PropertyAvailability;
 import com.expediagroup.sdk.rapid.models.RoomPriceCheck;
+import java.util.Arrays;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * This scenario demonstrates how to book multiple rooms with hold and resume functionality.
+ * The scenario performs the following steps:
+ * 1. Shopping for properties
+ * 2. Check room prices for the property
+ * 3. Book multiple rooms in the property with hold=true
+ * 4. Resume the booking process
+ * 5. Make a retrieve call to verify the booking has been resumed properly
+ */
 public class MultiRoomHoldAndResumeBookScenario implements RapidScenario {
 
-    private static final Logger logger = LoggerFactory.getLogger(MultiRoomHoldAndResumeBookScenario.class);
-    private RapidPartnerSalesProfile rapidPartnerSalesProfile;
-    private ShopService shopService = new ShopService();
+  private static final Logger logger =
+      LoggerFactory.getLogger(MultiRoomHoldAndResumeBookScenario.class);
+  private RapidPartnerSalesProfile rapidPartnerSalesProfile;
+  private ShopService shopService = new ShopService();
 
-    @Override
-    public void setProfile(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
-        this.rapidPartnerSalesProfile = rapidPartnerSalesProfile;
+  @Override
+  public void setProfile(RapidPartnerSalesProfile rapidPartnerSalesProfile) {
+    this.rapidPartnerSalesProfile = rapidPartnerSalesProfile;
+  }
+
+  @Override
+  public void run() {
+
+    logger.info(
+        "Running Book Multiple Rooms with Hold and Resume Scenario using the default profile...");
+
+    // Shopping for properties
+    /*
+     * To request multiple rooms (of the same type), include one instance of occupancy for each room
+     * requested.
+     * Up to 8 rooms may be requested or booked at once.
+     */
+    logger.info("Getting property availability for test property: [{}]",
+        Constants.TEST_PROPERTY_ID);
+    List<String> occupancy = Arrays.asList("2", "2");
+    List<Property> propertyAvailabilityList =
+        shopService.getPropertiesAvailability(occupancy, this.rapidPartnerSalesProfile).getData();
+
+    if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
+      throw new IllegalStateException("No property availability found for the test property.");
     }
 
-    @Override
-    public void run() {
+    logger.info("Property Availability found for property id: [{}] with status: [{}]",
+        propertyAvailabilityList.get(0).getPropertyId(),
+        propertyAvailabilityList.get(0).getStatus());
 
-        logger.info("Running Book Multiple Rooms with Hold and Resume Scenario using the default profile...");
+    // Check room prices for the property
+    logger.info("Checking room prices for property id: [{}]...", Constants.TEST_PROPERTY_ID);
+    PropertyAvailability propertyAvailability =
+        (PropertyAvailability) propertyAvailabilityList.get(0);
+    RoomPriceCheck roomPriceCheck = null;
 
-        // Shopping for properties
-        /*
-         * To request multiple rooms (of the same type), include one instance of occupancy for each room requested.
-         * Up to 8 rooms may be requested or booked at once.
-         */
-        logger.info("Getting property availability for test property: [{}]", Constants.TEST_PROPERTY_ID);
-        List<String> occupancy = Arrays.asList("2", "2");
-        List<Property> propertyAvailabilityList = shopService.getPropertiesAvailability(occupancy, this.rapidPartnerSalesProfile).getData();
+    roomPriceCheck = shopService.checkRoomPrices(
+        propertyAvailability,
+        0,
+        0
+    ).getData();
+    logger.info("Room price check status: [{}]", roomPriceCheck.getStatus());
 
-        if (propertyAvailabilityList == null || propertyAvailabilityList.isEmpty()) {
-            throw new IllegalStateException("No property availability found for the test property.");
-        }
+    /*
+     * Book multiple rooms in the property.
+     * The Booking link from your previous Price Check response expires after a short period.
+     * If you receive an HTTP 503 error upon your first attempt, the link has likely expired.
+     * Obtain a new link and attempt your booking again.
+     */
+    logger.info("Booking 2 rooms with [hold=true] in test property: [{}]...",
+        Constants.TEST_PROPERTY_ID);
+    BookService bookService = new BookService();
+    ItineraryCreation itineraryCreation =
+        bookService.createBookingWithHold(roomPriceCheck, occupancy).getData();
+    logger.info("Booking with hold success. Itinerary id: [{}]. Link to resume booking: [{}]",
+        itineraryCreation.getItineraryId(), itineraryCreation.getLinks().getResume().getHref());
 
-        logger.info("Property Availability found for property id: [{}] with status: [{}]",
-                propertyAvailabilityList.get(0).getPropertyId(),
-                propertyAvailabilityList.get(0).getStatus());
+    // Resume the booking process
+    logger.info("Resuming the booking process...");
+    Response<Nothing> response = bookService.resumeBooking(itineraryCreation);
+    logger.info("Resume booking response status: [{}]", response.getStatusCode());
 
-        // Check room prices for the property
-        logger.info("Checking room prices for property id: [{}]...", Constants.TEST_PROPERTY_ID);
-        PropertyAvailability propertyAvailability = (PropertyAvailability) propertyAvailabilityList.get(0);
-        RoomPriceCheck roomPriceCheck = null;
+    // Make a retrieve call to verify the booking has been resumed properly.
+    logger.info(
+        "Getting itinerary by itinerary id: [{}] to verify the booking has been resumed "
+            + "successfully...",
+        itineraryCreation.getItineraryId());
+    Itinerary itinerary = bookService.getReservation(itineraryCreation).getData();
 
-        roomPriceCheck = shopService.checkRoomPrices(propertyAvailability, 0, 0).getData();
-        logger.info("Room price check status: [{}]", roomPriceCheck.getStatus());
-
-        /*
-         * Book multiple rooms in the property.
-         * The Booking link from your previous Price Check response expires after a short period.
-         * If you receive an HTTP 503 error upon your first attempt, the link has likely expired.
-         * Obtain a new link and attempt your booking again.
-         */
-        logger.info("Booking 2 rooms with [hold=true] in test property: [{}]...", Constants.TEST_PROPERTY_ID);
-        BookService bookService = new BookService();
-        ItineraryCreation itineraryCreation = bookService.createBookingWithHold(roomPriceCheck, occupancy).getData();
-        logger.info("Booking with hold success. Itinerary id: [{}]. Link to resume booking: [{}]",
-                itineraryCreation.getItineraryId(), itineraryCreation.getLinks().getResume().getHref());
-
-        // Resume the booking process
-        logger.info("Resuming the booking process...");
-        Response<Nothing> response = bookService.resumeBooking(itineraryCreation);
-        logger.info("Resume booking response status: [{}]", response.getStatusCode());
-
-        // Make a retrieve call to verify the booking has been resumed properly.
-        logger.info("Getting itinerary by itinerary id: [{}] to verify the booking has been resumed successfully...",
-                itineraryCreation.getItineraryId());
-        Itinerary itinerary = bookService.getReservation(itineraryCreation).getData();
-
-        logger.info("Itinerary rooms status after resume booking:");
-        itinerary.getRooms().forEach(room ->
-            logger.info("Room: [{}], Status: [{}]", room.getId(), room.getStatus())
-        );
-    }
+    logger.info("Itinerary rooms status after resume booking:");
+    itinerary.getRooms().forEach(room ->
+        logger.info("Room: [{}], Status: [{}]", room.getId(), room.getStatus())
+    );
+  }
 }
