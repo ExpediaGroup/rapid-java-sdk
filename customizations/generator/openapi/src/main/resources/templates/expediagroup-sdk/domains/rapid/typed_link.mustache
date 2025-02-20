@@ -1,42 +1,45 @@
-{{#operations}}{{#operation}}{{#isLinkable}}
-    package com.expediagroup.sdk.{{namespace}}.operations
+{{#operations}}
+    {{#operation}}
+        {{#isLinkable}}
+            package com.expediagroup.sdk.{{namespace}}.operations
 
-    import com.expediagroup.sdk.{{namespace}}.models.Link
-    import com.fasterxml.jackson.annotation.JsonProperty
-    import javax.validation.Valid
+            import com.expediagroup.sdk.{{namespace}}.models.Link
+            import com.fasterxml.jackson.annotation.JsonProperty
+            import javax.validation.Valid
 
-    data class {{classname}}Link(
-        // The request method used to access the link.
-        @JsonProperty("method")
-        @field:Valid
-        override val method: kotlin.String? = null,
-        // The URL for the link. This can be absolute or relative.
-        @JsonProperty("href")
-        @field:Valid
-        override val href: kotlin.String? = null,
-        // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
-        @JsonProperty("expires")
-        @field:Valid
-        override val expires: kotlin.String? = null
-    ) : Link(method, href, expires) {
-        companion object {
-            @JvmStatic
-            fun builder() = Builder()
-        }
+            data class {{classname}}Link(
+                // The request method used to access the link.
+                @JsonProperty("method")
+                @field:Valid
+                override val method: kotlin.String? = null,
+                // The URL for the link. This can be absolute or relative.
+                @JsonProperty("href")
+                @field:Valid
+                override val href: kotlin.String? = null,
+                // If the link expires, this will be the UTC date the link will expire, in ISO 8601 format.
+                @JsonProperty("expires")
+                @field:Valid
+                override val expires: kotlin.String? = null
+            ) : Link(method, href, expires) {
+                companion object {
+                    @JvmStatic
+                    fun builder() = Builder()
+                }
 
-        class Builder(
-            private var method: kotlin.String? = null,
-            private var href: kotlin.String? = null,
-            private var expires: kotlin.String? = null
-        ) {
-            fun build(): {{classname}}Link {
-                return {{classname}}Link(
-                    method = method,
-                    href = href,
-                    expires = expires
-                )
+                class Builder(
+                    private var method: kotlin.String? = null,
+                    private var href: kotlin.String? = null,
+                    private var expires: kotlin.String? = null
+                ) {
+                    fun build(): {{classname}}Link {
+                        return {{classname}}Link(
+                            method = method,
+                            href = href,
+                            expires = expires
+                        )
+                    }
+                }
             }
-        }
-    }
-
-{{/isLinkable}}{{/operation}}{{/operations}}
+        {{/isLinkable}}
+    {{/operation}}
+{{/operations}}
