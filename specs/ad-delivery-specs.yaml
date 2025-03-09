@@ -51,6 +51,21 @@ paths:
           schema:
             type: string
           example: '192.168.123.132'
+        - name: Customer-Session-Id
+          in: header
+          description: Insert your own unique value for each user session, beginning with the first API call.
+            Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.
+          required: false
+          schema:
+            type: string
+          example: '7f9a24ea-2145-4819-a7b7-2a4cbe1165ab'
+        - name: Customer-Id
+          in: header
+          description: An obfuscated unique identifier for each customer. This should not contain any personal information such as email.
+          required: true
+          schema:
+            type: string
+          example: '7f9a24ea-2145-4819-a7b7-2a4cbe1165ab'
       requestBody:
         content:
           application/json:
@@ -59,26 +74,12 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/AdsResponse'
         '400':
           description: Bad Request
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -97,13 +98,6 @@ paths:
                         type: 'request'
         '401':
           description: Unauthorized
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -127,13 +121,6 @@ paths:
                     value: '198284729'
         '403':
           description: Forbidden
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -143,13 +130,6 @@ paths:
                 message: 'Your request could not be authorized.'
         '426':
           description: Upgrade Required
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -159,13 +139,6 @@ paths:
                 message: 'This service requires the use of TLS.'
         '429':
           description: Too Many Requests
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -175,13 +148,6 @@ paths:
                 message: 'You have reached your capacity for this type of request.'
         '500':
           description: Unknown Internal Error
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -191,13 +157,6 @@ paths:
                 message: 'An internal server error has occurred.'
         '503':
           description: Service Unavailable
-          headers:
-            Transaction-Id:
-              description: This is vital for deep dive investigations.
-              schema:
-                type: string
-                format: uuid
-                example: '8946d668-673c-4e98-95b4-258801ecf20c'
           content:
             application/json:
               schema:
@@ -277,7 +236,7 @@ components:
         - checkin
         - checkout
         - occupancies
-        - ad_candidates
+        - property_ids
       properties:
         country_code:
           type: string
@@ -409,10 +368,6 @@ components:
           $ref: '#/components/schemas/Link'
         click:
           $ref: '#/components/schemas/Link'
-        conversion:
-          $ref: '#/components/schemas/Link'
-      description: The view, render, click, and conversion beacons associated with the ad.
-      additionalProperties: false
     SponsoredListing:
       description: The sponsored listing which advertisers a specific property.
       type: object
