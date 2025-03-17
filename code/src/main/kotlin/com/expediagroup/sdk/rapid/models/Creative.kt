@@ -31,26 +31,20 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.Link1
+import com.expediagroup.sdk.rapid.models.Image1
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- * An individual image.
- * @param caption The image caption.
- * @param link The url to retrieve the image.
+ * The image to be rendered for the sponsored listing.
+ * @param image
  */
-data class Image1(
-    // The image caption.
-    @JsonProperty("caption")
+data class Creative(
+    @JsonProperty("image")
     @field:Valid
-    val caption: kotlin.String? = null,
-    // The url to retrieve the image.
-    @JsonProperty("link")
-    @field:Valid
-    val link: kotlin.collections.Map<kotlin.String, Link1>? = null
+    val image: Image1? = null
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +52,14 @@ data class Image1(
     }
 
     class Builder(
-        private var caption: kotlin.String? = null,
-        private var link: kotlin.collections.Map<kotlin.String, Link1>? = null
+        private var image: Image1? = null
     ) {
-        fun caption(caption: kotlin.String?) = apply { this.caption = caption }
+        fun image(image: Image1?) = apply { this.image = image }
 
-        fun link(link: kotlin.collections.Map<kotlin.String, Link1>?) = apply { this.link = link }
-
-        fun build(): Image1 {
+        fun build(): Creative {
             val instance =
-                Image1(
-                    caption = caption,
-                    link = link
+                Creative(
+                    image = image
                 )
 
             validate(instance)
@@ -77,7 +67,7 @@ data class Image1(
             return instance
         }
 
-        private fun validate(instance: Image1) {
+        private fun validate(instance: Creative) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -98,7 +88,6 @@ data class Image1(
 
     fun toBuilder() =
         Builder(
-            caption = caption,
-            link = link
+            image = image
         )
 }
