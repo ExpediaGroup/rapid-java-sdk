@@ -42,6 +42,8 @@ import com.expediagroup.sdk.rapid.operations.DeleteRoomOperation
 import com.expediagroup.sdk.rapid.operations.DeleteRoomOperationParams
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetAdsOperation
+import com.expediagroup.sdk.rapid.operations.GetAdsOperationParams
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationParams
 import com.expediagroup.sdk.rapid.operations.GetBookingReceiptOperation
@@ -890,6 +892,107 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
                     salesChannel,
                     currency
                 )
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param operation [GetAdsOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type AdsResponse
+     */
+    fun execute(operation: GetAdsOperation): Response<AdsResponse> = execute<AdsRequest, AdsResponse>(operation)
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param operation [GetAdsOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type AdsResponse
+     */
+    fun executeAsync(operation: GetAdsOperation): CompletableFuture<Response<AdsResponse>> = executeAsync<AdsRequest, AdsResponse>(operation)
+
+    private suspend inline fun kgetAdsWithResponse(
+        customerId: kotlin.String,
+        customerIp: kotlin.String? =
+            null,
+        customerSessionId: kotlin.String? =
+            null,
+        adsRequest: AdsRequest? =
+            null
+    ): Response<AdsResponse> {
+        val params =
+            GetAdsOperationParams(
+                customerIp = customerIp,
+                customerSessionId = customerSessionId,
+                customerId = customerId
+            )
+
+        val operation =
+            GetAdsOperation(
+                params,
+                adsRequest
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param customerId An obfuscated unique identifier for each customer. This should not contain any personal information such as email, first or last name.
+     * @param customerIp IP address of the customer, as captured by your integration. Ensure your integration passes the customer's IP, not your own. Used for fraud recovery and other important analytics. (optional)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session. (optional)
+     * @param adsRequest  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return AdsResponse
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdsOperation)"))
+    fun getAds(
+        customerId: kotlin.String,
+        customerIp: kotlin.String? =
+            null,
+        customerSessionId: kotlin.String? =
+            null,
+        adsRequest: AdsRequest? =
+            null
+    ): AdsResponse = getAdsWithResponse(customerId, customerIp, customerSessionId, adsRequest).data
+
+    /**
+     *
+     * Returns relevant ads.
+     * @param customerId An obfuscated unique identifier for each customer. This should not contain any personal information such as email, first or last name.
+     * @param customerIp IP address of the customer, as captured by your integration. Ensure your integration passes the customer's IP, not your own. Used for fraud recovery and other important analytics. (optional)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session. (optional)
+     * @param adsRequest  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type AdsResponse
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAdsOperation)"))
+    fun getAdsWithResponse(
+        customerId: kotlin.String,
+        customerIp: kotlin.String? =
+            null,
+        customerSessionId: kotlin.String? =
+            null,
+        adsRequest: AdsRequest? =
+            null
+    ): Response<AdsResponse> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetAdsWithResponse(customerId, customerIp, customerSessionId, adsRequest)
             }.get()
         } catch (exception: Exception) {
             exception.handle()

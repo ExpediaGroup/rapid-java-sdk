@@ -31,26 +31,20 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.Link1
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
-import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- * An individual image.
- * @param caption The image caption.
- * @param link The url to retrieve the image.
+ *
+ * @param adultCount
+ * @param childCount
  */
-data class Image1(
-    // The image caption.
-    @JsonProperty("caption")
-    @field:Valid
-    val caption: kotlin.String? = null,
-    // The url to retrieve the image.
-    @JsonProperty("link")
-    @field:Valid
-    val link: kotlin.collections.Map<kotlin.String, Link1>? = null
+data class GuestCounts(
+    @JsonProperty("adult_count")
+    val adultCount: kotlin.Int,
+    @JsonProperty("child_count")
+    val childCount: kotlin.Int? = null
 ) {
     companion object {
         @JvmStatic
@@ -58,18 +52,18 @@ data class Image1(
     }
 
     class Builder(
-        private var caption: kotlin.String? = null,
-        private var link: kotlin.collections.Map<kotlin.String, Link1>? = null
+        private var adultCount: kotlin.Int? = null,
+        private var childCount: kotlin.Int? = null
     ) {
-        fun caption(caption: kotlin.String?) = apply { this.caption = caption }
+        fun adultCount(adultCount: kotlin.Int) = apply { this.adultCount = adultCount }
 
-        fun link(link: kotlin.collections.Map<kotlin.String, Link1>?) = apply { this.link = link }
+        fun childCount(childCount: kotlin.Int?) = apply { this.childCount = childCount }
 
-        fun build(): Image1 {
+        fun build(): GuestCounts {
             val instance =
-                Image1(
-                    caption = caption,
-                    link = link
+                GuestCounts(
+                    adultCount = adultCount!!,
+                    childCount = childCount
                 )
 
             validate(instance)
@@ -77,7 +71,7 @@ data class Image1(
             return instance
         }
 
-        private fun validate(instance: Image1) {
+        private fun validate(instance: GuestCounts) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -98,7 +92,7 @@ data class Image1(
 
     fun toBuilder() =
         Builder(
-            caption = caption,
-            link = link
+            adultCount = adultCount!!,
+            childCount = childCount
         )
 }
