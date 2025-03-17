@@ -9,6 +9,7 @@ import com.expediagroup.sdk.rapid.models.GuestCounts;
 import com.expediagroup.sdk.rapid.models.PageType;
 import com.expediagroup.sdk.rapid.models.ProductLine;
 import com.expediagroup.sdk.rapid.models.SalesChannel;
+import com.expediagroup.sdk.rapid.models.SortType;
 import com.expediagroup.sdk.rapid.operations.GetAdsOperation;
 import com.expediagroup.sdk.rapid.operations.GetAdsOperationParams;
 
@@ -33,6 +34,7 @@ public class AdDeliveryService extends RapidService {
                 .countryCode("US")
                 .experimentIds(Arrays.asList("1234"))
                 .language("en-US")
+                .sortType(SortType.DEFAULT)
                 .travelerLocation(Coordinates1.builder()
                     .latitude(BigDecimal.valueOf(37.7749))
                     .longitude(BigDecimal.valueOf(-122.4194))
