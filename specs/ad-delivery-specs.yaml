@@ -45,8 +45,7 @@ paths:
         - name: Customer-Ip
           in: header
           description: IP address of the customer, as captured by your integration.
-            Ensure your integration passes the customer's IP, not your own. This value helps determine their location for ad relevancy.
-            Also used for fraud recovery and other important analytics.
+            Ensure your integration passes the customer's IP, not your own. Used for fraud recovery and other important analytics.
           required: false
           schema:
             type: string
@@ -61,7 +60,7 @@ paths:
           example: '7f9a24ea-2145-4819-a7b7-2a4cbe1165ab'
         - name: Customer-Id
           in: header
-          description: An obfuscated unique identifier for each customer. This should not contain any personal information such as email.
+          description: An obfuscated unique identifier for each customer. This should not contain any personal information such as email, first or last name.
           required: true
           schema:
             type: string
@@ -104,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/Error'
               example:
                 type: 'request_unauthenticated'
-                mesage: 'Data required to authenticate your request is missing or inaccurate. 
+                message: 'Data required to authenticate your request is missing or inaccurate. 
                   Ensure that your request follows the guidelines in our documentation.'
                 fields:
                   - name: 'apikey'
@@ -175,20 +174,6 @@ components:
         - confirmation
       example: 'search_results'
       description: The type of page the ads will be rendered on.
-    Coordinates:
-      type: object
-      properties:
-        latitude:
-          type: number
-          example: 37.774929
-          minimum: -90.0
-          maximum: 90.0
-        longitude:
-          type: number
-          example: -122.419418
-          minimum: -180.0
-          maximum: 180.0
-      additionalProperties: false
     SortType:
       type: string
       enum:
@@ -228,7 +213,6 @@ components:
       type: object
       required:
         - sales_channel
-        - traveler_location
         - language
         - country_code
         - page_type
@@ -259,8 +243,6 @@ components:
           $ref: '#/components/schemas/PageType'
         sort_type:
           $ref: '#/components/schemas/SortType'
-        traveler_location:
-          $ref: '#/components/schemas/Coordinates'
         search_product_lines:
           example: [ 'lodging', 'flight' ]
           description: The product lines the traveler is searching for. lodging indicates hotel_standalone. lodging and
@@ -326,17 +308,9 @@ components:
     Creative:
       type: object
       properties:
-        headline:
-          type: string
-          description: The headline of the sponsored listing.
-          example: 'Come see our new pool!'
-        description:
-          type: string
-          description: The description of the sponsored listing.
-          example: 'Come see our new remodeled rooms and enjoy our free buffett!'
         image:
           $ref: '#/components/schemas/Image'
-      description: The headline, description, and image to be rendered for the sponsored listing.
+      description: The image to be rendered for the sponsored listing.
       additionalProperties: false
     Link:
       type: object
@@ -344,7 +318,7 @@ components:
         method:
           type: string
           description: The request method used to access the link.
-          example: 'GET'
+          example: 'POST'
         href:
           type: string
           description: The URL for the link. This can be absolute or relative. Placeholders will be need to be populated by the client.
@@ -360,7 +334,6 @@ components:
         - view
         - render
         - click
-        - conversion
       properties:
         view:
           $ref: '#/components/schemas/Link'
@@ -369,7 +342,7 @@ components:
         click:
           $ref: '#/components/schemas/Link'
     SponsoredListing:
-      description: The sponsored listing which advertisers a specific property.
+      description: The sponsored listing which advertises a specific property.
       type: object
       required:
         - rank
