@@ -1,0 +1,17 @@
+{
+  "inputs": [
+    {
+      "inputFile": "./rapid-specs.yaml",
+      "pathModification": {
+        "prepend": "/v3"
+      }
+    },
+    {
+      "inputFile": "./ad-delivery-specs.yaml",
+      "pathModification": {
+        "prepend": "/v1"
+      }
+    }
+  ],
+  "output": "./specs.yaml"
+}
