@@ -179,7 +179,7 @@ public class RapidSdkDemoApplication {
     logger.info(
         "========================== End of Property Content Scenarios ===========================");
 
-    logger.info("============================ Running Ad Delivery Scenarios =============================");
+    logger.info("======================== Running Ad Delivery Scenarios =========================");
 
     /* Run Get Ads Scenario using the default profile
         This scenario demonstrates the following:
@@ -191,7 +191,7 @@ public class RapidSdkDemoApplication {
     getAdsScenario.setProfile(new DefaultRapidPartnerProfile());
     getAdsScenario.run();
 
-    logger.info("=========================== End of Ad Delivery Scenarios ============================");
+    logger.info("=========================== End of Ad Delivery Scenarios ======================");
 
     logger.info(
         "=======================================================================================");

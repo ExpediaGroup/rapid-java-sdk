@@ -12,45 +12,58 @@ import com.expediagroup.sdk.rapid.models.SalesChannel;
 import com.expediagroup.sdk.rapid.models.SortType;
 import com.expediagroup.sdk.rapid.operations.GetAdsOperation;
 import com.expediagroup.sdk.rapid.operations.GetAdsOperationParams;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This service handles ad delivery operations.
+ */
 public class AdDeliveryService extends RapidService {
 
-    public Response<AdsResponse> getAds(List<String> propertyIds) {
-        GetAdsOperationParams getAdsOperationParams = getAdsOperationParams();
+  /**
+   * Calls the GetAds operation.
+   *
+   * @param propertyIds the list of property ids
+   * @return the response
+   */
+  public Response<AdsResponse> getAds(List<String> propertyIds) {
+    GetAdsOperationParams getAdsOperationParams = getAdsOperationParams();
 
-        AdsRequest adsRequest = AdsRequest.builder()
-                .checkin(LocalDate.now().plusDays(20).toString())
-                .checkout(LocalDate.now().plusDays(23).toString())
-                .occupancies(Arrays.asList(GuestCounts.builder().adultCount(2).childCount(0).build()))
-                .searchProductLines(Arrays.asList(ProductLine.LODGING))
-                .propertyIds(propertyIds)
-                .pageType(PageType.SEARCH_RESULTS)
-                .salesChannel(SalesChannel.WEBSITE)
-                .countryCode("US")
-                .experimentIds(Arrays.asList("1234"))
-                .language("en-US")
-                .sortType(SortType.DEFAULT)
-                .travelerLocation(Coordinates1.builder()
-                    .latitude(BigDecimal.valueOf(37.7749))
-                    .longitude(BigDecimal.valueOf(-122.4194))
-                    .build())
-                .build();
+    AdsRequest adsRequest = AdsRequest.builder()
+        .checkin(LocalDate.now().plusDays(20).toString())
+        .checkout(LocalDate.now().plusDays(23).toString())
+        .occupancies(Arrays.asList(GuestCounts.builder().adultCount(2).childCount(0).build()))
+        .searchProductLines(Arrays.asList(ProductLine.LODGING))
+        .propertyIds(propertyIds)
+        .pageType(PageType.SEARCH_RESULTS)
+        .salesChannel(SalesChannel.WEBSITE)
+        .countryCode("US")
+        .experimentIds(Arrays.asList("1234"))
+        .language("en-US")
+        .sortType(SortType.DEFAULT)
+        .travelerLocation(Coordinates1.builder()
+            .latitude(BigDecimal.valueOf(37.7749))
+            .longitude(BigDecimal.valueOf(-122.4194))
+            .build())
+        .build();
 
-        GetAdsOperation getAdsOperation =
-                new GetAdsOperation(getAdsOperationParams, adsRequest);
+    GetAdsOperation getAdsOperation =
+        new GetAdsOperation(getAdsOperationParams, adsRequest);
 
-        return rapidClient.execute(getAdsOperation);
-    }
+    return rapidClient.execute(getAdsOperation);
+  }
 
-    private GetAdsOperationParams getAdsOperationParams() {
-        return GetAdsOperationParams
-                .builder()
-                .customerIp(Constants.CUSTOMER_IP)
-                .build();
-    }
+  /**
+   * Creates the GetAdsOperationParams.
+   *
+   * @return the GetAdsOperationParams
+   */
+  private GetAdsOperationParams getAdsOperationParams() {
+    return GetAdsOperationParams
+        .builder()
+        .customerIp(Constants.CUSTOMER_IP)
+        .build();
+  }
 }
