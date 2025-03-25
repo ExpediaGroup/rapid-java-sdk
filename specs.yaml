@@ -1043,19 +1043,19 @@ paths:
                         enhanced_house_rules:
                           Pets:
                             rule: No pets allowed
-                            additional_information: [ ]
+                            additional_information: []
                           CheckOut:
                             rule: Check out before 10:00 AM
-                            additional_information: [ ]
+                            additional_information: []
                           Events:
                             rule: No events allowed
-                            additional_information: [ ]
+                            additional_information: []
                           MinBookingAge:
                             rule: "Minimum age to rent: 21"
-                            additional_information: [ ]
+                            additional_information: []
                           Occupancy:
                             rule: "Maximum overnight guests: 16 (sleeps up to 16 adults)"
-                            additional_information: [ ]
+                            additional_information: []
                           CustomRules:
                             rule: No fireworks are permitted. Please respect our neighbors
                               as many of them live here full time. Quiet hours are
@@ -1065,13 +1065,13 @@ paths:
                               \ or underage drinking is permitted."
                           CheckIn:
                             rule: Check in after 4:00 PM
-                            additional_information: [ ]
+                            additional_information: []
                           Children:
                             rule: "Children allowed: ages 0-17"
-                            additional_information: [ ]
+                            additional_information: []
                           Smoking:
                             rule: Smoking is not permitted
-                            additional_information: [ ]
+                            additional_information: []
                         free_text: "Stunning brand new 2-story home with 6 bedrooms,\
                           \ 4 bathrooms, brand new appliances/furniture, game room,\
                           \ grill, patio, and beautiful scenery all around. Minutes\
@@ -1799,7 +1799,7 @@ paths:
                           amenities: "4.4"
                           recommendation_percent: 90%
                 No Properties Example:
-                  value: { }
+                  value: {}
         "400":
           description: Invalid Input
           headers:
@@ -2002,7 +2002,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/inactive:
     get:
       tags:
@@ -2144,7 +2144,7 @@ paths:
                     - property_id: "12345"
                     - property_id: "23456"
                 No Results:
-                  value: [ ]
+                  value: []
         "400":
           description: Invalid Input
           headers:
@@ -2299,7 +2299,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/{property_id}/guest-reviews:
     get:
       tags:
@@ -2679,7 +2679,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /files/properties/catalog:
     get:
       tags:
@@ -3019,7 +3019,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /files/properties/content:
     get:
       tags:
@@ -3349,7 +3349,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /regions:
     get:
       tags:
@@ -3730,7 +3730,7 @@ paths:
                         - id: "500001"
                           type: continent
                 No regions:
-                  value: [ ]
+                  value: []
         "400":
           description: Bad Request
           headers:
@@ -4003,7 +4003,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /regions/{region_id}:
     get:
       tags:
@@ -4169,10 +4169,6 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-            Pagination-Total-Results:
-              description: Header that returns the pagination total results.
-              schema:
-                type: string
           content:
             application/json:
               schema:
@@ -4513,7 +4509,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/geography:
     post:
       tags:
@@ -4861,7 +4857,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/availability:
     get:
       tags:
@@ -4938,7 +4934,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2025-05-01'
+          example: '2025-06-01'
         - name: checkout
           in: query
           description: |
@@ -4946,7 +4942,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2025-05-03'
+          example: '2025-06-03'
         - name: currency
           in: query
           description: |
@@ -5127,6 +5123,7 @@ paths:
             * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values.
             * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response.
             * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request.
+            * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.
           schema:
             type: array
             items:
@@ -5135,6 +5132,7 @@ paths:
                 - unavailable_reason
                 - sale_scenario.mobile_promotion
                 - rooms.rates.marketing_fee_incentives
+                - rooms.rates.current_refundability
           examples:
             Optional:
               value: null
@@ -5264,6 +5262,7 @@ paths:
                               status: available
                               available_rooms: 12
                               refundable: true
+                              current_refundability: partially_refundable
                               member_deal_available: true
                               sale_scenario:
                                 package: false
@@ -5807,7 +5806,7 @@ paths:
                           href: /v3/properties/12345/availability?token=MY5S3j36cOcL
                       score: 10052
                 No availability:
-                  value: [ ]
+                  value: []
         "400":
           description: Bad Request
           headers:
@@ -6016,7 +6015,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/{property_id}/availability:
     get:
       tags:
@@ -6115,7 +6114,7 @@ paths:
             If specified must also specify `checkout`.
           schema:
             type: string
-          example: '2025-05-01'
+          example: '2025-06-01'
         - name: checkout
           in: query
           description: |
@@ -6124,7 +6123,7 @@ paths:
             If specified must also specify `checkin`.<br>
           schema:
             type: string
-          example: '2025-05-03'
+          example: '2025-06-03'
         - name: exclusion
           in: query
           description: |
@@ -6584,7 +6583,7 @@ paths:
                           href: /v3/properties/12345/availability?token=MY5S3j36cOcL
                       score: 10052
                 No availability:
-                  value: [ ]
+                  value: []
         "400":
           description: Bad Request
           headers:
@@ -6789,7 +6788,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/{property_id}/rooms/{room_id}/rates/{rate_id}:
     get:
       tags:
@@ -7376,7 +7375,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /properties/{property_id}/payment-options:
     get:
       tags:
@@ -7695,7 +7694,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /calendars/availability:
     get:
       tags:
@@ -7780,7 +7779,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2025-05-15'
+          example: '2025-06-15'
         - name: end_date
           in: query
           description: |
@@ -7789,7 +7788,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2025-11-17'
+          example: '2025-12-17'
       responses:
         "200":
           description: OK
@@ -7878,7 +7877,7 @@ paths:
                             min_stay: 1
                             max_stay: 5
                 No Results:
-                  value: [ ]
+                  value: []
         "400":
           description: Bad Request
           headers:
@@ -8070,7 +8069,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /payment-sessions:
     post:
       tags:
@@ -8397,7 +8396,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /itineraries:
     get:
       tags:
@@ -8459,6 +8458,7 @@ paths:
           description: |
             The retrieve call has a test header that can be used to return set responses with the following keywords:<br>
             * `standard` - Requires valid test booking.
+            * `degraded_response` - Requires valid test booking
             * `service_unavailable`
             * `internal_server_error`
           schema:
@@ -9383,7 +9383,871 @@ paths:
                                     value: "11.95"
                                     currency: USD
                 No itineraries:
-                  value: [ ]
+                  value: []
+        "206":
+          description: Partial Content
+          headers:
+            Rate-Limit-Day:
+              description: Reserved for future use. Optional header for request capacity
+                per day.
+              schema:
+                type: number
+            Rate-Limit-Day-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the daily time window."
+              schema:
+                type: number
+            Rate-Limit-Day-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the daily capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Minute:
+              description: Reserved for future use. Optional header for request capacity
+                per minute.
+              schema:
+                type: number
+            Rate-Limit-Minute-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the per minute time window."
+              schema:
+                type: number
+            Rate-Limit-Minute-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the per minute capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Reduction-Status:
+              description: "Optional header that indicates the state (inactive, active)\
+                \ of minute capacity reduction triggered once all daily capacity has\
+                \ been used."
+              schema:
+                type: string
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Itinerary'
+              examples:
+                Itineraries:
+                  value:
+                    - itinerary_id: "8999989898988"
+                      property_id: "8150374"
+                      links:
+                        cancel:
+                          method: DELETE
+                          href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                        non_vat_expedia_invoice:
+                          method: GET
+                          href: /v3/itineraries/8999989898988/invoice?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      email: smith@example.com
+                      phone:
+                        country_code: "1"
+                        area_code: "487"
+                        number: "5550077"
+                      rooms:
+                        - id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-23'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          rate:
+                            id: "035943984"
+                            merchant_of_record: expedia
+                            amenities:
+                              - "12345"
+                              - "678"
+                              - "9999"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            nonrefundable_date_ranges:
+                              - start: '2022-02-02'
+                                end: '2022-02-02'
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-12-12T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                          links:
+                            cancel:
+                              method: DELETE
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                            change:
+                              method: PUT
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      adjustment:
+                        value: -100.0
+                        type: base_rate
+                        currency: USD
+                      creation_date_time: '2017-08-17T13:31:15.523Z'
+                      affiliate_reference_id: 4480ABC
+                      affiliate_metadata: This booking was made with EPS.
+                      conversations:
+                        links:
+                          property:
+                            method: GET
+                            href: https://www.example.com?key=123abd456
+                      travel_purpose: leisure
+                      trader_information:
+                        traders:
+                          - name: Test Property Name
+                            address:
+                              line_1: 123 Main St
+                              city: Springfield
+                              state_province_code: MO
+                              postal_code: "65804"
+                              country_code: US
+                            business_register_name: A Real Registry
+                            business_register_number: 72973910d
+                            self_certification: true
+                            phone: 1-417-555-1212
+                            right_to_withdraw_message: |
+                              The right of withdrawal under European consumer law does not apply when you book
+                              accommodation. Supplier cancellation policy will apply
+                        terms_and_conditions: https://forever.travel-assets.com/flex/flexmanager/mediaasset/618796-0_2-UnitedKingdom_en.pdf
+                        impacted_fields:
+                          - rooms.rate.cancel_refund
+                          - rooms.rate.refundable
+                          - rooms.rate.cancel_penalties
+                          - rooms.links.shop_for_change
+                          - rooms.links.pricing
+                Itinerary with History and Change - Extend Stay:
+                  value:
+                    - itinerary_id: "8999989898988"
+                      property_id: "8150374"
+                      links:
+                        cancel:
+                          method: DELETE
+                          href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      email: smith@example.com
+                      phone:
+                        country_code: "1"
+                        area_code: "487"
+                        number: "5550077"
+                      rooms:
+                        - id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-23'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          rate:
+                            id: "035943984"
+                            merchant_of_record: expedia
+                            amenities:
+                              - "12345"
+                              - "678"
+                              - "9999"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            cancel_penalties:
+                              - start: '2018-01-01T01:01:01.000-08:00'
+                                end: '2018-12-12T01:01:01.000-08:00'
+                                amount: "250.75"
+                                currency: USD
+                            nonrefundable_date_ranges:
+                              - start: '2018-09-14'
+                                end: '2018-09-23'
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                          links:
+                            cancel:
+                              method: DELETE
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                            change:
+                              method: PUT
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      adjustment:
+                        value: "-32.10"
+                        type: base_rate
+                        currency: USD
+                      creation_date_time: '2017-08-15T15:32:55.523Z'
+                      affiliate_reference_id: 4480ABC
+                      affiliate_metadata: This booking was made with EPS.
+                      conversations:
+                        links:
+                          property:
+                            method: GET
+                            href: https://www.example.com?key=123abd456
+                      travel_purpose: unspecified
+                      impacted_fields:
+                        - rooms.rate.cancel_refund
+                        - rooms.rate.refundable
+                        - rooms.rate.cancel_penalties
+                        - rooms.links.shop_for_change
+                        - rooms.links.pricing
+                      itinerary_history:
+                        - history_id: "802737048"
+                          event_timestamp: '2017-09-17T13:31:15.523Z'
+                          event_type: adjustment
+                          amount:
+                            value: "-32.10"
+                            currency: USD
+                          agent_id: "10203"
+                      room_history:
+                        - - history_id: "928364986296"
+                            event_timestamp: '2017-08-15T15:32:55.523Z'
+                            event_type: created
+                            event_source: rapid_api
+                            room_id: "926784314"
+                            confirmation_id:
+                              expedia: "664637628"
+                              property: COR8729347BB
+                            bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                            checkin: '2018-09-21'
+                            checkout: '2018-09-22'
+                            number_of_adults: 2
+                            child_ages:
+                              - 2
+                              - 3
+                            given_name: Givenne
+                            family_name: Nameo
+                            status: booked
+                            special_request: Please give me extra towels.
+                            smoking: false
+                            amount_charged:
+                              billable_currency:
+                                value: "244.70"
+                                currency: USD
+                            rate:
+                              id: "035943984"
+                              promotions:
+                                value_adds:
+                                  "123abc":
+                                    id: 123abc
+                                    description: 10 USD credit on activities and sports
+                                      for your stay.
+                                  "3x4mp13":
+                                    id: 3x4mp13
+                                    description: 20% discount on theme park tickets purchased
+                                      through the concierge desk.
+                              deposits:
+                                - currency: USD
+                                  value: "220.75"
+                                  due: '2018-08-24T01:01:01.000-08:00'
+                              pricing:
+                                nightly:
+                                  - - type: base_rate
+                                      value: "111.23"
+                                      currency: USD
+                                    - type: sales_tax
+                                      value: "11.12"
+                                      currency: USD
+                                  - - type: base_rate
+                                      value: "111.23"
+                                      currency: USD
+                                    - type: sales_tax
+                                      value: "11.12"
+                                      currency: USD
+                                stay:
+                                  - type: base_rate
+                                    value: "123.45"
+                                    currency: USD
+                                totals:
+                                  inclusive:
+                                    billable_currency:
+                                      value: "244.70"
+                                      currency: USD
+                                  exclusive:
+                                    billable_currency:
+                                      value: "234.68"
+                                      currency: USD
+                                  marketing_fee:
+                                    billable_currency:
+                                      value: "5.14"
+                                      currency: USD
+                                  property_fees:
+                                    billable_currency:
+                                      value: "36.95"
+                                      currency: USD
+                                fees:
+                                  mandatory_fee:
+                                    billable_currency:
+                                      value: "5.00"
+                                      currency: USD
+                                  resort_fee:
+                                    billable_currency:
+                                      value: "20.00"
+                                      currency: USD
+                                  mandatory_tax:
+                                    billable_currency:
+                                      value: "11.95"
+                                      currency: USD
+                          - history_id: "30303030"
+                            event_timestamp: '2017-08-17T13:31:15.523Z'
+                            event_type: modified
+                            event_source: rapid_api
+                            change_reference_id: v1-Givenne
+                            room_id: "926784314"
+                            confirmation_id:
+                              expedia: "1234567890"
+                              property: BEF23123AA
+                            bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                            checkin: '2018-09-21'
+                            checkout: '2018-09-23'
+                            number_of_adults: 2
+                            child_ages:
+                              - 2
+                              - 3
+                            given_name: Givenne
+                            family_name: Nameo
+                            status: booked
+                            special_request: Please give me extra towels.
+                            smoking: false
+                            amount_charged:
+                              billable_currency:
+                                value: "123.45"
+                                currency: USD
+                            rate:
+                              id: "035943984"
+                              promotions:
+                                value_adds:
+                                  "123abc":
+                                    id: 123abc
+                                    description: 10 USD credit on activities and sports
+                                      for your stay.
+                                  "3x4mp13":
+                                    id: 3x4mp13
+                                    description: 20% discount on theme park tickets purchased
+                                      through the concierge desk.
+                              deposits:
+                                - currency: USD
+                                  value: "220.75"
+                                  due: '2018-08-24T01:01:01.000-08:00'
+                              pricing:
+                                nightly:
+                                  - - type: base_rate
+                                      value: "111.23"
+                                      currency: USD
+                                    - type: sales_tax
+                                      value: "11.12"
+                                      currency: USD
+                                  - - type: base_rate
+                                      value: "111.23"
+                                      currency: USD
+                                    - type: sales_tax
+                                      value: "11.12"
+                                      currency: USD
+                                stay:
+                                  - type: base_rate
+                                    value: "123.45"
+                                    currency: USD
+                                totals:
+                                  inclusive:
+                                    billable_currency:
+                                      value: "368.15"
+                                      currency: USD
+                                  exclusive:
+                                    billable_currency:
+                                      value: "345.91"
+                                      currency: USD
+                                  marketing_fee:
+                                    billable_currency:
+                                      value: "7.75"
+                                      currency: USD
+                                  property_fees:
+                                    billable_currency:
+                                      value: "36.95"
+                                      currency: USD
+                                fees:
+                                  mandatory_fee:
+                                    billable_currency:
+                                      value: "5.00"
+                                      currency: USD
+                                  resort_fee:
+                                    billable_currency:
+                                      value: "20.00"
+                                      currency: USD
+                                  mandatory_tax:
+                                    billable_currency:
+                                      value: "11.95"
+                                      currency: USD
+                Itinerary with History V2 - Traveler No Show:
+                  value:
+                    itinerary_id: "8999989898988"
+                    property_id: "8150374"
+                    links:
+                      cancel:
+                        method: DELETE
+                        href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    email: smith@example.com
+                    phone:
+                      country_code: "1"
+                      area_code: "487"
+                      number: "5550077"
+                    rooms:
+                      - id: "926784314"
+                        confirmation_id:
+                          expedia: "1234567890"
+                          property: BEF23123AA
+                        bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                        checkin: '2018-09-21'
+                        checkout: '2018-09-23'
+                        number_of_adults: 2
+                        child_ages:
+                          - 2
+                          - 3
+                        given_name: Givenne
+                        family_name: Nameo
+                        status: booked
+                        special_request: Please give me extra towels.
+                        smoking: false
+                        rate:
+                          id: "035943984"
+                          merchant_of_record: expedia
+                          amenities:
+                            - "12345"
+                            - "678"
+                            - "9999"
+                          promotions:
+                            value_adds:
+                              "123abc":
+                                id: 123abc
+                                description: 10 USD credit on activities and sports
+                                  for your stay.
+                              "3x4mp13":
+                                id: 3x4mp13
+                                description: 20% discount on theme park tickets purchased
+                                  through the concierge desk.
+                          nonrefundable_date_ranges:
+                            - start: '2018-09-14'
+                              end: '2018-09-23'
+                          deposits:
+                            - currency: USD
+                              value: "220.75"
+                              due: '2018-08-24T01:01:01.000-08:00'
+                          pricing:
+                            nightly:
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                            stay:
+                              - type: base_rate
+                                value: "123.45"
+                                currency: USD
+                            totals:
+                              inclusive:
+                                billable_currency:
+                                  value: "368.15"
+                                  currency: USD
+                              exclusive:
+                                billable_currency:
+                                  value: "345.91"
+                                  currency: USD
+                              marketing_fee:
+                                billable_currency:
+                                  value: "7.75"
+                                  currency: USD
+                              property_fees:
+                                billable_currency:
+                                  value: "36.95"
+                                  currency: USD
+                            fees:
+                              mandatory_fee:
+                                billable_currency:
+                                  value: "5.00"
+                                  currency: USD
+                              resort_fee:
+                                billable_currency:
+                                  value: "20.00"
+                                  currency: USD
+                              mandatory_tax:
+                                billable_currency:
+                                  value: "11.95"
+                                  currency: USD
+                        links:
+                          cancel:
+                            method: DELETE
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          change:
+                            method: PUT
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    billing_contact:
+                      given_name: John
+                      family_name: Smith
+                      address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                    adjustment:
+                      value: "-32.10"
+                      type: base_rate
+                      currency: USD
+                    creation_date_time: '2017-08-15T15:32:55.523Z'
+                    affiliate_reference_id: 4480ABC
+                    affiliate_metadata: This booking was made with EPS.
+                    conversations:
+                      links:
+                        property:
+                          method: GET
+                          href: https://www.example.com?key=123abd456
+                    travel_purpose: unspecified
+                    impacted_fields:
+                      - rooms.rate.cancel_refund
+                      - rooms.rate.refundable
+                      - rooms.rate.cancel_penalties
+                      - rooms.links.shop_for_change
+                      - rooms.links.pricing
+                    itinerary_history:
+                      - history_id: "802737048"
+                        event_timestamp: '2017-09-17T13:31:15.523Z'
+                        event_type: adjustment
+                        amount:
+                          value: "-32.10"
+                          currency: USD
+                        agent_id: "10203"
+                    room_history:
+                      - - history_id: "928364986296"
+                          event_timestamp: '2017-08-15T15:32:55.523Z'
+                          event_type: created
+                          event_source: rapid_api
+                          room_id: "926784314"
+                          confirmation_id:
+                            expedia: "664637628"
+                            property: COR8729347BB
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-22'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          amount_charged:
+                            billable_currency:
+                              value: "244.70"
+                              currency: USD
+                          rate:
+                            id: "035943984"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "244.70"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "234.68"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "5.14"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                        - history_id: "30303030"
+                          event_timestamp: '2017-08-17T13:31:15.523Z'
+                          event_type: canceled_no_show
+                          event_source: supplier
+                          change_reference_id: v1-Givenne
+                          room_id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-23'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: canceled
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          amount_charged:
+                            billable_currency:
+                              value: "123.45"
+                              currency: USD
+                          rate:
+                            id: "035943984"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                No itineraries:
+                  value: []
         "400":
           description: Bad Request
           headers:
@@ -9568,7 +10432,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
     post:
       tags:
         - Bookings
@@ -10041,7 +10905,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /itineraries/{itinerary_id}:
     get:
       tags:
@@ -10105,6 +10969,7 @@ paths:
           description: |
             The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used.
             * `standard` - Requires valid test booking.
+            * `degraded_response` - Requires valid test booking
             * `service_unavailable`
             * `internal_server_error`
           schema:
@@ -11015,6 +11880,842 @@ paths:
                                   billable_currency:
                                     value: "11.95"
                                     currency: USD
+        "206":
+          description: Partial Content
+          headers:
+            Rate-Limit-Day:
+              description: Reserved for future use. Optional header for request capacity
+                per day.
+              schema:
+                type: number
+            Rate-Limit-Day-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the daily time window."
+              schema:
+                type: number
+            Rate-Limit-Day-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the daily capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Minute:
+              description: Reserved for future use. Optional header for request capacity
+                per minute.
+              schema:
+                type: number
+            Rate-Limit-Minute-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the per minute time window."
+              schema:
+                type: number
+            Rate-Limit-Minute-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the per minute capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Reduction-Status:
+              description: "Optional header that indicates the state (inactive, active)\
+                \ of minute capacity reduction triggered once all daily capacity has\
+                \ been used."
+              schema:
+                type: string
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Itinerary'
+              examples:
+                Itinerary No History:
+                  value:
+                    itinerary_id: "8999989898988"
+                    property_id: "8150374"
+                    links:
+                      cancel:
+                        method: DELETE
+                        href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    email: smith@example.com
+                    phone:
+                      country_code: "1"
+                      area_code: "487"
+                      number: "5550077"
+                    rooms:
+                      - id: "926784314"
+                        confirmation_id:
+                          expedia: "1234567890"
+                          property: BEF23123AA
+                        bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                        checkin: '2018-09-21'
+                        checkout: '2018-09-23'
+                        number_of_adults: 2
+                        child_ages:
+                          - 2
+                          - 3
+                        given_name: Givenne
+                        family_name: Nameo
+                        status: booked
+                        special_request: Please give me extra towels.
+                        smoking: false
+                        loyalty_id: ABC123
+                        rate:
+                          id: "035943984"
+                          merchant_of_record: expedia
+                          amenities:
+                            - "12345"
+                            - "678"
+                            - "9999"
+                          promotions:
+                            value_adds:
+                              "123abc":
+                                id: 123abc
+                                description: 10 USD credit on activities and sports
+                                  for your stay.
+                              "3x4mp13":
+                                id: 3x4mp13
+                                description: 20% discount on theme park tickets purchased
+                                  through the concierge desk.
+                          nonrefundable_date_ranges:
+                            - start: '2022-02-02'
+                              end: '2022-02-02'
+                          deposits:
+                            - currency: USD
+                              value: "220.75"
+                              due: '2018-12-12T01:01:01.000-08:00'
+                          pricing:
+                            nightly:
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                            stay:
+                              - type: base_rate
+                                value: "123.45"
+                                currency: USD
+                            totals:
+                              inclusive:
+                                billable_currency:
+                                  value: "368.15"
+                                  currency: USD
+                              exclusive:
+                                billable_currency:
+                                  value: "345.91"
+                                  currency: USD
+                              marketing_fee:
+                                billable_currency:
+                                  value: "7.75"
+                                  currency: USD
+                              property_fees:
+                                billable_currency:
+                                  value: "36.95"
+                                  currency: USD
+                            fees:
+                              mandatory_fee:
+                                billable_currency:
+                                  value: "5.00"
+                                  currency: USD
+                              resort_fee:
+                                billable_currency:
+                                  value: "20.00"
+                                  currency: USD
+                              mandatory_tax:
+                                billable_currency:
+                                  value: "11.95"
+                                  currency: USD
+                        links:
+                          cancel:
+                            method: DELETE
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          change:
+                            method: PUT
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    billing_contact:
+                      given_name: John
+                      family_name: Smith
+                      address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                    adjustment:
+                      value: -100.0
+                      type: base_rate
+                      currency: USD
+                    creation_date_time: '2017-08-17T13:31:15.523Z'
+                    affiliate_reference_id: 4480ABC
+                    affiliate_metadata: This booking was made with EPS.
+                    conversations:
+                      links:
+                        property:
+                          method: GET
+                          href: https://www.example.com?key=123abd456
+                    travel_purpose: leisure
+                    impacted_fields:
+                      - rooms.rate.cancel_refund
+                      - rooms.rate.refundable
+                      - rooms.rate.cancel_penalties
+                      - rooms.links.shop_for_change
+                      - rooms.links.pricing
+                Itinerary with History:
+                  value:
+                    itinerary_id: "8999989898988"
+                    property_id: "8150374"
+                    links:
+                      cancel:
+                        method: DELETE
+                        href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    email: smith@example.com
+                    phone:
+                      country_code: "1"
+                      area_code: "487"
+                      number: "5550077"
+                    rooms:
+                      - id: "926784314"
+                        confirmation_id:
+                          expedia: "1234567890"
+                          property: BEF23123AA
+                        bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                        checkin: '2018-09-21'
+                        checkout: '2018-09-23'
+                        number_of_adults: 2
+                        child_ages:
+                          - 2
+                          - 3
+                        given_name: Givenne
+                        family_name: Nameo
+                        status: booked
+                        special_request: Please give me extra towels.
+                        smoking: false
+                        rate:
+                          id: "035943984"
+                          merchant_of_record: expedia
+                          amenities:
+                            - "12345"
+                            - "678"
+                            - "9999"
+                          promotions:
+                            value_adds:
+                              "123abc":
+                                id: 123abc
+                                description: 10 USD credit on activities and sports
+                                  for your stay.
+                              "3x4mp13":
+                                id: 3x4mp13
+                                description: 20% discount on theme park tickets purchased
+                                  through the concierge desk.
+                          nonrefundable_date_ranges:
+                            - start: '2018-09-14'
+                              end: '2018-09-23'
+                          deposits:
+                            - currency: USD
+                              value: "220.75"
+                              due: '2018-08-24T01:01:01.000-08:00'
+                          pricing:
+                            nightly:
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                            stay:
+                              - type: base_rate
+                                value: "123.45"
+                                currency: USD
+                            totals:
+                              inclusive:
+                                billable_currency:
+                                  value: "368.15"
+                                  currency: USD
+                              exclusive:
+                                billable_currency:
+                                  value: "345.91"
+                                  currency: USD
+                              marketing_fee:
+                                billable_currency:
+                                  value: "7.75"
+                                  currency: USD
+                              property_fees:
+                                billable_currency:
+                                  value: "36.95"
+                                  currency: USD
+                            fees:
+                              mandatory_fee:
+                                billable_currency:
+                                  value: "5.00"
+                                  currency: USD
+                              resort_fee:
+                                billable_currency:
+                                  value: "20.00"
+                                  currency: USD
+                              mandatory_tax:
+                                billable_currency:
+                                  value: "11.95"
+                                  currency: USD
+                        links:
+                          cancel:
+                            method: DELETE
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          change:
+                            method: PUT
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    billing_contact:
+                      given_name: John
+                      family_name: Smith
+                      address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                    adjustment:
+                      value: "-32.10"
+                      type: base_rate
+                      currency: USD
+                    creation_date_time: '2017-08-15T15:32:55.523Z'
+                    affiliate_reference_id: 4480ABC
+                    affiliate_metadata: This booking was made with EPS.
+                    conversations:
+                      links:
+                        property:
+                          method: GET
+                          href: https://www.example.com?key=123abd456
+                    travel_purpose: unspecified
+                    impacted_fields:
+                      - rooms.rate.cancel_refund
+                      - rooms.rate.refundable
+                      - rooms.rate.cancel_penalties
+                      - rooms.links.shop_for_change
+                      - rooms.links.pricing
+                    itinerary_history:
+                      - history_id: "802737048"
+                        event_timestamp: '2017-09-17T13:31:15.523Z'
+                        event_type: adjustment
+                        amount:
+                          value: "-32.10"
+                          currency: USD
+                        agent_id: "10203"
+                    room_history:
+                      - - history_id: "928364986296"
+                          event_timestamp: '2017-08-15T15:32:55.523Z'
+                          event_type: created
+                          event_source: rapid_api
+                          room_id: "926784314"
+                          confirmation_id:
+                            expedia: "664637628"
+                            property: COR8729347BB
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-22'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          amount_charged:
+                            billable_currency:
+                              value: "244.70"
+                              currency: USD
+                          rate:
+                            id: "035943984"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "244.70"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "234.68"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "5.14"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                        - history_id: "30303030"
+                          event_timestamp: '2017-08-17T13:31:15.523Z'
+                          event_type: modified
+                          event_source: rapid_api
+                          change_reference_id: v1-Givenne
+                          room_id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-23'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          amount_charged:
+                            billable_currency:
+                              value: "123.45"
+                              currency: USD
+                          rate:
+                            id: "035943984"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                Itinerary with History V2 - Traveler No Show:
+                  value:
+                    itinerary_id: "8999989898988"
+                    property_id: "8150374"
+                    links:
+                      cancel:
+                        method: DELETE
+                        href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    email: smith@example.com
+                    phone:
+                      country_code: "1"
+                      area_code: "487"
+                      number: "5550077"
+                    rooms:
+                      - id: "926784314"
+                        confirmation_id:
+                          expedia: "1234567890"
+                          property: BEF23123AA
+                        bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                        checkin: '2018-09-21'
+                        checkout: '2018-09-23'
+                        number_of_adults: 2
+                        child_ages:
+                          - 2
+                          - 3
+                        given_name: Givenne
+                        family_name: Nameo
+                        status: booked
+                        special_request: Please give me extra towels.
+                        smoking: false
+                        rate:
+                          id: "035943984"
+                          merchant_of_record: expedia
+                          amenities:
+                            - "12345"
+                            - "678"
+                            - "9999"
+                          promotions:
+                            value_adds:
+                              "123abc":
+                                id: 123abc
+                                description: 10 USD credit on activities and sports
+                                  for your stay.
+                              "3x4mp13":
+                                id: 3x4mp13
+                                description: 20% discount on theme park tickets purchased
+                                  through the concierge desk.
+                          nonrefundable_date_ranges:
+                            - start: '2018-09-14'
+                              end: '2018-09-23'
+                          deposits:
+                            - currency: USD
+                              value: "220.75"
+                              due: '2018-08-24T01:01:01.000-08:00'
+                          pricing:
+                            nightly:
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                            stay:
+                              - type: base_rate
+                                value: "123.45"
+                                currency: USD
+                            totals:
+                              inclusive:
+                                billable_currency:
+                                  value: "368.15"
+                                  currency: USD
+                              exclusive:
+                                billable_currency:
+                                  value: "345.91"
+                                  currency: USD
+                              marketing_fee:
+                                billable_currency:
+                                  value: "7.75"
+                                  currency: USD
+                              property_fees:
+                                billable_currency:
+                                  value: "36.95"
+                                  currency: USD
+                            fees:
+                              mandatory_fee:
+                                billable_currency:
+                                  value: "5.00"
+                                  currency: USD
+                              resort_fee:
+                                billable_currency:
+                                  value: "20.00"
+                                  currency: USD
+                              mandatory_tax:
+                                billable_currency:
+                                  value: "11.95"
+                                  currency: USD
+                        links:
+                          cancel:
+                            method: DELETE
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          change:
+                            method: PUT
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    billing_contact:
+                      given_name: John
+                      family_name: Smith
+                      address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                    adjustment:
+                      value: "-32.10"
+                      type: base_rate
+                      currency: USD
+                    creation_date_time: '2017-08-15T15:32:55.523Z'
+                    affiliate_reference_id: 4480ABC
+                    affiliate_metadata: This booking was made with EPS.
+                    conversations:
+                      links:
+                        property:
+                          method: GET
+                          href: https://www.example.com?key=123abd456
+                    travel_purpose: unspecified
+                    impacted_fields:
+                      - rooms.rate.cancel_refund
+                      - rooms.rate.refundable
+                      - rooms.rate.cancel_penalties
+                      - rooms.links.shop_for_change
+                      - rooms.links.pricing
+                    itinerary_history:
+                      - history_id: "802737048"
+                        event_timestamp: '2017-09-17T13:31:15.523Z'
+                        event_type: adjustment
+                        amount:
+                          value: "-32.10"
+                          currency: USD
+                        agent_id: "10203"
+                    room_history:
+                      - - history_id: "928364986296"
+                          event_timestamp: '2017-08-15T15:32:55.523Z'
+                          event_type: created
+                          event_source: rapid_api
+                          room_id: "926784314"
+                          confirmation_id:
+                            expedia: "664637628"
+                            property: COR8729347BB
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-22'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          amount_charged:
+                            billable_currency:
+                              value: "244.70"
+                              currency: USD
+                          rate:
+                            id: "035943984"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "244.70"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "234.68"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "5.14"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                        - history_id: "30303030"
+                          event_timestamp: '2017-08-17T13:31:15.523Z'
+                          event_type: canceled_no_show
+                          event_source: supplier
+                          change_reference_id: v1-Givenne
+                          room_id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-23'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: canceled
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          amount_charged:
+                            billable_currency:
+                              value: "123.45"
+                              currency: USD
+                          rate:
+                            id: "035943984"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-08-24T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
         "400":
           description: Bad Request
           headers:
@@ -11243,7 +12944,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
     put:
       tags:
         - Bookings
@@ -11368,7 +13069,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "204":
           description: No Content - Held booking has successfully resumed.
           headers:
@@ -11410,7 +13111,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "400":
           description: Bad Request
           headers:
@@ -11639,7 +13340,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
     delete:
       tags:
         - Manage Booking
@@ -11767,7 +13468,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "204":
           description: No Content - Booking has successfully canceled.
           headers:
@@ -11809,7 +13510,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "400":
           description: Bad Request
           headers:
@@ -12044,7 +13745,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /itineraries/{itinerary_id}/invoice:
     get:
       tags:
@@ -12425,7 +14126,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /itineraries/{itinerary_id}/payment-sessions:
     put:
       tags:
@@ -12804,7 +14505,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /itineraries/{itinerary_id}/rooms/{room_id}:
     put:
       tags:
@@ -12955,7 +14656,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "204":
           description: No Content - Booking has successfully changed.
           headers:
@@ -12997,7 +14698,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "400":
           description: Bad Request
           headers:
@@ -13226,7 +14927,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
     delete:
       tags:
         - Manage Booking
@@ -13362,7 +15063,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "204":
           description: No Content - Booking has successfully canceled.
           headers:
@@ -13404,7 +15105,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "400":
           description: Bad Request
           headers:
@@ -13633,7 +15334,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /itineraries/{itinerary_id}/rooms/{room_id}/pricing:
     put:
       tags:
@@ -13794,7 +15495,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "204":
           description: No Content - Booking has successfully changed.
           headers:
@@ -13836,7 +15537,7 @@ paths:
                 type: string
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "400":
           description: Bad Request
           headers:
@@ -14169,7 +15870,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/amenities:
     get:
       tags:
@@ -14448,7 +16149,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/categories:
     get:
       tags:
@@ -14719,7 +16420,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /chains:
     get:
       tags:
@@ -15009,7 +16710,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/chains:
     get:
       tags:
@@ -15297,7 +16998,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/general-attributes:
     get:
       tags:
@@ -15572,7 +17273,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/images:
     get:
       tags:
@@ -15843,7 +17544,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/onsite-payment-types:
     get:
       tags:
@@ -16114,7 +17815,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/pet-attributes:
     get:
       tags:
@@ -16389,7 +18090,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/rate-amenities:
     get:
       tags:
@@ -16668,7 +18369,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/room-amenities:
     get:
       tags:
@@ -16947,7 +18648,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/room-images:
     get:
       tags:
@@ -17218,7 +18919,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/room-views:
     get:
       tags:
@@ -17489,7 +19190,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/spoken-languages:
     get:
       tags:
@@ -17757,7 +19458,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/statistics:
     get:
       tags:
@@ -18032,7 +19733,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /references/themes:
     get:
       tags:
@@ -18303,7 +20004,7 @@ paths:
                 type: service_unavailable
                 message: This service is currently unavailable.
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
   /notifications:
     get:
       tags:
@@ -18377,7 +20078,7 @@ paths:
                   message: An agent canceled one or more rooms on this itinerary.
                   affiliate_reference_id: ""
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
     post:
       tags:
         - Notifications
@@ -18427,7 +20128,7 @@ paths:
           headers:
             Region:
               $ref: '#/components/headers/Region'
-          content: { }
+          content: {}
         "400":
           description: Bad Request
           headers:
@@ -18450,7 +20151,7 @@ paths:
                       - name: event_type
                         type: path
       security:
-        - rapidAuth: [ ]
+        - rapidAuth: []
 components:
   schemas:
     PropertyContent:
@@ -19700,6 +21401,14 @@ components:
           description: Indicates if the rate is fully refundable at the time of booking.
             Cancel penalties may still apply. Please refer to the cancel penalties
             section for reference.
+        current_refundability:
+          type: string
+          description: Indicates the current refundability of the rate. This is a
+            more detailed version of the `refundable` field.
+          enum:
+            - refundable
+            - non_refundable
+            - partially_refundable
         member_deal_available:
           type: boolean
           description: Indicates if a "Member Only Deal" is available for this rate.
@@ -20500,6 +22209,13 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/RoomHistoryItem'
+        impacted_fields:
+          type: array
+          items:
+            type: string
+            description: "Fields listed here are known to be missing from the response,\
+              \ listed fields could be returned in future requests if more data is\
+              \ available."
       description: The itinerary object.
     ItineraryLinks:
       type: object
