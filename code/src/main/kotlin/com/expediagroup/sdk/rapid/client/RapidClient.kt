@@ -42,18 +42,32 @@ import com.expediagroup.sdk.rapid.operations.DeleteRoomOperation
 import com.expediagroup.sdk.rapid.operations.DeleteRoomOperationParams
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetAdditionalAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetAmenitiesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetAmenitiesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetAvailabilityOperationParams
 import com.expediagroup.sdk.rapid.operations.GetBookingReceiptOperation
 import com.expediagroup.sdk.rapid.operations.GetBookingReceiptOperationParams
 import com.expediagroup.sdk.rapid.operations.GetCalendarAvailabilityOperation
 import com.expediagroup.sdk.rapid.operations.GetCalendarAvailabilityOperationParams
+import com.expediagroup.sdk.rapid.operations.GetCategoriesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetCategoriesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.GetChainReferenceOperation
 import com.expediagroup.sdk.rapid.operations.GetChainReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetChainsReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetChainsReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetGeneralAttributesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetGeneralAttributesReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetImagesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetImagesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.GetInactivePropertiesOperation
 import com.expediagroup.sdk.rapid.operations.GetInactivePropertiesOperationParams
+import com.expediagroup.sdk.rapid.operations.GetOnsitePaymentTypesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetOnsitePaymentTypesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.GetPaymentOptionsOperation
 import com.expediagroup.sdk.rapid.operations.GetPaymentOptionsOperationParams
+import com.expediagroup.sdk.rapid.operations.GetPetAttributesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetPetAttributesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.GetPropertyCatalogFileOperation
 import com.expediagroup.sdk.rapid.operations.GetPropertyCatalogFileOperationParams
 import com.expediagroup.sdk.rapid.operations.GetPropertyContentFileOperation
@@ -62,6 +76,8 @@ import com.expediagroup.sdk.rapid.operations.GetPropertyContentOperation
 import com.expediagroup.sdk.rapid.operations.GetPropertyContentOperationParams
 import com.expediagroup.sdk.rapid.operations.GetPropertyGuestReviewsOperation
 import com.expediagroup.sdk.rapid.operations.GetPropertyGuestReviewsOperationParams
+import com.expediagroup.sdk.rapid.operations.GetRateAmenitiesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetRateAmenitiesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.GetRegionOperation
 import com.expediagroup.sdk.rapid.operations.GetRegionOperationParams
 import com.expediagroup.sdk.rapid.operations.GetRegionsOperation
@@ -70,6 +86,18 @@ import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperatio
 import com.expediagroup.sdk.rapid.operations.GetReservationByItineraryIdOperationParams
 import com.expediagroup.sdk.rapid.operations.GetReservationOperation
 import com.expediagroup.sdk.rapid.operations.GetReservationOperationParams
+import com.expediagroup.sdk.rapid.operations.GetRoomAmenitiesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetRoomAmenitiesReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetRoomImagesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetRoomImagesReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetRoomViewsReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetRoomViewsReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetSpokenLanguagesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetSpokenLanguagesReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetStatisticsReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetStatisticsReferenceOperationParams
+import com.expediagroup.sdk.rapid.operations.GetThemesReferenceOperation
+import com.expediagroup.sdk.rapid.operations.GetThemesReferenceOperationParams
 import com.expediagroup.sdk.rapid.operations.PostGeographyOperation
 import com.expediagroup.sdk.rapid.operations.PostGeographyOperationParams
 import com.expediagroup.sdk.rapid.operations.PostItineraryOperation
@@ -897,6 +925,127 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     }
 
     /**
+     * Amenities Reference
+     * Returns a complete collection of amenities available in the Rapid API.
+     * @param operation [GetAmenitiesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    fun execute(operation: GetAmenitiesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, AmenityReference>>(operation)
+
+    /**
+     * Amenities Reference
+     * Returns a complete collection of amenities available in the Rapid API.
+     * @param operation [GetAmenitiesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    fun executeAsync(operation: GetAmenitiesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, AmenityReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, AmenityReference>>(operation)
+
+    private suspend inline fun kgetAmenitiesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> {
+        val params =
+            GetAmenitiesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetAmenitiesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Amenities Reference
+     * Returns a complete collection of amenities available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAmenitiesReferenceOperation)"))
+    fun getAmenitiesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, AmenityReference> = getAmenitiesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Amenities Reference
+     * Returns a complete collection of amenities available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetAmenitiesReferenceOperation)"))
+    fun getAmenitiesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetAmenitiesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
      * Get property room rates and availability
      * Returns rates on available room types for specified properties (maximum of 250 properties per request).  The response includes rate details such as promos, whether the rate is refundable, cancellation penalties and a full price breakdown to meet the price display requirements for your market. _Note_: If there are no available rooms, the response will be an empty array. * Multiple rooms of the same type may be requested by including multiple instances of the `occupancy` parameter. * The `nightly` array includes each individual night's charges. When the total price includes fees, charges, or adjustments that are not divided by night, these amounts will be included in the `stay` rate array, which details charges applied to the entire stay (each check-in).
      * @param operation [GetAvailabilityOperation]
@@ -1020,7 +1169,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param amenityCategory Single amenity category. Send multiple instances of this parameter to request rates that match multiple amenity categories.<br> See the Amenity Categories section of the [Content Reference Lists](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for a list of values.  (optional)
      * @param exclusion Single exclusion type. Send multiple instances of this parameter to request multiple exclusions.<br> * `refundable_damage_deposit` - Excludes Rapid supplied Vrbo rates with refundable damage deposits from the response. * `card_on_file` - Excludes Rapid supplied Vrbo rates with card-on-file damage collection from the response.  (optional)
      * @param filter Single filter type. Send multiple instances of this parameter to request multiple filters.<br> * `refundable` - Filters results to only show fully refundable rates. * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC). * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies. * `loyalty` - Filters results to only show rates that are eligible for loyalty points.  (optional)
-     * @param include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request.  (optional)
+     * @param include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request. * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.  (optional)
      * @param rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.  (optional)
      * @param travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
@@ -1132,7 +1281,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param amenityCategory Single amenity category. Send multiple instances of this parameter to request rates that match multiple amenity categories.<br> See the Amenity Categories section of the [Content Reference Lists](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for a list of values.  (optional)
      * @param exclusion Single exclusion type. Send multiple instances of this parameter to request multiple exclusions.<br> * `refundable_damage_deposit` - Excludes Rapid supplied Vrbo rates with refundable damage deposits from the response. * `card_on_file` - Excludes Rapid supplied Vrbo rates with card-on-file damage collection from the response.  (optional)
      * @param filter Single filter type. Send multiple instances of this parameter to request multiple filters.<br> * `refundable` - Filters results to only show fully refundable rates. * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC). * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies. * `loyalty` - Filters results to only show rates that are eligible for loyalty points.  (optional)
-     * @param include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request.  (optional)
+     * @param include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request. * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.  (optional)
      * @param rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.  (optional)
      * @param travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
@@ -1449,8 +1598,129 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     }
 
     /**
-     * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Categories Reference
+     * Returns a complete collection of categories available in the Rapid API.
+     * @param operation [GetCategoriesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, CategoryProperty>
+     */
+    fun execute(operation: GetCategoriesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, CategoryProperty>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, CategoryProperty>>(operation)
+
+    /**
+     * Categories Reference
+     * Returns a complete collection of categories available in the Rapid API.
+     * @param operation [GetCategoriesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, CategoryProperty>
+     */
+    fun executeAsync(operation: GetCategoriesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, CategoryProperty>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, CategoryProperty>>(operation)
+
+    private suspend inline fun kgetCategoriesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, CategoryProperty>> {
+        val params =
+            GetCategoriesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetCategoriesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Categories Reference
+     * Returns a complete collection of categories available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, CategoryProperty>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetCategoriesReferenceOperation)"))
+    fun getCategoriesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, CategoryProperty> = getCategoriesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Categories Reference
+     * Returns a complete collection of categories available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, CategoryProperty>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetCategoriesReferenceOperation)"))
+    fun getCategoriesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, CategoryProperty>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetCategoriesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Chain Reference ***DEPRECATED***
+     * ***DEPRECATED*** Please use `/references/chains` <br>Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
      * @param operation [GetChainReferenceOperation]
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
@@ -1458,8 +1728,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     fun execute(operation: GetChainReferenceOperation): Response<kotlin.collections.Map<kotlin.String, Chain>> = execute<Nothing, kotlin.collections.Map<kotlin.String, Chain>>(operation)
 
     /**
-     * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Chain Reference ***DEPRECATED***
+     * ***DEPRECATED*** Please use `/references/chains` <br>Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
      * @param operation [GetChainReferenceOperation]
      * @throws ExpediaGroupApiErrorException
      * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
@@ -1497,8 +1767,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     }
 
     /**
-     * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Chain Reference ***DEPRECATED***
+     * ***DEPRECATED*** Please use `/references/chains` <br>Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
@@ -1526,8 +1796,8 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     ): kotlin.collections.Map<kotlin.String, Chain> = getChainReferenceWithResponse(customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
 
     /**
-     * Chain Reference
-     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * Chain Reference ***DEPRECATED***
+     * ***DEPRECATED*** Please use `/references/chains` <br>Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
      * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
      * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
@@ -1556,6 +1826,363 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         try {
             return GlobalScope.future(Dispatchers.IO) {
                 kgetChainReferenceWithResponse(customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Chains Reference
+     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * @param operation [GetChainsReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
+     */
+    fun execute(operation: GetChainsReferenceOperation): Response<kotlin.collections.Map<kotlin.String, Chain>> = execute<Nothing, kotlin.collections.Map<kotlin.String, Chain>>(operation)
+
+    /**
+     * Chains Reference
+     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * @param operation [GetChainsReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
+     */
+    fun executeAsync(operation: GetChainsReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, Chain>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, Chain>>(operation)
+
+    private suspend inline fun kgetChainsReferenceWithResponse(
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, Chain>> {
+        val params =
+            GetChainsReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetChainsReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Chains Reference
+     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, Chain>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetChainsReferenceOperation)"))
+    fun getChainsReference(
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, Chain> = getChainsReferenceWithResponse(customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Chains Reference
+     * Returns a complete collection of chains recognized by the Rapid API. <br>Chains represent a parent company which can have multiple brands associated with it. A brand can only be associated with one chain. For example, Hilton Worldwide is a chain that has multiple associated brands including DoubleTree, Hampton Inn and Embassy Suites. <br>The response is a JSON map where the key is the chain ID and the value is a chain object. Each chain object also contains a map of its related brands. <br>Note that the set of chain IDs and brand IDs are totally independent of one another. It is possible for a chain and a brand to both use the same number as their ID, but this is just a coincidence that holds no meaning. <br>Chain and brand names are provided in English only.
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Chain>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetChainsReferenceOperation)"))
+    fun getChainsReferenceWithResponse(
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, Chain>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetChainsReferenceWithResponse(customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * General Attributes Reference
+     * Returns a complete collection of general attributes available in the Rapid API.
+     * @param operation [GetGeneralAttributesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    fun execute(operation: GetGeneralAttributesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, AttributeReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, AttributeReference>>(operation)
+
+    /**
+     * General Attributes Reference
+     * Returns a complete collection of general attributes available in the Rapid API.
+     * @param operation [GetGeneralAttributesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    fun executeAsync(operation: GetGeneralAttributesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, AttributeReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, AttributeReference>>(operation)
+
+    private suspend inline fun kgetGeneralAttributesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AttributeReference>> {
+        val params =
+            GetGeneralAttributesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetGeneralAttributesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * General Attributes Reference
+     * Returns a complete collection of general attributes available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetGeneralAttributesReferenceOperation)"))
+    fun getGeneralAttributesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, AttributeReference> =
+        getGeneralAttributesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * General Attributes Reference
+     * Returns a complete collection of general attributes available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetGeneralAttributesReferenceOperation)"))
+    fun getGeneralAttributesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AttributeReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetGeneralAttributesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Images Reference
+     * Returns a complete collection of images available in the Rapid API.
+     * @param operation [GetImagesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    fun execute(operation: GetImagesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, ImageReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, ImageReference>>(operation)
+
+    /**
+     * Images Reference
+     * Returns a complete collection of images available in the Rapid API.
+     * @param operation [GetImagesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    fun executeAsync(operation: GetImagesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, ImageReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, ImageReference>>(operation)
+
+    private suspend inline fun kgetImagesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, ImageReference>> {
+        val params =
+            GetImagesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetImagesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Images Reference
+     * Returns a complete collection of images available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetImagesReferenceOperation)"))
+    fun getImagesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, ImageReference> = getImagesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Images Reference
+     * Returns a complete collection of images available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetImagesReferenceOperation)"))
+    fun getImagesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, ImageReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetImagesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -1745,6 +2372,127 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     }
 
     /**
+     * Onsite Payment Types Reference
+     * Returns a complete collection of onsite payment types available in the Rapid API.
+     * @param operation [GetOnsitePaymentTypesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PaymentType>
+     */
+    fun execute(operation: GetOnsitePaymentTypesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, PaymentType>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, PaymentType>>(operation)
+
+    /**
+     * Onsite Payment Types Reference
+     * Returns a complete collection of onsite payment types available in the Rapid API.
+     * @param operation [GetOnsitePaymentTypesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, PaymentType>
+     */
+    fun executeAsync(operation: GetOnsitePaymentTypesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, PaymentType>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, PaymentType>>(operation)
+
+    private suspend inline fun kgetOnsitePaymentTypesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, PaymentType>> {
+        val params =
+            GetOnsitePaymentTypesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetOnsitePaymentTypesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Onsite Payment Types Reference
+     * Returns a complete collection of onsite payment types available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, PaymentType>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetOnsitePaymentTypesReferenceOperation)"))
+    fun getOnsitePaymentTypesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, PaymentType> = getOnsitePaymentTypesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Onsite Payment Types Reference
+     * Returns a complete collection of onsite payment types available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, PaymentType>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetOnsitePaymentTypesReferenceOperation)"))
+    fun getOnsitePaymentTypesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, PaymentType>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetOnsitePaymentTypesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
      * Get Accepted Payment Types - EPS MOR Only
      * Returns the accepted payment options.  Use this API to power your checkout page and display valid forms of payment, ensuring a smooth booking.
      * @param operation [GetPaymentOptionsOperation]
@@ -1836,6 +2584,127 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         try {
             return GlobalScope.future(Dispatchers.IO) {
                 kgetPaymentOptionsWithResponse(propertyId, token, customerIp, customerSessionId)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Pet Attributes Reference
+     * Returns a complete collection of pet attributes available in the Rapid API.
+     * @param operation [GetPetAttributesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    fun execute(operation: GetPetAttributesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, AttributeReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, AttributeReference>>(operation)
+
+    /**
+     * Pet Attributes Reference
+     * Returns a complete collection of pet attributes available in the Rapid API.
+     * @param operation [GetPetAttributesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    fun executeAsync(operation: GetPetAttributesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, AttributeReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, AttributeReference>>(operation)
+
+    private suspend inline fun kgetPetAttributesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AttributeReference>> {
+        val params =
+            GetPetAttributesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetPetAttributesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Pet Attributes Reference
+     * Returns a complete collection of pet attributes available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPetAttributesReferenceOperation)"))
+    fun getPetAttributesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, AttributeReference> = getPetAttributesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Pet Attributes Reference
+     * Returns a complete collection of pet attributes available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AttributeReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetPetAttributesReferenceOperation)"))
+    fun getPetAttributesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AttributeReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetPetAttributesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
             }.get()
         } catch (exception: Exception) {
             exception.handle()
@@ -2899,6 +3768,127 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
     }
 
     /**
+     * Rate Amenities Reference
+     * Returns a complete collection of rate amenities available in the Rapid API.
+     * @param operation [GetRateAmenitiesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    fun execute(operation: GetRateAmenitiesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, AmenityReference>>(operation)
+
+    /**
+     * Rate Amenities Reference
+     * Returns a complete collection of rate amenities available in the Rapid API.
+     * @param operation [GetRateAmenitiesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    fun executeAsync(operation: GetRateAmenitiesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, AmenityReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, AmenityReference>>(operation)
+
+    private suspend inline fun kgetRateAmenitiesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> {
+        val params =
+            GetRateAmenitiesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetRateAmenitiesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Rate Amenities Reference
+     * Returns a complete collection of rate amenities available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRateAmenitiesReferenceOperation)"))
+    fun getRateAmenitiesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, AmenityReference> = getRateAmenitiesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Rate Amenities Reference
+     * Returns a complete collection of rate amenities available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRateAmenitiesReferenceOperation)"))
+    fun getRateAmenitiesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetRateAmenitiesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
      * Region
      * Returns the geographic definition and property mappings for the requested Region ID. The response is a single JSON formatted region object.
      * @param operation [GetRegionOperation]
@@ -3482,7 +4472,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param affiliateReferenceId The affilliate reference id value. This field supports a maximum of 28 characters.
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
-     * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
+     * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `degraded_response` - Requires valid test booking * `service_unavailable` * `internal_server_error`  (optional)
      * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return kotlin.collections.List<Itinerary>
@@ -3513,7 +4503,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param affiliateReferenceId The affilliate reference id value. This field supports a maximum of 28 characters.
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded.<br>
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
-     * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
+     * @param test The retrieve call has a test header that can be used to return set responses with the following keywords:<br> * `standard` - Requires valid test booking. * `degraded_response` - Requires valid test booking * `service_unavailable` * `internal_server_error`  (optional)
      * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
      * @throws ExpediaGroupApiErrorException
      * @return a [Response] object with a body of type kotlin.collections.List<Itinerary>
@@ -3604,7 +4594,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
      * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
-     * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
+     * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `degraded_response` - Requires valid test booking * `service_unavailable` * `internal_server_error`  (optional)
      * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.  (optional)
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded. (Email is required if the token is not provided the request) <br>  (optional)
      * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
@@ -3639,7 +4629,7 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
      * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
      * @param itineraryId This parameter is used only to prefix the token value - no ID value is used.<br>
      * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
-     * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `service_unavailable` * `internal_server_error`  (optional)
+     * @param test The retrieve call has a test header that can be used to return set responses. Passing standard in the Test header will retrieve a test booking, and passing any of the errors listed below will return a stubbed error response that you can use to test your error handling code. Additionally, refer to the Test Request documentation for more details on how these header values are used. * `standard` - Requires valid test booking. * `degraded_response` - Requires valid test booking * `service_unavailable` * `internal_server_error`  (optional)
      * @param token Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.  (optional)
      * @param email Email associated with the booking. Special characters in the local part or domain should be encoded. (Email is required if the token is not provided the request) <br>  (optional)
      * @param include Options for which information to return in the response. The value must be lower case. * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `other` in the response.   * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes from the property/supplier have an event_source equal to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview) for details.  (optional)
@@ -3670,6 +4660,730 @@ class RapidClient private constructor(clientConfiguration: RapidClientConfigurat
         try {
             return GlobalScope.future(Dispatchers.IO) {
                 kgetReservationByItineraryIdWithResponse(customerIp, itineraryId, customerSessionId, test, token, email, include)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Room Amenities Reference
+     * Returns a complete collection of roomo amenities available in the Rapid API.
+     * @param operation [GetRoomAmenitiesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    fun execute(operation: GetRoomAmenitiesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, AmenityReference>>(operation)
+
+    /**
+     * Room Amenities Reference
+     * Returns a complete collection of roomo amenities available in the Rapid API.
+     * @param operation [GetRoomAmenitiesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    fun executeAsync(operation: GetRoomAmenitiesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, AmenityReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, AmenityReference>>(operation)
+
+    private suspend inline fun kgetRoomAmenitiesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> {
+        val params =
+            GetRoomAmenitiesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetRoomAmenitiesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Room Amenities Reference
+     * Returns a complete collection of roomo amenities available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRoomAmenitiesReferenceOperation)"))
+    fun getRoomAmenitiesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, AmenityReference> = getRoomAmenitiesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Room Amenities Reference
+     * Returns a complete collection of roomo amenities available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, AmenityReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRoomAmenitiesReferenceOperation)"))
+    fun getRoomAmenitiesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, AmenityReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetRoomAmenitiesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Room Images Reference
+     * Returns a complete collection of room images available in the Rapid API.
+     * @param operation [GetRoomImagesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    fun execute(operation: GetRoomImagesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, ImageReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, ImageReference>>(operation)
+
+    /**
+     * Room Images Reference
+     * Returns a complete collection of room images available in the Rapid API.
+     * @param operation [GetRoomImagesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    fun executeAsync(operation: GetRoomImagesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, ImageReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, ImageReference>>(operation)
+
+    private suspend inline fun kgetRoomImagesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, ImageReference>> {
+        val params =
+            GetRoomImagesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetRoomImagesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Room Images Reference
+     * Returns a complete collection of room images available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRoomImagesReferenceOperation)"))
+    fun getRoomImagesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, ImageReference> = getRoomImagesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Room Images Reference
+     * Returns a complete collection of room images available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, ImageReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRoomImagesReferenceOperation)"))
+    fun getRoomImagesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, ImageReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetRoomImagesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Room Views Reference
+     * Returns a complete collection of room views available in the Rapid API.
+     * @param operation [GetRoomViewsReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, View>
+     */
+    fun execute(operation: GetRoomViewsReferenceOperation): Response<kotlin.collections.Map<kotlin.String, View>> = execute<Nothing, kotlin.collections.Map<kotlin.String, View>>(operation)
+
+    /**
+     * Room Views Reference
+     * Returns a complete collection of room views available in the Rapid API.
+     * @param operation [GetRoomViewsReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, View>
+     */
+    fun executeAsync(operation: GetRoomViewsReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, View>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, View>>(operation)
+
+    private suspend inline fun kgetRoomViewsReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, View>> {
+        val params =
+            GetRoomViewsReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetRoomViewsReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Room Views Reference
+     * Returns a complete collection of room views available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, View>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRoomViewsReferenceOperation)"))
+    fun getRoomViewsReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, View> = getRoomViewsReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Room Views Reference
+     * Returns a complete collection of room views available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, View>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetRoomViewsReferenceOperation)"))
+    fun getRoomViewsReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, View>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetRoomViewsReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Spoken Languages Reference
+     * Returns a complete collection of spoken languages available in the Rapid API.
+     * @param operation [GetSpokenLanguagesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, SpokenLanguage>
+     */
+    fun execute(operation: GetSpokenLanguagesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, SpokenLanguage>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, SpokenLanguage>>(operation)
+
+    /**
+     * Spoken Languages Reference
+     * Returns a complete collection of spoken languages available in the Rapid API.
+     * @param operation [GetSpokenLanguagesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, SpokenLanguage>
+     */
+    fun executeAsync(operation: GetSpokenLanguagesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, SpokenLanguage>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, SpokenLanguage>>(operation)
+
+    private suspend inline fun kgetSpokenLanguagesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, SpokenLanguage>> {
+        val params =
+            GetSpokenLanguagesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetSpokenLanguagesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Spoken Languages Reference
+     * Returns a complete collection of spoken languages available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, SpokenLanguage>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetSpokenLanguagesReferenceOperation)"))
+    fun getSpokenLanguagesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, SpokenLanguage> = getSpokenLanguagesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Spoken Languages Reference
+     * Returns a complete collection of spoken languages available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, SpokenLanguage>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetSpokenLanguagesReferenceOperation)"))
+    fun getSpokenLanguagesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, SpokenLanguage>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetSpokenLanguagesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Statistics Reference
+     * Returns a complete collection of statistics available in the Rapid API.
+     * @param operation [GetStatisticsReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, StatisticReference>
+     */
+    fun execute(operation: GetStatisticsReferenceOperation): Response<kotlin.collections.Map<kotlin.String, StatisticReference>> =
+        execute<Nothing, kotlin.collections.Map<kotlin.String, StatisticReference>>(operation)
+
+    /**
+     * Statistics Reference
+     * Returns a complete collection of statistics available in the Rapid API.
+     * @param operation [GetStatisticsReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, StatisticReference>
+     */
+    fun executeAsync(operation: GetStatisticsReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, StatisticReference>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, StatisticReference>>(operation)
+
+    private suspend inline fun kgetStatisticsReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, StatisticReference>> {
+        val params =
+            GetStatisticsReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetStatisticsReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Statistics Reference
+     * Returns a complete collection of statistics available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, StatisticReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetStatisticsReferenceOperation)"))
+    fun getStatisticsReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, StatisticReference> = getStatisticsReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Statistics Reference
+     * Returns a complete collection of statistics available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, StatisticReference>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetStatisticsReferenceOperation)"))
+    fun getStatisticsReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, StatisticReference>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetStatisticsReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
+            }.get()
+        } catch (exception: Exception) {
+            exception.handle()
+        }
+    }
+
+    /**
+     * Themes Reference
+     * Returns a complete collection of themes available in the Rapid API.
+     * @param operation [GetThemesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Theme>
+     */
+    fun execute(operation: GetThemesReferenceOperation): Response<kotlin.collections.Map<kotlin.String, Theme>> = execute<Nothing, kotlin.collections.Map<kotlin.String, Theme>>(operation)
+
+    /**
+     * Themes Reference
+     * Returns a complete collection of themes available in the Rapid API.
+     * @param operation [GetThemesReferenceOperation]
+     * @throws ExpediaGroupApiErrorException
+     * @return a [CompletableFuture<Response>] object with a body of type kotlin.collections.Map<kotlin.String, Theme>
+     */
+    fun executeAsync(operation: GetThemesReferenceOperation): CompletableFuture<Response<kotlin.collections.Map<kotlin.String, Theme>>> =
+        executeAsync<Nothing, kotlin.collections.Map<kotlin.String, Theme>>(operation)
+
+    private suspend inline fun kgetThemesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, Theme>> {
+        val params =
+            GetThemesReferenceOperationParams(
+                customerSessionId = customerSessionId,
+                language = language,
+                billingTerms = billingTerms,
+                partnerPointOfSale = partnerPointOfSale,
+                paymentTerms = paymentTerms,
+                platformName = platformName
+            )
+
+        val operation =
+            GetThemesReferenceOperation(
+                params
+            )
+
+        return execute(operation)
+    }
+
+    /**
+     * Themes Reference
+     * Returns a complete collection of themes available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return kotlin.collections.Map<kotlin.String, Theme>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetThemesReferenceOperation)"))
+    fun getThemesReference(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): kotlin.collections.Map<kotlin.String, Theme> = getThemesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName).data
+
+    /**
+     * Themes Reference
+     * Returns a complete collection of themes available in the Rapid API.
+     * @param language Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes. <br><br>Reference: * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/) * [Language Options](https://developers.expediagroup.com/docs/rapid/resources/reference/language-options)
+     * @param customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.  (optional)
+     * @param billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param partnerPointOfSale This parameter is to specify what point of sale is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param paymentTerms This parameter is to specify what terms should be used when being paid for a resulting booking. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @param platformName This parameter is to specify what platform is being used to shop and book. If this field is needed, the value for this will be provided to you separately.  (optional)
+     * @throws ExpediaGroupApiErrorException
+     * @return a [Response] object with a body of type kotlin.collections.Map<kotlin.String, Theme>
+     */
+    @Throws(
+        ExpediaGroupApiErrorException::class
+    )
+    @JvmOverloads
+    @Deprecated("Use execute method instead", ReplaceWith("execute(operation: GetThemesReferenceOperation)"))
+    fun getThemesReferenceWithResponse(
+        language: kotlin.String,
+        customerSessionId: kotlin.String? =
+            null,
+        billingTerms: kotlin.String? =
+            null,
+        partnerPointOfSale: kotlin.String? =
+            null,
+        paymentTerms: kotlin.String? =
+            null,
+        platformName: kotlin.String? =
+            null
+    ): Response<kotlin.collections.Map<kotlin.String, Theme>> {
+        try {
+            return GlobalScope.future(Dispatchers.IO) {
+                kgetThemesReferenceWithResponse(language, customerSessionId, billingTerms, partnerPointOfSale, paymentTerms, platformName)
             }.get()
         } catch (exception: Exception) {
             exception.handle()

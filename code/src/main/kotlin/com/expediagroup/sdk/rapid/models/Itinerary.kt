@@ -65,6 +65,7 @@ import javax.validation.Validation
  * @param travelPurpose Value potentially passed in during the availability request to indicate the purpose of the trip designated by the traveler.
  * @param itineraryHistory
  * @param roomHistory An array of rooms each containing an array of room history events.
+ * @param impactedFields
  */
 data class Itinerary(
     // The itinerary id.
@@ -124,7 +125,10 @@ data class Itinerary(
     // An array of rooms each containing an array of room history events.
     @JsonProperty("room_history")
     @field:Valid
-    val roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null
+    val roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null,
+    @JsonProperty("impacted_fields")
+    @field:Valid
+    val impactedFields: kotlin.collections.List<kotlin.String>? = null
 ) {
     companion object {
         @JvmStatic
@@ -148,7 +152,8 @@ data class Itinerary(
         private var essentialInformation: EssentialInformation? = null,
         private var travelPurpose: Itinerary.TravelPurpose? = null,
         private var itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>? = null,
-        private var roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null
+        private var roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null,
+        private var impactedFields: kotlin.collections.List<kotlin.String>? = null
     ) {
         fun itineraryId(itineraryId: kotlin.String?) = apply { this.itineraryId = itineraryId }
 
@@ -184,6 +189,8 @@ data class Itinerary(
 
         fun roomHistory(roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>?) = apply { this.roomHistory = roomHistory }
 
+        fun impactedFields(impactedFields: kotlin.collections.List<kotlin.String>?) = apply { this.impactedFields = impactedFields }
+
         fun build(): Itinerary {
             val instance =
                 Itinerary(
@@ -203,7 +210,8 @@ data class Itinerary(
                     essentialInformation = essentialInformation,
                     travelPurpose = travelPurpose,
                     itineraryHistory = itineraryHistory,
-                    roomHistory = roomHistory
+                    roomHistory = roomHistory,
+                    impactedFields = impactedFields
                 )
 
             validate(instance)
@@ -248,7 +256,8 @@ data class Itinerary(
             essentialInformation = essentialInformation,
             travelPurpose = travelPurpose,
             itineraryHistory = itineraryHistory,
-            roomHistory = roomHistory
+            roomHistory = roomHistory,
+            impactedFields = impactedFields
         )
 
     /**
