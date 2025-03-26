@@ -13,4 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.expediagroup.sdk.rapid.operations
 
+import com.expediagroup.sdk.core.model.Nothing
+import com.expediagroup.sdk.core.model.Operation
+
+/**
+ * Rate Amenities Reference
+ * @property params [GetRateAmenitiesReferenceOperationParams]
+ */
+class GetRateAmenitiesReferenceOperation(
+    params: GetRateAmenitiesReferenceOperationParams
+) : Operation<
+        Nothing
+    >(
+        "/v3/references/rate-amenities",
+        "GET",
+        "getRateAmenitiesReference",
+        null,
+        params
+    )
