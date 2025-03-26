@@ -13,4 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.expediagroup.sdk.rapid.operations
 
+import com.expediagroup.sdk.core.model.Nothing
+import com.expediagroup.sdk.core.model.Operation
+
+/**
+ * Room Images Reference
+ * @property params [GetRoomImagesReferenceOperationParams]
+ */
+class GetRoomImagesReferenceOperation(
+    params: GetRoomImagesReferenceOperationParams
+) : Operation<
+        Nothing
+    >(
+        "/v3/references/room-images",
+        "GET",
+        "getRoomImagesReference",
+        null,
+        params
+    )
