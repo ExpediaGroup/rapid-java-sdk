@@ -13,4 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.expediagroup.sdk.rapid.operations
 
+import com.expediagroup.sdk.core.model.Nothing
+import com.expediagroup.sdk.core.model.Operation
+
+/**
+ * Room Amenities Reference
+ * @property params [GetRoomAmenitiesReferenceOperationParams]
+ */
+class GetRoomAmenitiesReferenceOperation(
+    params: GetRoomAmenitiesReferenceOperationParams
+) : Operation<
+        Nothing
+    >(
+        "/v3/references/room-amenities",
+        "GET",
+        "getRoomAmenitiesReference",
+        null,
+        params
+    )

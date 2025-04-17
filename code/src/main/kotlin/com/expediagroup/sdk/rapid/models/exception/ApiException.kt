@@ -136,6 +136,19 @@ internal object ErrorObjectMapper {
                 )
             ),
             Pair(
+                "getAmenitiesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
                 "getAvailability",
                 listOf(
                     HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
@@ -176,8 +189,59 @@ internal object ErrorObjectMapper {
                 )
             ),
             Pair(
+                "getCategoriesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
                 "getChainReference",
                 listOf(
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getChainsReference",
+                listOf(
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getGeneralAttributesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getImagesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
@@ -202,10 +266,36 @@ internal object ErrorObjectMapper {
                 )
             ),
             Pair(
+                "getOnsitePaymentTypesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
                 "getPaymentOptions",
                 listOf(
                     HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("404") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getPetAttributesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
@@ -270,6 +360,19 @@ internal object ErrorObjectMapper {
                 )
             ),
             Pair(
+                "getRateAmenitiesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
                 "getRegion",
                 listOf(
                     HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
@@ -317,6 +420,84 @@ internal object ErrorObjectMapper {
                     HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("404") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getRoomAmenitiesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getRoomImagesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getRoomViewsReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getSpokenLanguagesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getStatisticsReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("503") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    DefaultHttpStatusCodeRange
+                )
+            ),
+            Pair(
+                "getThemesReference",
+                listOf(
+                    HttpStatusCodeRange("400") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("401") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
+                    HttpStatusCodeRange("403") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("426") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("429") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
                     HttpStatusCodeRange("500") { ExpediaGroupApiErrorException(it.status.value, fetchErrorObject(it) as Error, it.headers.getTransactionId()) },
