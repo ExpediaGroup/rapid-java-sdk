@@ -40,6 +40,7 @@ import javax.validation.Validation
  * How and when the payment can be taken.
  * @param expediaCollect Whether or not a payment for this property can be taken by Expedia at the time of booking.
  * @param propertyCollect Whether or not a payment for this property can be taken by the property upon arrival.
+ * @param updatedExpediaCollect Whether or not a payment for this property can be taken by Expedia at the time of booking and whether a VAT invoice can be requested from the property if the property is accountable to provide such a document.
  */
 data class BusinessModel(
     // Whether or not a payment for this property can be taken by Expedia at the time of booking.
@@ -49,7 +50,11 @@ data class BusinessModel(
     // Whether or not a payment for this property can be taken by the property upon arrival.
     @JsonProperty("property_collect")
     @field:Valid
-    val propertyCollect: kotlin.Boolean? = null
+    val propertyCollect: kotlin.Boolean? = null,
+    // Whether or not a payment for this property can be taken by Expedia at the time of booking and whether a VAT invoice can be requested from the property if the property is accountable to provide such a document.
+    @JsonProperty("updated_expedia_collect")
+    @field:Valid
+    val updatedExpediaCollect: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -58,17 +63,21 @@ data class BusinessModel(
 
     class Builder(
         private var expediaCollect: kotlin.Boolean? = null,
-        private var propertyCollect: kotlin.Boolean? = null
+        private var propertyCollect: kotlin.Boolean? = null,
+        private var updatedExpediaCollect: kotlin.Boolean? = null
     ) {
         fun expediaCollect(expediaCollect: kotlin.Boolean?) = apply { this.expediaCollect = expediaCollect }
 
         fun propertyCollect(propertyCollect: kotlin.Boolean?) = apply { this.propertyCollect = propertyCollect }
 
+        fun updatedExpediaCollect(updatedExpediaCollect: kotlin.Boolean?) = apply { this.updatedExpediaCollect = updatedExpediaCollect }
+
         fun build(): BusinessModel {
             val instance =
                 BusinessModel(
                     expediaCollect = expediaCollect,
-                    propertyCollect = propertyCollect
+                    propertyCollect = propertyCollect,
+                    updatedExpediaCollect = updatedExpediaCollect
                 )
 
             validate(instance)
@@ -98,6 +107,7 @@ data class BusinessModel(
     fun toBuilder() =
         Builder(
             expediaCollect = expediaCollect,
-            propertyCollect = propertyCollect
+            propertyCollect = propertyCollect,
+            updatedExpediaCollect = updatedExpediaCollect
         )
 }
