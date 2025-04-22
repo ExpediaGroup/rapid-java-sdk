@@ -31,15 +31,18 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.AdditionalHandling
 import com.expediagroup.sdk.rapid.models.Adjustment
 import com.expediagroup.sdk.rapid.models.BillingContact
 import com.expediagroup.sdk.rapid.models.Conversations
 import com.expediagroup.sdk.rapid.models.EssentialInformation
+import com.expediagroup.sdk.rapid.models.Invoicing
 import com.expediagroup.sdk.rapid.models.ItineraryHistoryItem
 import com.expediagroup.sdk.rapid.models.ItineraryLinks
 import com.expediagroup.sdk.rapid.models.Phone
 import com.expediagroup.sdk.rapid.models.RoomHistoryItem
 import com.expediagroup.sdk.rapid.models.RoomItinerary
+import com.expediagroup.sdk.rapid.models.SupplierTransparency
 import com.expediagroup.sdk.rapid.models.TraderInformation
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
@@ -63,6 +66,9 @@ import javax.validation.Validation
  * @param traderInformation
  * @param essentialInformation
  * @param travelPurpose Value potentially passed in during the availability request to indicate the purpose of the trip designated by the traveler.
+ * @param supplierTransparency
+ * @param additionalHandling
+ * @param invoicing
  * @param itineraryHistory
  * @param roomHistory An array of rooms each containing an array of room history events.
  * @param impactedFields
@@ -119,6 +125,15 @@ data class Itinerary(
     // Value potentially passed in during the availability request to indicate the purpose of the trip designated by the traveler.
     @JsonProperty("travel_purpose")
     val travelPurpose: Itinerary.TravelPurpose? = null,
+    @JsonProperty("supplier_transparency")
+    @field:Valid
+    val supplierTransparency: SupplierTransparency? = null,
+    @JsonProperty("additional_handling")
+    @field:Valid
+    val additionalHandling: AdditionalHandling? = null,
+    @JsonProperty("invoicing")
+    @field:Valid
+    val invoicing: Invoicing? = null,
     @JsonProperty("itinerary_history")
     @field:Valid
     val itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>? = null,
@@ -151,6 +166,9 @@ data class Itinerary(
         private var traderInformation: TraderInformation? = null,
         private var essentialInformation: EssentialInformation? = null,
         private var travelPurpose: Itinerary.TravelPurpose? = null,
+        private var supplierTransparency: SupplierTransparency? = null,
+        private var additionalHandling: AdditionalHandling? = null,
+        private var invoicing: Invoicing? = null,
         private var itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>? = null,
         private var roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>? = null,
         private var impactedFields: kotlin.collections.List<kotlin.String>? = null
@@ -185,6 +203,12 @@ data class Itinerary(
 
         fun travelPurpose(travelPurpose: Itinerary.TravelPurpose?) = apply { this.travelPurpose = travelPurpose }
 
+        fun supplierTransparency(supplierTransparency: SupplierTransparency?) = apply { this.supplierTransparency = supplierTransparency }
+
+        fun additionalHandling(additionalHandling: AdditionalHandling?) = apply { this.additionalHandling = additionalHandling }
+
+        fun invoicing(invoicing: Invoicing?) = apply { this.invoicing = invoicing }
+
         fun itineraryHistory(itineraryHistory: kotlin.collections.List<ItineraryHistoryItem>?) = apply { this.itineraryHistory = itineraryHistory }
 
         fun roomHistory(roomHistory: kotlin.collections.List<kotlin.collections.List<RoomHistoryItem>>?) = apply { this.roomHistory = roomHistory }
@@ -209,6 +233,9 @@ data class Itinerary(
                     traderInformation = traderInformation,
                     essentialInformation = essentialInformation,
                     travelPurpose = travelPurpose,
+                    supplierTransparency = supplierTransparency,
+                    additionalHandling = additionalHandling,
+                    invoicing = invoicing,
                     itineraryHistory = itineraryHistory,
                     roomHistory = roomHistory,
                     impactedFields = impactedFields
@@ -255,6 +282,9 @@ data class Itinerary(
             traderInformation = traderInformation,
             essentialInformation = essentialInformation,
             travelPurpose = travelPurpose,
+            supplierTransparency = supplierTransparency,
+            additionalHandling = additionalHandling,
+            invoicing = invoicing,
             itineraryHistory = itineraryHistory,
             roomHistory = roomHistory,
             impactedFields = impactedFields

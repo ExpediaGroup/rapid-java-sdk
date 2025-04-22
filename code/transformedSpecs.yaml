@@ -615,6 +615,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: false
+                        updated_expedia_collect: true
                       checkin:
                         24_hour: 24-hour check-in
                         begin_time: 3:00 PM
@@ -930,6 +931,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: true
+                        updated_expedia_collect: true
                       rank: 99999999
                       checkin:
                         begin_time: 4:00 PM
@@ -1258,6 +1260,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: false
+                        updated_expedia_collect: true
                       checkin:
                         24_hour: 24-hour check-in
                         begin_time: 3:00 PM
@@ -1592,6 +1595,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: true
+                        updated_expedia_collect: false
                       checkin:
                         24_hour: 24-hour check-in
                         begin_time: 3:00 PM
@@ -2827,8 +2831,8 @@ paths:
 
         <br>Example of a JSONL file with 2 properties:
         ```
-        {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"supply_source":"expedia"}
-        {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"supply_source":"expedia"}
+        {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false,"updated_expedia_collect":true},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"supply_source":"expedia"}
+        {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true,"updated_expedia_collect":false},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"supply_source":"expedia"}
         ```
       operationId: getPropertyCatalogFile
       parameters:
@@ -3148,8 +3152,8 @@ paths:
 
         <br>Example of a JSONL file with 2 properties:
           ```
-          {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":20,"square_feet":215},"views":{"4146":{"id":"4146","name":"Courtyard view"}},"occupancy":{"max_allowed":{"total":5,"children":2,"adults":4},"age_categories":{"Adult":{"name":"Adult","minimum_age":9}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"AB-012-987-1234-01","chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"spoken_languages":{"vi":{"id":"vi","name":"Vietnamese"}},"multi_unit":true,"payment_registration_recommended":false,"vacation_rental_details": {"registry_number": "Property Registration Number 123456","private_host": "true","property_manager": {"name": "Victor","links": {"image": {"method": "GET","href": "https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg"}}},"rental_agreement": {"links": {"rental_agreement": {"method": "GET","href": "https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf"}}},"house_rules": ["Children welcome","No pets","No smoking","No parties or events"],"amenities": {"4296": {"id": "4296","name": "Furnished balcony or patio"},"2859": {"id": "2859","name": "Private pool"}},"vrbo_srp_id": "123.1234567.5678910","listing_id": "1234567","listing_number": "5678910","listing_source": "HOMEAWAY_US","listing_unit": "/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
-          {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838},"obfuscated_coordinates":{"latitude":28.339303,"longitude":-81.47791},"obfuscation_required":true},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":17},"views":{"4134":{"id":"4134","name":"City view"}},"occupancy":{"max_allowed":{"total":3,"children":2,"adults":3},"age_categories":{"ChildAgeA":{"name":"ChildAgeA","minimum_age":3}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"CD-012-987-1234-02","chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"spoken_languages":{"en":{"id":"en","name":"English"}},"multi_unit":true,"payment_registration_recommended":true,"vacation_rental_details":{"registry_number":"Property Registration Number 123456","private_host":"true","property_manager":{"name":"John Smith","links":{"image":{"method":"GET","href":"https://example.com/profile.jpg"}}},"rental_agreement":{"links":{"rental_agreement":{"method":"GET","href":"https:/example.com/rentalconditions.pdf"}}},"house_rules":["Children welcome","No pets","No smoking","No parties or events"],"amenities":{"2859":{"id":"2859","name":"Private pool"},"4296":{"id":"4296","name":"Furnished balcony or patio"}},"vrbo_srp_id":"123.1234567.5678910","listing_id":"1234567","listing_number":"5678910","listing_source":"HOMEAWAY_US","listing_unit":"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
+          {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false,"updated_expedia_collect":false},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":20,"square_feet":215},"views":{"4146":{"id":"4146","name":"Courtyard view"}},"occupancy":{"max_allowed":{"total":5,"children":2,"adults":4},"age_categories":{"Adult":{"name":"Adult","minimum_age":9}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"AB-012-987-1234-01","chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"spoken_languages":{"vi":{"id":"vi","name":"Vietnamese"}},"multi_unit":true,"payment_registration_recommended":false,"vacation_rental_details": {"registry_number": "Property Registration Number 123456","private_host": "true","property_manager": {"name": "Victor","links": {"image": {"method": "GET","href": "https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg"}}},"rental_agreement": {"links": {"rental_agreement": {"method": "GET","href": "https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf"}}},"house_rules": ["Children welcome","No pets","No smoking","No parties or events"],"amenities": {"4296": {"id": "4296","name": "Furnished balcony or patio"},"2859": {"id": "2859","name": "Private pool"}},"vrbo_srp_id": "123.1234567.5678910","listing_id": "1234567","listing_number": "5678910","listing_source": "HOMEAWAY_US","listing_unit": "/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
+          {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838},"obfuscated_coordinates":{"latitude":28.339303,"longitude":-81.47791},"obfuscation_required":true},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true,"updated_expedia_collect":true},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":17},"views":{"4134":{"id":"4134","name":"City view"}},"occupancy":{"max_allowed":{"total":3,"children":2,"adults":3},"age_categories":{"ChildAgeA":{"name":"ChildAgeA","minimum_age":3}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"CD-012-987-1234-02","chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"spoken_languages":{"en":{"id":"en","name":"English"}},"multi_unit":true,"payment_registration_recommended":true,"vacation_rental_details":{"registry_number":"Property Registration Number 123456","private_host":"true","property_manager":{"name":"John Smith","links":{"image":{"method":"GET","href":"https://example.com/profile.jpg"}}},"rental_agreement":{"links":{"rental_agreement":{"method":"GET","href":"https:/example.com/rentalconditions.pdf"}}},"house_rules":["Children welcome","No pets","No smoking","No parties or events"],"amenities":{"2859":{"id":"2859","name":"Private pool"},"4296":{"id":"4296","name":"Furnished balcony or patio"}},"vrbo_srp_id":"123.1234567.5678910","listing_id":"1234567","listing_number":"5678910","listing_source":"HOMEAWAY_US","listing_unit":"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
           ```
       operationId: getPropertyContentFile
       parameters:
@@ -5068,7 +5072,7 @@ paths:
           required: true
           schema:
             type: string
-          example: 2025-06-01
+          example: 2025-07-01
         - name: checkout
           in: query
           description: >
@@ -5078,7 +5082,7 @@ paths:
           required: true
           schema:
             type: string
-          example: 2025-06-03
+          example: 2025-07-03
         - name: currency
           in: query
           description: |
@@ -6336,7 +6340,7 @@ paths:
             If specified must also specify `checkout`.
           schema:
             type: string
-          example: 2025-06-01
+          example: 2025-07-01
         - name: checkout
           in: query
           description: >
@@ -6350,7 +6354,7 @@ paths:
             If specified must also specify `checkin`.<br>
           schema:
             type: string
-          example: 2025-06-03
+          example: 2025-07-03
         - name: exclusion
           in: query
           description: >
@@ -8035,7 +8039,7 @@ paths:
           schema:
             type: string
             format: date
-          example: 2025-06-15
+          example: 2025-07-15
         - name: end_date
           in: query
           description: >
@@ -8046,7 +8050,7 @@ paths:
           schema:
             type: string
             format: date
-          example: 2025-12-17
+          example: 2026-01-17
       responses:
         "200":
           description: OK
@@ -8947,7 +8951,7 @@ paths:
                           property:
                             method: GET
                             href: https://www.example.com?key=123abd456
-                      travel_purpose: leisure
+                      travel_purpose: business
                       trader_information:
                         traders:
                           - name: Test Property Name
@@ -8968,6 +8972,225 @@ paths:
                               accommodation. Supplier cancellation policy will
                               apply
                         terms_and_conditions: https://forever.travel-assets.com/flex/flexmanager/mediaasset/618796-0_2-UnitedKingdom_en.pdf
+                      supplier_transparency:
+                        point_of_sale_display_to_share: Global Travel Site
+                        company_name_to_share: Traveler's Company
+                        consent_to_share: true
+                      invoicing:
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        point_of_sale_display: Global Travel Site
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
+                Itineraries with Property Collect:
+                  value:
+                    - itinerary_id: "8999989898988"
+                      property_id: "8150374"
+                      links:
+                        cancel:
+                          method: DELETE
+                          href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                        non_vat_expedia_invoice:
+                          method: GET
+                          href: /v3/itineraries/8999989898988/invoice?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      email: smith@example.com
+                      phone:
+                        country_code: "1"
+                        area_code: "487"
+                        number: "5550077"
+                      rooms:
+                        - id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: 2018-09-21
+                          checkout: 2018-09-23
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          rate:
+                            id: "035943984"
+                            merchant_of_record: property
+                            refundable: true
+                            cancel_refund:
+                              amount: -65.98
+                              currency: USD
+                            amenities:
+                              - "12345"
+                              - "678"
+                              - "9999"
+                            promotions:
+                              value_adds:
+                                123abc:
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports for your stay.
+                                3x4mp13:
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased through the concierge
+                                    desk.
+                            cancel_penalties:
+                              - start: 2018-01-01T01:01:01.000-08:00
+                                end: 2018-12-12T01:01:01.000-08:00
+                                amount: "250.75"
+                                currency: USD
+                            nonrefundable_date_ranges:
+                              - start: 2022-02-02
+                                end: 2022-02-02
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: 2018-12-12T01:01:01.000-08:00
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                          links:
+                            cancel:
+                              method: DELETE
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                            change:
+                              method: PUT
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                            shop_for_change:
+                              method: GET
+                              href: /v3/properties/8150374/availability?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      adjustment:
+                        value: -100
+                        type: base_rate
+                        currency: USD
+                      creation_date_time: 2017-08-17T13:31:15.523Z
+                      affiliate_reference_id: 4480ABC
+                      affiliate_metadata: This booking was made with EPS.
+                      conversations:
+                        links:
+                          property:
+                            method: GET
+                            href: https://www.example.com?key=123abd456
+                      travel_purpose: business
+                      trader_information:
+                        traders:
+                          - name: Test Property Name
+                            address:
+                              line_1: 123 Main St
+                              city: Springfield
+                              state_province_code: MO
+                              postal_code: "65804"
+                              country_code: US
+                            business_register_name: A Real Registry
+                            business_register_number: 72973910d
+                            self_certification: true
+                            phone: 1-417-555-1212
+                            right_to_withdraw_message: >
+                              The right of withdrawal under European consumer
+                              law does not apply when you book
+
+                              accommodation. Supplier cancellation policy will
+                              apply
+                        terms_and_conditions: https://forever.travel-assets.com/flex/flexmanager/mediaasset/618796-0_2-UnitedKingdom_en.pdf
+                      supplier_transparency:
+                        point_of_sale_display_to_share: Global Travel Site
+                        company_name_to_share: Traveler's Company
+                        consent_to_share: true
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: 2024-01-01
+                        payment_allowable_period_end: 2025-08-01
+                      invoicing:
+                        consent_to_share: true
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
                 Itinerary with History and Change - Extend Stay:
                   value:
                     - itinerary_id: "8999989898988"
@@ -9109,6 +9332,41 @@ paths:
                             method: GET
                             href: https://www.example.com?key=123abd456
                       travel_purpose: unspecified
+                      supplier_transparency:
+                        point_of_sale_display_to_share: Global Travel Site
+                        company_name_to_share: Traveler's Company
+                        consent_to_share: true
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: 2024-01-01
+                        payment_allowable_period_end: 2025-08-01
+                      invoicing:
+                        consent_to_share: true
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
                       itinerary_history:
                         - history_id: "802737048"
                           event_timestamp: 2017-09-17T13:31:15.523Z
@@ -9437,6 +9695,41 @@ paths:
                           method: GET
                           href: https://www.example.com?key=123abd456
                     travel_purpose: unspecified
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
+                    additional_handling:
+                      authorized_expenses: total_plus_incidentals
+                      specified_incidental_expenses:
+                        - breakfast
+                        - internet
+                      total_charges_allowed:
+                        value: "875.00"
+                        currency: USD
+                      is_cvc_required: true
+                      authorizing_company: Conferma
+                      card_contact:
+                        email: chucktesta@mydomain.com
+                        phone:
+                          country_code: "1"
+                          area_code: "555"
+                          number: "5555555"
+                      payment_allowable_period_start: 2024-01-01
+                      payment_allowable_period_end: 2025-08-01
+                    invoicing:
+                      consent_to_share: true
+                      company_name: alphaDemandPartner
+                      company_address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                      email: chucktesta@mydomain.com
+                      vat_number: "1234567890"
                     itinerary_history:
                       - history_id: "802737048"
                         event_timestamp: 2017-09-17T13:31:15.523Z
@@ -9805,7 +10098,38 @@ paths:
                           property:
                             method: GET
                             href: https://www.example.com?key=123abd456
-                      travel_purpose: leisure
+                      travel_purpose: business
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: 2024-01-01
+                        payment_allowable_period_end: 2025-08-01
+                      invoicing:
+                        consent_to_share: true
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
                       trader_information:
                         traders:
                           - name: Test Property Name
@@ -10756,6 +11080,126 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateItineraryRequest"
+            examples:
+              Create Booking with Credit Card:
+                value:
+                  affiliate_reference_id: 4480ABC
+                  hold: false
+                  email: john@example.com
+                  phone:
+                    country_code: "1"
+                    area_code: "487"
+                    number: "5550077"
+                  rooms:
+                    - given_name: John
+                      family_name: Smith
+                      smoking: false
+                      special_request: Top floor or away from street please
+                      loyalty_id: ABC123
+                  payments:
+                    - type: customer_card
+                      number: "4111111111111111"
+                      security_code: "123"
+                      expiration_month: "08"
+                      expiration_year: "2025"
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      enrollment_date: 2018-09-15
+                      third_party_authentication:
+                        cavv: jELUbgG+Tgj0AREBDMLeCad+oIs=
+                        eci: "05"
+                        three_ds_version: 2.2.0
+                        ds_transaction_id: ac01cc2b-c1a1-4981-8c6f-400d4eec88de
+                        pa_res_status: Y
+                        ve_res_status: C
+                        xid: 47133847-13be-4ae3-9be9-e4053b9c83c0
+                        cavv_algorithm: "3"
+                        ucaf_indicator: "0"
+                  affiliate_metadata: data_point_1:123|data_point2:This is data.
+                  tax_registration_number: "12345678910"
+                  traveler_handling_instructions: Please use the card provided for payment. Avoid
+                    cancelation as this is for a corporate traveler. Contact
+                    traveler if any issues.
+                  supplier_transparency:
+                    point_of_sale_display_to_share: Global Travel Site
+                    company_name_to_share: Traveler's Company
+                    consent_to_share: true
+              Create Booking with Virtual Card:
+                value:
+                  affiliate_reference_id: 4480ABC
+                  hold: false
+                  email: john@example.com
+                  phone:
+                    country_code: "1"
+                    area_code: "487"
+                    number: "5550077"
+                  rooms:
+                    - given_name: John
+                      family_name: Smith
+                      smoking: false
+                      special_request: Top floor or away from street please
+                      loyalty_id: ABC123
+                  payments:
+                    - type: virtual_card
+                      number: "4111111111111111"
+                      security_code: "123"
+                      expiration_month: "08"
+                      expiration_year: "2025"
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: 2024-01-01
+                        payment_allowable_period_end: 2025-08-01
+                  invoicing:
+                    consent_to_share: true
+                    company_name: alphaDemandPartner
+                    company_address:
+                      line_1: 555 1st St
+                      line_2: 10th Floor
+                      line_3: Unit 12
+                      city: Seattle
+                      state_province_code: WA
+                      postal_code: "98121"
+                      country_code: US
+                    email: chucktesta@mydomain.com
+                    vat_number: "1234567890"
+                  supplier_transparency:
+                    point_of_sale_display_to_share: Global Travel Site
+                    company_name_to_share: Traveler's Company
+                    consent_to_share: true
         required: true
       responses:
         "201":
@@ -11443,7 +11887,204 @@ paths:
                         property:
                           method: GET
                           href: https://www.example.com?key=123abd456
-                    travel_purpose: leisure
+                    travel_purpose: business
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
+                    invoicing:
+                      company_name: alphaDemandPartner
+                      company_address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                      point_of_sale_display: Global Travel Site
+                      email: chucktesta@mydomain.com
+                      vat_number: "1234567890"
+                Itinerary No History with Property Collect:
+                  value:
+                    itinerary_id: "8999989898988"
+                    property_id: "8150374"
+                    links:
+                      cancel:
+                        method: DELETE
+                        href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    email: smith@example.com
+                    phone:
+                      country_code: "1"
+                      area_code: "487"
+                      number: "5550077"
+                    rooms:
+                      - id: "926784314"
+                        confirmation_id:
+                          expedia: "1234567890"
+                          property: BEF23123AA
+                        bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                        checkin: 2018-09-21
+                        checkout: 2018-09-23
+                        number_of_adults: 2
+                        child_ages:
+                          - 2
+                          - 3
+                        given_name: Givenne
+                        family_name: Nameo
+                        status: booked
+                        special_request: Please give me extra towels.
+                        smoking: false
+                        loyalty_id: ABC123
+                        rate:
+                          id: "035943984"
+                          merchant_of_record: expedia
+                          refundable: true
+                          cancel_refund:
+                            amount: -65.98
+                            currency: USD
+                          amenities:
+                            - "12345"
+                            - "678"
+                            - "9999"
+                          promotions:
+                            value_adds:
+                              123abc:
+                                id: 123abc
+                                description: 10 USD credit on activities and sports for your stay.
+                              3x4mp13:
+                                id: 3x4mp13
+                                description: 20% discount on theme park tickets purchased through the concierge
+                                  desk.
+                          cancel_penalties:
+                            - start: 2018-01-01T01:01:01.000-08:00
+                              end: 2018-12-12T01:01:01.000-08:00
+                              amount: "250.75"
+                              currency: USD
+                          nonrefundable_date_ranges:
+                            - start: 2022-02-02
+                              end: 2022-02-02
+                          deposits:
+                            - currency: USD
+                              value: "220.75"
+                              due: 2018-12-12T01:01:01.000-08:00
+                          pricing:
+                            nightly:
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                            stay:
+                              - type: base_rate
+                                value: "123.45"
+                                currency: USD
+                            totals:
+                              inclusive:
+                                billable_currency:
+                                  value: "368.15"
+                                  currency: USD
+                              exclusive:
+                                billable_currency:
+                                  value: "345.91"
+                                  currency: USD
+                              marketing_fee:
+                                billable_currency:
+                                  value: "7.75"
+                                  currency: USD
+                              property_fees:
+                                billable_currency:
+                                  value: "36.95"
+                                  currency: USD
+                            fees:
+                              mandatory_fee:
+                                billable_currency:
+                                  value: "5.00"
+                                  currency: USD
+                              resort_fee:
+                                billable_currency:
+                                  value: "20.00"
+                                  currency: USD
+                              mandatory_tax:
+                                billable_currency:
+                                  value: "11.95"
+                                  currency: USD
+                        links:
+                          cancel:
+                            method: DELETE
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          change:
+                            method: PUT
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          shop_for_change:
+                            method: GET
+                            href: /v3/properties/8150374/availability?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    billing_contact:
+                      given_name: John
+                      family_name: Smith
+                      address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                    adjustment:
+                      value: -100
+                      type: base_rate
+                      currency: USD
+                    creation_date_time: 2017-08-17T13:31:15.523Z
+                    affiliate_reference_id: 4480ABC
+                    affiliate_metadata: This booking was made with EPS.
+                    conversations:
+                      links:
+                        property:
+                          method: GET
+                          href: https://www.example.com?key=123abd456
+                    travel_purpose: business
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
+                    additional_handling:
+                      authorized_expenses: total_plus_incidentals
+                      specified_incidental_expenses:
+                        - breakfast
+                        - internet
+                      total_charges_allowed:
+                        value: "875.00"
+                        currency: USD
+                      is_cvc_required: true
+                      authorizing_company: Conferma
+                      card_contact:
+                        email: chucktesta@mydomain.com
+                        phone:
+                          country_code: "1"
+                          area_code: "555"
+                          number: "5555555"
+                      payment_allowable_period_start: 2024-01-01
+                      payment_allowable_period_end: 2025-08-01
+                    invoicing:
+                      consent_to_share: true
+                      company_name: alphaDemandPartner
+                      company_address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                      email: chucktesta@mydomain.com
+                      vat_number: "1234567890"
                 Itinerary with History:
                   value:
                     itinerary_id: "8999989898988"
@@ -11588,6 +12229,10 @@ paths:
                           method: GET
                           href: https://www.example.com?key=123abd456
                     travel_purpose: unspecified
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
                     itinerary_history:
                       - history_id: "802737048"
                         event_timestamp: 2017-09-17T13:31:15.523Z
@@ -11916,6 +12561,10 @@ paths:
                           method: GET
                           href: https://www.example.com?key=123abd456
                     travel_purpose: unspecified
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
                     itinerary_history:
                       - history_id: "802737048"
                         event_timestamp: 2017-09-17T13:31:15.523Z
@@ -12278,7 +12927,7 @@ paths:
                         property:
                           method: GET
                           href: https://www.example.com?key=123abd456
-                    travel_purpose: leisure
+                    travel_purpose: business
                     impacted_fields:
                       - rooms.rate.cancel_refund
                       - rooms.rate.refundable
@@ -20570,6 +21219,12 @@ components:
           type: boolean
           description: Whether or not a payment for this property can be taken by the
             property upon arrival.
+        updated_expedia_collect:
+          type: boolean
+          description: Whether or not a payment for this property can be taken by Expedia
+            at the time of booking and whether a VAT invoice can be requested
+            from the property if the property is accountable to provide such a
+            document.
       description: How and when the payment can be taken.
     Checkin:
       type: object
@@ -22233,9 +22888,12 @@ components:
       properties:
         type:
           type: string
-          description: Identifier for the type of payment. If affiliate_collect, card
-            information is not required as EPS will not be processing the
-            payment. However, billing contact information is still required.
+          description: >
+            Identifier for the type of payment. If affiliate_collect, card
+            information is not required as EPS will not
+
+            be processing the payment. However, billing contact information is
+            still required.
           enum:
             - corporate_card
             - customer_card
@@ -22262,8 +22920,13 @@ components:
           $ref: "#/components/schemas/ThirdPartyAuthRequest"
         enrollment_date:
           type: string
-          description: Date the payment account was enrolled in the cardholder's account
-            with the merchant, in ISO 8601 format (YYYY-MM-DD).
+          description: >
+            Date the payment account was enrolled in the cardholder's account
+            with the merchant, in ISO 8601 format
+
+            (YYYY-MM-DD).
+        additional_handling:
+          $ref: "#/components/schemas/AdditionalHandling"
     BillingContactRequest:
       required:
         - address
@@ -22395,6 +23058,138 @@ components:
             0 - Non-SecureCode transaction, bypassed by the Merchant
             1 - Merchant-Only SecureCode transaction
             2 - Fully authenticated SecureCode transaction
+    AdditionalHandling:
+      required:
+        - authorized_expenses
+      type: object
+      properties:
+        authorized_expenses:
+          type: string
+          description: >
+            Indicates which types of expenses are authorized to be charged to
+            the VCC.
+
+            * `prestay_expenses_only` - Indicates that the provided VCC is for
+            pre-stay charges only (e.g.,
+              deposits, cancellation fees, no-show fees). A physical card must be presented at check-in for any
+              remaining balance, as well as incidentals.
+            * `total_booking_amount` - Indicates that both pre-stay charges and
+            the total booking amount are
+              authorized, but no incidentals are authorized. A physical card must be presented at check-in for any
+              incidentals.
+            * `total_plus_incidentals` - Indicates that pre-stay, total booking,
+            and incidental expenses are
+              authorized. See `specified_incidental_expenses`. A physical card may be required for additional
+              incidental expenses.
+            * `see_authorization_form` - Indicates that a property should refer
+            to the authorization form that will
+              be sent either by the card provider or the authorizing company.
+          enum:
+            - prestay_expenses_only
+            - total_booking_amount
+            - total_plus_incidentals
+            - see_authorization_form
+        specified_incidental_expenses:
+          type: array
+          description: >
+            Included list of enumerated categories to restrict the authorized
+            incidentals. This is only utilized
+
+            when `authorized_expenses` is supplied with `total_plus_incidentals`
+            and restrictions on incidentals are
+
+            desired.<br>
+
+            Example: To allow any incidental expenses, specify
+            `authorized_expenses` equal to
+
+            `total_plus_incidentals` and omit `specified_incidental_expenses`.
+          items:
+            type: string
+            description: The type of incidental expense authorized.
+            enum:
+              - breakfast
+              - entertainment
+              - internet
+              - meeting_expenses
+              - other_food_beverage
+              - parking
+              - phone
+              - taxes
+              - transfer
+              - other
+        total_charges_allowed:
+          $ref: "#/components/schemas/Amount"
+        is_cvc_required:
+          type: boolean
+          description: >
+            Indicates whether a CVC is required for the provided VCC. If this is
+            marked required, the security_code
+
+            field for the payment MUST be provided.
+        authorizing_company:
+          type: string
+          description: Company that will issue the authorization form for the virtual
+            credit card payment.
+        card_contact:
+          type: object
+          properties:
+            email:
+              type: string
+              description: The email address of the VCC contact.
+            phone:
+              $ref: "#/components/schemas/Phone"
+          description: >
+            Object to hold information for a contact the supplier can reach in
+            the event of any issues with the
+
+            provided payment.
+        max_payment_attempt_count:
+          type: number
+          description: Requested limit to number of payment attempts.
+        payment_allowable_period_start:
+          type: string
+          description: Start date for valid range of the VCC payment instrument, in ISO
+            8601 format (YYYY-MM-DD).
+        payment_allowable_period_end:
+          type: string
+          description: End date for valid range of the VCC payment instrument, in ISO 8601
+            format (YYYY-MM-DD).
+      description: >
+        Parent object for additional VCC handling instructions, to be included
+        as part of the payment object when
+
+        virtual_card is the requested payment type for property collect
+        inventory. If not included, existing
+
+        behavior regarding handling of VCCs with property collect inventory is
+        to be preserved. This object will be
+
+        ignored for non-property collect/non-VCC transactions.
+        total_charges_allowed represents the total ceiling of
+
+        all charges allowed on the VCC, including the booking price and any
+        allowed incidentals. The value of total_charges_allowed
+
+        must be at least the booking value.
+    Phone:
+      type: object
+      properties:
+        country_code:
+          type: string
+          description: The numerical portion of the country code from the phone number. Do
+            not include the leading '+' character.
+          example: "1"
+        area_code:
+          type: string
+          description: The area code of the phone number.
+          example: "487"
+        number:
+          type: string
+          description: The remaining digits of the phone number.
+          example: "5550077"
+      description: The entire phone number must be represented across the three fields
+        in this object.
     PaymentSessions:
       type: object
       properties:
@@ -22469,6 +23264,12 @@ components:
             - leisure
             - business
             - unspecified
+        supplier_transparency:
+          $ref: "#/components/schemas/SupplierTransparency"
+        additional_handling:
+          $ref: "#/components/schemas/AdditionalHandling"
+        invoicing:
+          $ref: "#/components/schemas/Invoicing"
         itinerary_history:
           type: array
           items:
@@ -22501,24 +23302,6 @@ components:
         $ref: "#/components/schemas/Link"
       description: A map of links, including links to resume or cancel a held booking.
         This is only included for held bookings.
-    Phone:
-      type: object
-      properties:
-        country_code:
-          type: string
-          description: The numerical portion of the country code from the phone number. Do
-            not include the leading '+' character.
-          example: "1"
-        area_code:
-          type: string
-          description: The area code of the phone number.
-          example: "487"
-        number:
-          type: string
-          description: The remaining digits of the phone number.
-          example: "5550077"
-      description: The entire phone number must be represented across the three fields
-        in this object.
     RoomItinerary:
       type: object
       properties:
@@ -22840,6 +23623,50 @@ components:
           type: string
           description: The height of the image.
           example: "32"
+    SupplierTransparency:
+      type: object
+      properties:
+        point_of_sale_display_to_share:
+          type: string
+          description: The name of the point of sale to be shared.
+        company_name_to_share:
+          type: string
+          description: The name of the company to be shared.
+        consent_to_share:
+          type: boolean
+          description: Whether or not this info should be shared.
+      description: >
+        To be used for collecting and sharing partner and client information
+        with the supplier.
+    Invoicing:
+      type: object
+      properties:
+        consent_to_share:
+          type: boolean
+          description: >
+            Whether the partner and traveler consent to share the invoicing
+            section information with the supplier
+
+            and property. If not provided, this invoicing data will not be
+            shared with the supplier or property.
+        company_name:
+          type: string
+          description: The traveler's company name to appear on the invoice.
+        company_address:
+          $ref: "#/components/schemas/Address_1"
+        point_of_sale_display:
+          type: string
+          description: >
+            Provide this when a specific site or branding should be used on the
+            invoice instead of partner name.
+        email:
+          type: string
+          description: Email address to send invoices
+        vat_number:
+          type: string
+          description: A custom VAT number to include on invoices
+      description: |
+        To be included if invoicing is requested.
     ItineraryHistoryItem:
       type: object
       properties:
@@ -22981,20 +23808,28 @@ components:
       properties:
         affiliate_reference_id:
           type: string
-          description: Your unique reference value. This field supports from 3 to a
-            maximum of 28 characters and is required to be unique (if provided).
-            Entering special characters ("<", ">", "(", ")", and "&") in this
-            field will result in the request being rejected.
+          description: >
+            Your unique reference value. This field supports from 3 to a maximum
+            of 28 characters and is required to be
+
+            unique (if provided). Entering special characters ("<", ">", "(",
+            ")", and "&") in this field will result in
+
+            the request being rejected.
         hold:
           type: boolean
-          description: Flag for placing a booking on hold. The booking will be released if
-            the resume link is not followed within the hold period. Please refer
-            to our Hold and Resume documentation.
+          description: >
+            Flag for placing a booking on hold. The booking will be released if
+            the resume link is not followed within
+
+            the hold period. Please refer to our Hold and Resume documentation.
         email:
           type: string
-          description: Email address for the customer. Must adhere to standard RFC 822
-            email format. Special characters ("<", ">", "(", ")", and "&")
-            entered in this field will be re-encoded.
+          description: >
+            Email address for the customer. Must adhere to standard RFC 822
+            email format. Special characters ("<", ">",
+
+            "(", ")", and "&") entered in this field will be re-encoded.
         phone:
           $ref: "#/components/schemas/PhoneRequest"
         rooms:
@@ -23003,47 +23838,45 @@ components:
             $ref: "#/components/schemas/CreateItineraryRequestRoom"
         payments:
           type: array
-          description: Required if payment information prior to booking was not submitted.
-            If register payments was called prior to this call, do not submit
-            payment information again.
+          description: >
+            Required if payment information prior to booking was not submitted.
+            If register payments was called prior to
+
+            this call, do not submit payment information again.
           items:
             $ref: "#/components/schemas/PaymentRequest"
         affiliate_metadata:
           type: string
-          description: Field that stores up to 256 characters of additional metadata with
-            the itinerary. Will be returned on all retrieve responses for this
-            itinerary. The data must be in the format
-            'key1:value|key2:value|key3:value'. Other Special characters ("<",
-            ">", "(", ")", and "&") entered in this field will be re-encoded.
+          description: >
+            Field that stores up to 256 characters of additional metadata with
+            the itinerary. Will be returned on all
+
+            retrieve responses for this itinerary. The data must be in the
+            format 'key1:value|key2:value|key3:value'.
+
+            Other Special characters ("<", ">", "(", ")", and "&") entered in
+            this field will be re-encoded.
         tax_registration_number:
           type: string
-          description: "The customer's taxpayer identification number that is provided by
-            the government to nationals or resident aliens. This number should
-            be collected from individuals that pay taxes or participate in
-            activities that provide revenue for one or more tax types. Note:
-            This value is only needed from Brazilian and Indian customers."
+          description: >
+            The customer's taxpayer identification number that is provided by
+            the government to nationals or resident
+
+            aliens. This number should be collected from individuals that pay
+            taxes or participate in activities that
+
+            provide revenue for one or more tax types. *Note:* This value is
+            only needed from Brazilian and Indian
+
+            customers.
         traveler_handling_instructions:
           type: string
           description: Custom traveler handling instructions for the hotel. Do not include
             PCI sensitive data, such as credit card numbers, in this field.
         invoicing:
-          type: object
-          properties:
-            company_name:
-              type: string
-              description: The traveler's company name to appear on the invoice.
-            company_address:
-              $ref: "#/components/schemas/Address_1"
-            point_of_sale_display:
-              type: string
-              description: >
-                Provide this when a specific site or branding should be used on
-                the invoice instead of partner name.
-            email:
-              type: string
-              description: Email address to send invoices
-          description: |
-            To be included if invoicing is requested.
+          $ref: "#/components/schemas/Invoicing"
+        supplier_transparency:
+          $ref: "#/components/schemas/SupplierTransparency"
       example:
         affiliate_reference_id: 4480ABC
         hold: false
@@ -23094,6 +23927,23 @@ components:
         traveler_handling_instructions: Please use the card provided for payment. Avoid
           cancelation as this is for a corporate traveler. Contact traveler if
           any issues.
+        supplier_transparency:
+          point_of_sale_display_to_share: Global Travel Site
+          company_name_to_share: Traveler's Company
+          consent_to_share: true
+        invoicing:
+          consent_to_share: true
+          company_name: alphaDemandPartner
+          company_address:
+            line_1: 555 1st St
+            line_2: 10th Floor
+            line_3: Unit 12
+            city: Seattle
+            state_province_code: WA
+            postal_code: "98121"
+            country_code: US
+          email: chucktesta@mydomain.com
+          vat_number: "1234567890"
     PhoneRequest:
       required:
         - country_code
