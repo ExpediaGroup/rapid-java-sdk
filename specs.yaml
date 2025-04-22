@@ -17074,6 +17074,7 @@ paths:
       tags:
         - Content
       summary: Chain Reference ***DEPRECATED***
+      deprecated: true
       description: |
         ***DEPRECATED*** Please use `/references/chains`
         <br>Returns a complete collection of chains recognized by the Rapid API.
@@ -23038,6 +23039,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
         rate:
@@ -23654,6 +23656,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
     ItineraryCreation:
@@ -23739,6 +23742,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
       example:
