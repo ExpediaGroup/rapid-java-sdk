@@ -5,7 +5,7 @@
 <dependency>
     <groupId>com.expediagroup</groupId>
     <artifactId>rapid-sdk</artifactId>
-    <version>5.4.0</version>
+    <version>6.1.1-SNAPSHOT</version>
 </dependency>
 ```
 
