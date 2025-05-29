@@ -12,7 +12,6 @@ on:
       sdk_repo_ref:
         description: |
           Branch or tag to checkout on the `expediagroup-java-sdk` repository.
-          Leave empty to use the default branch (legacy).
         type: string
         default: 'legacy'
 
