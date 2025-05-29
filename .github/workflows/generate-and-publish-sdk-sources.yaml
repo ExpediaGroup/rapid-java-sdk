@@ -12,17 +12,17 @@ on:
       sdk_repo_ref:
         description: |
           Branch or tag to checkout on the `expediagroup-java-sdk` repository.
-          Leave empty to use the default branch.
+          Leave empty to use the default branch (legacy).
         type: string
-        default: ''
+        default: 'legacy'
 
 jobs:
   generate-and-publish-sources:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@v20250415
+    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-full-workflow.yaml@legacy
     secrets: inherit
     with:
       name: rapid
       version: ${{ inputs.version }}
       transformations: "--headers --endpoint /v3 --operationIdsToTags"
       repository: 'ExpediaGroup/rapid-java-sdk'
-      sdk_repo_ref: ${{ inputs.sdk_repo_ref || 'v20250415' }}
+      sdk_repo_ref: ${{ inputs.sdk_repo_ref }}
