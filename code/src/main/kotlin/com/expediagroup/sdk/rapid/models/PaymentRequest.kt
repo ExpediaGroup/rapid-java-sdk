@@ -31,6 +31,7 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.AdditionalHandling
 import com.expediagroup.sdk.rapid.models.BillingContactRequest
 import com.expediagroup.sdk.rapid.models.ThirdPartyAuthRequest
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -49,6 +50,7 @@ import javax.validation.constraints.NotNull
  * @param expirationYear Year the credit card will expire. Required for credit card transactions.
  * @param thirdPartyAuthentication
  * @param enrollmentDate Date the payment account was enrolled in the cardholder's account with the merchant, in ISO 8601 format (YYYY-MM-DD).
+ * @param additionalHandling
  */
 data class PaymentRequest(
     // Identifier for the type of payment. If affiliate_collect, card information is not required as EPS will not be processing the payment. However, billing contact information is still required.
@@ -81,7 +83,10 @@ data class PaymentRequest(
     // Date the payment account was enrolled in the cardholder's account with the merchant, in ISO 8601 format (YYYY-MM-DD).
     @JsonProperty("enrollment_date")
     @field:Valid
-    val enrollmentDate: kotlin.String? = null
+    val enrollmentDate: kotlin.String? = null,
+    @JsonProperty("additional_handling")
+    @field:Valid
+    val additionalHandling: AdditionalHandling? = null
 ) {
     companion object {
         @JvmStatic
@@ -96,7 +101,8 @@ data class PaymentRequest(
         private var expirationMonth: kotlin.String? = null,
         private var expirationYear: kotlin.String? = null,
         private var thirdPartyAuthentication: ThirdPartyAuthRequest? = null,
-        private var enrollmentDate: kotlin.String? = null
+        private var enrollmentDate: kotlin.String? = null,
+        private var additionalHandling: AdditionalHandling? = null
     ) {
         fun type(type: PaymentRequest.Type) = apply { this.type = type }
 
@@ -114,6 +120,8 @@ data class PaymentRequest(
 
         fun enrollmentDate(enrollmentDate: kotlin.String?) = apply { this.enrollmentDate = enrollmentDate }
 
+        fun additionalHandling(additionalHandling: AdditionalHandling?) = apply { this.additionalHandling = additionalHandling }
+
         fun build(): PaymentRequest {
             val instance =
                 PaymentRequest(
@@ -124,7 +132,8 @@ data class PaymentRequest(
                     expirationMonth = expirationMonth,
                     expirationYear = expirationYear,
                     thirdPartyAuthentication = thirdPartyAuthentication,
-                    enrollmentDate = enrollmentDate
+                    enrollmentDate = enrollmentDate,
+                    additionalHandling = additionalHandling
                 )
 
             validate(instance)
@@ -160,7 +169,8 @@ data class PaymentRequest(
             expirationMonth = expirationMonth,
             expirationYear = expirationYear,
             thirdPartyAuthentication = thirdPartyAuthentication,
-            enrollmentDate = enrollmentDate
+            enrollmentDate = enrollmentDate,
+            additionalHandling = additionalHandling
         )
 
     /**
