@@ -3,12 +3,11 @@ name: Release SDK
 on:
   workflow_dispatch:
     inputs:
-      branch:
+      core-ref:
         description: |
-          Branch to release the SDK from.
-          Defaults to the branch the action is being run from.
+          SDK Stack Core branch or ref to use.
         type: string
-        default: ''
+        default: 'legacy'
 
 jobs:
 #  run-examples:
@@ -26,4 +25,4 @@ jobs:
 #    needs: [ run-examples ]
     secrets: inherit
     with:
-      branch: ${{ inputs.branch }}
+      branch: ${{ inputs.core-ref }}
