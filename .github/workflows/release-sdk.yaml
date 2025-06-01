@@ -5,7 +5,7 @@ on:
     inputs:
       core-ref:
         description: |
-          SDK Stack Core branch or ref to use.
+          SDK Stack Core branch or ref to use
         type: string
         default: 'legacy'
 
