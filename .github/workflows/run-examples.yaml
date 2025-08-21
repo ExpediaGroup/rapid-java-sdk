@@ -43,7 +43,7 @@ jobs:
             print(f"version={version}", file=GITHUB_OUTPUT)
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ inputs.jdk }}
           distribution: ${{ inputs.distribution }}
