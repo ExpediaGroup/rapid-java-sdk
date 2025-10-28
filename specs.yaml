@@ -21,6 +21,8 @@ tags:
     description: Retrieve existing itineraries or cancel existing rooms.
   - name: Notifications
     description: Requests test notifications and undelivered notifications.
+  - name: Merchandising
+    description: "Information about campaigns, promotions, and other merchandising opportunities"
 paths:
   /properties/content:
     get:
@@ -552,6 +554,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: false
+                        updated_expedia_collect: true
                       checkin:
                         "24_hour": 24-hour check-in
                         begin_time: 3:00 PM
@@ -568,6 +571,11 @@ paths:
                         min_age: 18
                       checkout:
                         time: 11:00 AM
+                        instructions: "The host requests you complete the following\
+                          \ cleaning tasks before checking out:<br/>Load and start\
+                          \ the dishwasher<br/>Strip any used beds, gather used towels,\
+                          \ and store extra beds<br/>Remove personal items, remove\
+                          \ leftover food and drinks, and take out the trash"
                       fees:
                         mandatory: "<p>You'll be asked to pay the following charges\
                           \ at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort\
@@ -853,6 +861,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: true
+                        updated_expedia_collect: true
                       rank: 99999999
                       checkin:
                         begin_time: 4:00 PM
@@ -877,6 +886,11 @@ paths:
                         min_age: 21
                       checkout:
                         time: 10:00 AM
+                        instructions: "The host requests you complete the following\
+                          \ cleaning tasks before checking out:<br/>Load and start\
+                          \ the dishwasher<br/>Strip any used beds, gather used towels,\
+                          \ and store extra beds<br/>Remove personal items, remove\
+                          \ leftover food and drinks, and take out the trash"
                       fees:
                         traveler_service: "Your credit card statement will show two\
                           \ separate charges, one for the booking amount and property\
@@ -1176,6 +1190,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: false
+                        updated_expedia_collect: true
                       checkin:
                         "24_hour": 24-hour check-in
                         begin_time: 3:00 PM
@@ -1192,6 +1207,11 @@ paths:
                         min_age: 18
                       checkout:
                         time: 11:00 AM
+                        instructions: "The host requests you complete the following\
+                          \ cleaning tasks before checking out:<br/>Load and start\
+                          \ the dishwasher<br/>Strip any used beds, gather used towels,\
+                          \ and store extra beds<br/>Remove personal items, remove\
+                          \ leftover food and drinks, and take out the trash"
                       fees:
                         mandatory: "<p>You'll be asked to pay the following charges\
                           \ at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort\
@@ -1495,6 +1515,7 @@ paths:
                       business_model:
                         expedia_collect: true
                         property_collect: true
+                        updated_expedia_collect: false
                       checkin:
                         "24_hour": 24-hour check-in
                         begin_time: 3:00 PM
@@ -1511,6 +1532,11 @@ paths:
                         min_age: 18
                       checkout:
                         time: 11:00 AM
+                        instructions: "The host requests you complete the following\
+                          \ cleaning tasks before checking out:<br/>Load and start\
+                          \ the dishwasher<br/>Strip any used beds, gather used towels,\
+                          \ and store extra beds<br/>Remove personal items, remove\
+                          \ leftover food and drinks, and take out the trash"
                       fees:
                         mandatory: "<p>You'll be asked to pay the following charges\
                           \ at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort\
@@ -2708,8 +2734,8 @@ paths:
 
         <br>Example of a JSONL file with 2 properties:
         ```
-        {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"supply_source":"expedia"}
-        {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"supply_source":"expedia"}
+        {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false,"updated_expedia_collect":true},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"supply_source":"expedia"}
+        {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true,"updated_expedia_collect":false},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"supply_source":"expedia"}
         ```
       operationId: getPropertyCatalogFile
       parameters:
@@ -3032,8 +3058,8 @@ paths:
 
         <br>Example of a JSONL file with 2 properties:
           ```
-          {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":20,"square_feet":215},"views":{"4146":{"id":"4146","name":"Courtyard view"}},"occupancy":{"max_allowed":{"total":5,"children":2,"adults":4},"age_categories":{"Adult":{"name":"Adult","minimum_age":9}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"AB-012-987-1234-01","chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"spoken_languages":{"vi":{"id":"vi","name":"Vietnamese"}},"multi_unit":true,"payment_registration_recommended":false,"vacation_rental_details": {"registry_number": "Property Registration Number 123456","private_host": "true","property_manager": {"name": "Victor","links": {"image": {"method": "GET","href": "https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg"}}},"rental_agreement": {"links": {"rental_agreement": {"method": "GET","href": "https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf"}}},"house_rules": ["Children welcome","No pets","No smoking","No parties or events"],"amenities": {"4296": {"id": "4296","name": "Furnished balcony or patio"},"2859": {"id": "2859","name": "Private pool"}},"vrbo_srp_id": "123.1234567.5678910","listing_id": "1234567","listing_number": "5678910","listing_source": "HOMEAWAY_US","listing_unit": "/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
-          {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838},"obfuscated_coordinates":{"latitude":28.339303,"longitude":-81.47791},"obfuscation_required":true},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":17},"views":{"4134":{"id":"4134","name":"City view"}},"occupancy":{"max_allowed":{"total":3,"children":2,"adults":3},"age_categories":{"ChildAgeA":{"name":"ChildAgeA","minimum_age":3}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"CD-012-987-1234-02","chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"spoken_languages":{"en":{"id":"en","name":"English"}},"multi_unit":true,"payment_registration_recommended":true,"vacation_rental_details":{"registry_number":"Property Registration Number 123456","private_host":"true","property_manager":{"name":"John Smith","links":{"image":{"method":"GET","href":"https://example.com/profile.jpg"}}},"rental_agreement":{"links":{"rental_agreement":{"method":"GET","href":"https:/example.com/rentalconditions.pdf"}}},"house_rules":["Children welcome","No pets","No smoking","No parties or events"],"amenities":{"2859":{"id":"2859","name":"Private pool"},"4296":{"id":"4296","name":"Furnished balcony or patio"}},"vrbo_srp_id":"123.1234567.5678910","listing_id":"1234567","listing_number":"5678910","listing_source":"HOMEAWAY_US","listing_unit":"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
+          {"property_id":"12345","name":"Test Property Name","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":false,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=12345"},"fr-FR":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=fr-FR&include=address&property_id=12345"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":48382,"overall":"3.1","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"73%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838}},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":false,"updated_expedia_collect":false},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM","instructions":"The host requests you complete the following cleaning tasks before checking out:<br/>Load and start the dishwasher<br/>Strip any used beds, gather used towels, and store extra beds<br/>Remove personal items, remove leftover food and drinks, and take out the trash"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":20,"square_feet":215},"views":{"4146":{"id":"4146","name":"Courtyard view"}},"occupancy":{"max_allowed":{"total":5,"children":2,"adults":4},"age_categories":{"Adult":{"name":"Adult","minimum_age":9}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-19T05:00:00.000Z","updated":"2018-03-22T07:23:14.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"AB-012-987-1234-01","chain":{"id":"-6","name":"Hyatt Hotels"},"brand":{"id":"2209","name":"Hyatt Place"},"spoken_languages":{"vi":{"id":"vi","name":"Vietnamese"}},"multi_unit":true,"payment_registration_recommended":false,"vacation_rental_details": {"registry_number": "Property Registration Number 123456","private_host": "true","property_manager": {"name": "Victor","links": {"image": {"method": "GET","href": "https://test-image/test/test/836f1097-fbcf-43b5-bc02-c8ff6658cb90.c1.jpg"}}},"rental_agreement": {"links": {"rental_agreement": {"method": "GET","href": "https://test-link.test.amazonaws.com/rentalconditions_property_d65e7eb5-4a7c-4a80-a8a3-171999f9f444.pdf"}}},"house_rules": ["Children welcome","No pets","No smoking","No parties or events"],"amenities": {"4296": {"id": "4296","name": "Furnished balcony or patio"},"2859": {"id": "2859","name": "Private pool"}},"vrbo_srp_id": "123.1234567.5678910","listing_id": "1234567","listing_number": "5678910","listing_source": "HOMEAWAY_US","listing_unit": "/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
+          {"property_id":"67890","name":"Test Property Name 2","address":{"line_1":"123 Main St","line_2":"Apt A","city":"Springfield","state_province_code":"MO","state_province_name":"Missouri","postal_code":"65804","country_code":"US","obfuscation_required":true,"localized":{"links":{"es-ES":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=es-ES&include=address&property_id=67890"},"de-DE":{"method":"GET","href":"https://api.ean.com/v3/properties/content?language=de-DE&include=address&property_id=67890"}}}},"ratings":{"property":{"rating":"3.5","type":"Star"},"guest":{"count":7651,"overall":"4.3","cleanliness":"4.2","service":"1.1","comfort":"4.3","condition":"1.6","location":"4.0","neighborhood":"3.4","quality":"3.4","value":"2.2","amenities":"1.4","recommendation_percent":"80%"}},"location":{"coordinates":{"latitude":37.15845,"longitude":-93.26838},"obfuscated_coordinates":{"latitude":28.339303,"longitude":-81.47791},"obfuscation_required":true},"phone":"1-417-862-0153","fax":"1-417-863-7249","category":{"id":"1","name":"Hotel"},"rank":42,"business_model":{"expedia_collect":true,"property_collect":true,"updated_expedia_collect":true},"checkin":{"24_hour":"24-hour check-in","begin_time":"3:00 PM","end_time":"11:00 PM","instructions":"Extra-person charges may apply and vary depending on hotel policy. &lt;br />Government-issued photo identification and a credit card or cash deposit are required at check-in for incidental charges. &lt;br />Special requests are subject to availability upon check-in and may incur additional charges. Special requests cannot be guaranteed. &lt;br />","special_instructions":"There is no front desk at this property. To make arrangements for check-in please contact the property ahead of time using the information on the booking confirmation.","min_age":18},"checkout":{"time":"11:00 AM","instructions":"The host requests you complete the following cleaning tasks before checking out:<br/>Load and start the dishwasher<br/>Strip any used beds, gather used towels, and store extra beds<br/>Remove personal items, remove leftover food and drinks, and take out the trash"},"fees":{"mandatory":"<p>You'll be asked to pay the following charges at the hotel:</p> <ul><li>Deposit: USD 50 per day</li><li>Resort fee: USD 29.12 per accommodation, per night</li></ul> The hotel resort fee includes:<ul><li>Fitness center access</li><li>Internet access</li><li>Phone calls</li><li>Additional inclusions</li></ul> <p>We have included all charges provided to us by the property. However, charges can vary, for example, based on length of stay or the room you book. </p>","optional":"Fee for in-room wireless Internet: USD 15 per hour (rates may vary)</li> <li>Airport shuttle fee: USD 350 per vehicle (one way)</li>           <li>Rollaway bed fee: USD 175 per night</li>"},"policies":{"know_before_you_go":"Reservations are required for massage services and spa treatments. Reservations can be made by contacting the hotel prior to arrival, using the contact information on the booking confirmation. </li><li>Children 11 years old and younger stay free when occupying the parent or guardian's room, using existing bedding. </li><li>Only registered guests are allowed in the guestrooms. </li> <li>Some facilities may have restricted access. Guests can contact the property for details using the contact information on the booking confirmation. </li> </ul>"},"attributes":{"general":{"2549":{"id":"2549","name":"No elevators"},"3357":{"id":"3357","name":"Caters to adults only"}},"pets":{"51":{"id":"51","name":"Pets allowed"},"2809":{"id":"2809","name":"Dogs only"},"3321":{"id":"3321","name":"Pet maximum weight in kg is - 24","value":24}}},"amenities":{"9":{"id":"9","name":"Fitness facilities"},"2820":{"id":"2820","name":"Number of indoor pools - 10","value":10}},"images":[{"caption":"Featured Image","hero_image":true,"category":3,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}}}],"onsite_payments":{"currency":"USD","types":{"171":{"id":"171","name":"American Express"}}},"rooms":{"224829":{"id":"224829","name":"Single Room","descriptions":{"overview":"<strong>2 Twin Beds</strong><br />269-sq-foot (25-sq-meter) room with mountain views<br /><br /><b>Internet</b> - Free WiFi <br /> <b>Entertainment</b> - Flat-screen TV with cable channels<br /><b>Food & Drink</b> - Refrigerator, coffee/tea maker,  room service, and free bottled water<br /><b>Sleep</b> - Premium bedding <br /><b>Bathroom</b> - Private bathroom, shower, bathrobes, and free toiletries<br /><b>Practical</b> - Safe and desk; cribs/infant beds available on request<br /><b>Comfort</b> - Climate-controlled air conditioning and daily housekeeping<br />Non-Smoking<br />"},"amenities":{"130":{"id":"130","name":"Refrigerator"},"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"}},"images":[{"hero_image":true,"category":21001,"links":{"70px":{"method":"GET","href":"https://i.travelapi.com/hotels/1000000/20000/15300/15237/bef1b976_t.jpg"}},"caption":"Guestroom"}],"bed_groups":{"37321":{"id":"37321","description":"1 King Bed","configuration":[{"type":"KingBed","size":"King","quantity":1}]}},"area":{"square_meters":17},"views":{"4134":{"id":"4134","name":"City view"}},"occupancy":{"max_allowed":{"total":3,"children":2,"adults":3},"age_categories":{"ChildAgeA":{"name":"ChildAgeA","minimum_age":3}}}}},"rates":{"333abc":{"id":"333abc","amenities":{"1234":{"id":"1234","name":"Test Amenity - 200","value":"200"},"2104":{"id":"2104","name":"Full Breakfast"}},"special_offer_description":"<strong>Breakfast for 2</strong> - Rate includes the following:\r\n<ul><li>Accommodations as selected</li>\r\n<li>Breakfast in hotel restaurant for up to 2 adults and children 12 years old and under registered in the same room</li>\r\n</ul><em>Must book this rate plan to receive benefits. Details provided at check-in. Taxes and gratuity may not be included. No refunds for any unused portion of offer. Offer subject to availability. Offer is not valid with groups/conventions and may not be combined with other promotional offers. Other restrictions and blackout dates may apply.</em>\r\n"}},"dates":{"added":"1998-07-20T05:00:00.000Z","updated":"2018-03-22T13:33:17.000Z"},"descriptions":{"amenities":"Don't miss out on the many recreational opportunities, including an outdoor pool, a sauna, and a fitness center. Additional features at this hotel include complimentary wireless Internet access, concierge services, and an arcade/game room.","dining":"Grab a bite at one of the hotel's 3 restaurants, or stay in and take advantage of 24-hour room service. Quench your thirst with your favorite drink at a bar/lounge. Buffet breakfasts are available daily for a fee.","renovations":"During renovations, the hotel will make every effort to minimize noise and disturbance.  The property will be renovating from 08 May 2017 to 18 May 2017 (completion date subject to change). The following areas are affected:  <ul><li>Fitness facilities</li></ul>","national_ratings":"For the benefit of our customers, we have provided a rating based on our rating system.","business_amenities":"Featured amenities include complimentary wired Internet access, a 24-hour business center, and limo/town car service. Event facilities at this hotel consist of a conference center and meeting rooms. Free self parking is available onsite.","rooms":"Make yourself at home in one of the 334 air-conditioned rooms featuring LCD televisions. Complimentary wired and wireless Internet access keeps you connected, and satellite programming provides entertainment. Private bathrooms with separate bathtubs and showers feature deep soaking bathtubs and complimentary toiletries. Conveniences include phones, as well as safes and desks.","attractions":"Distances are calculated in a straight line from the property's location to the point of interest or attraction, and may not reflect actual travel distance. <br /><br /> Distances are displayed to the nearest 0.1 mile and kilometer. <p>Sogo Department Store - 0.7 km / 0.4 mi <br />National Museum of Natural Science - 1.1 km / 0.7 mi <br />Shr-Hwa International Tower - 1.4 km / 0.8 mi <br />Shinkong Mitsukoshi Department Store - 1.5 km / 0.9 mi <br />Taichung Metropolitan Opera House - 1.7 km / 1 mi <br />Tiger City Mall - 1.8 km / 1.1 mi <br />Maple Garden Park - 1.9 km / 1.2 mi <br />National Museum of Fine Arts - 2.1 km / 1.3 mi <br />Feng Chia University - 2.4 km / 1.5 mi <br />Bao An Temple - 2.5 km / 1.6 mi <br />Fengjia Night Market - 2.5 km / 1.6 mi <br />Zhonghua Night Market - 2.7 km / 1.7 mi <br />Chonglun Park - 2.9 km / 1.8 mi <br />Wan He Temple - 2.9 km / 1.8 mi <br />Chungyo Department Store - 3.1 km / 1.9 mi <br /></p><p>The nearest airports are:<br />Taichung (RMQ) - 12 km / 7.5 mi<br />Taipei (TPE-Taoyuan Intl.) - 118.3 km / 73.5 mi<br />Taipei (TSA-Songshan) - 135.5 km / 84.2 mi<br /></p><p></p>","location":"This 4-star hotel is within close proximity of Shr-Hwa International Tower and Shinkong Mitsukoshi Department Store.  A stay at Tempus Hotel Taichung places you in the heart of Taichung, convenient to Sogo Department Store and National Museum of Natural Science.","headline":"Near National Museum of Natural Science","general":"General description"},"statistics":{"52":{"id":"52","name":"Total number of rooms - 820","value":"820"},"54":{"id":"54","name":"Number of floors - 38","value":"38"}},"airports":{"preferred":{"iata_airport_code":"SGF"}},"themes":{"2337":{"id":"2337","name":"Luxury Hotel"},"2341":{"id":"2341","name":"Spa Hotel"}},"all_inclusive":{"all_rate_plans":true,"some_rate_plans":false,"details":"<p>This resort is all-inclusive. Onsite food and beverages are included in the room price (some restrictions may apply). </p><p><strong>Activities and facilities/equipment</strong><br />Land activities<ul><li>Fitness facilities</li></ul><br />Lessons/classes/games <ul><li>Pilates</li><li>Yoga</li></ul></p><p><strong>Entertainment</strong><ul><li>Onsite entertainment and activities</li><li>Onsite live performances</li></ul></p>"},"tax_id":"CD-012-987-1234-02","chain":{"id":"-5","name":"Hilton Worldwide"},"brand":{"id":"358","name":"Hampton Inn"},"spoken_languages":{"en":{"id":"en","name":"English"}},"multi_unit":true,"payment_registration_recommended":true,"vacation_rental_details":{"registry_number":"Property Registration Number 123456","private_host":"true","property_manager":{"name":"John Smith","links":{"image":{"method":"GET","href":"https://example.com/profile.jpg"}}},"rental_agreement":{"links":{"rental_agreement":{"method":"GET","href":"https:/example.com/rentalconditions.pdf"}}},"house_rules":["Children welcome","No pets","No smoking","No parties or events"],"amenities":{"2859":{"id":"2859","name":"Private pool"},"4296":{"id":"4296","name":"Furnished balcony or patio"}},"vrbo_srp_id":"123.1234567.5678910","listing_id":"1234567","listing_number":"5678910","listing_source":"HOMEAWAY_US","listing_unit":"/units/0000/32d82dfa-1a48-45d6-9132-49fdbf1bfc60"},"supply_source":"vrbo","registry_number":"Property Registration Number 123456"}
           ```
       operationId: getPropertyContentFile
       parameters:
@@ -4886,6 +4912,12 @@ paths:
           schema:
             type: string
           example: gzip
+        - name: Campaign-Id
+          in: header
+          description: |
+            The Merchandising `Campaign-Id` that was involved in the traveler shopping for these properties.
+          schema:
+            type: string
         - name: User-Agent
           in: header
           description: |
@@ -4934,7 +4966,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2025-06-01'
+          example: '2026-01-01'
         - name: checkout
           in: query
           description: |
@@ -4942,7 +4974,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2025-06-03'
+          example: '2026-01-03'
         - name: currency
           in: query
           description: |
@@ -5100,6 +5132,7 @@ paths:
             * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC).
             * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies.
             * `loyalty` - Filters results to only show rates that are eligible for loyalty points.
+            * `deal` - Filters results to only show rates that have a promotion that is of the type deal.
           style: form
           explode: true
           schema:
@@ -5110,6 +5143,8 @@ paths:
                 - refundable
                 - expedia_collect
                 - property_collect
+                - loyalty
+                - deal
           examples:
             Optional:
               value: null
@@ -5124,6 +5159,7 @@ paths:
             * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response.
             * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request.
             * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.
+            * `rooms.rates.marketing_fee_details` - Displays a more granular view of marketing fees in the response.
           schema:
             type: array
             items:
@@ -5133,6 +5169,7 @@ paths:
                 - sale_scenario.mobile_promotion
                 - rooms.rates.marketing_fee_incentives
                 - rooms.rates.current_refundability
+                - rooms.rates.marketing_fee_details
           examples:
             Optional:
               value: null
@@ -5361,10 +5398,10 @@ paths:
                                         currency: USD
                                     marketing_fee:
                                       billable_currency:
-                                        value: "15.00"
+                                        value: "18.00"
                                         currency: CAD
                                       request_currency:
-                                        value: "10.00"
+                                        value: "12.00"
                                         currency: USD
                                     gross_profit:
                                       billable_currency:
@@ -5408,6 +5445,35 @@ paths:
                                         currency: CAD
                                       request_currency:
                                         value: "3.00"
+                                        currency: USD
+                                  marketing_fee_details:
+                                    base:
+                                      billable_currency:
+                                        value: "3.50"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "2.33"
+                                        currency: USD
+                                    overrides:
+                                      billable_currency:
+                                        value: "10.00"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "6.67"
+                                        currency: USD
+                                    incentives:
+                                      billable_currency:
+                                        value: "1.50"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "1.00"
+                                        currency: USD
+                                    other:
+                                      billable_currency:
+                                        value: "3.00"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "2.00"
                                         currency: USD
                                 "1-7,10":
                                   nightly:
@@ -5498,6 +5564,28 @@ paths:
                                         currency: CAD
                                       request_currency:
                                         value: "3.00"
+                                        currency: USD
+                                  marketing_fee_details:
+                                    base:
+                                      billable_currency:
+                                        value: "3.50"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "2.33"
+                                        currency: USD
+                                    overrides:
+                                      billable_currency:
+                                        value: "10.00"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "6.67"
+                                        currency: USD
+                                    incentives:
+                                      billable_currency:
+                                        value: "1.50"
+                                        currency: CAD
+                                      request_currency:
+                                        value: "1.00"
                                         currency: USD
                               promotions:
                                 value_adds:
@@ -6114,7 +6202,7 @@ paths:
             If specified must also specify `checkout`.
           schema:
             type: string
-          example: '2025-06-01'
+          example: '2026-01-01'
         - name: checkout
           in: query
           description: |
@@ -6123,7 +6211,7 @@ paths:
             If specified must also specify `checkin`.<br>
           schema:
             type: string
-          example: '2025-06-03'
+          example: '2026-01-03'
         - name: exclusion
           in: query
           description: |
@@ -6160,6 +6248,7 @@ paths:
             * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC).
             * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies.
             * `loyalty` - Filters results to only show rates that are eligible for loyalty points.
+            * `deal` - Filters results to only show rates that have a promotion that is of the type deal.
           style: form
           explode: true
           schema:
@@ -6170,6 +6259,8 @@ paths:
                 - refundable
                 - expedia_collect
                 - property_collect
+                - loyalty
+                - deal
           examples:
             Optional:
               value: null
@@ -7146,10 +7237,10 @@ paths:
                               currency: USD
                           marketing_fee:
                             billable_currency:
-                              value: "215.00"
-                              currency: USD
+                              value: "18.00"
+                              currency: CAD
                             request_currency:
-                              value: "215.00"
+                              value: "12.00"
                               currency: USD
                           gross_profit:
                             billable_currency:
@@ -7179,6 +7270,35 @@ paths:
                               currency: EUR
                             request_currency:
                               value: "10.00"
+                              currency: USD
+                        marketing_fee_details:
+                          base:
+                            billable_currency:
+                              value: "3.50"
+                              currency: CAD
+                            request_currency:
+                              value: "2.33"
+                              currency: USD
+                          overrides:
+                            billable_currency:
+                              value: "10.00"
+                              currency: CAD
+                            request_currency:
+                              value: "6.67"
+                              currency: USD
+                          incentives:
+                            billable_currency:
+                              value: "1.50"
+                              currency: CAD
+                            request_currency:
+                              value: "1.00"
+                              currency: USD
+                          other:
+                            billable_currency:
+                              value: "3.00"
+                              currency: CAD
+                            request_currency:
+                              value: "2.00"
                               currency: USD
                     links:
                       additional_rates:
@@ -7779,7 +7899,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2025-06-15'
+          example: '2026-01-15'
         - name: end_date
           in: query
           description: |
@@ -7788,7 +7908,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2025-12-17'
+          example: '2026-07-17'
       responses:
         "200":
           description: OK
@@ -8489,14 +8609,15 @@ paths:
               value: test@example.com
         - name: include
           in: query
-          description: "Options for which information to return in the response. The\
-          \ value must be lower case.\n* `history` - Include itinerary history, showing\
-          \ details of the changes made to this itinerary. Changes from the property/supplier\
-          \ have an event_source equal to `other` in the response.  \n* `history_v2`\
-          \ - Include itinerary history, showing details of the changes made to this\
-          \ itinerary. Changes from the property/supplier have an event_source equal\
-          \ to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview)\
-          \ for details.\n"
+          description: |
+            Options for which information to return in the response. The value must be lower case.
+            * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes
+              from the property/supplier have an event_source equal to `other` in the response.
+            * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes
+              from the property/supplier have an event_source equal to `supplier` in the response. See
+              [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview)
+              for details.
+            * `marketing_fee_details` - Displays a more granular view of marketing fees in the response.
           required: false
           schema:
             type: array
@@ -8504,6 +8625,8 @@ paths:
               type: string
               enum:
                 - history
+                - history_v2
+                - marketing_fee_details
           examples:
             Optional:
               value: null
@@ -8705,7 +8828,7 @@ paths:
                           property:
                             method: GET
                             href: https://www.example.com?key=123abd456
-                      travel_purpose: leisure
+                      travel_purpose: business
                       trader_information:
                         traders:
                           - name: Test Property Name
@@ -8723,6 +8846,223 @@ paths:
                               The right of withdrawal under European consumer law does not apply when you book
                               accommodation. Supplier cancellation policy will apply
                         terms_and_conditions: https://forever.travel-assets.com/flex/flexmanager/mediaasset/618796-0_2-UnitedKingdom_en.pdf
+                      supplier_transparency:
+                        point_of_sale_display_to_share: Global Travel Site
+                        company_name_to_share: Traveler's Company
+                        consent_to_share: true
+                      invoicing:
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        point_of_sale_display: Global Travel Site
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
+                Itineraries with Property Collect:
+                  value:
+                    - itinerary_id: "8999989898988"
+                      property_id: "8150374"
+                      links:
+                        cancel:
+                          method: DELETE
+                          href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                        non_vat_expedia_invoice:
+                          method: GET
+                          href: /v3/itineraries/8999989898988/invoice?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      email: smith@example.com
+                      phone:
+                        country_code: "1"
+                        area_code: "487"
+                        number: "5550077"
+                      rooms:
+                        - id: "926784314"
+                          confirmation_id:
+                            expedia: "1234567890"
+                            property: BEF23123AA
+                          bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                          checkin: '2018-09-21'
+                          checkout: '2018-09-23'
+                          number_of_adults: 2
+                          child_ages:
+                            - 2
+                            - 3
+                          given_name: Givenne
+                          family_name: Nameo
+                          status: booked
+                          special_request: Please give me extra towels.
+                          smoking: false
+                          rate:
+                            id: "035943984"
+                            merchant_of_record: property
+                            refundable: true
+                            cancel_refund:
+                              amount: -65.98
+                              currency: USD
+                            amenities:
+                              - "12345"
+                              - "678"
+                              - "9999"
+                            promotions:
+                              value_adds:
+                                "123abc":
+                                  id: 123abc
+                                  description: 10 USD credit on activities and sports
+                                    for your stay.
+                                "3x4mp13":
+                                  id: 3x4mp13
+                                  description: 20% discount on theme park tickets purchased
+                                    through the concierge desk.
+                            cancel_penalties:
+                              - start: '2018-01-01T01:01:01.000-08:00'
+                                end: '2018-12-12T01:01:01.000-08:00'
+                                amount: "250.75"
+                                currency: USD
+                            nonrefundable_date_ranges:
+                              - start: '2022-02-02'
+                                end: '2022-02-02'
+                            deposits:
+                              - currency: USD
+                                value: "220.75"
+                                due: '2018-12-12T01:01:01.000-08:00'
+                            pricing:
+                              nightly:
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                                - - type: base_rate
+                                    value: "111.23"
+                                    currency: USD
+                                  - type: sales_tax
+                                    value: "11.12"
+                                    currency: USD
+                              stay:
+                                - type: base_rate
+                                  value: "123.45"
+                                  currency: USD
+                              totals:
+                                inclusive:
+                                  billable_currency:
+                                    value: "368.15"
+                                    currency: USD
+                                exclusive:
+                                  billable_currency:
+                                    value: "345.91"
+                                    currency: USD
+                                marketing_fee:
+                                  billable_currency:
+                                    value: "7.75"
+                                    currency: USD
+                                property_fees:
+                                  billable_currency:
+                                    value: "36.95"
+                                    currency: USD
+                              fees:
+                                mandatory_fee:
+                                  billable_currency:
+                                    value: "5.00"
+                                    currency: USD
+                                resort_fee:
+                                  billable_currency:
+                                    value: "20.00"
+                                    currency: USD
+                                mandatory_tax:
+                                  billable_currency:
+                                    value: "11.95"
+                                    currency: USD
+                          links:
+                            cancel:
+                              method: DELETE
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                            change:
+                              method: PUT
+                              href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                            shop_for_change:
+                              method: GET
+                              href: /v3/properties/8150374/availability?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      adjustment:
+                        value: -100.0
+                        type: base_rate
+                        currency: USD
+                      creation_date_time: '2017-08-17T13:31:15.523Z'
+                      affiliate_reference_id: 4480ABC
+                      affiliate_metadata: This booking was made with EPS.
+                      conversations:
+                        links:
+                          property:
+                            method: GET
+                            href: https://www.example.com?key=123abd456
+                      travel_purpose: business
+                      trader_information:
+                        traders:
+                          - name: Test Property Name
+                            address:
+                              line_1: 123 Main St
+                              city: Springfield
+                              state_province_code: MO
+                              postal_code: "65804"
+                              country_code: US
+                            business_register_name: A Real Registry
+                            business_register_number: 72973910d
+                            self_certification: true
+                            phone: 1-417-555-1212
+                            right_to_withdraw_message: |
+                              The right of withdrawal under European consumer law does not apply when you book
+                              accommodation. Supplier cancellation policy will apply
+                        terms_and_conditions: https://forever.travel-assets.com/flex/flexmanager/mediaasset/618796-0_2-UnitedKingdom_en.pdf
+                      supplier_transparency:
+                        point_of_sale_display_to_share: Global Travel Site
+                        company_name_to_share: Traveler's Company
+                        consent_to_share: true
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: '2024-01-01'
+                        payment_allowable_period_end: '2025-08-01'
+                      invoicing:
+                        consent_to_share: true
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
                 Itinerary with History and Change - Extend Stay:
                   value:
                     - itinerary_id: "8999989898988"
@@ -8865,6 +9205,41 @@ paths:
                             method: GET
                             href: https://www.example.com?key=123abd456
                       travel_purpose: unspecified
+                      supplier_transparency:
+                        point_of_sale_display_to_share: Global Travel Site
+                        company_name_to_share: Traveler's Company
+                        consent_to_share: true
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: '2024-01-01'
+                        payment_allowable_period_end: '2025-08-01'
+                      invoicing:
+                        consent_to_share: true
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
                       itinerary_history:
                         - history_id: "802737048"
                           event_timestamp: '2017-09-17T13:31:15.523Z'
@@ -9196,6 +9571,41 @@ paths:
                           method: GET
                           href: https://www.example.com?key=123abd456
                     travel_purpose: unspecified
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
+                    additional_handling:
+                      authorized_expenses: total_plus_incidentals
+                      specified_incidental_expenses:
+                        - breakfast
+                        - internet
+                      total_charges_allowed:
+                        value: "875.00"
+                        currency: USD
+                      is_cvc_required: true
+                      authorizing_company: Conferma
+                      card_contact:
+                        email: chucktesta@mydomain.com
+                        phone:
+                          country_code: "1"
+                          area_code: "555"
+                          number: "5555555"
+                      payment_allowable_period_start: '2024-01-01'
+                      payment_allowable_period_end: '2025-08-01'
+                    invoicing:
+                      consent_to_share: true
+                      company_name: alphaDemandPartner
+                      company_address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                      email: chucktesta@mydomain.com
+                      vat_number: "1234567890"
                     itinerary_history:
                       - history_id: "802737048"
                         event_timestamp: '2017-09-17T13:31:15.523Z'
@@ -9567,7 +9977,38 @@ paths:
                           property:
                             method: GET
                             href: https://www.example.com?key=123abd456
-                      travel_purpose: leisure
+                      travel_purpose: business
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: '2024-01-01'
+                        payment_allowable_period_end: '2025-08-01'
+                      invoicing:
+                        consent_to_share: true
+                        company_name: alphaDemandPartner
+                        company_address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                        email: chucktesta@mydomain.com
+                        vat_number: "1234567890"
                       trader_information:
                         traders:
                           - name: Test Property Name
@@ -10526,6 +10967,126 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CreateItineraryRequest'
+            examples:
+              Create Booking with Credit Card:
+                value:
+                  affiliate_reference_id: 4480ABC
+                  hold: false
+                  email: john@example.com
+                  phone:
+                    country_code: "1"
+                    area_code: "487"
+                    number: "5550077"
+                  rooms:
+                    - given_name: John
+                      family_name: Smith
+                      smoking: false
+                      special_request: Top floor or away from street please
+                      loyalty_id: ABC123
+                  payments:
+                    - type: customer_card
+                      number: "4111111111111111"
+                      security_code: "123"
+                      expiration_month: "08"
+                      expiration_year: "2025"
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      enrollment_date: '2018-09-15'
+                      third_party_authentication:
+                        cavv: jELUbgG+Tgj0AREBDMLeCad+oIs=
+                        eci: "05"
+                        three_ds_version: 2.2.0
+                        ds_transaction_id: ac01cc2b-c1a1-4981-8c6f-400d4eec88de
+                        pa_res_status: "Y"
+                        ve_res_status: C
+                        xid: 47133847-13be-4ae3-9be9-e4053b9c83c0
+                        cavv_algorithm: "3"
+                        ucaf_indicator: "0"
+                  affiliate_metadata: data_point_1:123|data_point2:This is data.
+                  tax_registration_number: "12345678910"
+                  traveler_handling_instructions: Please use the card provided for
+                    payment. Avoid cancelation as this is for a corporate traveler.
+                    Contact traveler if any issues.
+                  supplier_transparency:
+                    point_of_sale_display_to_share: Global Travel Site
+                    company_name_to_share: Traveler's Company
+                    consent_to_share: true
+              Create Booking with Virtual Card:
+                value:
+                  affiliate_reference_id: 4480ABC
+                  hold: false
+                  email: john@example.com
+                  phone:
+                    country_code: "1"
+                    area_code: "487"
+                    number: "5550077"
+                  rooms:
+                    - given_name: John
+                      family_name: Smith
+                      smoking: false
+                      special_request: Top floor or away from street please
+                      loyalty_id: ABC123
+                  payments:
+                    - type: virtual_card
+                      number: "4111111111111111"
+                      security_code: "123"
+                      expiration_month: "08"
+                      expiration_year: "2025"
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      additional_handling:
+                        authorized_expenses: total_plus_incidentals
+                        specified_incidental_expenses:
+                          - breakfast
+                          - internet
+                        total_charges_allowed:
+                          value: "875.00"
+                          currency: USD
+                        is_cvc_required: true
+                        authorizing_company: Conferma
+                        card_contact:
+                          email: chucktesta@mydomain.com
+                          phone:
+                            country_code: "1"
+                            area_code: "555"
+                            number: "5555555"
+                        payment_allowable_period_start: '2024-01-01'
+                        payment_allowable_period_end: '2025-08-01'
+                  invoicing:
+                    consent_to_share: true
+                    company_name: alphaDemandPartner
+                    company_address:
+                      line_1: 555 1st St
+                      line_2: 10th Floor
+                      line_3: Unit 12
+                      city: Seattle
+                      state_province_code: WA
+                      postal_code: "98121"
+                      country_code: US
+                    email: chucktesta@mydomain.com
+                    vat_number: "1234567890"
+                  supplier_transparency:
+                    point_of_sale_display_to_share: Global Travel Site
+                    company_name_to_share: Traveler's Company
+                    consent_to_share: true
         required: true
       responses:
         "201":
@@ -11005,14 +11566,15 @@ paths:
               value: test@example.com
         - name: include
           in: query
-          description: "Options for which information to return in the response. The\
-          \ value must be lower case.\n* `history` - Include itinerary history, showing\
-          \ details of the changes made to this itinerary. Changes from the property/supplier\
-          \ have an event_source equal to `other` in the response.  \n* `history_v2`\
-          \ - Include itinerary history, showing details of the changes made to this\
-          \ itinerary. Changes from the property/supplier have an event_source equal\
-          \ to `supplier` in the response. See the [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview)\
-          \ for details.\n"
+          description: |
+            Options for which information to return in the response. The value must be lower case.
+            * `history` - Include itinerary history, showing details of the changes made to this itinerary. Changes
+              from the property/supplier have an event_source equal to `other` in the response.
+            * `history_v2` - Include itinerary history, showing details of the changes made to this itinerary. Changes
+              from the property/supplier have an event_source equal to `supplier` in the response. See
+              [Itinerary history](https://developers.expediagroup.com/docs/rapid/lodging/manage-booking/itinerary-history#overview)
+              for details.
+            * `marketing_fee_details` - Displays a more granular view of marketing fees in the response.
           required: false
           schema:
             type: array
@@ -11020,6 +11582,8 @@ paths:
               type: string
               enum:
                 - history
+                - history_v2
+                - marketing_fee_details
           examples:
             Optional:
               value: null
@@ -11217,7 +11781,205 @@ paths:
                         property:
                           method: GET
                           href: https://www.example.com?key=123abd456
-                    travel_purpose: leisure
+                    travel_purpose: business
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
+                    invoicing:
+                      company_name: alphaDemandPartner
+                      company_address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                      point_of_sale_display: Global Travel Site
+                      email: chucktesta@mydomain.com
+                      vat_number: "1234567890"
+                Itinerary No History with Property Collect:
+                  value:
+                    itinerary_id: "8999989898988"
+                    property_id: "8150374"
+                    links:
+                      cancel:
+                        method: DELETE
+                        href: /v3/itineraries/8999989898988?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    email: smith@example.com
+                    phone:
+                      country_code: "1"
+                      area_code: "487"
+                      number: "5550077"
+                    rooms:
+                      - id: "926784314"
+                        confirmation_id:
+                          expedia: "1234567890"
+                          property: BEF23123AA
+                        bed_group_id: d395b56d-d31d-4a84-ad2b-66820b1d48e2
+                        checkin: '2018-09-21'
+                        checkout: '2018-09-23'
+                        number_of_adults: 2
+                        child_ages:
+                          - 2
+                          - 3
+                        given_name: Givenne
+                        family_name: Nameo
+                        status: booked
+                        special_request: Please give me extra towels.
+                        smoking: false
+                        loyalty_id: ABC123
+                        rate:
+                          id: "035943984"
+                          merchant_of_record: expedia
+                          refundable: true
+                          cancel_refund:
+                            amount: -65.98
+                            currency: USD
+                          amenities:
+                            - "12345"
+                            - "678"
+                            - "9999"
+                          promotions:
+                            value_adds:
+                              "123abc":
+                                id: 123abc
+                                description: 10 USD credit on activities and sports
+                                  for your stay.
+                              "3x4mp13":
+                                id: 3x4mp13
+                                description: 20% discount on theme park tickets purchased
+                                  through the concierge desk.
+                          cancel_penalties:
+                            - start: '2018-01-01T01:01:01.000-08:00'
+                              end: '2018-12-12T01:01:01.000-08:00'
+                              amount: "250.75"
+                              currency: USD
+                          nonrefundable_date_ranges:
+                            - start: '2022-02-02'
+                              end: '2022-02-02'
+                          deposits:
+                            - currency: USD
+                              value: "220.75"
+                              due: '2018-12-12T01:01:01.000-08:00'
+                          pricing:
+                            nightly:
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                              - - type: base_rate
+                                  value: "111.23"
+                                  currency: USD
+                                - type: sales_tax
+                                  value: "11.12"
+                                  currency: USD
+                            stay:
+                              - type: base_rate
+                                value: "123.45"
+                                currency: USD
+                            totals:
+                              inclusive:
+                                billable_currency:
+                                  value: "368.15"
+                                  currency: USD
+                              exclusive:
+                                billable_currency:
+                                  value: "345.91"
+                                  currency: USD
+                              marketing_fee:
+                                billable_currency:
+                                  value: "7.75"
+                                  currency: USD
+                              property_fees:
+                                billable_currency:
+                                  value: "36.95"
+                                  currency: USD
+                            fees:
+                              mandatory_fee:
+                                billable_currency:
+                                  value: "5.00"
+                                  currency: USD
+                              resort_fee:
+                                billable_currency:
+                                  value: "20.00"
+                                  currency: USD
+                              mandatory_tax:
+                                billable_currency:
+                                  value: "11.95"
+                                  currency: USD
+                        links:
+                          cancel:
+                            method: DELETE
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          change:
+                            method: PUT
+                            href: /v3/itineraries/8999989898988/rooms/d08572fc-82d2-4d5d-ad30-60f5be7fb53e?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                          shop_for_change:
+                            method: GET
+                            href: /v3/properties/8150374/availability?token=MY5S3j36cOcLfLBZjPYQ1abhfc8CqmjmFVzkk7euvWaunE57LLeDgaxm516m
+                    billing_contact:
+                      given_name: John
+                      family_name: Smith
+                      address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                    adjustment:
+                      value: -100.0
+                      type: base_rate
+                      currency: USD
+                    creation_date_time: '2017-08-17T13:31:15.523Z'
+                    affiliate_reference_id: 4480ABC
+                    affiliate_metadata: This booking was made with EPS.
+                    conversations:
+                      links:
+                        property:
+                          method: GET
+                          href: https://www.example.com?key=123abd456
+                    travel_purpose: business
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
+                    additional_handling:
+                      authorized_expenses: total_plus_incidentals
+                      specified_incidental_expenses:
+                        - breakfast
+                        - internet
+                      total_charges_allowed:
+                        value: "875.00"
+                        currency: USD
+                      is_cvc_required: true
+                      authorizing_company: Conferma
+                      card_contact:
+                        email: chucktesta@mydomain.com
+                        phone:
+                          country_code: "1"
+                          area_code: "555"
+                          number: "5555555"
+                      payment_allowable_period_start: '2024-01-01'
+                      payment_allowable_period_end: '2025-08-01'
+                    invoicing:
+                      consent_to_share: true
+                      company_name: alphaDemandPartner
+                      company_address:
+                        line_1: 555 1st St
+                        line_2: 10th Floor
+                        line_3: Unit 12
+                        city: Seattle
+                        state_province_code: WA
+                        postal_code: "98121"
+                        country_code: US
+                      email: chucktesta@mydomain.com
+                      vat_number: "1234567890"
                 Itinerary with History:
                   value:
                     itinerary_id: "8999989898988"
@@ -11363,6 +12125,10 @@ paths:
                           method: GET
                           href: https://www.example.com?key=123abd456
                     travel_purpose: unspecified
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
                     itinerary_history:
                       - history_id: "802737048"
                         event_timestamp: '2017-09-17T13:31:15.523Z'
@@ -11694,6 +12460,10 @@ paths:
                           method: GET
                           href: https://www.example.com?key=123abd456
                     travel_purpose: unspecified
+                    supplier_transparency:
+                      point_of_sale_display_to_share: Global Travel Site
+                      company_name_to_share: Traveler's Company
+                      consent_to_share: true
                     itinerary_history:
                       - history_id: "802737048"
                         event_timestamp: '2017-09-17T13:31:15.523Z'
@@ -12059,7 +12829,7 @@ paths:
                         property:
                           method: GET
                           href: https://www.example.com?key=123abd456
-                    travel_purpose: leisure
+                    travel_purpose: business
                     impacted_fields:
                       - rooms.rate.cancel_refund
                       - rooms.rate.refundable
@@ -16426,7 +17196,6 @@ paths:
       tags:
         - Content
       summary: Chain Reference ***DEPRECATED***
-      deprecated: true
       description: |
         ***DEPRECATED*** Please use `/references/chains`
         <br>Returns a complete collection of chains recognized by the Rapid API.
@@ -20152,6 +20921,1242 @@ paths:
                         type: path
       security:
         - rapidAuth: []
+  /campaigns:
+    get:
+      tags:
+        - Merchandising
+      summary: Campaigns Search
+      description: |
+        Search for campaigns
+      operationId: getCampaigns
+      parameters:
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format that the client would like to receive back. This must be `application/json`.
+          required: true
+          schema:
+            type: string
+          example: application/json
+        - name: Accept-Encoding
+          in: header
+          description: |
+            Specifies the response encoding that the client would like to receive back. This must be `gzip`.
+          required: true
+          schema:
+            type: string
+          example: gzip
+        - name: User-Agent
+          in: header
+          description: |
+            The `User-Agent` header string from the customer's request, as captured by your integration. If you are
+            building an application then the `User-Agent` value should be `{app name}/{app version}`.
+          required: true
+          schema:
+            type: string
+          example: TravelNow/3.30.112
+        - name: Customer-Session-Id
+          in: header
+          description: |
+            Insert your own unique value for each user session, beginning with the first API call. Continue to pass the
+            same value for each subsequent API call during the user's session, using a new value for every new customer
+            session.<br>
+            Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it
+            explicitly links together request paths for individual user's session.
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: |
+            Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit
+            language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes.
+            <br>**Currently only `en-US` is supported.**
+            <br><br>Reference:
+            * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/)
+          required: true
+          schema:
+            type: string
+          examples:
+            English:
+              value: en-US
+        - name: blockout_dates
+          in: query
+          description: |
+            Specify restrictions to blockout dates.  If this parameter is not supplied, campaigns with and without
+            blockout dates will be included.
+            * `true` - Include only campaigns that have blockout dates.
+            * `false` - Do not include campaigns that have blockout dates.
+          schema:
+            type: boolean
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: false
+        - name: bookable_end
+          in: query
+          description: Search for all campaigns with a `bookable_end` date equal to
+            or before the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-11-30'
+        - name: bookable_start
+          in: query
+          description: Search for all campaigns with a `bookable_start` date equal to
+            or after the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-10-01'
+        - name: lifetime
+          in: query
+          description: Search for campaigns that match the lifetime type.
+          schema:
+            type: string
+            enum:
+              - limited_time_offer
+              - evergreen
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: limited_time_offer
+        - name: campaign_id
+          in: query
+          description: |
+            Search for campaigns with matching `id` values. You can provide 0 to 250 `id` parameters
+            with different values, which will include campaigns that match any of the requested values.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 782981
+            Multiple:
+              value:
+                - 782981
+                - 334242
+        - name: include
+          in: query
+          description: Each time this parameter is specified will add to the list of
+            fields and associated objects returned in the response. All values and field
+            names are lower case. All field names found at the top level of the response
+            are valid values for inclusion.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: name
+            Multiple:
+              value:
+                - name
+                - themes
+        - name: min_discount
+          in: query
+          description: Search for campaigns that have a `min_discount` equal to or larger
+            than the value.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 10
+        - name: stay_end
+          in: query
+          description: Search for all campaigns with a `stay_end` date equal to or before
+            the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-12-28'
+        - name: stay_start
+          in: query
+          description: Search for all campaigns with a `stay_start` date equal to or
+            after the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-12-20'
+        - name: token
+          in: query
+          description: |
+            Only used for requesting additional pages of data. Provided by the `next` URL in the `Link` response header.
+          schema:
+            type: string
+        - name: billing_terms
+          in: query
+          description: |
+            This parameter is to specify the terms of how a resulting booking should be billed. If this field is
+            needed, the value for this will be provided to you separately.
+          schema:
+            type: string
+        - name: partner_point_of_sale
+          in: query
+          description: |
+            This parameter is to specify what point of sale is being used to shop and book. If this field is needed,
+            the value for this will be provided to you separately.
+          schema:
+            type: string
+        - name: payment_terms
+          in: query
+          description: |
+            This parameter is to specify what terms should be used when being paid for a resulting booking. If this
+            field is needed, the value for this will be provided to you separately.
+          schema:
+            type: string
+        - name: platform_name
+          in: query
+          description: |
+            This parameter is to specify what platform is being used to shop and book. If this field is needed, the
+            value for this will be provided to you separately.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            Rate-Limit-Day:
+              description: Reserved for future use. Optional header for request capacity
+                per day.
+              schema:
+                type: number
+            Rate-Limit-Day-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the daily time window."
+              schema:
+                type: number
+            Rate-Limit-Day-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the daily capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Minute:
+              description: Reserved for future use. Optional header for request capacity
+                per minute.
+              schema:
+                type: number
+            Rate-Limit-Minute-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the per minute time window."
+              schema:
+                type: number
+            Rate-Limit-Minute-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the per minute capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Reduction-Status:
+              description: "Optional header that indicates the state (inactive, active)\
+                \ of minute capacity reduction triggered once all daily capacity has\
+                \ been used."
+              schema:
+                type: string
+            Region:
+              $ref: '#/components/headers/Region'
+            Link:
+              description: |
+                Contains a single link to get the immediate next page of results, and follows the
+                [IETF standard](https://tools.ietf.org/html/rfc5988). To get the next page of results, simply follow
+                the `next` URL in this header without modifying it. This header will be missing when there are no
+                further pages. If the link expires, there will be an `expires` link-extension that is the UTC date the
+                link will expire, in ISO 8601 format.
+              schema:
+                type: string
+                example: <https://test.ean.com/v3/campaigns?token=Q11RF1Vda1JREAQQCQMFVgpRDVQDDFsAFgJVgYBDQYAUw==>;
+                  rel="next"; expires=2023-06-29T20:15:05.324083439Z
+            Pagination-Total-Results:
+              description: Header that returns the pagination total results.
+              schema:
+                type: string
+                example: "2801"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+              examples:
+                Campaign:
+                  value:
+                    - campaign_id: "12345"
+                      name: Winter Seasonal Campaign
+                      bookable_start: '2025-03-14'
+                      bookable_end: '2025-04-14'
+                      stay_start: '2025-03-30'
+                      stay_end: '2025-04-15'
+                      blockout_dates: true
+                      min_discount: "20"
+                      max_discount: "53"
+                      lifetime: limited_time_offer
+                      curated_content:
+                        asia:
+                          themes:
+                            - Luxury
+                            - Beach
+                          images:
+                            - image: i.dsfssasdfjl.jpg
+                              tags:
+                                - Mountains
+                                - Skiing
+                            - image: i.233sdkfejwlf.jpg
+                              tags:
+                                - Nature
+                                - Cherry Blossoms
+                          copy:
+                            - copy: A winter wonderland.
+                              subcopy: a fun time.
+                          destinations:
+                            - Rome
+                            - Naples
+                            - Venice
+                        emea:
+                          images:
+                            - image: i.dsfssasdfjl.jpg
+                              tags:
+                                - Mountains
+                                - Skiing
+                            - image: i.233sdkfejwlf.jpg
+                              tags:
+                                - Nature
+                                - Cherry Blossoms
+                          copy:
+                            - copy: A stunning winter vista is approachable.
+                              subcopy: a good time.
+                          destinations:
+                            - France
+                        latam:
+                          themes:
+                            - Festive
+                            - Getaway
+                      property_count: "15"
+        "400":
+          description: Invalid Input
+          headers:
+            Rate-Limit-Day:
+              $ref: '#/components/headers/Rate-Limit-Day'
+            Rate-Limit-Day-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Day-Remaining'
+            Rate-Limit-Day-Reset:
+              $ref: '#/components/headers/Rate-Limit-Day-Reset'
+            Rate-Limit-Minute:
+              $ref: '#/components/headers/Rate-Limit-Minute'
+            Rate-Limit-Minute-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Minute-Remaining'
+            Rate-Limit-Minute-Reset:
+              $ref: '#/components/headers/Rate-Limit-Minute-Reset'
+            Rate-Limit-Reduction-Status:
+              $ref: '#/components/headers/Rate-Limit-Reduction-Status'
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: invalid_input
+                message: "An invalid request was sent in, please check the nested\
+                  \ errors for details."
+                errors:
+                  - type: language.required
+                    message: "A language is required. Supported languages are: [en-US]"
+                    fields:
+                      - name: language
+                        type: querystring
+                  - type: language.above_maximum
+                    message: The number of languages passed in must not be greater than
+                      1.
+                    fields:
+                      - name: language
+                        type: querystring
+        "401":
+          description: Unauthorized
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+            WWW-Authenticate:
+              description: Provides an example of the Authorization header.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: request_unauthenticated
+                message: Data required to authenticate your request is missing or
+                  inaccurate. Ensure that your request follows the guidelines in our
+                  documentation.
+                fields:
+                  - name: apikey
+                    type: header
+                    value: jaj3982k239dka328e
+                  - name: signature
+                    type: header
+                    value: 129d75332614a5bdbe0c7eb540e95a65f9d85a5b53dabb38d19b37fad6312a2bd25c12ee5a82831d55112087e1b
+                  - name: timestamp
+                    type: header
+                    value: 198284729
+                  - name: servertimestamp
+                    type: server
+                    value: 198284729
+        "403":
+          description: Forbidden
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: request_unauthorized
+                message: Your request could not be authorized.
+        "410":
+          description: Gone
+          headers:
+            Rate-Limit-Day:
+              $ref: '#/components/headers/Rate-Limit-Day'
+            Rate-Limit-Day-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Day-Remaining'
+            Rate-Limit-Day-Reset:
+              $ref: '#/components/headers/Rate-Limit-Day-Reset'
+            Rate-Limit-Minute:
+              $ref: '#/components/headers/Rate-Limit-Minute'
+            Rate-Limit-Minute-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Minute-Remaining'
+            Rate-Limit-Minute-Reset:
+              $ref: '#/components/headers/Rate-Limit-Minute-Reset'
+            Rate-Limit-Reduction-Status:
+              $ref: '#/components/headers/Rate-Limit-Reduction-Status'
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: link.expired
+                message: The link you followed has expired. Please build a new request
+                  to restart pagination.
+        "426":
+          description: Upgrade Required
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: upgrade_required
+                message: This service requires the use of TLS.
+        "429":
+          description: Too Many Requests
+          headers:
+            Rate-Limit-Day:
+              $ref: '#/components/headers/Rate-Limit-Day'
+            Rate-Limit-Day-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Day-Remaining'
+            Rate-Limit-Day-Reset:
+              $ref: '#/components/headers/Rate-Limit-Day-Reset'
+            Rate-Limit-Minute:
+              $ref: '#/components/headers/Rate-Limit-Minute'
+            Rate-Limit-Minute-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Minute-Remaining'
+            Rate-Limit-Minute-Reset:
+              $ref: '#/components/headers/Rate-Limit-Minute-Reset'
+            Rate-Limit-Reduction-Status:
+              $ref: '#/components/headers/Rate-Limit-Reduction-Status'
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: too_many_requests
+                message: You have reached your capacity for this type of request.
+        "500":
+          description: Unknown Internal Error
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: unknown_internal_error
+                message: An internal server error has occurred.
+        "503":
+          description: Service Unavailable
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: service_unavailable
+                message: This service is currently unavailable.
+      security:
+        - rapidAuth: []
+  /property-promotions:
+    get:
+      tags:
+        - Merchandising
+      summary: Promotions Search
+      description: |
+        Search for promotions
+      operationId: getPromotions
+      parameters:
+        - name: Accept
+          in: header
+          description: |
+            Specifies the response format that the client would like to receive back. This must be `application/json`.
+          required: true
+          schema:
+            type: string
+          example: application/json
+        - name: Accept-Encoding
+          in: header
+          description: |
+            Specifies the response encoding that the client would like to receive back. This must be `gzip`.
+          required: true
+          schema:
+            type: string
+          example: gzip
+        - name: User-Agent
+          in: header
+          description: |
+            The `User-Agent` header string from the customer's request, as captured by your integration. If you are
+            building an application then the `User-Agent` value should be `{app name}/{app version}`.
+          required: true
+          schema:
+            type: string
+          example: TravelNow/3.30.112
+        - name: Customer-Session-Id
+          in: header
+          description: |
+            Insert your own unique value for each user session, beginning with the first API call. Continue to pass the
+            same value for each subsequent API call during the user's session, using a new value for every new customer
+            session.<br>
+            Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it
+            explicitly links together request paths for individual user's session.
+          schema:
+            type: string
+        - name: language
+          in: query
+          description: |
+            Desired language for the response as a subset of BCP47 format that only uses hyphenated pairs of two-digit
+            language and country codes. Use only ISO 639-1 alpha-2 language codes and ISO 3166-1 alpha-2 country codes.
+            <br>**Currently only `en-US` is supported.**
+            <br><br>Reference:
+            * [W3 Language Tags](https://www.w3.org/International/articles/language-tags/)
+          required: true
+          schema:
+            type: string
+          examples:
+            English:
+              value: en-US
+        - name: sort_by
+          in: query
+          description: |
+            Sorts the returned promotions by the given rank value
+          required: true
+          schema:
+            type: string
+            enum:
+              - promotion
+              - property
+              - destination
+          examples:
+            Property:
+              value: property
+            Destination:
+              value: destination
+        - name: blockout_dates
+          in: query
+          description: |
+            Specify restrictions to blockout dates.  If this parameter is not supplied, promotions with and without
+            blockout dates will be returned in the results.
+            * `true` - Include only promotions that have blockout dates.
+            * `false` - Include only promotions that do not have blockout dates.
+          schema:
+            type: boolean
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: false
+        - name: bookable_end
+          in: query
+          description: Search for promotions with a `bookable_end` date equal to or
+            before the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-11-30'
+        - name: bookable_start
+          in: query
+          description: Search for promotions with a `bookable_start` date equal to or
+            after the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-10-01'
+        - name: campaign_id
+          in: query
+          description: |
+            Search for promotions with matching `campaign_id` values. You can provide 0 to 250 `campaign_id` parameters
+            with different values, which will include promotions that match any of the requested values.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 782981
+            Multiple:
+              value:
+                - 782981
+                - 334242
+        - name: category_id
+          in: query
+          description: |
+            Search for promotions associated with the specified `category_id` values. This parameter can be supplied
+            multiple times with different values, which will include promotions that match any of the requested
+            scenarios.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 1
+            Multiple:
+              value:
+                - 1
+                - 3
+        - name: chain_id
+          in: query
+          description: |
+            Search for promotions associated with the specified `chain_id` values. This parameter can be supplied
+            multiple times with different values, which will include promotions that match any of the requested
+            scenarios.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 1
+            Multiple:
+              value:
+                - 1
+                - 3
+        - name: lifetime
+          in: query
+          description: Search for promotions that match the lifetime type.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: limited_time_offer
+        - name: promotion_id
+          in: query
+          description: |
+            Search for promotions with matching `id` values. You can provide 0 to 250 `id` parameters
+            with different values, which will include promotions that match any of the requested values.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 234567
+            Multiple:
+              value:
+                - 234567
+                - 987654
+        - name: include
+          in: query
+          description: Each time this parameter is specified will add to the list of
+            fields and associated objects returned in the response. All values and field
+            names are lower case. All field names found at the top level of the response
+            are valid values for inclusion.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: name
+            Multiple:
+              value:
+                - discount_percentage
+                - lifetime
+                - min_star_rating
+        - name: market_region
+          in: query
+          description: |
+            Search for promotions associated with the specified `market_region` values. This parameter can be supplied
+            multiple times with different values, which will include promotions that match any of the requested
+            scenarios.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - amer
+                - apac
+                - emea
+                - latam
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: amer
+            Multiple:
+              value:
+                - amer
+                - latam
+        - name: members_only
+          in: query
+          description: |
+            Specify restrictions to `members_only` values.  If this parameter is not supplied, promotions with true or
+            false will be returned in the results.
+            * `true` - Only results with `members_only` equal to true will be returned.
+            * `false` - Only results with `members_only` equal to false will be returned.
+          schema:
+            type: boolean
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: true
+        - name: min_advance_purchase_days
+          in: query
+          description: Search for promotions that have a `min_advance_purchase_days`
+            equal to the passed in value.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 5
+        - name: min_guest_rating
+          in: query
+          description: Search for promotions that have a `min_guest_rating` equal to
+            or larger than the value.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 4.7
+        - name: min_star_rating
+          in: query
+          description: Search for promotions that have a `min_star_rating` equal to
+            or larger than the value.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 4.5
+        - name: min_stay
+          in: query
+          description: Search for promotions that have a `min_stay` equal to the passed
+            in value.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 3
+        - name: mobile_only
+          in: query
+          description: |
+            Specify restrictions to `mobile_only` values.  If this parameter is not supplied, promotions with true or
+            false will be returned in the results.
+            * `true` - Only results with `mobile_only` equal to true will be returned.
+            * `false` - Only results with `mobile_only` equal to false will be returned.
+          schema:
+            type: boolean
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: true
+        - name: product_line
+          in: query
+          description: |
+            Search for promotions with a `product_line` that matches the value. This parameter can be supplied multiple
+            times with different values, which will include promotions that match any of the requested scenarios.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: hotel
+            Multiple:
+              value:
+                - hotel
+                - package
+        - name: promotion_criteria
+          in: query
+          description: |
+            Search for promotions that meet the criteria provided. This criteria is defined as:
+              * type,value
+            For now the only type available will be `percentage` but other types will be added in the future.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: "percentage,20"
+        - name: property_id
+          in: query
+          description: |
+            Search for promotions with matching `property_id` values. You can provide 0 to 250 `property_id` parameters
+            with different values, which will include promotions that match any of the requested values.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 234567
+            Multiple:
+              value:
+                - 234567
+                - 987654
+        - name: region_id
+          in: query
+          description: |
+            Search for promotions associated with the specified `region_id` values. This parameter can be supplied
+            multiple times with different values, which will include promotions that match any of the requested
+            scenarios.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: 123456
+            Multiple:
+              value:
+                - 123456
+                - 553248635083913795
+        - name: stay_end
+          in: query
+          description: Search for all promotions with a `stay_end` date equal to or
+            before the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-12-28'
+        - name: stay_start
+          in: query
+          description: Search for all promotions with a `stay_start` date equal to or
+            after the specified date.
+          schema:
+            type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: '2025-12-20'
+        - name: supply_source
+          in: query
+          description: |
+            Search for promotions associated with the specified `supply_source` values. This parameter can be supplied
+            multiple times with different values, which will include promotions that match any of the requested
+            scenarios.
+              * `expedia` - Standard Expedia supply.
+              * `vrbo` - VRBO supply - This option is restricted to partners who have VRBO supply enabled for their
+            profile. See [Vacation Rentals](https://developers.expediagroup.com/docs/rapid/lodging/vacation-rentals) for
+            more information.
+          schema:
+            type: array
+            items:
+              type: string
+          examples:
+            Optional:
+              value: null
+            Single:
+              value: expedia
+            Multiple:
+              value:
+                - expedia
+                - vrbo
+        - name: token
+          in: query
+          description: |
+            Only used for requesting additional pages of data. Provided by the `next` URL in the `Link` response header.
+          schema:
+            type: string
+        - name: billing_terms
+          in: query
+          description: |
+            This parameter is to specify the terms of how a resulting booking should be billed. If this field is
+            needed, the value for this will be provided to you separately.
+          schema:
+            type: string
+        - name: partner_point_of_sale
+          in: query
+          description: |
+            This parameter is to specify what point of sale is being used to shop and book. If this field is needed,
+            the value for this will be provided to you separately.
+          schema:
+            type: string
+        - name: payment_terms
+          in: query
+          description: |
+            This parameter is to specify what terms should be used when being paid for a resulting booking. If this
+            field is needed, the value for this will be provided to you separately.
+          schema:
+            type: string
+        - name: platform_name
+          in: query
+          description: |
+            This parameter is to specify what platform is being used to shop and book. If this field is needed, the
+            value for this will be provided to you separately.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            Rate-Limit-Day:
+              description: Reserved for future use. Optional header for request capacity
+                per day.
+              schema:
+                type: number
+            Rate-Limit-Day-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the daily time window."
+              schema:
+                type: number
+            Rate-Limit-Day-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the daily capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Minute:
+              description: Reserved for future use. Optional header for request capacity
+                per minute.
+              schema:
+                type: number
+            Rate-Limit-Minute-Remaining:
+              description: "Optional header for the remaining capacity, as a percentage,\
+                \ for the per minute time window."
+              schema:
+                type: number
+            Rate-Limit-Minute-Reset:
+              description: "Optional header for the timestamp, as the number of milliseconds\
+                \ since the Unix Epoch, when the per minute capacity resets."
+              schema:
+                type: number
+            Rate-Limit-Reduction-Status:
+              description: "Optional header that indicates the state (inactive, active)\
+                \ of minute capacity reduction triggered once all daily capacity has\
+                \ been used."
+              schema:
+                type: string
+            Region:
+              $ref: '#/components/headers/Region'
+            Link:
+              description: |
+                Contains a single link to get the immediate next page of results, and follows the
+                [IETF standard](https://tools.ietf.org/html/rfc5988). To get the next page of results, simply follow
+                the `next` URL in this header without modifying it. This header will be missing when there are no
+                further pages. If the link expires, there will be an `expires` link-extension that is the UTC date the
+                link will expire, in ISO 8601 format.
+              schema:
+                type: string
+                example: <https://test.ean.com/v3/promotions?token=Q11RF1Vda1JREAQQCQMFVgpRDVQDDFsAFgJVgYBDQYAUw==>;
+                  rel="next"; expires=2023-06-29T20:15:05.324083439Z
+            Pagination-Total-Results:
+              description: Header that returns the pagination total results.
+              schema:
+                type: string
+                example: "2801"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promotion'
+              examples:
+                Promotions:
+                  value:
+                    - promotion_id: "123456"
+                      campaign_id: "12345"
+                      property_id: "123456"
+                      discount_percentage: 30
+                      description: MOD 10%
+                      min_stay: "2"
+                      min_advance_purchase_days: "3"
+                      bookable_start: '2025-03-14'
+                      bookable_end: '2025-04-14'
+                      stay_start: '2025-03-30'
+                      stay_end: '2025-04-15'
+                      star_rating: "4.5"
+                      guest_rating: "4.8"
+                      lifetime: limited_time_offer
+                      product_lines:
+                        - - “hotel”
+                          - “package”
+                      blockout_dates:
+                        - start: '2025-03-16'
+                          end: '2025-03-18'
+                        - start: '2025-04-01'
+                          end: '2025-04-02'
+                      region_id: "12345"
+                      chain_id: "123456"
+                      market_region: apac
+                      category_id: "1"
+                      supply_source: expedia
+                      mobile_only: false
+                      members_only: true
+                      rank:
+                        promotion: "22"
+                        property: "55"
+                        destination: "20"
+                      links:
+                        content:
+                          method: GET
+                          href: /properties/content?property_id=123456&language=en-US&supply_source=expedia
+        "400":
+          description: Invalid Input
+          headers:
+            Rate-Limit-Day:
+              $ref: '#/components/headers/Rate-Limit-Day'
+            Rate-Limit-Day-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Day-Remaining'
+            Rate-Limit-Day-Reset:
+              $ref: '#/components/headers/Rate-Limit-Day-Reset'
+            Rate-Limit-Minute:
+              $ref: '#/components/headers/Rate-Limit-Minute'
+            Rate-Limit-Minute-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Minute-Remaining'
+            Rate-Limit-Minute-Reset:
+              $ref: '#/components/headers/Rate-Limit-Minute-Reset'
+            Rate-Limit-Reduction-Status:
+              $ref: '#/components/headers/Rate-Limit-Reduction-Status'
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: invalid_input
+                message: "An invalid request was sent in, please check the nested\
+                  \ errors for details."
+                errors:
+                  - type: language.required
+                    message: "A language is required. Supported languages are: [en-US]"
+                    fields:
+                      - name: language
+                        type: querystring
+                  - type: language.above_maximum
+                    message: The number of languages passed in must not be greater than
+                      1.
+                    fields:
+                      - name: language
+                        type: querystring
+        "401":
+          description: Unauthorized
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+            WWW-Authenticate:
+              description: Provides an example of the Authorization header.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: request_unauthenticated
+                message: Data required to authenticate your request is missing or
+                  inaccurate. Ensure that your request follows the guidelines in our
+                  documentation.
+                fields:
+                  - name: apikey
+                    type: header
+                    value: jaj3982k239dka328e
+                  - name: signature
+                    type: header
+                    value: 129d75332614a5bdbe0c7eb540e95a65f9d85a5b53dabb38d19b37fad6312a2bd25c12ee5a82831d55112087e1b
+                  - name: timestamp
+                    type: header
+                    value: 198284729
+                  - name: servertimestamp
+                    type: server
+                    value: 198284729
+        "403":
+          description: Forbidden
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: request_unauthorized
+                message: Your request could not be authorized.
+        "410":
+          description: Gone
+          headers:
+            Rate-Limit-Day:
+              $ref: '#/components/headers/Rate-Limit-Day'
+            Rate-Limit-Day-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Day-Remaining'
+            Rate-Limit-Day-Reset:
+              $ref: '#/components/headers/Rate-Limit-Day-Reset'
+            Rate-Limit-Minute:
+              $ref: '#/components/headers/Rate-Limit-Minute'
+            Rate-Limit-Minute-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Minute-Remaining'
+            Rate-Limit-Minute-Reset:
+              $ref: '#/components/headers/Rate-Limit-Minute-Reset'
+            Rate-Limit-Reduction-Status:
+              $ref: '#/components/headers/Rate-Limit-Reduction-Status'
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: link.expired
+                message: The link you followed has expired. Please build a new request
+                  to restart pagination.
+        "426":
+          description: Upgrade Required
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: upgrade_required
+                message: This service requires the use of TLS.
+        "429":
+          description: Too Many Requests
+          headers:
+            Rate-Limit-Day:
+              $ref: '#/components/headers/Rate-Limit-Day'
+            Rate-Limit-Day-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Day-Remaining'
+            Rate-Limit-Day-Reset:
+              $ref: '#/components/headers/Rate-Limit-Day-Reset'
+            Rate-Limit-Minute:
+              $ref: '#/components/headers/Rate-Limit-Minute'
+            Rate-Limit-Minute-Remaining:
+              $ref: '#/components/headers/Rate-Limit-Minute-Remaining'
+            Rate-Limit-Minute-Reset:
+              $ref: '#/components/headers/Rate-Limit-Minute-Reset'
+            Rate-Limit-Reduction-Status:
+              $ref: '#/components/headers/Rate-Limit-Reduction-Status'
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: too_many_requests
+                message: You have reached your capacity for this type of request.
+        "500":
+          description: Unknown Internal Error
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: unknown_internal_error
+                message: An internal server error has occurred.
+        "503":
+          description: Service Unavailable
+          headers:
+            Region:
+              $ref: '#/components/headers/Region'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                type: service_unavailable
+                message: This service is currently unavailable.
+      security:
+        - rapidAuth: []
 components:
   schemas:
     PropertyContent:
@@ -20414,16 +22419,6 @@ components:
             When this field is true, the `obfuscated_coordinates` must be used to display approximate location
             instead of the precise location of `coordinates`.
       description: The property's location information.
-    Coordinates:
-      type: object
-      properties:
-        latitude:
-          type: number
-          description: The latitude of the property.
-        longitude:
-          type: number
-          description: The longitude of the property.
-      description: The coordinates of the property.
     CategoryProperty:
       type: object
       properties:
@@ -20446,6 +22441,11 @@ components:
           type: boolean
           description: Whether or not a payment for this property can be taken by
             the property upon arrival.
+        updated_expedia_collect:
+          type: boolean
+          description: Whether or not a payment for this property can be taken by
+            Expedia at the time of booking and whether a VAT invoice can be requested
+            from the property if the property is accountable to provide such a document.
       description: How and when the payment can be taken.
     Checkin:
       type: object
@@ -20477,6 +22477,9 @@ components:
         time:
           type: string
           description: The time by which a guest must check out.
+        instructions:
+          type: string
+          description: The property's check-out policy.
       description: The property's check-out information.
     Fees:
       type: object
@@ -21663,7 +23666,7 @@ components:
             - checkout_not_allowed
             - minimum_stay
             - maximum_stay
-            - restricted_dates
+            - restricted_stay_lengths
             - same_day_restrictions
             - maximum_rooms
             - children_not_supported
@@ -21981,9 +23984,9 @@ components:
       properties:
         type:
           type: string
-          description: "Identifier for the type of payment. If affiliate_collect,\
-            \ card information is not required as EPS will not be processing the payment.\
-            \ However, billing contact information is still required."
+          description: |
+            Identifier for the type of payment. If affiliate_collect, card information is not required as EPS will not
+            be processing the payment. However, billing contact information is still required.
           enum:
             - corporate_card
             - customer_card
@@ -22010,8 +24013,11 @@ components:
           $ref: '#/components/schemas/ThirdPartyAuthRequest'
         enrollment_date:
           type: string
-          description: "Date the payment account was enrolled in the cardholder's\
-            \ account with the merchant, in ISO 8601 format (YYYY-MM-DD)."
+          description: |
+            Date the payment account was enrolled in the cardholder's account with the merchant, in ISO 8601 format
+            (YYYY-MM-DD).
+        additional_handling:
+          $ref: '#/components/schemas/AdditionalHandling'
     BillingContactRequest:
       required:
         - address
@@ -22125,6 +24131,111 @@ components:
             0 - Non-SecureCode transaction, bypassed by the Merchant
             1 - Merchant-Only SecureCode transaction
             2 - Fully authenticated SecureCode transaction
+    AdditionalHandling:
+      required:
+        - authorized_expenses
+      type: object
+      properties:
+        authorized_expenses:
+          type: string
+          description: |
+            Indicates which types of expenses are authorized to be charged to the VCC.
+            * `prestay_expenses_only` - Indicates that the provided VCC is for pre-stay charges only (e.g.,
+              deposits, cancellation fees, no-show fees). A physical card must be presented at check-in for any
+              remaining balance, as well as incidentals.
+            * `total_booking_amount` - Indicates that both pre-stay charges and the total booking amount are
+              authorized, but no incidentals are authorized. A physical card must be presented at check-in for any
+              incidentals.
+            * `total_plus_incidentals` - Indicates that pre-stay, total booking, and incidental expenses are
+              authorized. See `specified_incidental_expenses`. A physical card may be required for additional
+              incidental expenses.
+            * `see_authorization_form` - Indicates that a property should refer to the authorization form that will
+              be sent either by the card provider or the authorizing company.
+          enum:
+            - prestay_expenses_only
+            - total_booking_amount
+            - total_plus_incidentals
+            - see_authorization_form
+        specified_incidental_expenses:
+          type: array
+          description: |
+            Included list of enumerated categories to restrict the authorized incidentals. This is only utilized
+            when `authorized_expenses` is supplied with `total_plus_incidentals` and restrictions on incidentals are
+            desired.<br>
+            Example: To allow any incidental expenses, specify `authorized_expenses` equal to
+            `total_plus_incidentals` and omit `specified_incidental_expenses`.
+          items:
+            type: string
+            description: The type of incidental expense authorized.
+            enum:
+              - breakfast
+              - entertainment
+              - internet
+              - meeting_expenses
+              - other_food_beverage
+              - parking
+              - phone
+              - taxes
+              - transfer
+              - other
+        total_charges_allowed:
+          $ref: '#/components/schemas/Amount'
+        is_cvc_required:
+          type: boolean
+          description: |
+            Indicates whether a CVC is required for the provided VCC. If this is marked required, the security_code
+            field for the payment MUST be provided.
+        authorizing_company:
+          type: string
+          description: Company that will issue the authorization form for the virtual
+            credit card payment.
+        card_contact:
+          type: object
+          properties:
+            email:
+              type: string
+              description: The email address of the VCC contact.
+            phone:
+              $ref: '#/components/schemas/Phone'
+          description: |
+            Object to hold information for a contact the supplier can reach in the event of any issues with the
+            provided payment.
+        max_payment_attempt_count:
+          type: number
+          description: Requested limit to number of payment attempts.
+        payment_allowable_period_start:
+          type: string
+          description: "Start date for valid range of the VCC payment instrument,\
+            \ in ISO 8601 format (YYYY-MM-DD)."
+        payment_allowable_period_end:
+          type: string
+          description: "End date for valid range of the VCC payment instrument, in\
+            \ ISO 8601 format (YYYY-MM-DD)."
+      description: |
+        Parent object for additional VCC handling instructions, to be included as part of the payment object when
+        virtual_card is the requested payment type for property collect inventory. If not included, existing
+        behavior regarding handling of VCCs with property collect inventory is to be preserved. This object will be
+        ignored for non-property collect/non-VCC transactions. total_charges_allowed represents the total ceiling of
+        all charges allowed on the VCC, including the booking price and any allowed incidentals. The value of total_charges_allowed
+        must be at least the booking value.
+    Phone:
+      type: object
+      properties:
+        country_code:
+          type: string
+          description: The numerical portion of the country code from the phone number.
+            Do not include the leading '+' character.
+          example: "1"
+        area_code:
+          type: string
+          description: The area code of the phone number.
+          example: "487"
+        number:
+          type: string
+          description: The remaining digits of the phone number.
+          example: "5550077"
+      description: The entire phone number must be represented across the three fields
+        in this object.
     PaymentSessions:
       type: object
       properties:
@@ -22197,6 +24308,12 @@ components:
             - leisure
             - business
             - unspecified
+        supplier_transparency:
+          $ref: '#/components/schemas/SupplierTransparency'
+        additional_handling:
+          $ref: '#/components/schemas/AdditionalHandling'
+        invoicing:
+          $ref: '#/components/schemas/Invoicing'
         itinerary_history:
           type: array
           items:
@@ -22230,24 +24347,6 @@ components:
         $ref: '#/components/schemas/Link'
       description: "A map of links, including links to resume or cancel a held booking.\
         \ This is only included for held bookings."
-    Phone:
-      type: object
-      properties:
-        country_code:
-          type: string
-          description: The numerical portion of the country code from the phone number.
-            Do not include the leading '+' character.
-          example: "1"
-        area_code:
-          type: string
-          description: The area code of the phone number.
-          example: "487"
-        number:
-          type: string
-          description: The remaining digits of the phone number.
-          example: "5550077"
-      description: The entire phone number must be represented across the three fields
-        in this object.
     RoomItinerary:
       type: object
       properties:
@@ -22290,7 +24389,6 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
-          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
         rate:
@@ -22560,6 +24658,45 @@ components:
           type: string
           description: The height of the image.
           example: "32"
+    SupplierTransparency:
+      type: object
+      properties:
+        point_of_sale_display_to_share:
+          type: string
+          description: The name of the point of sale to be shared.
+        company_name_to_share:
+          type: string
+          description: The name of the company to be shared.
+        consent_to_share:
+          type: boolean
+          description: Whether or not this info should be shared.
+      description: |
+        To be used for collecting and sharing partner and client information with the supplier.
+    Invoicing:
+      type: object
+      properties:
+        consent_to_share:
+          type: boolean
+          description: |
+            Whether the partner and traveler consent to share the invoicing section information with the supplier
+            and property. If not provided, this invoicing data will not be shared with the supplier or property.
+        company_name:
+          type: string
+          description: The traveler's company name to appear on the invoice.
+        company_address:
+          $ref: '#/components/schemas/Address_1'
+        point_of_sale_display:
+          type: string
+          description: |
+            Provide this when a specific site or branding should be used on the invoice instead of partner name.
+        email:
+          type: string
+          description: Email address to send invoices
+        vat_number:
+          type: string
+          description: A custom VAT number to include on invoices
+      description: |
+        To be included if invoicing is requested.
     ItineraryHistoryItem:
       type: object
       properties:
@@ -22700,20 +24837,20 @@ components:
       properties:
         affiliate_reference_id:
           type: string
-          description: "Your unique reference value. This field supports from 3 to\
-            \ a maximum of 28 characters and is required to be unique (if provided).\
-            \ Entering special characters (\"<\", \">\", \"(\", \")\", and \"&\")\
-            \ in this field will result in the request being rejected."
+          description: |
+            Your unique reference value. This field supports from 3 to a maximum of 28 characters and is required to be
+            unique (if provided). Entering special characters ("<", ">", "(", ")", and "&") in this field will result in
+            the request being rejected.
         hold:
           type: boolean
-          description: Flag for placing a booking on hold. The booking will be released
-            if the resume link is not followed within the hold period. Please refer
-            to our Hold and Resume documentation.
+          description: |
+            Flag for placing a booking on hold. The booking will be released if the resume link is not followed within
+            the hold period. Please refer to our Hold and Resume documentation.
         email:
           type: string
-          description: "Email address for the customer. Must adhere to standard RFC\
-            \ 822 email format. Special characters (\"<\", \">\", \"(\", \")\", and\
-            \ \"&\") entered in this field will be re-encoded."
+          description: |
+            Email address for the customer. Must adhere to standard RFC 822 email format. Special characters ("<", ">",
+            "(", ")", and "&") entered in this field will be re-encoded.
         phone:
           $ref: '#/components/schemas/PhoneRequest'
         rooms:
@@ -22722,46 +24859,32 @@ components:
             $ref: '#/components/schemas/CreateItineraryRequestRoom'
         payments:
           type: array
-          description: "Required if payment information prior to booking was not submitted.\
-            \ If register payments was called prior to this call, do not submit payment\
-            \ information again."
+          description: |
+            Required if payment information prior to booking was not submitted. If register payments was called prior to
+            this call, do not submit payment information again.
           items:
             $ref: '#/components/schemas/PaymentRequest'
         affiliate_metadata:
           type: string
-          description: "Field that stores up to 256 characters of additional metadata\
-            \ with the itinerary. Will be returned on all retrieve responses for this\
-            \ itinerary. The data must be in the format 'key1:value|key2:value|key3:value'.\
-            \ Other Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered\
-            \ in this field will be re-encoded."
+          description: |
+            Field that stores up to 256 characters of additional metadata with the itinerary. Will be returned on all
+            retrieve responses for this itinerary. The data must be in the format 'key1:value|key2:value|key3:value'.
+            Other Special characters ("<", ">", "(", ")", and "&") entered in this field will be re-encoded.
         tax_registration_number:
           type: string
-          description: "The customer's taxpayer identification number that is provided\
-            \ by the government to nationals or resident aliens. This number should\
-            \ be collected from individuals that pay taxes or participate in activities\
-            \ that provide revenue for one or more tax types. Note: This value is\
-            \ only needed from Brazilian and Indian customers."
+          description: |
+            The customer's taxpayer identification number that is provided by the government to nationals or resident
+            aliens. This number should be collected from individuals that pay taxes or participate in activities that
+            provide revenue for one or more tax types. *Note:* This value is only needed from Brazilian and Indian
+            customers.
         traveler_handling_instructions:
           type: string
           description: "Custom traveler handling instructions for the hotel. Do not\
             \ include PCI sensitive data, such as credit card numbers, in this field."
         invoicing:
-          type: object
-          properties:
-            company_name:
-              type: string
-              description: The traveler's company name to appear on the invoice.
-            company_address:
-              $ref: '#/components/schemas/Address_1'
-            point_of_sale_display:
-              type: string
-              description: |
-                Provide this when a specific site or branding should be used on the invoice instead of partner name.
-            email:
-              type: string
-              description: Email address to send invoices
-          description: |
-            To be included if invoicing is requested.
+          $ref: '#/components/schemas/Invoicing'
+        supplier_transparency:
+          $ref: '#/components/schemas/SupplierTransparency'
       example:
         affiliate_reference_id: 4480ABC
         hold: false
@@ -22812,6 +24935,23 @@ components:
         traveler_handling_instructions: Please use the card provided for payment.
           Avoid cancelation as this is for a corporate traveler. Contact traveler
           if any issues.
+        supplier_transparency:
+          point_of_sale_display_to_share: Global Travel Site
+          company_name_to_share: Traveler's Company
+          consent_to_share: true
+        invoicing:
+          consent_to_share: true
+          company_name: alphaDemandPartner
+          company_address:
+            line_1: 555 1st St
+            line_2: 10th Floor
+            line_3: Unit 12
+            city: Seattle
+            state_province_code: WA
+            postal_code: "98121"
+            country_code: US
+          email: chucktesta@mydomain.com
+          vat_number: "1234567890"
     PhoneRequest:
       required:
         - country_code
@@ -22865,7 +25005,6 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
-          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
     ItineraryCreation:
@@ -22951,7 +25090,6 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
-          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
       example:
@@ -23154,6 +25292,229 @@ components:
           description: The event type for which the test notification is requested.
       example:
         event_type: itinerary.agent.create
+    Campaign:
+      type: object
+      properties:
+        campaign_id:
+          type: string
+          description: Unique identifier for the campaign
+        blockout_dates:
+          type: boolean
+          description: Boolean value indicating if promotions with blockout dates
+            are included in this campaign.
+        bookable_end:
+          type: string
+          description: "The last date that bookings can be made on in this campaign,\
+            \ in ISO 8601 format (YYYY-MM-DD)."
+        bookable_start:
+          type: string
+          description: "The first date that bookings can be made on in this campaign,\
+            \ in ISO 8601 format (YYYY-MM-DD)."
+        curated_content:
+          type: object
+          properties:
+            anz:
+              $ref: '#/components/schemas/MarketRegionContent'
+            asia:
+              $ref: '#/components/schemas/MarketRegionContent'
+            ca:
+              $ref: '#/components/schemas/MarketRegionContent'
+            emea:
+              $ref: '#/components/schemas/MarketRegionContent'
+            latam:
+              $ref: '#/components/schemas/MarketRegionContent'
+            us:
+              $ref: '#/components/schemas/MarketRegionContent'
+          description: Curated content object containing map of campaign regions containing
+            various curated content objects
+        lifetime:
+          type: string
+          description: The type of lifetime of this campaign.
+        max_discount:
+          type: string
+          description: The maximum discount amount that is included in a campaign.
+        min_discount:
+          type: string
+          description: The minimum discount amount that is included in a campaign.
+        name:
+          type: string
+          description: The name of the campaign.
+        property_count:
+          type: string
+          description: The number of properties participating in this campaign.
+        stay_end:
+          type: string
+          description: The last date that check-ins can be set to in this campaign
+            in ISO 8601 format (YYYY-MM-DD).
+        stay_start:
+          type: string
+          description: The first date that check-ins can be set to in this campaign
+            in ISO 8601 format (YYYY-MM-DD).
+    MarketRegionContent:
+      type: object
+      properties:
+        copy:
+          type: array
+          description: An array of copy objects that should be used for this campaign
+            and region.
+          items:
+            $ref: '#/components/schemas/Copy'
+        destinations:
+          type: array
+          description: An array of places a campaign is limited to having promotions
+            in.
+        images:
+          type: array
+          description: An array of images associated with this campaign.
+          items:
+            $ref: '#/components/schemas/Image_2'
+        themes:
+          type: array
+          description: An array of themes associated with this campaign.
+    Copy:
+      type: object
+      properties:
+        copy:
+          type: string
+          description: The marketing copy that should be used for this campaign.
+        subcopy:
+          type: string
+          description: The marketing subcopy that should be used for this campaign.
+      description: A copy object containing both copy and subcopy that should be used
+        with promotion for this region.
+    Image_2:
+      type: object
+      properties:
+        image:
+          type: string
+          description: A link to the image.
+        tags:
+          type: array
+          description: Tags for the image.
+      description: An image object containing the link to the image and tags for the
+        image.
+    Promotion:
+      type: object
+      properties:
+        promotion_id:
+          type: string
+          description: Unique identifier for the promotion
+        blockout_dates:
+          type: array
+          description: "An array of stay date ranges within this check-in / check-out\
+            \ range that are not eligible for this promotion.\nThe stay dates are\
+            \ determined by the would be check-in of that night. With a check-in date\
+            \ of 2023-09-01, \nand a check-out date of 2023-09-06, this would be a\
+            \ 5 night stay. A `blockout_dates` with start: 2023-09-02 \nand end: 2023-09-03\
+            \ would mean 2 of the nights are not eligible. The 1st night is eligible,\
+            \ the 2nd and 3rd\nnights are not eligible, and the 4th and 5th nights\
+            \ are eligible.\n"
+          items:
+            $ref: '#/components/schemas/BlockoutDate'
+        bookable_end:
+          type: string
+          description: "The last date that bookings can be made on in this promotion,\
+            \ in ISO 8601 format (YYYY-MM-DD)."
+        bookable_start:
+          type: string
+          description: "The first date that bookings can be made on in this promotion,\
+            \ in ISO 8601 format (YYYY-MM-DD)."
+        campaign_id:
+          type: string
+          description: The campaign id this promotion is associated with.
+        category_id:
+          type: string
+          description: The category id of the property.
+        chain_id:
+          type: string
+          description: The chain id for the property.
+        description:
+          type: string
+          description: The description of the promotion.
+        discount_percentage:
+          type: string
+          description: "The percent off of the cost of the property when using this\
+            \ promotion. \nThis will only be returned for percentage based promotions\n"
+        guest_rating:
+          type: string
+          description: |
+            The overall rating for the property, averaged from all guest reviews. Returns a value between 1.0 and 5.0.
+        lifetime:
+          type: string
+          description: The type of lifetime of this promotion.
+        links:
+          type: object
+          properties:
+            content:
+              $ref: '#/components/schemas/Link'
+          description: "A map of links, including link to get the property content."
+        market_region:
+          type: string
+          description: The market region for the promotion.
+        members_only:
+          type: string
+          description: Boolean value indicating if a promotion is for members only.
+        min_advance_purchase_days:
+          type: string
+          description: The least number of days before check-in a stay must be booked
+            to use this promotion.
+        min_stay:
+          type: string
+          description: The least number of days that must be booked to use this promotion.
+        mobile_only:
+          type: string
+          description: Boolean value indicating if a promotion is for mobile only.
+        product_lines:
+          type: array
+          description: The list of product lines.
+          items:
+            type: string
+            description: The product line this promotion is a part of.
+        property_id:
+          type: string
+          description: Unique Expedia property ID.
+        rank:
+          type: object
+          properties:
+            destination:
+              type: string
+              description: Rank of the destination associated with the promotion.
+            promotion:
+              type: string
+              description: Rank of the promotion itself.
+            property:
+              type: string
+              description: Rank of the property associated with the promotion.
+          description: A map of ranks with 1 being the best and descending from there.
+        region_id:
+          type: string
+          description: The region id for the property.
+        star_rating:
+          type: string
+          description: "The rating assigned to this property. Returns a value between\
+            \ 0.0 and 5.0. A value of 0.0 or a blank value \nindicates no rating is\
+            \ available.\n"
+        stay_end:
+          type: string
+          description: The last date that check-ins can be set to in this promotion
+            in ISO 8601 format (YYYY-MM-DD).
+        stay_start:
+          type: string
+          description: The first date that check-ins can be set to in this promotion
+            in ISO 8601 format (YYYY-MM-DD).
+        supply_source:
+          type: string
+          description: The supply source of the property.
+    BlockoutDate:
+      type: object
+      properties:
+        end:
+          type: string
+          description: End date of blockout date range in ISO 8601 format.
+        start:
+          type: string
+          description: Start date of blockout date range in ISO 8601 format.
+      description: An array of blockout dates that apply to the promotion.
     Amenity:
       type: object
       properties:
@@ -23176,6 +25537,13 @@ components:
           items:
             type: string
       description: An individual amenity.
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
     BedGroupConfiguration:
       type: object
       properties:
@@ -23192,6 +25560,7 @@ components:
     MerchantOfRecord:
       type: string
       description: |
+        Merchant of Record
         * `expedia` - Payment is taken by Expedia.
         * `property` - Payment is taken by the property.
       enum:
@@ -23252,6 +25621,8 @@ components:
           $ref: '#/components/schemas/Totals'
         fees:
           $ref: '#/components/schemas/FeesPricingInformation'
+        marketing_fee_details:
+          $ref: '#/components/schemas/MarketingFeeDetails'
       description: The pricing information object.
     NightCharge:
       type: object
@@ -23396,6 +25767,25 @@ components:
           $ref: '#/components/schemas/Amount'
       description: An object representing a charge. Information about the charge is
         provided in both the billable currency and the request currency.
+    MarketingFeeDetails:
+      type: object
+      properties:
+        base:
+          $ref: '#/components/schemas/Charge'
+        overrides:
+          $ref: '#/components/schemas/Charge'
+        incentives:
+          $ref: '#/components/schemas/Charge'
+        other:
+          $ref: '#/components/schemas/Charge'
+      description: |
+        An object representing a more granular view and key components contributing to Marketing Fee estimates, in line
+        with contracted commercial terms between Expedia and partner.
+        * `base` - Potential earnings derived from standard or flat commission rates.
+        * `overrides` - Potential earnings derived from additional variable commission rates, typically subject to
+          achievement of specific revenue targets.
+        * `incentives` - Potential earnings derived from additional incentives, applicable for a limited time period.
+        * `other` - Potential earnings derived from a category not yet covered by the above components.
     ValueAdd:
       type: object
       properties:
