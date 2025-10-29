@@ -25363,6 +25363,8 @@ components:
           type: array
           description: An array of places a campaign is limited to having promotions
             in.
+          items:
+            type: string
         images:
           type: array
           description: An array of images associated with this campaign.
@@ -25371,6 +25373,8 @@ components:
         themes:
           type: array
           description: An array of themes associated with this campaign.
+          items:
+            type: string
     Copy:
       type: object
       properties:
