@@ -32,6 +32,7 @@ package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
 import com.expediagroup.sdk.rapid.models.FeesPricingInformation
+import com.expediagroup.sdk.rapid.models.MarketingFeeDetails
 import com.expediagroup.sdk.rapid.models.NightCharge
 import com.expediagroup.sdk.rapid.models.Stay
 import com.expediagroup.sdk.rapid.models.Totals
@@ -46,6 +47,7 @@ import javax.validation.Validation
  * @param stay Array of amount objects. Details any charges that apply to the entire stay (not divided per-night). Any per-room adjustments are applied to the `base_rate` amount within this object.
  * @param totals
  * @param fees
+ * @param marketingFeeDetails
  */
 data class PricingInformation(
     // Array of arrays of amount objects. Each sub-array of amount objects represents a single night's charges.
@@ -61,7 +63,10 @@ data class PricingInformation(
     val totals: Totals? = null,
     @JsonProperty("fees")
     @field:Valid
-    val fees: FeesPricingInformation? = null
+    val fees: FeesPricingInformation? = null,
+    @JsonProperty("marketing_fee_details")
+    @field:Valid
+    val marketingFeeDetails: MarketingFeeDetails? = null
 ) {
     companion object {
         @JvmStatic
@@ -72,7 +77,8 @@ data class PricingInformation(
         private var nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>? = null,
         private var stay: kotlin.collections.List<Stay>? = null,
         private var totals: Totals? = null,
-        private var fees: FeesPricingInformation? = null
+        private var fees: FeesPricingInformation? = null,
+        private var marketingFeeDetails: MarketingFeeDetails? = null
     ) {
         fun nightly(nightly: kotlin.collections.List<kotlin.collections.List<NightCharge>>?) = apply { this.nightly = nightly }
 
@@ -82,13 +88,16 @@ data class PricingInformation(
 
         fun fees(fees: FeesPricingInformation?) = apply { this.fees = fees }
 
+        fun marketingFeeDetails(marketingFeeDetails: MarketingFeeDetails?) = apply { this.marketingFeeDetails = marketingFeeDetails }
+
         fun build(): PricingInformation {
             val instance =
                 PricingInformation(
                     nightly = nightly,
                     stay = stay,
                     totals = totals,
-                    fees = fees
+                    fees = fees,
+                    marketingFeeDetails = marketingFeeDetails
                 )
 
             validate(instance)
@@ -120,6 +129,7 @@ data class PricingInformation(
             nightly = nightly,
             stay = stay,
             totals = totals,
-            fees = fees
+            fees = fees,
+            marketingFeeDetails = marketingFeeDetails
         )
 }

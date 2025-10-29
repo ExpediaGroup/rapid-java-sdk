@@ -37,17 +37,19 @@ import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * An array of blockout dates that apply to the promotion.
+ * @param end End date of blockout date range in ISO 8601 format.
+ * @param start Start date of blockout date range in ISO 8601 format.
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class BlockoutDate(
+    // End date of blockout date range in ISO 8601 format.
+    @JsonProperty("end")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val end: kotlin.String? = null,
+    // Start date of blockout date range in ISO 8601 format.
+    @JsonProperty("start")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val start: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +57,18 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var end: kotlin.String? = null,
+        private var start: kotlin.String? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun end(end: kotlin.String?) = apply { this.end = end }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun start(start: kotlin.String?) = apply { this.start = start }
 
-        fun build(): Coordinates {
+        fun build(): BlockoutDate {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                BlockoutDate(
+                    end = end,
+                    start = start
                 )
 
             validate(instance)
@@ -74,7 +76,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: BlockoutDate) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +97,7 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            end = end,
+            start = start
         )
 }

@@ -27,6 +27,7 @@ import javax.validation.Validation
 import javax.validation.constraints.NotNull
 
 /**
+ * @property campaignId The Merchandising `Campaign-Id` that was involved in the traveler shopping for these properties.
  * @property customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
  * @property customerSessionId Insert your own unique value for each user session, beginning with the first API call. Continue to pass the same value for each subsequent API call during the user's session, using a new value for every new customer session.<br> Including this value greatly eases EPS's internal debugging process for issues with partner requests, as it explicitly links together request paths for individual user's session.
  * @property test Shop calls have a test header that can be used to return set responses with the following keywords:<br> * `standard` * `service_unavailable` * `unknown_internal_error`
@@ -42,8 +43,8 @@ import javax.validation.constraints.NotNull
  * @property salesEnvironment You must provide the sales environment in which rates will be sold. EPS dynamically provides the best content for optimal conversion. If you have a sales environment that is not currently supported in this list, please contact our support team.<br> * `hotel_package` - Use when selling the hotel with a transport product, e.g. flight & hotel. * `hotel_only` - Use when selling the hotel as an individual product. * `loyalty` - Use when you are selling the hotel as part of a loyalty program and the price is converted to points.
  * @property amenityCategory Single amenity category. Send multiple instances of this parameter to request rates that match multiple amenity categories.<br> See the Amenity Categories section of the [Content Reference Lists](https://developers.expediagroup.com/docs/rapid/lodging/content/content-reference-lists) for a list of values.
  * @property exclusion Single exclusion type. Send multiple instances of this parameter to request multiple exclusions.<br> * `refundable_damage_deposit` - Excludes Rapid supplied Vrbo rates with refundable damage deposits from the response. * `card_on_file` - Excludes Rapid supplied Vrbo rates with card-on-file damage collection from the response.
- * @property filter Single filter type. Send multiple instances of this parameter to request multiple filters.<br> * `refundable` - Filters results to only show fully refundable rates. * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC). * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies. * `loyalty` - Filters results to only show rates that are eligible for loyalty points.
- * @property include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request. * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.
+ * @property filter Single filter type. Send multiple instances of this parameter to request multiple filters.<br> * `refundable` - Filters results to only show fully refundable rates. * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC). * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies. * `loyalty` - Filters results to only show rates that are eligible for loyalty points. * `deal` - Filters results to only show rates that have a promotion that is of the type deal.
+ * @property include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request. * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate. * `rooms.rates.marketing_fee_details` - Displays a more granular view of marketing fees in the response.
  * @property rateOption Request specific rate options for each property. Send multiple instances of this parameter to request multiple rate options. Accepted values:<br> * `member` - Return member rates for each property. This feature must be enabled and requires a user to be logged in to request these rates. * `net_rates` - Return net rates for each property. This feature must be enabled to request these rates. * `cross_sell` - Identify if the traffic is coming from a cross sell booking. Where the traveler has booked another service (flight, car, activities...) before hotel.
  * @property travelPurpose This parameter is to specify the travel purpose of the booking. This may impact available rate plans, pricing, or tax calculations. * `leisure` * `business`
  * @property billingTerms This parameter is to specify the terms of how a resulting booking should be billed. If this field is needed, the value for this will be provided to you separately.
@@ -54,6 +55,8 @@ import javax.validation.constraints.NotNull
 @JsonDeserialize(builder = GetAvailabilityOperationParams.Builder::class)
 data class GetAvailabilityOperationParams
     internal constructor(
+        @field:Valid
+        val campaignId: kotlin.String? = null,
         @field:Valid
         val customerIp: kotlin.String? = null,
         @field:Valid
@@ -127,6 +130,8 @@ data class GetAvailabilityOperationParams
         }
 
         constructor(
+            campaignId: kotlin.String? =
+                null,
             customerIp: kotlin.String? =
                 null,
             customerSessionId: kotlin.String? =
@@ -178,6 +183,7 @@ data class GetAvailabilityOperationParams
             platformName: kotlin.String? =
                 null
         ) : this(
+            campaignId = campaignId,
             customerIp = customerIp,
             customerSessionId = customerSessionId,
             test = test,
@@ -205,6 +211,7 @@ data class GetAvailabilityOperationParams
         )
 
         constructor(context: GetAvailabilityOperationContext?) : this(
+            campaignId = context?.campaignId,
             customerIp = context?.customerIp,
             customerSessionId = context?.customerSessionId,
             test = context?.test,
@@ -231,7 +238,9 @@ data class GetAvailabilityOperationParams
         ) {
             REFUNDABLE("refundable"),
             EXPEDIA_COLLECT("expedia_collect"),
-            PROPERTY_COLLECT("property_collect")
+            PROPERTY_COLLECT("property_collect"),
+            LOYALTY("loyalty"),
+            DEAL("deal")
         }
 
         enum class Include(
@@ -240,7 +249,8 @@ data class GetAvailabilityOperationParams
             UNAVAILABLE_REASON("unavailable_reason"),
             SALE_SCENARIO_PERIOD_MOBILE_PROMOTION("sale_scenario.mobile_promotion"),
             ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_INCENTIVES("rooms.rates.marketing_fee_incentives"),
-            ROOMS_PERIOD_RATES_PERIOD_CURRENT_REFUNDABILITY("rooms.rates.current_refundability")
+            ROOMS_PERIOD_RATES_PERIOD_CURRENT_REFUNDABILITY("rooms.rates.current_refundability"),
+            ROOMS_PERIOD_RATES_PERIOD_MARKETING_FEE_DETAILS("rooms.rates.marketing_fee_details")
         }
 
         enum class RateOption(
@@ -259,6 +269,7 @@ data class GetAvailabilityOperationParams
         }
 
         class Builder(
+            @JsonProperty("Campaign-Id") private var campaignId: kotlin.String? = null,
             @JsonProperty("Customer-Ip") private var customerIp: kotlin.String? = null,
             @JsonProperty("Customer-Session-Id") private var customerSessionId: kotlin.String? = null,
             @JsonProperty("Test") private var test: GetAvailabilityOperationParams.Test? = null,
@@ -297,6 +308,11 @@ data class GetAvailabilityOperationParams
             @JsonProperty("payment_terms") private var paymentTerms: kotlin.String? = null,
             @JsonProperty("platform_name") private var platformName: kotlin.String? = null
         ) {
+            /**
+             * @param campaignId The Merchandising `Campaign-Id` that was involved in the traveler shopping for these properties.
+             */
+            fun campaignId(campaignId: kotlin.String) = apply { this.campaignId = campaignId }
+
             /**
              * @param customerIp IP address of the customer, as captured by your integration.<br> Ensure your integration passes the customer's IP, not your own. This value helps determine their location and assign the correct payment gateway.<br> Also used for fraud recovery and other important analytics.
              */
@@ -389,7 +405,7 @@ data class GetAvailabilityOperationParams
             ) = apply { this.exclusion = exclusion }
 
             /**
-             * @param filter Single filter type. Send multiple instances of this parameter to request multiple filters.<br> * `refundable` - Filters results to only show fully refundable rates. * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC). * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies. * `loyalty` - Filters results to only show rates that are eligible for loyalty points.
+             * @param filter Single filter type. Send multiple instances of this parameter to request multiple filters.<br> * `refundable` - Filters results to only show fully refundable rates. * `expedia_collect` - Filters results to only show rates where payment is collected by Expedia at the time of booking. These properties can be eligible for payments via Expedia Affiliate Collect(EAC). * `property_collect` - Filters results to only show rates where payment is collected by the property after booking. This can include rates that require a deposit by the property, dependent upon the deposit policies. * `loyalty` - Filters results to only show rates that are eligible for loyalty points. * `deal` - Filters results to only show rates that have a promotion that is of the type deal.
              */
             fun filter(
                 filter: kotlin.collections.List<
@@ -398,7 +414,7 @@ data class GetAvailabilityOperationParams
             ) = apply { this.filter = filter }
 
             /**
-             * @param include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request. * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.
+             * @param include Modify the response by including types of responses that are not provided by default.<br> * `unavailable_reason` - When a property is unavailable for an actionable reason, return a response with that reason - See [Unavailable Reason Codes](https://developers.expediagroup.com/docs/rapid/resources/reference/unavailable-reason-codes) for possible values. * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response. * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request. * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate. * `rooms.rates.marketing_fee_details` - Displays a more granular view of marketing fees in the response.
              */
             fun include(
                 include: kotlin.collections.List<
@@ -443,6 +459,7 @@ data class GetAvailabilityOperationParams
             fun build(): GetAvailabilityOperationParams {
                 val params =
                     GetAvailabilityOperationParams(
+                        campaignId = campaignId,
                         customerIp = customerIp,
                         customerSessionId = customerSessionId,
                         test = test,
@@ -494,6 +511,7 @@ data class GetAvailabilityOperationParams
 
         fun toBuilder() =
             Builder(
+                campaignId = campaignId,
                 customerIp = customerIp,
                 customerSessionId = customerSessionId,
                 test = test,
@@ -521,6 +539,9 @@ data class GetAvailabilityOperationParams
 
         override fun getHeaders(): Headers =
             Headers.build {
+                campaignId?.let {
+                    append("Campaign-Id", it)
+                }
                 customerIp?.let {
                     append("Customer-Ip", it)
                 }

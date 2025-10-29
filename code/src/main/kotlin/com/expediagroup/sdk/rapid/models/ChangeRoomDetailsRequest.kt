@@ -64,7 +64,6 @@ data class ChangeRoomDetailsRequest(
     @field:Valid
     val specialRequest: kotlin.String? = null,
     // Deprecated. Please use the loyalty id inside the loyalty object.
-    @Deprecated(message = "This property is deprecated.")
     @JsonProperty("loyalty_id")
     @field:Valid
     val loyaltyId: kotlin.String? = null,

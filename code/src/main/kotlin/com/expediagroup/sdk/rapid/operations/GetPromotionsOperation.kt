@@ -19,17 +19,17 @@ import com.expediagroup.sdk.core.model.Nothing
 import com.expediagroup.sdk.core.model.Operation
 
 /**
- * Chain Reference ***DEPRECATED***
- * @property params [GetChainReferenceOperationParams]
+ * Promotions Search
+ * @property params [GetPromotionsOperationParams]
  */
-class GetChainReferenceOperation(
-    params: GetChainReferenceOperationParams
+class GetPromotionsOperation(
+    params: GetPromotionsOperationParams
 ) : Operation<
         Nothing
     >(
-        "/v3/chains",
+        "/v3/property-promotions",
         "GET",
-        "getChainReference",
+        "getPromotions",
         null,
         params
     )

@@ -39,12 +39,17 @@ import javax.validation.Validation
 /**
  * The property's check-out information.
  * @param time The time by which a guest must check out.
+ * @param instructions The property's check-out policy.
  */
 data class Checkout(
     // The time by which a guest must check out.
     @JsonProperty("time")
     @field:Valid
-    val time: kotlin.String? = null
+    val time: kotlin.String? = null,
+    // The property's check-out policy.
+    @JsonProperty("instructions")
+    @field:Valid
+    val instructions: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -52,14 +57,18 @@ data class Checkout(
     }
 
     class Builder(
-        private var time: kotlin.String? = null
+        private var time: kotlin.String? = null,
+        private var instructions: kotlin.String? = null
     ) {
         fun time(time: kotlin.String?) = apply { this.time = time }
+
+        fun instructions(instructions: kotlin.String?) = apply { this.instructions = instructions }
 
         fun build(): Checkout {
             val instance =
                 Checkout(
-                    time = time
+                    time = time,
+                    instructions = instructions
                 )
 
             validate(instance)
@@ -88,6 +97,7 @@ data class Checkout(
 
     fun toBuilder() =
         Builder(
-            time = time
+            time = time,
+            instructions = instructions
         )
 }
