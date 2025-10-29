@@ -25391,6 +25391,8 @@ components:
         tags:
           type: array
           description: Tags for the image.
+          items:
+            type: string
       description: An image object containing the link to the image and tags for the
         image.
     Promotion:
