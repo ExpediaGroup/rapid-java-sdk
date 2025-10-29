@@ -37,17 +37,24 @@ import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * To be used for collecting and sharing partner and client information with the supplier.
+ * @param pointOfSaleDisplayToShare The name of the point of sale to be shared.
+ * @param companyNameToShare The name of the company to be shared.
+ * @param consentToShare Whether or not this info should be shared.
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class SupplierTransparency(
+    // The name of the point of sale to be shared.
+    @JsonProperty("point_of_sale_display_to_share")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val pointOfSaleDisplayToShare: kotlin.String? = null,
+    // The name of the company to be shared.
+    @JsonProperty("company_name_to_share")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val companyNameToShare: kotlin.String? = null,
+    // Whether or not this info should be shared.
+    @JsonProperty("consent_to_share")
+    @field:Valid
+    val consentToShare: kotlin.Boolean? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +62,22 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var pointOfSaleDisplayToShare: kotlin.String? = null,
+        private var companyNameToShare: kotlin.String? = null,
+        private var consentToShare: kotlin.Boolean? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun pointOfSaleDisplayToShare(pointOfSaleDisplayToShare: kotlin.String?) = apply { this.pointOfSaleDisplayToShare = pointOfSaleDisplayToShare }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun companyNameToShare(companyNameToShare: kotlin.String?) = apply { this.companyNameToShare = companyNameToShare }
 
-        fun build(): Coordinates {
+        fun consentToShare(consentToShare: kotlin.Boolean?) = apply { this.consentToShare = consentToShare }
+
+        fun build(): SupplierTransparency {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                SupplierTransparency(
+                    pointOfSaleDisplayToShare = pointOfSaleDisplayToShare,
+                    companyNameToShare = companyNameToShare,
+                    consentToShare = consentToShare
                 )
 
             validate(instance)
@@ -74,7 +85,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: SupplierTransparency) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +106,8 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            pointOfSaleDisplayToShare = pointOfSaleDisplayToShare,
+            companyNameToShare = companyNameToShare,
+            consentToShare = consentToShare
         )
 }

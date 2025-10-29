@@ -31,23 +31,20 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.Link
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * A map of links, including link to get the property content.
+ * @param content
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class PromotionLinks(
+    @JsonProperty("content")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
-    @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val content: Link? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +52,14 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var content: Link? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun content(content: Link?) = apply { this.content = content }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
-
-        fun build(): Coordinates {
+        fun build(): PromotionLinks {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                PromotionLinks(
+                    content = content
                 )
 
             validate(instance)
@@ -74,7 +67,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: PromotionLinks) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +88,6 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            content = content
         )
 }

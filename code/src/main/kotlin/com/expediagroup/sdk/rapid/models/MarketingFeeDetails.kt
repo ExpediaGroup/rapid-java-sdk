@@ -31,23 +31,32 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.Charge
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * An object representing a more granular view and key components contributing to Marketing Fee estimates, in line with contracted commercial terms between Expedia and partner. * `base` - Potential earnings derived from standard or flat commission rates. * `overrides` - Potential earnings derived from additional variable commission rates, typically subject to   achievement of specific revenue targets. * `incentives` - Potential earnings derived from additional incentives, applicable for a limited time period. * `other` - Potential earnings derived from a category not yet covered by the above components.
+ * @param base
+ * @param overrides
+ * @param incentives
+ * @param other
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class MarketingFeeDetails(
+    @JsonProperty("base")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val base: Charge? = null,
+    @JsonProperty("overrides")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val overrides: Charge? = null,
+    @JsonProperty("incentives")
+    @field:Valid
+    val incentives: Charge? = null,
+    @JsonProperty("other")
+    @field:Valid
+    val other: Charge? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +64,26 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var base: Charge? = null,
+        private var overrides: Charge? = null,
+        private var incentives: Charge? = null,
+        private var other: Charge? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun base(base: Charge?) = apply { this.base = base }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun overrides(overrides: Charge?) = apply { this.overrides = overrides }
 
-        fun build(): Coordinates {
+        fun incentives(incentives: Charge?) = apply { this.incentives = incentives }
+
+        fun other(other: Charge?) = apply { this.other = other }
+
+        fun build(): MarketingFeeDetails {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                MarketingFeeDetails(
+                    base = base,
+                    overrides = overrides,
+                    incentives = incentives,
+                    other = other
                 )
 
             validate(instance)
@@ -74,7 +91,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: MarketingFeeDetails) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +112,9 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            base = base,
+            overrides = overrides,
+            incentives = incentives,
+            other = other
         )
 }

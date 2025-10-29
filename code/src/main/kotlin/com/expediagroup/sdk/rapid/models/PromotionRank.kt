@@ -37,17 +37,24 @@ import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * A map of ranks with 1 being the best and descending from there.
+ * @param destination Rank of the destination associated with the promotion.
+ * @param promotion Rank of the promotion itself.
+ * @param `property` Rank of the property associated with the promotion.
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class PromotionRank(
+    // Rank of the destination associated with the promotion.
+    @JsonProperty("destination")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val destination: kotlin.String? = null,
+    // Rank of the promotion itself.
+    @JsonProperty("promotion")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val promotion: kotlin.String? = null,
+    // Rank of the property associated with the promotion.
+    @JsonProperty("property")
+    @field:Valid
+    val `property`: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +62,22 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var destination: kotlin.String? = null,
+        private var promotion: kotlin.String? = null,
+        private var `property`: kotlin.String? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun destination(destination: kotlin.String?) = apply { this.destination = destination }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun promotion(promotion: kotlin.String?) = apply { this.promotion = promotion }
 
-        fun build(): Coordinates {
+        fun `property`(`property`: kotlin.String?) = apply { this.`property` = `property` }
+
+        fun build(): PromotionRank {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                PromotionRank(
+                    destination = destination,
+                    promotion = promotion,
+                    `property` = `property`
                 )
 
             validate(instance)
@@ -74,7 +85,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: PromotionRank) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +106,8 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            destination = destination,
+            promotion = promotion,
+            `property` = `property`
         )
 }

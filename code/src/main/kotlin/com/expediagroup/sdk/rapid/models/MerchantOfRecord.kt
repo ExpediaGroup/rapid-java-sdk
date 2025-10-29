@@ -33,7 +33,7 @@ package com.expediagroup.sdk.rapid.models
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
-* * `expedia` - Payment is taken by Expedia. * `property` - Payment is taken by the property.
+* Merchant of Record * `expedia` - Payment is taken by Expedia. * `property` - Payment is taken by the property.
 * Values: EXPEDIA,PROPERTY
 */
 enum class MerchantOfRecord(val value: kotlin.String) {

@@ -31,35 +31,25 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.Address1
+import com.expediagroup.sdk.rapid.models.Phone
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- * To be included if invoicing is requested.
- * @param companyName The traveler's company name to appear on the invoice.
- * @param companyAddress
- * @param pointOfSaleDisplay Provide this when a specific site or branding should be used on the invoice instead of partner name.
- * @param email Email address to send invoices
+ * Object to hold information for a contact the supplier can reach in the event of any issues with the provided payment.
+ * @param email The email address of the VCC contact.
+ * @param phone
  */
-data class CreateItineraryRequestInvoicing(
-    // The traveler's company name to appear on the invoice.
-    @JsonProperty("company_name")
-    @field:Valid
-    val companyName: kotlin.String? = null,
-    @JsonProperty("company_address")
-    @field:Valid
-    val companyAddress: Address1? = null,
-    // Provide this when a specific site or branding should be used on the invoice instead of partner name.
-    @JsonProperty("point_of_sale_display")
-    @field:Valid
-    val pointOfSaleDisplay: kotlin.String? = null,
-    // Email address to send invoices
+data class AdditionalHandlingCardContact(
+    // The email address of the VCC contact.
     @JsonProperty("email")
     @field:Valid
-    val email: kotlin.String? = null
+    val email: kotlin.String? = null,
+    @JsonProperty("phone")
+    @field:Valid
+    val phone: Phone? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,26 +57,18 @@ data class CreateItineraryRequestInvoicing(
     }
 
     class Builder(
-        private var companyName: kotlin.String? = null,
-        private var companyAddress: Address1? = null,
-        private var pointOfSaleDisplay: kotlin.String? = null,
-        private var email: kotlin.String? = null
+        private var email: kotlin.String? = null,
+        private var phone: Phone? = null
     ) {
-        fun companyName(companyName: kotlin.String?) = apply { this.companyName = companyName }
-
-        fun companyAddress(companyAddress: Address1?) = apply { this.companyAddress = companyAddress }
-
-        fun pointOfSaleDisplay(pointOfSaleDisplay: kotlin.String?) = apply { this.pointOfSaleDisplay = pointOfSaleDisplay }
-
         fun email(email: kotlin.String?) = apply { this.email = email }
 
-        fun build(): CreateItineraryRequestInvoicing {
+        fun phone(phone: Phone?) = apply { this.phone = phone }
+
+        fun build(): AdditionalHandlingCardContact {
             val instance =
-                CreateItineraryRequestInvoicing(
-                    companyName = companyName,
-                    companyAddress = companyAddress,
-                    pointOfSaleDisplay = pointOfSaleDisplay,
-                    email = email
+                AdditionalHandlingCardContact(
+                    email = email,
+                    phone = phone
                 )
 
             validate(instance)
@@ -94,7 +76,7 @@ data class CreateItineraryRequestInvoicing(
             return instance
         }
 
-        private fun validate(instance: CreateItineraryRequestInvoicing) {
+        private fun validate(instance: AdditionalHandlingCardContact) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -115,9 +97,7 @@ data class CreateItineraryRequestInvoicing(
 
     fun toBuilder() =
         Builder(
-            companyName = companyName,
-            companyAddress = companyAddress,
-            pointOfSaleDisplay = pointOfSaleDisplay,
-            email = email
+            email = email,
+            phone = phone
         )
 }
