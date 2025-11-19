@@ -33,12 +33,15 @@ package com.expediagroup.sdk.rapid.models
 import com.fasterxml.jackson.annotation.JsonProperty
 
 /**
-* Indicates the status of the rate. If the rate is still available then available will be returned. If the rate is no longer available at that price then price_changed will be returned. If the rate is no longer available at all then sold_out will be returned.
-* Values: AVAILABLE,PRICE_CHANGED,SOLD_OUT
+* Indicates the status of the rate. * `available` - The rate is still available at or below the price returned in the shop response. * `available_no_change` - **Only in Hard Change flows** - The rate is available but matches the booked rate. * `price_changed` - The rate is no longer available at the previous price. Use the `additional_rates` link to   present updated rooms and rates for this property to travelers. * `sold_out` - The rate is no longer available at any price. Use the `additional_rates` link to   present updated rooms and rates for this property to travelers.
+* Values: AVAILABLE,AVAILABLE_NO_CHANGE,PRICE_CHANGED,SOLD_OUT
 */
 enum class StatusPriceCheck(val value: kotlin.String) {
     @JsonProperty("available")
     AVAILABLE("available"),
+
+    @JsonProperty("available_no_change")
+    AVAILABLE_NO_CHANGE("available_no_change"),
 
     @JsonProperty("price_changed")
     PRICE_CHANGED("price_changed"),

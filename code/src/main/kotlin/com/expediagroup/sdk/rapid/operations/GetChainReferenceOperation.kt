@@ -22,6 +22,7 @@ import com.expediagroup.sdk.core.model.Operation
  * Chain Reference ***DEPRECATED***
  * @property params [GetChainReferenceOperationParams]
  */
+@Deprecated("This operation is deprecated and will be removed in a future version.")
 class GetChainReferenceOperation(
     params: GetChainReferenceOperationParams
 ) : Operation<

@@ -42,14 +42,14 @@ import javax.validation.Validation
 /**
  *
  * @param promotionId Unique identifier for the promotion
- * @param blockoutDates An array of stay date ranges within this check-in / check-out range that are not eligible for this promotion. The stay dates are determined by the would be check-in of that night. With a check-in date of 2023-09-01,  and a check-out date of 2023-09-06, this would be a 5 night stay. A `blockout_dates` with start: 2023-09-02  and end: 2023-09-03 would mean 2 of the nights are not eligible. The 1st night is eligible, the 2nd and 3rd nights are not eligible, and the 4th and 5th nights are eligible.
+ * @param blockoutDates An array of stay date ranges within this check-in / check-out range that are not eligible for this promotion. The stay dates are determined by the would be check-in of that night. With a check-in date of 2023-09-01, and a check-out date of 2023-09-06, this would be a 5 night stay. A `blockout_dates` with start: '2023-09-02' and end: 2023-09-03 would mean 2 of the nights are not eligible. The 1st night is eligible, the 2nd and 3rd nights are not eligible, and the 4th and 5th nights are eligible.
  * @param bookableEnd The last date that bookings can be made on in this promotion, in ISO 8601 format (YYYY-MM-DD).
  * @param bookableStart The first date that bookings can be made on in this promotion, in ISO 8601 format (YYYY-MM-DD).
  * @param campaignId The campaign id this promotion is associated with.
  * @param categoryId The category id of the property.
  * @param chainId The chain id for the property.
  * @param description The description of the promotion.
- * @param discountPercentage The percent off of the cost of the property when using this promotion.  This will only be returned for percentage based promotions
+ * @param discountPercentage The percent off of the cost of the property when using this promotion. This will only be returned for percentage based promotions
  * @param guestRating The overall rating for the property, averaged from all guest reviews. Returns a value between 1.0 and 5.0.
  * @param lifetime The type of lifetime of this promotion.
  * @param links
@@ -62,7 +62,7 @@ import javax.validation.Validation
  * @param propertyId Unique Expedia property ID.
  * @param rank
  * @param regionId The region id for the property.
- * @param starRating The rating assigned to this property. Returns a value between 0.0 and 5.0. A value of 0.0 or a blank value  indicates no rating is available.
+ * @param starRating The rating assigned to this property. Returns a value between 0.0 and 5.0. A value of 0.0 or a blank value indicates no rating is available.
  * @param stayEnd The last date that check-ins can be set to in this promotion in ISO 8601 format (YYYY-MM-DD).
  * @param stayStart The first date that check-ins can be set to in this promotion in ISO 8601 format (YYYY-MM-DD).
  * @param supplySource The supply source of the property.
@@ -72,7 +72,7 @@ data class Promotion(
     @JsonProperty("promotion_id")
     @field:Valid
     val promotionId: kotlin.String? = null,
-    // An array of stay date ranges within this check-in / check-out range that are not eligible for this promotion. The stay dates are determined by the would be check-in of that night. With a check-in date of 2023-09-01,  and a check-out date of 2023-09-06, this would be a 5 night stay. A `blockout_dates` with start: 2023-09-02  and end: 2023-09-03 would mean 2 of the nights are not eligible. The 1st night is eligible, the 2nd and 3rd nights are not eligible, and the 4th and 5th nights are eligible.
+    // An array of stay date ranges within this check-in / check-out range that are not eligible for this promotion. The stay dates are determined by the would be check-in of that night. With a check-in date of 2023-09-01, and a check-out date of 2023-09-06, this would be a 5 night stay. A `blockout_dates` with start: '2023-09-02' and end: 2023-09-03 would mean 2 of the nights are not eligible. The 1st night is eligible, the 2nd and 3rd nights are not eligible, and the 4th and 5th nights are eligible.
     @JsonProperty("blockout_dates")
     @field:Valid
     val blockoutDates: kotlin.collections.List<BlockoutDate>? = null,
@@ -100,7 +100,7 @@ data class Promotion(
     @JsonProperty("description")
     @field:Valid
     val description: kotlin.String? = null,
-    // The percent off of the cost of the property when using this promotion.  This will only be returned for percentage based promotions
+    // The percent off of the cost of the property when using this promotion. This will only be returned for percentage based promotions
     @JsonProperty("discount_percentage")
     @field:Valid
     val discountPercentage: kotlin.String? = null,
@@ -150,7 +150,7 @@ data class Promotion(
     @JsonProperty("region_id")
     @field:Valid
     val regionId: kotlin.String? = null,
-    // The rating assigned to this property. Returns a value between 0.0 and 5.0. A value of 0.0 or a blank value  indicates no rating is available.
+    // The rating assigned to this property. Returns a value between 0.0 and 5.0. A value of 0.0 or a blank value indicates no rating is available.
     @JsonProperty("star_rating")
     @field:Valid
     val starRating: kotlin.String? = null,
