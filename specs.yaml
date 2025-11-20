@@ -4966,7 +4966,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2026-01-01'
+          example: '2026-02-01'
         - name: checkout
           in: query
           description: |
@@ -4974,7 +4974,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2026-01-03'
+          example: '2026-02-03'
         - name: currency
           in: query
           description: |
@@ -6202,7 +6202,7 @@ paths:
             If specified must also specify `checkout`.
           schema:
             type: string
-          example: '2026-01-01'
+          example: '2026-02-01'
         - name: checkout
           in: query
           description: |
@@ -6211,7 +6211,7 @@ paths:
             If specified must also specify `checkin`.<br>
           schema:
             type: string
-          example: '2026-01-03'
+          example: '2026-02-03'
         - name: exclusion
           in: query
           description: |
@@ -7899,7 +7899,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2026-01-15'
+          example: '2026-02-15'
         - name: end_date
           in: query
           description: |
@@ -7908,7 +7908,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2026-07-17'
+          example: '2026-08-17'
       responses:
         "200":
           description: OK
@@ -17478,6 +17478,7 @@ paths:
               example:
                 type: service_unavailable
                 message: This service is currently unavailable.
+      deprecated: true
       security:
         - rapidAuth: []
   /references/chains:
@@ -21048,9 +21049,9 @@ paths:
                 - 334242
         - name: include
           in: query
-          description: Each time this parameter is specified will add to the list of
-            fields and associated objects returned in the response. All values and field
-            names are lower case. All field names found at the top level of the response
+          description: |
+            Each time this parameter is specified will add to the list of fields and associated objects returned in the
+            response. All values and field names are lower case. All field names found at the top level of the response
             are valid values for inclusion.
           schema:
             type: array
@@ -21619,9 +21620,9 @@ paths:
                 - 987654
         - name: include
           in: query
-          description: Each time this parameter is specified will add to the list of
-            fields and associated objects returned in the response. All values and field
-            names are lower case. All field names found at the top level of the response
+          description: |
+            Each time this parameter is specified will add to the list of fields and associated objects returned in the
+            response. All values and field names are lower case. All field names found at the top level of the response
             are valid values for inclusion.
           schema:
             type: array
@@ -23393,7 +23394,10 @@ components:
           type: string
           description: Unique Identifier for a rate.
         status:
-          $ref: '#/components/schemas/Status'
+          type: string
+          description: Rates returned are always available.
+          enum:
+            - available
         available_rooms:
           type: number
           description: |-
@@ -23477,16 +23481,6 @@ components:
           items:
             $ref: '#/components/schemas/Deposit'
       description: A rate.
-    Status:
-      type: string
-      description: Indicates the status of the rate. If the rate is still available
-        then available will be returned. If the rate is no longer available at that
-        price then price_changed will be returned. If the rate is no longer available
-        at all then sold_out will be returned.
-      enum:
-        - available
-        - price_changed
-        - sold_out
     SaleScenario:
       type: object
       properties:
@@ -23712,12 +23706,17 @@ components:
       description: The price check response.
     StatusPriceCheck:
       type: string
-      description: Indicates the status of the rate. If the rate is still available
-        then available will be returned. If the rate is no longer available at that
-        price then price_changed will be returned. If the rate is no longer available
-        at all then sold_out will be returned.
+      description: |
+        Indicates the status of the rate.
+        * `available` - The rate is still available at or below the price returned in the shop response.
+        * `available_no_change` - **Only in Hard Change flows** - The rate is available but matches the booked rate.
+        * `price_changed` - The rate is no longer available at the previous price. Use the `additional_rates` link to
+          present updated rooms and rates for this property to travelers.
+        * `sold_out` - The rate is no longer available at any price. Use the `additional_rates` link to
+          present updated rooms and rates for this property to travelers.
       enum:
         - available
+        - available_no_change
         - price_changed
         - sold_out
     RoomPriceCheckLinks:
@@ -24389,6 +24388,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
         rate:
@@ -25005,6 +25005,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
     ItineraryCreation:
@@ -25090,6 +25091,7 @@ components:
         loyalty_id:
           type: string
           description: Deprecated. Please use the loyalty id inside the loyalty object.
+          deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
       example:
@@ -25407,14 +25409,12 @@ components:
           description: Unique identifier for the promotion
         blockout_dates:
           type: array
-          description: "An array of stay date ranges within this check-in / check-out\
-            \ range that are not eligible for this promotion.\nThe stay dates are\
-            \ determined by the would be check-in of that night. With a check-in date\
-            \ of 2023-09-01, \nand a check-out date of 2023-09-06, this would be a\
-            \ 5 night stay. A `blockout_dates` with start: 2023-09-02 \nand end: 2023-09-03\
-            \ would mean 2 of the nights are not eligible. The 1st night is eligible,\
-            \ the 2nd and 3rd\nnights are not eligible, and the 4th and 5th nights\
-            \ are eligible.\n"
+          description: |
+            An array of stay date ranges within this check-in / check-out range that are not eligible for this promotion.
+            The stay dates are determined by the would be check-in of that night. With a check-in date of 2023-09-01,
+            and a check-out date of 2023-09-06, this would be a 5 night stay. A `blockout_dates` with start: '2023-09-02'
+            and end: 2023-09-03 would mean 2 of the nights are not eligible. The 1st night is eligible, the 2nd and 3rd
+            nights are not eligible, and the 4th and 5th nights are eligible.
           items:
             $ref: '#/components/schemas/BlockoutDate'
         bookable_end:
@@ -25439,8 +25439,9 @@ components:
           description: The description of the promotion.
         discount_percentage:
           type: string
-          description: "The percent off of the cost of the property when using this\
-            \ promotion. \nThis will only be returned for percentage based promotions\n"
+          description: |
+            The percent off of the cost of the property when using this promotion.
+            This will only be returned for percentage based promotions
         guest_rating:
           type: string
           description: |
@@ -25497,9 +25498,9 @@ components:
           description: The region id for the property.
         star_rating:
           type: string
-          description: "The rating assigned to this property. Returns a value between\
-            \ 0.0 and 5.0. A value of 0.0 or a blank value \nindicates no rating is\
-            \ available.\n"
+          description: |
+            The rating assigned to this property. Returns a value between 0.0 and 5.0. A value of 0.0 or a blank value
+            indicates no rating is available.
         stay_end:
           type: string
           description: The last date that check-ins can be set to in this promotion
