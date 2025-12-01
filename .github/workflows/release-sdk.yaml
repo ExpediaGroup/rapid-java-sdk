@@ -7,7 +7,7 @@ on:
         description: |
           SDK Stack Core branch or ref to use
         type: string
-        default: 'legacy'
+        default: 'main'
 
 jobs:
 #  run-examples:
