@@ -31,6 +31,7 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.CreateItineraryRequestRoomSensitiveTravelerDetails
 import com.expediagroup.sdk.rapid.models.Loyalty
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
@@ -40,24 +41,28 @@ import javax.validation.constraints.NotNull
 
 /**
  *
- * @param givenName First name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
- * @param familyName Last name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+ * @param givenName Given name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+ * @param familyName Family name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+ * @param sensitiveTravelerDetails
  * @param smoking Specify if the guest would prefer a smoking room. This field is only a request and the property is not guaranteed to honor it, it will not override any non-smoking policies by the hotel.
  * @param specialRequest Special requests to send to hotel (not guaranteed). Do not use this field to communicate B2B customer service requests or pass any sensitive personal or financial information (PII). Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
  * @param loyaltyId Deprecated. Please use the loyalty id inside the loyalty object.
  * @param loyalty
  */
 data class CreateItineraryRequestRoom(
-    // First name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+    // Given name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("given_name")
     @field:NotNull
     @field:Valid
     val givenName: kotlin.String,
-    // Last name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+    // Family name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
     @JsonProperty("family_name")
     @field:NotNull
     @field:Valid
     val familyName: kotlin.String,
+    @JsonProperty("sensitive_traveler_details")
+    @field:Valid
+    val sensitiveTravelerDetails: CreateItineraryRequestRoomSensitiveTravelerDetails? = null,
     // Specify if the guest would prefer a smoking room. This field is only a request and the property is not guaranteed to honor it, it will not override any non-smoking policies by the hotel.
     @JsonProperty("smoking")
     @field:Valid
@@ -83,6 +88,7 @@ data class CreateItineraryRequestRoom(
     class Builder(
         private var givenName: kotlin.String? = null,
         private var familyName: kotlin.String? = null,
+        private var sensitiveTravelerDetails: CreateItineraryRequestRoomSensitiveTravelerDetails? = null,
         private var smoking: kotlin.Boolean? = null,
         private var specialRequest: kotlin.String? = null,
         private var loyaltyId: kotlin.String? = null,
@@ -91,6 +97,8 @@ data class CreateItineraryRequestRoom(
         fun givenName(givenName: kotlin.String) = apply { this.givenName = givenName }
 
         fun familyName(familyName: kotlin.String) = apply { this.familyName = familyName }
+
+        fun sensitiveTravelerDetails(sensitiveTravelerDetails: CreateItineraryRequestRoomSensitiveTravelerDetails?) = apply { this.sensitiveTravelerDetails = sensitiveTravelerDetails }
 
         fun smoking(smoking: kotlin.Boolean?) = apply { this.smoking = smoking }
 
@@ -105,6 +113,7 @@ data class CreateItineraryRequestRoom(
                 CreateItineraryRequestRoom(
                     givenName = givenName!!,
                     familyName = familyName!!,
+                    sensitiveTravelerDetails = sensitiveTravelerDetails,
                     smoking = smoking,
                     specialRequest = specialRequest,
                     loyaltyId = loyaltyId,
@@ -139,6 +148,7 @@ data class CreateItineraryRequestRoom(
         Builder(
             givenName = givenName!!,
             familyName = familyName!!,
+            sensitiveTravelerDetails = sensitiveTravelerDetails,
             smoking = smoking,
             specialRequest = specialRequest,
             loyaltyId = loyaltyId,

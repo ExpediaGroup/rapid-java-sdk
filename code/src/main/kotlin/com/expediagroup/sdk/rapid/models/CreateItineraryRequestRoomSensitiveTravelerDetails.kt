@@ -38,28 +38,23 @@ import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- * To be included if invoicing is requested.
- * @param companyName The traveler's company name to appear on the invoice.
- * @param companyAddress
- * @param pointOfSaleDisplay Provide this when a specific site or branding should be used on the invoice instead of partner name.
- * @param email Email address to send invoices
+ * Additional sensitive (PII) data about a traveler that should only be submitted in cases where it is necessary to clarify the identity of the traveler.
+ * @param middleName Middle name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+ * @param dateOfBirth The date of birth of room guest, in ISO 8601 format (YYYY-MM-DD).
+ * @param address
  */
-data class CreateItineraryRequestInvoicing(
-    // The traveler's company name to appear on the invoice.
-    @JsonProperty("company_name")
+data class CreateItineraryRequestRoomSensitiveTravelerDetails(
+    // Middle name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+    @JsonProperty("middle_name")
     @field:Valid
-    val companyName: kotlin.String? = null,
-    @JsonProperty("company_address")
+    val middleName: kotlin.String? = null,
+    // The date of birth of room guest, in ISO 8601 format (YYYY-MM-DD).
+    @JsonProperty("date_of_birth")
     @field:Valid
-    val companyAddress: Address1? = null,
-    // Provide this when a specific site or branding should be used on the invoice instead of partner name.
-    @JsonProperty("point_of_sale_display")
+    val dateOfBirth: kotlin.String? = null,
+    @JsonProperty("address")
     @field:Valid
-    val pointOfSaleDisplay: kotlin.String? = null,
-    // Email address to send invoices
-    @JsonProperty("email")
-    @field:Valid
-    val email: kotlin.String? = null
+    val address: Address1? = null
 ) {
     companion object {
         @JvmStatic
@@ -67,26 +62,22 @@ data class CreateItineraryRequestInvoicing(
     }
 
     class Builder(
-        private var companyName: kotlin.String? = null,
-        private var companyAddress: Address1? = null,
-        private var pointOfSaleDisplay: kotlin.String? = null,
-        private var email: kotlin.String? = null
+        private var middleName: kotlin.String? = null,
+        private var dateOfBirth: kotlin.String? = null,
+        private var address: Address1? = null
     ) {
-        fun companyName(companyName: kotlin.String?) = apply { this.companyName = companyName }
+        fun middleName(middleName: kotlin.String?) = apply { this.middleName = middleName }
 
-        fun companyAddress(companyAddress: Address1?) = apply { this.companyAddress = companyAddress }
+        fun dateOfBirth(dateOfBirth: kotlin.String?) = apply { this.dateOfBirth = dateOfBirth }
 
-        fun pointOfSaleDisplay(pointOfSaleDisplay: kotlin.String?) = apply { this.pointOfSaleDisplay = pointOfSaleDisplay }
+        fun address(address: Address1?) = apply { this.address = address }
 
-        fun email(email: kotlin.String?) = apply { this.email = email }
-
-        fun build(): CreateItineraryRequestInvoicing {
+        fun build(): CreateItineraryRequestRoomSensitiveTravelerDetails {
             val instance =
-                CreateItineraryRequestInvoicing(
-                    companyName = companyName,
-                    companyAddress = companyAddress,
-                    pointOfSaleDisplay = pointOfSaleDisplay,
-                    email = email
+                CreateItineraryRequestRoomSensitiveTravelerDetails(
+                    middleName = middleName,
+                    dateOfBirth = dateOfBirth,
+                    address = address
                 )
 
             validate(instance)
@@ -94,7 +85,7 @@ data class CreateItineraryRequestInvoicing(
             return instance
         }
 
-        private fun validate(instance: CreateItineraryRequestInvoicing) {
+        private fun validate(instance: CreateItineraryRequestRoomSensitiveTravelerDetails) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -115,9 +106,8 @@ data class CreateItineraryRequestInvoicing(
 
     fun toBuilder() =
         Builder(
-            companyName = companyName,
-            companyAddress = companyAddress,
-            pointOfSaleDisplay = pointOfSaleDisplay,
-            email = email
+            middleName = middleName,
+            dateOfBirth = dateOfBirth,
+            address = address
         )
 }

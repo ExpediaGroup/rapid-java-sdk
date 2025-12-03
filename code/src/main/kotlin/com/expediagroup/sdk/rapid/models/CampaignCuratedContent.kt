@@ -31,23 +31,40 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.MarketRegionContent
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * Curated content object containing map of campaign regions containing various curated content objects
+ * @param anz
+ * @param asia
+ * @param ca
+ * @param emea
+ * @param latam
+ * @param us
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class CampaignCuratedContent(
+    @JsonProperty("anz")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val anz: MarketRegionContent? = null,
+    @JsonProperty("asia")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val asia: MarketRegionContent? = null,
+    @JsonProperty("ca")
+    @field:Valid
+    val ca: MarketRegionContent? = null,
+    @JsonProperty("emea")
+    @field:Valid
+    val emea: MarketRegionContent? = null,
+    @JsonProperty("latam")
+    @field:Valid
+    val latam: MarketRegionContent? = null,
+    @JsonProperty("us")
+    @field:Valid
+    val us: MarketRegionContent? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +72,34 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var anz: MarketRegionContent? = null,
+        private var asia: MarketRegionContent? = null,
+        private var ca: MarketRegionContent? = null,
+        private var emea: MarketRegionContent? = null,
+        private var latam: MarketRegionContent? = null,
+        private var us: MarketRegionContent? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun anz(anz: MarketRegionContent?) = apply { this.anz = anz }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun asia(asia: MarketRegionContent?) = apply { this.asia = asia }
 
-        fun build(): Coordinates {
+        fun ca(ca: MarketRegionContent?) = apply { this.ca = ca }
+
+        fun emea(emea: MarketRegionContent?) = apply { this.emea = emea }
+
+        fun latam(latam: MarketRegionContent?) = apply { this.latam = latam }
+
+        fun us(us: MarketRegionContent?) = apply { this.us = us }
+
+        fun build(): CampaignCuratedContent {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                CampaignCuratedContent(
+                    anz = anz,
+                    asia = asia,
+                    ca = ca,
+                    emea = emea,
+                    latam = latam,
+                    us = us
                 )
 
             validate(instance)
@@ -74,7 +107,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: CampaignCuratedContent) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +128,11 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            anz = anz,
+            asia = asia,
+            ca = ca,
+            emea = emea,
+            latam = latam,
+            us = us
         )
 }

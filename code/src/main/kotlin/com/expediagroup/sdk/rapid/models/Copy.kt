@@ -37,17 +37,19 @@ import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * A copy object containing both copy and subcopy that should be used with promotion for this region.
+ * @param copy The marketing copy that should be used for this campaign.
+ * @param subcopy The marketing subcopy that should be used for this campaign.
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class Copy(
+    // The marketing copy that should be used for this campaign.
+    @JsonProperty("copy")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val copy: kotlin.String? = null,
+    // The marketing subcopy that should be used for this campaign.
+    @JsonProperty("subcopy")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val subcopy: kotlin.String? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +57,18 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var copy: kotlin.String? = null,
+        private var subcopy: kotlin.String? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun copy(copy: kotlin.String?) = apply { this.copy = copy }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun subcopy(subcopy: kotlin.String?) = apply { this.subcopy = subcopy }
 
-        fun build(): Coordinates {
+        fun build(): Copy {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                Copy(
+                    copy = copy,
+                    subcopy = subcopy
                 )
 
             validate(instance)
@@ -74,7 +76,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: Copy) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +97,7 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            copy = copy,
+            subcopy = subcopy
         )
 }

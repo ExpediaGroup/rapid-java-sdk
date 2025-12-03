@@ -31,6 +31,7 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.ChangeRoomDetailsRequestSensitiveTravelerDetails
 import com.expediagroup.sdk.rapid.models.Loyalty
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
@@ -41,6 +42,7 @@ import javax.validation.Validation
  *
  * @param givenName First name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
  * @param familyName Last name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+ * @param sensitiveTravelerDetails
  * @param smoking Specify if the guest would prefer a smoking room. This field is only a request and the property is not guaranteed to honor it, it will not override any non-smoking policies by the hotel.
  * @param specialRequest Special requests to send to hotel (not guaranteed). Do not use this field to communicate B2B customer service requests or pass any sensitive personal or financial information (PII). Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
  * @param loyaltyId Deprecated. Please use the loyalty id inside the loyalty object.
@@ -55,6 +57,9 @@ data class ChangeRoomDetailsRequest(
     @JsonProperty("family_name")
     @field:Valid
     val familyName: kotlin.String? = null,
+    @JsonProperty("sensitive_traveler_details")
+    @field:Valid
+    val sensitiveTravelerDetails: ChangeRoomDetailsRequestSensitiveTravelerDetails? = null,
     // Specify if the guest would prefer a smoking room. This field is only a request and the property is not guaranteed to honor it, it will not override any non-smoking policies by the hotel.
     @JsonProperty("smoking")
     @field:Valid
@@ -80,6 +85,7 @@ data class ChangeRoomDetailsRequest(
     class Builder(
         private var givenName: kotlin.String? = null,
         private var familyName: kotlin.String? = null,
+        private var sensitiveTravelerDetails: ChangeRoomDetailsRequestSensitiveTravelerDetails? = null,
         private var smoking: kotlin.Boolean? = null,
         private var specialRequest: kotlin.String? = null,
         private var loyaltyId: kotlin.String? = null,
@@ -88,6 +94,8 @@ data class ChangeRoomDetailsRequest(
         fun givenName(givenName: kotlin.String?) = apply { this.givenName = givenName }
 
         fun familyName(familyName: kotlin.String?) = apply { this.familyName = familyName }
+
+        fun sensitiveTravelerDetails(sensitiveTravelerDetails: ChangeRoomDetailsRequestSensitiveTravelerDetails?) = apply { this.sensitiveTravelerDetails = sensitiveTravelerDetails }
 
         fun smoking(smoking: kotlin.Boolean?) = apply { this.smoking = smoking }
 
@@ -102,6 +110,7 @@ data class ChangeRoomDetailsRequest(
                 ChangeRoomDetailsRequest(
                     givenName = givenName,
                     familyName = familyName,
+                    sensitiveTravelerDetails = sensitiveTravelerDetails,
                     smoking = smoking,
                     specialRequest = specialRequest,
                     loyaltyId = loyaltyId,
@@ -136,6 +145,7 @@ data class ChangeRoomDetailsRequest(
         Builder(
             givenName = givenName,
             familyName = familyName,
+            sensitiveTravelerDetails = sensitiveTravelerDetails,
             smoking = smoking,
             specialRequest = specialRequest,
             loyaltyId = loyaltyId,

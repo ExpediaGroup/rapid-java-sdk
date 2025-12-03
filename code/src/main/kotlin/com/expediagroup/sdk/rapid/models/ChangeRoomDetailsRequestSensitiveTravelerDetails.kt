@@ -31,23 +31,30 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.Address1
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * Additional sensitive (PII) data about a traveler that should only be submitted in cases where it is necessary to clarify the identity of the traveler.
+ * @param middleName Middle name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+ * @param dateOfBirth The date of birth of room guest, in ISO 8601 format (YYYY-MM-DD).
+ * @param address
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class ChangeRoomDetailsRequestSensitiveTravelerDetails(
+    // Middle name of room guest. Max 60 characters. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
+    @JsonProperty("middle_name")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val middleName: kotlin.String? = null,
+    // The date of birth of room guest, in ISO 8601 format (YYYY-MM-DD).
+    @JsonProperty("date_of_birth")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val dateOfBirth: kotlin.String? = null,
+    @JsonProperty("address")
+    @field:Valid
+    val address: Address1? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +62,22 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var middleName: kotlin.String? = null,
+        private var dateOfBirth: kotlin.String? = null,
+        private var address: Address1? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun middleName(middleName: kotlin.String?) = apply { this.middleName = middleName }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun dateOfBirth(dateOfBirth: kotlin.String?) = apply { this.dateOfBirth = dateOfBirth }
 
-        fun build(): Coordinates {
+        fun address(address: Address1?) = apply { this.address = address }
+
+        fun build(): ChangeRoomDetailsRequestSensitiveTravelerDetails {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                ChangeRoomDetailsRequestSensitiveTravelerDetails(
+                    middleName = middleName,
+                    dateOfBirth = dateOfBirth,
+                    address = address
                 )
 
             validate(instance)
@@ -74,7 +85,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: ChangeRoomDetailsRequestSensitiveTravelerDetails) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +106,8 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            middleName = middleName,
+            dateOfBirth = dateOfBirth,
+            address = address
         )
 }

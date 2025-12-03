@@ -37,17 +37,19 @@ import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * An image object containing the link to the image and tags for the image.
+ * @param image A link to the image.
+ * @param tags Tags for the image.
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class Image2(
+    // A link to the image.
+    @JsonProperty("image")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val image: kotlin.String? = null,
+    // Tags for the image.
+    @JsonProperty("tags")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val tags: kotlin.collections.List<kotlin.String>? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +57,18 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var image: kotlin.String? = null,
+        private var tags: kotlin.collections.List<kotlin.String>? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun image(image: kotlin.String?) = apply { this.image = image }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun tags(tags: kotlin.collections.List<kotlin.String>?) = apply { this.tags = tags }
 
-        fun build(): Coordinates {
+        fun build(): Image2 {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                Image2(
+                    image = image,
+                    tags = tags
                 )
 
             validate(instance)
@@ -74,7 +76,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: Image2) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +97,7 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            image = image,
+            tags = tags
         )
 }

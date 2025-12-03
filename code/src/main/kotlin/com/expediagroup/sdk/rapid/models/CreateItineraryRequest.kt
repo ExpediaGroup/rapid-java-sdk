@@ -31,10 +31,11 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
-import com.expediagroup.sdk.rapid.models.CreateItineraryRequestInvoicing
 import com.expediagroup.sdk.rapid.models.CreateItineraryRequestRoom
+import com.expediagroup.sdk.rapid.models.Invoicing
 import com.expediagroup.sdk.rapid.models.PaymentRequest
 import com.expediagroup.sdk.rapid.models.PhoneRequest
+import com.expediagroup.sdk.rapid.models.SupplierTransparency
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
@@ -50,9 +51,10 @@ import javax.validation.constraints.NotNull
  * @param hold Flag for placing a booking on hold. The booking will be released if the resume link is not followed within the hold period. Please refer to our Hold and Resume documentation.
  * @param payments Required if payment information prior to booking was not submitted. If register payments was called prior to this call, do not submit payment information again.
  * @param affiliateMetadata Field that stores up to 256 characters of additional metadata with the itinerary. Will be returned on all retrieve responses for this itinerary. The data must be in the format 'key1:value|key2:value|key3:value'. Other Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
- * @param taxRegistrationNumber The customer's taxpayer identification number that is provided by the government to nationals or resident aliens. This number should be collected from individuals that pay taxes or participate in activities that provide revenue for one or more tax types. Note: This value is only needed from Brazilian and Indian customers.
+ * @param taxRegistrationNumber The customer's taxpayer identification number that is provided by the government to nationals or resident aliens. This number should be collected from individuals that pay taxes or participate in activities that provide revenue for one or more tax types. *Note:* This value is only needed from Brazilian and Indian customers.
  * @param travelerHandlingInstructions Custom traveler handling instructions for the hotel. Do not include PCI sensitive data, such as credit card numbers, in this field.
  * @param invoicing
+ * @param supplierTransparency
  */
 data class CreateItineraryRequest(
     // Email address for the customer. Must adhere to standard RFC 822 email format. Special characters (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be re-encoded.
@@ -87,7 +89,7 @@ data class CreateItineraryRequest(
     @JsonProperty("affiliate_metadata")
     @field:Valid
     val affiliateMetadata: kotlin.String? = null,
-    // The customer's taxpayer identification number that is provided by the government to nationals or resident aliens. This number should be collected from individuals that pay taxes or participate in activities that provide revenue for one or more tax types. Note: This value is only needed from Brazilian and Indian customers.
+    // The customer's taxpayer identification number that is provided by the government to nationals or resident aliens. This number should be collected from individuals that pay taxes or participate in activities that provide revenue for one or more tax types. *Note:* This value is only needed from Brazilian and Indian customers.
     @JsonProperty("tax_registration_number")
     @field:Valid
     val taxRegistrationNumber: kotlin.String? = null,
@@ -97,7 +99,10 @@ data class CreateItineraryRequest(
     val travelerHandlingInstructions: kotlin.String? = null,
     @JsonProperty("invoicing")
     @field:Valid
-    val invoicing: CreateItineraryRequestInvoicing? = null
+    val invoicing: Invoicing? = null,
+    @JsonProperty("supplier_transparency")
+    @field:Valid
+    val supplierTransparency: SupplierTransparency? = null
 ) {
     companion object {
         @JvmStatic
@@ -114,7 +119,8 @@ data class CreateItineraryRequest(
         private var affiliateMetadata: kotlin.String? = null,
         private var taxRegistrationNumber: kotlin.String? = null,
         private var travelerHandlingInstructions: kotlin.String? = null,
-        private var invoicing: CreateItineraryRequestInvoicing? = null
+        private var invoicing: Invoicing? = null,
+        private var supplierTransparency: SupplierTransparency? = null
     ) {
         fun email(email: kotlin.String) = apply { this.email = email }
 
@@ -134,7 +140,9 @@ data class CreateItineraryRequest(
 
         fun travelerHandlingInstructions(travelerHandlingInstructions: kotlin.String?) = apply { this.travelerHandlingInstructions = travelerHandlingInstructions }
 
-        fun invoicing(invoicing: CreateItineraryRequestInvoicing?) = apply { this.invoicing = invoicing }
+        fun invoicing(invoicing: Invoicing?) = apply { this.invoicing = invoicing }
+
+        fun supplierTransparency(supplierTransparency: SupplierTransparency?) = apply { this.supplierTransparency = supplierTransparency }
 
         fun build(): CreateItineraryRequest {
             val instance =
@@ -148,7 +156,8 @@ data class CreateItineraryRequest(
                     affiliateMetadata = affiliateMetadata,
                     taxRegistrationNumber = taxRegistrationNumber,
                     travelerHandlingInstructions = travelerHandlingInstructions,
-                    invoicing = invoicing
+                    invoicing = invoicing,
+                    supplierTransparency = supplierTransparency
                 )
 
             validate(instance)
@@ -186,6 +195,7 @@ data class CreateItineraryRequest(
             affiliateMetadata = affiliateMetadata,
             taxRegistrationNumber = taxRegistrationNumber,
             travelerHandlingInstructions = travelerHandlingInstructions,
-            invoicing = invoicing
+            invoicing = invoicing,
+            supplierTransparency = supplierTransparency
         )
 }

@@ -31,23 +31,25 @@
 package com.expediagroup.sdk.rapid.models
 
 import com.expediagroup.sdk.core.model.exception.client.PropertyConstraintViolationException
+import com.expediagroup.sdk.rapid.models.Phone
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator
 import javax.validation.Valid
 import javax.validation.Validation
 
 /**
- *
- * @param latitude
- * @param longitude
+ * Object to hold information for a contact the supplier can reach in the event of any issues with the provided payment.
+ * @param email The email address of the VCC contact.
+ * @param phone
  */
-data class Coordinates(
-    @JsonProperty("latitude")
+data class AdditionalHandlingCardContact(
+    // The email address of the VCC contact.
+    @JsonProperty("email")
     @field:Valid
-    val latitude: java.math.BigDecimal? = null,
-    @JsonProperty("longitude")
+    val email: kotlin.String? = null,
+    @JsonProperty("phone")
     @field:Valid
-    val longitude: java.math.BigDecimal? = null
+    val phone: Phone? = null
 ) {
     companion object {
         @JvmStatic
@@ -55,18 +57,18 @@ data class Coordinates(
     }
 
     class Builder(
-        private var latitude: java.math.BigDecimal? = null,
-        private var longitude: java.math.BigDecimal? = null
+        private var email: kotlin.String? = null,
+        private var phone: Phone? = null
     ) {
-        fun latitude(latitude: java.math.BigDecimal?) = apply { this.latitude = latitude }
+        fun email(email: kotlin.String?) = apply { this.email = email }
 
-        fun longitude(longitude: java.math.BigDecimal?) = apply { this.longitude = longitude }
+        fun phone(phone: Phone?) = apply { this.phone = phone }
 
-        fun build(): Coordinates {
+        fun build(): AdditionalHandlingCardContact {
             val instance =
-                Coordinates(
-                    latitude = latitude,
-                    longitude = longitude
+                AdditionalHandlingCardContact(
+                    email = email,
+                    phone = phone
                 )
 
             validate(instance)
@@ -74,7 +76,7 @@ data class Coordinates(
             return instance
         }
 
-        private fun validate(instance: Coordinates) {
+        private fun validate(instance: AdditionalHandlingCardContact) {
             val validator =
                 Validation
                     .byDefaultProvider()
@@ -95,7 +97,7 @@ data class Coordinates(
 
     fun toBuilder() =
         Builder(
-            latitude = latitude,
-            longitude = longitude
+            email = email,
+            phone = phone
         )
 }
