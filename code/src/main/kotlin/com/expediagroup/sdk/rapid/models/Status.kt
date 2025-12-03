@@ -18,7 +18,7 @@
     "ArrayInDataClass",
     "EnumEntryName",
     "RemoveRedundantQualifierName",
-    "UnusedImport",
+    "UnusedImport"
 )
 
 package com.expediagroup.sdk.rapid.models
@@ -31,9 +31,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
  * Values: AVAILABLE, PRICE_CHANGED, SOLD_OUT
  */
 @Deprecated("This is replaced by Rate.Status")
-enum class Status(
-    val value: kotlin.String,
-) {
+enum class Status(val value: kotlin.String) {
     @JsonProperty("available")
     AVAILABLE("available"),
 
@@ -43,5 +41,5 @@ enum class Status(
 
     @Deprecated("Never Returned")
     @JsonProperty("sold_out")
-    SOLD_OUT("sold_out"),
+    SOLD_OUT("sold_out")
 }
