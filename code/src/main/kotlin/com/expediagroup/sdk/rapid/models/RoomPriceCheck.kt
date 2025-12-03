@@ -46,6 +46,7 @@ import javax.validation.Validation
 /**
  * The price check response.
  * @param status
+ * @param holdable Indicates whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume).
  * @param occupancyPricing A map of room information by occupancy.
  * @param links
  * @param cardOnFileLimit
@@ -60,6 +61,10 @@ data class RoomPriceCheck(
     @JsonProperty("status")
     @field:Valid
     val status: StatusPriceCheck? = null,
+    // Indicates whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume).
+    @JsonProperty("holdable")
+    @field:Valid
+    val holdable: kotlin.Boolean? = null,
     // A map of room information by occupancy.
     @JsonProperty("occupancy_pricing")
     @field:Valid
@@ -97,6 +102,7 @@ data class RoomPriceCheck(
 
     class Builder(
         private var status: StatusPriceCheck? = null,
+        private var holdable: kotlin.Boolean? = null,
         private var occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>? = null,
         private var links: RoomPriceCheckLinks? = null,
         private var cardOnFileLimit: Amount? = null,
@@ -108,6 +114,8 @@ data class RoomPriceCheck(
         private var traderInformation: TraderInformation? = null
     ) {
         fun status(status: StatusPriceCheck?) = apply { this.status = status }
+
+        fun holdable(holdable: kotlin.Boolean?) = apply { this.holdable = holdable }
 
         fun occupancyPricing(occupancyPricing: kotlin.collections.Map<kotlin.String, PricingInformation>?) = apply { this.occupancyPricing = occupancyPricing }
 
@@ -131,6 +139,7 @@ data class RoomPriceCheck(
             val instance =
                 RoomPriceCheck(
                     status = status,
+                    holdable = holdable,
                     occupancyPricing = occupancyPricing,
                     links = links,
                     cardOnFileLimit = cardOnFileLimit,
@@ -169,6 +178,7 @@ data class RoomPriceCheck(
     fun toBuilder() =
         Builder(
             status = status,
+            holdable = holdable,
             occupancyPricing = occupancyPricing,
             links = links,
             cardOnFileLimit = cardOnFileLimit,

@@ -4966,7 +4966,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2026-02-01'
+          example: '2026-03-01'
         - name: checkout
           in: query
           description: |
@@ -4974,7 +4974,7 @@ paths:
           required: true
           schema:
             type: string
-          example: '2026-02-03'
+          example: '2026-03-03'
         - name: currency
           in: query
           description: |
@@ -5159,6 +5159,7 @@ paths:
             * `sale_scenario.mobile_promotion` - Enable the `mobile_promotion` flag under the `room.rate.sale_scenario` section of the response.
             * `rooms.rates.marketing_fee_incentives` - When a rate has a marketing fee incentive applied, the response will include the `marketing_fee_incentives` array if this flag is provided in the request.
             * `rooms.rates.current_refundability` - Displays the current `refundability` of a rate.
+            * `rooms.rates.holdable` - Enables the `holdable` flag on the response to indicate whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume).
             * `rooms.rates.marketing_fee_details` - Displays a more granular view of marketing fees in the response.
           schema:
             type: array
@@ -5169,6 +5170,7 @@ paths:
                 - sale_scenario.mobile_promotion
                 - rooms.rates.marketing_fee_incentives
                 - rooms.rates.current_refundability
+                - rooms.rates.holdable
                 - rooms.rates.marketing_fee_details
           examples:
             Optional:
@@ -6202,7 +6204,7 @@ paths:
             If specified must also specify `checkout`.
           schema:
             type: string
-          example: '2026-02-01'
+          example: '2026-03-01'
         - name: checkout
           in: query
           description: |
@@ -6211,7 +6213,7 @@ paths:
             If specified must also specify `checkin`.<br>
           schema:
             type: string
-          example: '2026-02-03'
+          example: '2026-03-03'
         - name: exclusion
           in: query
           description: |
@@ -6414,6 +6416,7 @@ paths:
                               status: available
                               available_rooms: 12
                               refundable: true
+                              holdable: true
                               member_deal_available: true
                               sale_scenario:
                                 package: false
@@ -7032,6 +7035,7 @@ paths:
                 Available Example:
                   value:
                     status: available
+                    holdable: true
                     occupancy_pricing:
                       "2":
                         nightly:
@@ -7899,7 +7903,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2026-02-15'
+          example: '2026-03-15'
         - name: end_date
           in: query
           description: |
@@ -7908,7 +7912,7 @@ paths:
           schema:
             type: string
             format: date
-          example: '2026-08-17'
+          example: '2026-09-17'
       responses:
         "200":
           description: OK
@@ -11087,6 +11091,51 @@ paths:
                     point_of_sale_display_to_share: Global Travel Site
                     company_name_to_share: Traveler's Company
                     consent_to_share: true
+              Create Booking with Possible Sanctions:
+                value:
+                  affiliate_reference_id: ABC8388
+                  hold: false
+                  email: possibly@example.com
+                  phone:
+                    country_code: "1"
+                    area_code: "487"
+                    number: "5550077"
+                  rooms:
+                    - given_name: Possibly
+                      family_name: Sanctioned
+                      sensitive_traveler_details:
+                        - middle_name: Clarifying
+                          date_of_birth: '1963-12-04'
+                          address:
+                            line_1: 5555 21st St
+                            line_2: 5th Floor
+                            line_3: Unit 532
+                            city: Seattle
+                            state_province_code: WA
+                            postal_code: "98121"
+                            country_code: US
+                      smoking: false
+                      special_request: Please review my sensitive traveler details to
+                        show that I'm not sanctioned.
+                      loyalty_id: ABC123
+                  payments:
+                    - type: customer_card
+                      number: "4111111111111111"
+                      security_code: "123"
+                      expiration_month: "08"
+                      expiration_year: "2025"
+                      billing_contact:
+                        given_name: John
+                        family_name: Smith
+                        address:
+                          line_1: 555 1st St
+                          line_2: 10th Floor
+                          line_3: Unit 12
+                          city: Seattle
+                          state_province_code: WA
+                          postal_code: "98121"
+                          country_code: US
+                      enrollment_date: '2018-09-15'
         required: true
       responses:
         "201":
@@ -11221,6 +11270,17 @@ paths:
                           - name: country_code
                             type: body
                             value: ABCD
+                Invalid Address Example:
+                  value:
+                    type: invalid_input
+                    message: "An invalid request was sent in, please check the nested\
+                      \ errors for details."
+                    errors:
+                      - type: rooms.address.line_1.invalid
+                        message: Address line 1 is required.
+                        fields:
+                          - name: line_1
+                            type: body
                 Duplicate Itinerary Example:
                   value:
                     type: invalid_input
@@ -15282,7 +15342,8 @@ paths:
         - Manage Booking
       summary: Change details of a room.
       description: |
-        This link will be available in the retrieve response. Changes in smoking preference and special request will be passed along to the property and are not guaranteed.
+        This link will be available in the retrieve response. Changes in smoking preference and special request will be
+        passed along to the property and are not guaranteed.
       operationId: changeRoomDetails
       parameters:
         - name: Accept
@@ -15304,7 +15365,8 @@ paths:
         - name: Content-Type
           in: header
           description: |
-            This parameter is to specify what format the request body is in. The only supported value is application/json.
+            This parameter is to specify what format the request body is in. The only supported value is
+            `application/json`.
           required: true
           schema:
             type: string
@@ -15370,18 +15432,50 @@ paths:
         - name: token
           in: query
           description: |
-            Provided as part of the link object and used to maintain state across calls. This simplifies each subsequent call by limiting the amount of information required at each step and reduces the potential for errors. Token values cannot be viewed or changed.
+            Provided as part of the link object and used to maintain state across calls. This simplifies each
+            subsequent call by limiting the amount of information required at each step and reduces the potential for
+            errors. Token values cannot be viewed or changed.
           required: true
           schema:
             type: string
       requestBody:
-        description: "The request body is required, but only the fields that are being\
-          \ changed need to be passed in. Fields that are not being changed should\
-          \ not be included in the request body."
+        description: |
+          The request body is required, but only the fields that are being changed need to be passed in. Fields that
+          are not being changed should not be included in the request body.
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ChangeRoomDetailsRequest'
+            examples:
+              Name Change:
+                value:
+                  given_name: Cindy
+                  family_name: Smith
+              General Change:
+                value:
+                  given_name: Cindy
+                  family_name: Smith
+                  smoking: false
+                  special_request: Update - Please may I have a room close to the
+                    elevator?
+                  loyalty:
+                    member_id: ABD123
+                    program_id: SN
+              Sanctions Screening:
+                value:
+                  given_name: Possibly
+                  family_name: Sanctioned
+                  sensitive_traveler_details:
+                    middle_name: Clarifying
+                    date_of_birth: '1963-12-04'
+                    address:
+                      line_1: 5555 21st St
+                      line_2: 5th Floor
+                      line_3: Unit 532
+                      city: Seattle
+                      state_province_code: WA
+                      postal_code: 98121
+                      country_code: US
         required: true
       responses:
         "202":
@@ -23408,6 +23502,11 @@ components:
           description: Indicates if the rate is fully refundable at the time of booking.
             Cancel penalties may still apply. Please refer to the cancel penalties
             section for reference.
+        holdable:
+          type: boolean
+          description: "Indicates whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume).\
+            \ This field will only be present if `include=rooms.rates.holdable` is\
+            \ passed as a request parameter.."
         current_refundability:
           type: string
           description: Indicates the current refundability of the rate. This is a
@@ -23679,6 +23778,9 @@ components:
       properties:
         status:
           $ref: '#/components/schemas/StatusPriceCheck'
+        holdable:
+          type: boolean
+          description: "Indicates whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume)."
         occupancy_pricing:
           type: object
           additionalProperties:
@@ -24885,73 +24987,6 @@ components:
           $ref: '#/components/schemas/Invoicing'
         supplier_transparency:
           $ref: '#/components/schemas/SupplierTransparency'
-      example:
-        affiliate_reference_id: 4480ABC
-        hold: false
-        email: john@example.com
-        phone:
-          country_code: "1"
-          area_code: "487"
-          number: "5550077"
-        rooms:
-          - given_name: John
-            family_name: Smith
-            smoking: false
-            special_request: Top floor or away from street please
-            loyalty_id: ABC123
-            loyalty:
-              member_id: ABD123
-              program_id: SN
-        payments:
-          - type: customer_card
-            number: "4111111111111111"
-            security_code: "123"
-            expiration_month: "08"
-            expiration_year: "2025"
-            billing_contact:
-              given_name: John
-              family_name: Smith
-              address:
-                line_1: 555 1st St
-                line_2: 10th Floor
-                line_3: Unit 12
-                city: Seattle
-                state_province_code: WA
-                postal_code: "98121"
-                country_code: US
-            enrollment_date: '2018-09-15'
-            third_party_authentication:
-              cavv: jELUbgG+Tgj0AREBDMLeCad+oIs=
-              eci: "05"
-              three_ds_version: 2.2.0
-              ds_transaction_id: ac01cc2b-c1a1-4981-8c6f-400d4eec88de
-              pa_res_status: "Y"
-              ve_res_status: C
-              xid: 47133847-13be-4ae3-9be9-e4053b9c83c0
-              cavv_algorithm: "3"
-              ucaf_indicator: "0"
-        affiliate_metadata: data_point_1:123|data_point2:This is data.
-        tax_registration_number: "12345678910"
-        traveler_handling_instructions: Please use the card provided for payment.
-          Avoid cancelation as this is for a corporate traveler. Contact traveler
-          if any issues.
-        supplier_transparency:
-          point_of_sale_display_to_share: Global Travel Site
-          company_name_to_share: Traveler's Company
-          consent_to_share: true
-        invoicing:
-          consent_to_share: true
-          company_name: alphaDemandPartner
-          company_address:
-            line_1: 555 1st St
-            line_2: 10th Floor
-            line_3: Unit 12
-            city: Seattle
-            state_province_code: WA
-            postal_code: "98121"
-            country_code: US
-          email: chucktesta@mydomain.com
-          vat_number: "1234567890"
     PhoneRequest:
       required:
         - country_code
@@ -24982,14 +25017,30 @@ components:
       properties:
         given_name:
           type: string
-          description: "First name of room guest. Max 60 characters. Special characters\
-            \ (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be\
-            \ re-encoded."
+          description: |
+            Given name of room guest. Max 60 characters. Special characters ("<", ">", "(", ")", and "&") entered in
+            this field will be re-encoded.
         family_name:
           type: string
-          description: "Last name of room guest. Max 60 characters. Special characters\
-            \ (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be\
-            \ re-encoded."
+          description: |
+            Family name of room guest. Max 60 characters. Special characters ("<", ">", "(", ")", and "&") entered in
+            this field will be re-encoded.
+        sensitive_traveler_details:
+          type: object
+          properties:
+            middle_name:
+              type: string
+              description: |
+                Middle name of room guest. Max 60 characters. Special characters ("<", ">", "(", ")", and "&") entered
+                in this field will be re-encoded.
+            date_of_birth:
+              type: string
+              description: "The date of birth of room guest, in ISO 8601 format (YYYY-MM-DD)."
+            address:
+              $ref: '#/components/schemas/Address_1'
+          description: |
+            Additional sensitive (PII) data about a traveler that should only be submitted in cases where it is
+            necessary to clarify the identity of the traveler.
         smoking:
           type: boolean
           description: "Specify if the guest would prefer a smoking room. This field\
@@ -25076,6 +25127,22 @@ components:
           description: "Last name of room guest. Max 60 characters. Special characters\
             \ (\"<\", \">\", \"(\", \")\", and \"&\") entered in this field will be\
             \ re-encoded."
+        sensitive_traveler_details:
+          type: object
+          properties:
+            middle_name:
+              type: string
+              description: |
+                Middle name of room guest. Max 60 characters. Special characters ("<", ">", "(", ")", and "&") entered in
+                this field will be re-encoded.
+            date_of_birth:
+              type: string
+              description: "The date of birth of room guest, in ISO 8601 format (YYYY-MM-DD)."
+            address:
+              $ref: '#/components/schemas/Address_1'
+          description: |
+            Additional sensitive (PII) data about a traveler that should only be submitted in cases where it is
+            necessary to clarify the identity of the traveler.
         smoking:
           type: boolean
           description: "Specify if the guest would prefer a smoking room. This field\
@@ -25094,15 +25161,6 @@ components:
           deprecated: true
         loyalty:
           $ref: '#/components/schemas/Loyalty'
-      example:
-        given_name: John
-        family_name: Smith
-        smoking: false
-        special_request: Top floor or away from street please
-        loyalty_id: ABC123
-        loyalty:
-          member_id: ABD123
-          program_id: SN
     CommitChangeRoomRequestBody:
       type: object
       properties:
@@ -25648,20 +25706,20 @@ components:
       description: |
         The price breakout type.
           * `base_rate` - The room rate without any taxes and fees applied.
-          * `tax_and_service_fee` - Tax recovery charges, service fees, and taxes. Ensure that you capture these values and display as:
-                                    "Taxes and Fees"
-          * `extra_person_fee` - A per night fee that is charged by a hotel for additional adults over the nightly rate. This fee is included as part of the total.
-          * `property_fee` - The property fee surcharge type must be displayed beginning on the initial hotel room selection page, immediately after your hotel search results page. This placement is required by the U.S. Federal Trade Commission (FTC).
-                             Display this surcharge as "Property Fee" on your room selection page, as described above, and in all subsequent price breakdowns for the following Points of Sale:
-                             * `US`
-                             * `Canada`
-                             * `Brazil`
-                             * `LATAM`
-          * `sales_tax` - Taxes that must be displayed by certain jurisdictional laws. Ensure that you capture these values and display as "Taxes".
+          * `tax_and_service_fee` - Tax recovery charges, service fees, and taxes. Ensure that you capture these values
+            and display as: "Taxes and Fees"
+          * `extra_person_fee` - A per night fee that is charged by a hotel for additional adults over the nightly rate.
+            This fee is included as part of the total.
+          * `property_fee` - For US POS: The property fee surcharge type must be displayed, combined with the base rate,
+            wherever you show a price, from the first display of the price throughout the booking path.
+          * `sales_tax` - Taxes that must be displayed by certain jurisdictional laws. Ensure that you capture these
+            values and display as "Taxes".
           * `adjustment` - This is the amount that the individual night have been adjusted/discounted.
-          * `recovery_charges_and_fees` - Tax recovery charges, service fees, and taxes. Ensure that you capture these values and display as:
-                                          "Taxes and Fees"
-          * `traveler_service_fee` - Fee charged by Vrbo to support use of online tools, services and functions on its platform which enable guest self service. May be displayed as 'Traveler Service Fee' or 'Service Fee' any time fees are broken out for display on partner sites.
+          * `recovery_charges_and_fees` - Tax recovery charges, service fees, and taxes. Ensure that you capture these
+            values and display as: "Taxes and Fees"
+          * `traveler_service_fee` - Fee charged by Vrbo to support use of online tools, services and functions on its
+            platform which enable guest self service. May be displayed as 'Traveler Service Fee' or 'Service Fee' any
+            time fees are broken out for display on partner sites.
       enum:
         - base_rate
         - tax_and_service_fee

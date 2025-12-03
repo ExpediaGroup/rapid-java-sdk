@@ -54,6 +54,7 @@ import javax.validation.Validation
  * @param status Rates returned are always available.
  * @param availableRooms The number of bookable rooms remaining with this rate in EPS inventory. Use this value to create rules for urgency messaging to alert users to low availability on busy travel dates or at popular properties. If the value returns as 2147483647 (max int value), the actual value could not be determined. Ensure your urgency messaging ignores such instances when returned.
  * @param refundable Indicates if the rate is fully refundable at the time of booking. Cancel penalties may still apply. Please refer to the cancel penalties section for reference.
+ * @param holdable Indicates whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume). This field will only be present if `include=rooms.rates.holdable` is passed as a request parameter..
  * @param currentRefundability Indicates the current refundability of the rate. This is a more detailed version of the `refundable` field.
  * @param memberDealAvailable Indicates if a \"Member Only Deal\" is available for this rate.
  * @param saleScenario
@@ -86,6 +87,10 @@ data class Rate(
     @JsonProperty("refundable")
     @field:Valid
     val refundable: kotlin.Boolean? = null,
+    // Indicates whether the rate supports [Booking Hold and Resume](https://developers.expediagroup.com/docs/products/rapid/lodging/booking/hold-resume). This field will only be present if `include=rooms.rates.holdable` is passed as a request parameter..
+    @JsonProperty("holdable")
+    @field:Valid
+    val holdable: kotlin.Boolean? = null,
     // Indicates the current refundability of the rate. This is a more detailed version of the `refundable` field.
     @JsonProperty("current_refundability")
     val currentRefundability: Rate.CurrentRefundability? = null,
@@ -150,6 +155,7 @@ data class Rate(
         private var status: Rate.Status? = null,
         private var availableRooms: java.math.BigDecimal? = null,
         private var refundable: kotlin.Boolean? = null,
+        private var holdable: kotlin.Boolean? = null,
         private var currentRefundability: Rate.CurrentRefundability? = null,
         private var memberDealAvailable: kotlin.Boolean? = null,
         private var saleScenario: SaleScenario? = null,
@@ -173,6 +179,8 @@ data class Rate(
         fun availableRooms(availableRooms: java.math.BigDecimal?) = apply { this.availableRooms = availableRooms }
 
         fun refundable(refundable: kotlin.Boolean?) = apply { this.refundable = refundable }
+
+        fun holdable(holdable: kotlin.Boolean?) = apply { this.holdable = holdable }
 
         fun currentRefundability(currentRefundability: Rate.CurrentRefundability?) = apply { this.currentRefundability = currentRefundability }
 
@@ -211,6 +219,7 @@ data class Rate(
                     status = status,
                     availableRooms = availableRooms,
                     refundable = refundable,
+                    holdable = holdable,
                     currentRefundability = currentRefundability,
                     memberDealAvailable = memberDealAvailable,
                     saleScenario = saleScenario,
@@ -258,6 +267,7 @@ data class Rate(
             status = status,
             availableRooms = availableRooms,
             refundable = refundable,
+            holdable = holdable,
             currentRefundability = currentRefundability,
             memberDealAvailable = memberDealAvailable,
             saleScenario = saleScenario,
