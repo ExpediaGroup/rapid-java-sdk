@@ -35,6 +35,12 @@ jobs:
           gpg-passphrase: GPG_PASSPHRASE
           settings-path: ${{ github.workspace }}
 
+      - name: Checkout SDK branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          path: ${{ github.workspace }}
+
       - name: Release SDK
         working-directory: code
         env:
