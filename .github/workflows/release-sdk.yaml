@@ -49,5 +49,5 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
         run: |
           echo "Starting SDK Release - version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
-          mvn deploy --settings $GITHUB_WORKSPACE/settings.xml -B -U -DskipTests=true
+          mvn deploy --settings $GITHUB_WORKSPACE/settings.xml -B -U -P release -DskipTests=true
           echo "SDK Released"
