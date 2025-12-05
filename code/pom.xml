@@ -7,7 +7,7 @@
     <version>5.4.1</version>
     <name>EG rapid-sdk for Java</name>
     <description>EG rapid-sdk v5.4.1</description>
-    <url>https://github.com/ExpediaGroup/test-sdk</url>
+    <url>https://github.com/ExpediaGroup/rapid-java-sdk</url>
     <inceptionYear>2022</inceptionYear>
     <packaging>jar</packaging>
 
@@ -28,9 +28,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:ExpediaGroup/test-sdk.git</connection>
-        <developerConnection>scm:git:git@github.com:ExpediaGroup/test-sdk.git</developerConnection>
-        <url>https://github.com/ExpediaGroup/test-sdk/</url>
+        <connection>scm:git:git@github.com:ExpediaGroup/rapid-java-sdk.git</connection>
+        <developerConnection>scm:git:git@github.com:ExpediaGroup/rapid-java-sdk.git</developerConnection>
+        <url>https://github.com/ExpediaGroup/rapid-java-sdk/</url>
     </scm>
 
     <distributionManagement>
@@ -160,6 +160,16 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.9.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>true</autoPublish>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
