@@ -35,14 +35,8 @@ jobs:
           gpg-passphrase: GPG_PASSPHRASE
           settings-path: ${{ github.workspace }}
 
-      - name: Checkout SDK branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
-          path: product-repo
-
       - name: Release SDK
-        working-directory: product-repo/${{ inputs.sdk_path }}
+        working-directory: code
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
