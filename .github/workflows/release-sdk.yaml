@@ -21,8 +21,33 @@ jobs:
 #      jdk: ${{ matrix.jdk }}
 
   release-sdk:
-    uses: ExpediaGroup/expediagroup-java-sdk/.github/workflows/selfserve-release-sdk.yaml@legacy
-#    needs: [ run-examples ]
-    secrets: inherit
-    with:
-      branch: ${{ inputs.core-ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout SDK branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          path: ${{ github.workspace }}
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: central
+          server-username: SONATYPE_USERNAME
+          server-password: SONATYPE_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+          settings-path: ${{ github.workspace }}
+
+      - name: Release SDK
+        working-directory: ${{ github.workspace }}/code
+        env:
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+        run: |
+          echo "Starting SDK Release - version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          mvn deploy --settings $GITHUB_WORKSPACE/settings.xml -B -U -P release -DskipTests=true
+          echo "SDK Released"
