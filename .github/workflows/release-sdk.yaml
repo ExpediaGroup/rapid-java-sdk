@@ -23,6 +23,12 @@ jobs:
   release-sdk:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout SDK branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          path: ${{ github.workspace }}
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -35,14 +41,8 @@ jobs:
           gpg-passphrase: GPG_PASSPHRASE
           settings-path: ${{ github.workspace }}
 
-      - name: Checkout SDK branch
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
-          path: ${{ github.workspace }}
-
       - name: Release SDK
-        working-directory: code
+        working-directory: ${{ github.workspace }}/code
         env:
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
